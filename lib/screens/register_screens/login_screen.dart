@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:petShop/main.dart';
-import 'package:petShop/screens/register_screens/registration_screen.dart';
-import 'package:petShop/screens/register_screens/reset_screen.dart';
-import 'package:petShop/utils/colors.dart';
-import 'package:petShop/utils/textFieldFormaters.dart';
-import 'package:petShop/widgets/provider.dart';
-import 'package:petShop/widgets/allWidgets.dart';
+import 'package:sharing_map/main.dart';
+import 'package:sharing_map/screens/register_screens/registration_screen.dart';
+import 'package:sharing_map/screens/register_screens/reset_screen.dart';
+import 'package:sharing_map/utils/colors.dart';
+import 'package:sharing_map/utils/textFieldFormaters.dart';
+import 'package:sharing_map/widgets/provider.dart';
+import 'package:sharing_map/widgets/allWidgets.dart';
 
 class LoginScreen extends StatefulWidget {
   LoginScreen({Key key}) : super(key: key);

@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:petShop/model/data/Products.dart';
-import 'package:petShop/model/notifiers/cart_notifier.dart';
-import 'package:petShop/model/services/Product_service.dart';
-import 'package:petShop/screens/tab_screens/homeScreen_pages/productDetailsScreen.dart';
-import 'package:petShop/utils/colors.dart';
+import 'package:sharing_map/model/data/Products.dart';
+import 'package:sharing_map/model/notifiers/cart_notifier.dart';
+import 'package:sharing_map/model/services/Product_service.dart';
+import 'package:sharing_map/screens/tab_screens/homeScreen_pages/productDetailsScreen.dart';
+import 'package:sharing_map/utils/colors.dart';
 import 'package:wc_flutter_share/wc_flutter_share.dart';
 
 //SCAFFOLDS-----------------------------------
@@ -396,7 +396,7 @@ void showSimpleSnack(
 }
 
 void showNoInternetSnack(
-    GlobalKey<ScaffoldMessengerState> _scaffoldMessengerKey,
+  GlobalKey<ScaffoldMessengerState> _scaffoldMessengerKey,
 ) {
   _scaffoldMessengerKey.currentState.showSnackBar(
     SnackBar(
@@ -540,7 +540,7 @@ Future shareWidget() {
       sharePopupTitle: 'Pet Shop',
       subject: 'Hi!',
       text:
-          'Hi, I use Pet Shop to care for my pets fast and easy, Download it here at https://github.com/thenifemi/PetShop and for every download, a dog gets a treat.',
+          'Hi, I use Pet Shop to care for my pets fast and easy, Download it here at https://github.com/thenifemi/sharing_map and for every download, a dog gets a treat.',
       mimeType: 'text/plain');
 }
 //-------------------------------------------

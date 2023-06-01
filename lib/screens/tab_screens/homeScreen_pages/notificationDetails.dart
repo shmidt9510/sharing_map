@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:petShop/utils/colors.dart';
-import 'package:petShop/widgets/allWidgets.dart';
+import 'package:sharing_map/utils/colors.dart';
+import 'package:sharing_map/widgets/allWidgets.dart';
 
 class NotificationsDetails extends StatelessWidget {
   final not;

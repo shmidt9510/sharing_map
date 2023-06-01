@@ -2,9 +2,9 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:petShop/model/data/notificationMessage.dart';
-import 'package:petShop/model/notifiers/notifications_notifier.dart';
-import 'package:petShop/model/services/auth_service.dart';
+import 'package:sharing_map/model/data/notificationMessage.dart';
+import 'package:sharing_map/model/notifiers/notifications_notifier.dart';
+import 'package:sharing_map/model/services/auth_service.dart';
 
 final db = FirebaseFirestore.instance;
 
@@ -23,10 +23,10 @@ Future initialise() async {
           provisional: false,
           sound: true,
         )
-      :FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-    RemoteNotification notification = message.notification;
-    AndroidNotification android = message.notification?.android;
-  });
+      : FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+          RemoteNotification notification = message.notification;
+          AndroidNotification android = message.notification?.android;
+        });
 }
 
 mockNotifications() async {

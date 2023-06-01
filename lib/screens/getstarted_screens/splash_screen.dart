@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:petShop/utils/colors.dart';
+import 'package:sharing_map/utils/colors.dart';
 
 class SplashScreen extends StatelessWidget {
   @override
@@ -9,8 +9,8 @@ class SplashScreen extends StatelessWidget {
       child: Center(
         child: Container(
           height: 45.0,
-          child:
-              Image.asset("assets/images/petshop-footprint-logo-transBg.png"),
+          child: Image.asset(
+              "assets/images/sharing_map-footprint-logo-transBg.png"),
         ),
       ),
     );

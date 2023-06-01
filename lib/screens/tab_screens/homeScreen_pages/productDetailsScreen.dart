@@ -1,14 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:petShop/model/services/Product_service.dart';
-import 'package:petShop/model/notifiers/cart_notifier.dart';
-import 'package:petShop/model/data/Products.dart';
-import 'package:petShop/screens/tab_screens/homeScreen_pages/bag.dart';
-import 'package:petShop/utils/colors.dart';
-import 'package:petShop/widgets/similarProducts_Wigdet.dart';
-import 'package:petShop/widgets/allWidgets.dart';
-import 'package:petShop/widgets/starRatings.dart';
+import 'package:sharing_map/model/services/Product_service.dart';
+import 'package:sharing_map/model/notifiers/cart_notifier.dart';
+import 'package:sharing_map/model/data/Products.dart';
+import 'package:sharing_map/screens/tab_screens/homeScreen_pages/bag.dart';
+import 'package:sharing_map/utils/colors.dart';
+import 'package:sharing_map/widgets/similarProducts_Wigdet.dart';
+import 'package:sharing_map/widgets/allWidgets.dart';
+import 'package:sharing_map/widgets/starRatings.dart';
 import 'package:provider/provider.dart';
 
 class ProductDetailsProv extends StatelessWidget {

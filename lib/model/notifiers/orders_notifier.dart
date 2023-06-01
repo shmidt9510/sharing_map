@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:petShop/model/data/orders.dart';
+import 'package:sharing_map/model/data/orders.dart';
 
 class OrderListNotifier with ChangeNotifier {
   List<OrdersList> _ordersListList = [];

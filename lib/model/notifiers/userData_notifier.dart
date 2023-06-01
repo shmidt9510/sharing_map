@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:petShop/model/data/userData.dart';
+import 'package:sharing_map/model/data/userData.dart';
 
 //For Users profile
 class UserDataProfileNotifier with ChangeNotifier {

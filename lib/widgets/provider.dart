@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:petShop/model/services/auth_service.dart';
+import 'package:sharing_map/model/services/auth_service.dart';
 
 class MyProvider extends InheritedWidget {
   final AuthService auth;

@@ -1,7 +1,7 @@
 import 'dart:collection';
 
 import 'package:flutter/foundation.dart';
-import 'package:petShop/model/data/brands.dart';
+import 'package:sharing_map/model/data/brands.dart';
 
 class BrandsNotifier with ChangeNotifier {
   List<Brands> _brandsList = [];

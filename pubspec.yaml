@@ -1,4 +1,4 @@
-name: petShop
+name: sharing_map
 description: Pet Shop is an e-commerce application for Android built with Flutter (iOS to come soon).
 
 # The following defines the version and build number for your application.
@@ -54,7 +54,7 @@ dependencies:
 flutter_icons:
   android: true
   ios: true
-  image_path: "assets/images/petshop-footprint-logo-whiteBg.png"
+  image_path: "assets/images/sharing_map-footprint-logo-whiteBg.png"
   cupertino_icons: ^0.1.2
 
 dev_dependencies:

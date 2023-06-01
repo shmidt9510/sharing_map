@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:petShop/model/notifiers/cart_notifier.dart';
-import 'package:petShop/model/services/Product_service.dart';
-import 'package:petShop/screens/tab_screens/checkout_screens/completeOrder.dart';
-import 'package:petShop/utils/colors.dart';
-import 'package:petShop/widgets/allWidgets.dart';
+import 'package:sharing_map/model/notifiers/cart_notifier.dart';
+import 'package:sharing_map/model/services/Product_service.dart';
+import 'package:sharing_map/screens/tab_screens/checkout_screens/completeOrder.dart';
+import 'package:sharing_map/utils/colors.dart';
+import 'package:sharing_map/widgets/allWidgets.dart';
 import 'package:provider/provider.dart';
 
 class Bag extends StatelessWidget {

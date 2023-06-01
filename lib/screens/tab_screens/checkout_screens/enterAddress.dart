@@ -2,13 +2,13 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:petShop/model/data/userData.dart';
-import 'package:petShop/model/notifiers/userData_notifier.dart';
-import 'package:petShop/model/services/user_management.dart';
-import 'package:petShop/utils/cardUtils/cardStrings.dart';
-import 'package:petShop/utils/colors.dart';
-import 'package:petShop/widgets/allWidgets.dart';
-import 'package:petShop/credentials.dart';
+import 'package:sharing_map/model/data/userData.dart';
+import 'package:sharing_map/model/notifiers/userData_notifier.dart';
+import 'package:sharing_map/model/services/user_management.dart';
+import 'package:sharing_map/utils/cardUtils/cardStrings.dart';
+import 'package:sharing_map/utils/colors.dart';
+import 'package:sharing_map/widgets/allWidgets.dart';
+import 'package:sharing_map/credentials.dart';
 import 'package:dio/dio.dart';
 import 'package:provider/provider.dart';
 import 'package:geolocator/geolocator.dart';
@@ -134,8 +134,8 @@ class _EnterAddressState extends State<EnterAddress> {
     String error;
 
     try {
-      Position position = await Geolocator
-          .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+      Position position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
       final coordinates = Coordinates(position.latitude, position.longitude);
       var addresses =
           await Geocoder.local.findAddressesFromCoordinates(coordinates);

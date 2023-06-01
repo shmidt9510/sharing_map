@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:petShop/utils/cardUtils/cardStrings.dart';
-import 'package:petShop/utils/colors.dart';
-import 'package:petShop/widgets/allWidgets.dart';
+import 'package:sharing_map/utils/cardUtils/cardStrings.dart';
+import 'package:sharing_map/utils/colors.dart';
+import 'package:sharing_map/widgets/allWidgets.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
   @override

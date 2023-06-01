@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:petShop/model/data/userData.dart';
-import 'package:petShop/model/services/user_management.dart';
-import 'package:petShop/utils/colors.dart';
-import 'package:petShop/utils/cardUtils/payment_card.dart';
-import 'package:petShop/utils/cardUtils/input_formatter.dart';
-import 'package:petShop/utils/cardUtils/cardStrings.dart';
-import 'package:petShop/widgets/allWidgets.dart';
+import 'package:sharing_map/model/data/userData.dart';
+import 'package:sharing_map/model/services/user_management.dart';
+import 'package:sharing_map/utils/colors.dart';
+import 'package:sharing_map/utils/cardUtils/payment_card.dart';
+import 'package:sharing_map/utils/cardUtils/input_formatter.dart';
+import 'package:sharing_map/utils/cardUtils/cardStrings.dart';
+import 'package:sharing_map/widgets/allWidgets.dart';
 
 class AddNewCard extends StatefulWidget {
   final UserDataCard card;

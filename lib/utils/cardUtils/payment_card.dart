@@ -1,4 +1,4 @@
-import 'package:petShop/utils/cardUtils/cardStrings.dart';
+import 'package:sharing_map/utils/cardUtils/cardStrings.dart';
 import 'package:flutter/material.dart';
 
 class PaymentCard {

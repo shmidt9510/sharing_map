@@ -1,17 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:petShop/main.dart';
-import 'package:petShop/model/notifiers/userData_notifier.dart';
-import 'package:petShop/model/services/auth_service.dart';
-import 'package:petShop/model/services/pushNotification_service.dart';
-import 'package:petShop/model/services/user_management.dart';
-import 'package:petShop/screens/settings_screens/cards.dart';
-import 'package:petShop/screens/settings_screens/editProfile.dart';
-import 'package:petShop/screens/settings_screens/passwordSecurity.dart';
-import 'package:petShop/utils/colors.dart';
-import 'package:petShop/utils/internetConnectivity.dart';
-import 'package:petShop/widgets/allWidgets.dart';
-import 'package:petShop/widgets/provider.dart';
+import 'package:sharing_map/main.dart';
+import 'package:sharing_map/model/notifiers/userData_notifier.dart';
+import 'package:sharing_map/model/services/auth_service.dart';
+import 'package:sharing_map/model/services/pushNotification_service.dart';
+import 'package:sharing_map/model/services/user_management.dart';
+import 'package:sharing_map/screens/settings_screens/cards.dart';
+import 'package:sharing_map/screens/settings_screens/editProfile.dart';
+import 'package:sharing_map/screens/settings_screens/passwordSecurity.dart';
+import 'package:sharing_map/utils/colors.dart';
+import 'package:sharing_map/utils/internetConnectivity.dart';
+import 'package:sharing_map/widgets/allWidgets.dart';
+import 'package:sharing_map/widgets/provider.dart';
 import 'package:provider/provider.dart';
 
 import 'checkout_screens/enterAddress.dart';
@@ -43,7 +43,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           listen: false);
                   addressFuture = getAddress(addressNotifier);
                 }()
-              : showNoInternetSnack(_scaffoldKey as GlobalKey<ScaffoldMessengerState>)
+              : showNoInternetSnack(
+                  _scaffoldKey as GlobalKey<ScaffoldMessengerState>)
         });
 
     super.initState();
@@ -205,7 +206,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 "Profile has been updated",
                                 Icons.check_circle_outline,
                                 Colors.green,
-                                _scaffoldKey as GlobalKey<ScaffoldMessengerState>,
+                                _scaffoldKey
+                                    as GlobalKey<ScaffoldMessengerState>,
                               );
                             }
                           },
@@ -218,7 +220,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   ? ClipRRect(
                                       borderRadius: BorderRadius.circular(9.0),
                                       child: Image.asset(
-                                        "assets/images/petshop-footprint-logo-whiteBg.png",
+                                        "assets/images/sharing_map-footprint-logo-whiteBg.png",
                                         height: 90.0,
                                         width: 90.0,
                                       ),
@@ -231,7 +233,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                         height: 90.0,
                                         width: 90.0,
                                         placeholder:
-                                            "assets/images/petshop-footprint-logo-whiteBg.png",
+                                            "assets/images/sharing_map-footprint-logo-whiteBg.png",
                                       ),
                                     ),
                             ),

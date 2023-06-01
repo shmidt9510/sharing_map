@@ -2,11 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:petShop/screens/register_screens/login_screen.dart';
-import 'package:petShop/screens/register_screens/registration_screen.dart';
-import 'package:petShop/utils/colors.dart';
-import 'package:petShop/utils/strings.dart';
-import 'package:petShop/widgets/allWidgets.dart';
+import 'package:sharing_map/screens/register_screens/login_screen.dart';
+import 'package:sharing_map/screens/register_screens/registration_screen.dart';
+import 'package:sharing_map/utils/colors.dart';
+import 'package:sharing_map/utils/strings.dart';
+import 'package:sharing_map/widgets/allWidgets.dart';
 
 class IntroScreen extends StatefulWidget {
   @override

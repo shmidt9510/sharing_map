@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:petShop/model/notifiers/orders_notifier.dart';
-import 'package:petShop/model/services/Product_service.dart';
-import 'package:petShop/utils/colors.dart';
-import 'package:petShop/utils/internetConnectivity.dart';
+import 'package:sharing_map/model/notifiers/orders_notifier.dart';
+import 'package:sharing_map/model/services/Product_service.dart';
+import 'package:sharing_map/utils/colors.dart';
+import 'package:sharing_map/utils/internetConnectivity.dart';
 
-import 'package:petShop/widgets/allWidgets.dart';
+import 'package:sharing_map/widgets/allWidgets.dart';
 import 'package:provider/provider.dart';
 
 class HistoryScreen extends StatefulWidget {
@@ -34,7 +34,8 @@ class _HistoryScreenState extends State<HistoryScreen>
                       Provider.of<OrderListNotifier>(context, listen: false);
                   ordersFuture = getOrders(orderListNotifier);
                 }()
-              : showNoInternetSnack(_scaffoldKey as GlobalKey<ScaffoldMessengerState>)
+              : showNoInternetSnack(
+                  _scaffoldKey as GlobalKey<ScaffoldMessengerState>)
         });
 
     _tabController = TabController(

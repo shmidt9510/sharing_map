@@ -1,17 +1,17 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:petShop/model/data/Products.dart';
-import 'package:petShop/model/notifiers/bannerAd_notifier.dart';
-import 'package:petShop/model/notifiers/brands_notifier.dart';
-import 'package:petShop/model/notifiers/cart_notifier.dart';
-import 'package:petShop/model/notifiers/products_notifier.dart';
-import 'package:petShop/model/services/Product_service.dart';
-import 'package:petShop/screens/tab_screens/homeScreen_pages/brandProductsScreen.dart';
-import 'package:petShop/screens/tab_screens/homeScreen_pages/seeMoreScreen.dart';
-import 'package:petShop/utils/colors.dart';
-import 'package:petShop/utils/internetConnectivity.dart';
-import 'package:petShop/widgets/allWidgets.dart';
+import 'package:sharing_map/model/data/Products.dart';
+import 'package:sharing_map/model/notifiers/bannerAd_notifier.dart';
+import 'package:sharing_map/model/notifiers/brands_notifier.dart';
+import 'package:sharing_map/model/notifiers/cart_notifier.dart';
+import 'package:sharing_map/model/notifiers/products_notifier.dart';
+import 'package:sharing_map/model/services/Product_service.dart';
+import 'package:sharing_map/screens/tab_screens/homeScreen_pages/brandProductsScreen.dart';
+import 'package:sharing_map/screens/tab_screens/homeScreen_pages/seeMoreScreen.dart';
+import 'package:sharing_map/utils/colors.dart';
+import 'package:sharing_map/utils/internetConnectivity.dart';
+import 'package:sharing_map/widgets/allWidgets.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -44,7 +44,8 @@ class _HomeScreenState extends State<HomeScreen>
                       Provider.of<BannerAdNotifier>(context, listen: false);
                   getBannerAds(bannerAdNotifier);
                 }()
-              : showNoInternetSnack(_scaffoldKey as GlobalKey<ScaffoldMessengerState>)
+              : showNoInternetSnack(
+                  _scaffoldKey as GlobalKey<ScaffoldMessengerState>)
         });
 
     super.initState();

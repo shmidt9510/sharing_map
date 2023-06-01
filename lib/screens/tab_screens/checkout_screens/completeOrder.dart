@@ -1,17 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:petShop/model/data/cart.dart';
-import 'package:petShop/model/notifiers/cart_notifier.dart';
-import 'package:petShop/model/notifiers/userData_notifier.dart';
-import 'package:petShop/model/services/Product_service.dart';
-import 'package:petShop/model/services/user_management.dart';
-import 'package:petShop/screens/tab_screens/checkout_screens/addPaymentMethod.dart';
+import 'package:sharing_map/model/data/cart.dart';
+import 'package:sharing_map/model/notifiers/cart_notifier.dart';
+import 'package:sharing_map/model/notifiers/userData_notifier.dart';
+import 'package:sharing_map/model/services/Product_service.dart';
+import 'package:sharing_map/model/services/user_management.dart';
+import 'package:sharing_map/screens/tab_screens/checkout_screens/addPaymentMethod.dart';
 import 'package:uuid/uuid.dart';
-import 'package:petShop/utils/colors.dart';
+import 'package:sharing_map/utils/colors.dart';
 import 'package:provider/provider.dart';
-import 'package:petShop/widgets/allWidgets.dart';
-import 'package:petShop/screens/tab_screens/checkout_screens/enterAddress.dart';
+import 'package:sharing_map/widgets/allWidgets.dart';
+import 'package:sharing_map/screens/tab_screens/checkout_screens/enterAddress.dart';
 
 import 'orderPlaced.dart';
 

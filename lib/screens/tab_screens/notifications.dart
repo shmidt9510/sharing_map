@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:petShop/model/notifiers/notifications_notifier.dart';
+import 'package:sharing_map/model/notifiers/notifications_notifier.dart';
 
-import 'package:petShop/model/services/pushNotification_service.dart';
-import 'package:petShop/screens/tab_screens/homeScreen_pages/notificationDetails.dart';
-import 'package:petShop/utils/colors.dart';
-import 'package:petShop/utils/internetConnectivity.dart';
-import 'package:petShop/widgets/allWidgets.dart';
+import 'package:sharing_map/model/services/pushNotification_service.dart';
+import 'package:sharing_map/screens/tab_screens/homeScreen_pages/notificationDetails.dart';
+import 'package:sharing_map/utils/colors.dart';
+import 'package:sharing_map/utils/internetConnectivity.dart';
+import 'package:sharing_map/widgets/allWidgets.dart';
 import 'package:provider/provider.dart';
 
 class InboxScreen extends StatefulWidget {
@@ -31,7 +31,8 @@ class _InboxScreenState extends State<InboxScreen> {
                           listen: false);
                   notificationsFuture = getNotifications(notificationsNotifier);
                 }()
-              : showNoInternetSnack(_scaffoldKey as GlobalKey<ScaffoldMessengerState>)
+              : showNoInternetSnack(
+                  _scaffoldKey as GlobalKey<ScaffoldMessengerState>)
         });
 
     super.initState();

@@ -4,13 +4,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:petShop/model/data/userData.dart';
-import 'package:petShop/model/services/user_management.dart';
-import 'package:petShop/utils/cardUtils/cardStrings.dart';
-import 'package:petShop/utils/colors.dart';
-import 'package:petShop/utils/internetConnectivity.dart';
-import 'package:petShop/utils/textFieldFormaters.dart';
-import 'package:petShop/widgets/allWidgets.dart';
+import 'package:sharing_map/model/data/userData.dart';
+import 'package:sharing_map/model/services/user_management.dart';
+import 'package:sharing_map/utils/cardUtils/cardStrings.dart';
+import 'package:sharing_map/utils/colors.dart';
+import 'package:sharing_map/utils/internetConnectivity.dart';
+import 'package:sharing_map/utils/textFieldFormaters.dart';
+import 'package:sharing_map/widgets/allWidgets.dart';
 
 import '../../main.dart';
 
@@ -92,7 +92,7 @@ class _EditProfileState extends State<EditProfile> {
                                 ? ClipRRect(
                                     borderRadius: BorderRadius.circular(9.0),
                                     child: Image.asset(
-                                      "assets/images/petshop-footprint-logo-whiteBg.png",
+                                      "assets/images/sharing_map-footprint-logo-whiteBg.png",
                                       height: 90.0,
                                       width: 90.0,
                                     ),
@@ -105,7 +105,7 @@ class _EditProfileState extends State<EditProfile> {
                                       height: 90.0,
                                       width: 90.0,
                                       placeholder:
-                                          "assets/images/petshop-footprint-logo-whiteBg.png",
+                                          "assets/images/sharing_map-footprint-logo-whiteBg.png",
                                     ),
                                   ),
                         decoration: BoxDecoration(
@@ -399,7 +399,7 @@ class _EditProfileState extends State<EditProfile> {
                 null,
                 true,
                 <Widget>[
-                 ElevatedButton(
+                  ElevatedButton(
                     onPressed: () async {
                       await checkInternetConnectivity().then((value) {
                         value == true
@@ -414,7 +414,8 @@ class _EditProfileState extends State<EditProfile> {
                                 });
                               }()
                             : () {
-                                showNoInternetSnack(_scaffoldKey as GlobalKey<ScaffoldMessengerState>);
+                                showNoInternetSnack(_scaffoldKey
+                                    as GlobalKey<ScaffoldMessengerState>);
                                 Navigator.of(context).pushAndRemoveUntil(
                                   CupertinoPageRoute(
                                     builder: (_) => MyApp(),
