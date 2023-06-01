@@ -1,60 +1,123 @@
-import 'package:sharing_map/controller/provider/cart_provider.dart';
-import 'package:sharing_map/models/getx/theme_getx_model.dart';
-// import 'package:sharing_map/views/screens/cart_screen.dart';
-// import 'package:sharing_map/views/screens/detail_page.dart';
-// import 'package:sharing_map/views/screens/favourite_list_screen.dart';
-// import 'package:sharing_map/views/screens/home_page.dart';
-import 'package:sharing_map/views/screens/intro_screen.dart';
-import 'package:sharing_map/views/screens/log_in_screen.dart';
-import 'package:sharing_map/views/screens/log_sign_page.dart';
-import 'package:sharing_map/views/screens/sign_in_screen.dart';
-import 'package:sharing_map/views/screens/splash_screen.dart';
-// import 'package:sharing_map/views/screens/view_screen.dart';
-// import 'package:firebase_core/firebase_core.dart';
+import 'dart:io';
+
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
+import 'model/notifiers/bannerAd_notifier.dart';
+import 'model/notifiers/brands_notifier.dart';
+import 'model/notifiers/cart_notifier.dart';
+import 'model/notifiers/notifications_notifier.dart';
+import 'model/notifiers/orders_notifier.dart';
+import 'model/notifiers/products_notifier.dart';
+import 'model/notifiers/userData_notifier.dart';
+import 'model/services/auth_service.dart';
+import 'screens/getstarted_screens/intro_screen.dart';
+import 'screens/getstarted_screens/splash_screen.dart';
+import 'utils/colors.dart';
+import 'widgets/provider.dart';
+import 'widgets/tabsLayout.dart';
+
 void main() async {
-  // WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp();
-  runApp(const myApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+
+  runApp(MyApp());
 }
 
-class myApp extends StatefulWidget {
-  const myApp({Key? key}) : super(key: key);
+class MyApp extends StatelessWidget {
+  const MyApp({Key key}) : super(key: key);
 
-  @override
-  State<myApp> createState() => _myAppState();
-}
-
-class _myAppState extends State<myApp> {
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => CartController()),
-      ],
-      builder: (context, child) {
-        return GetMaterialApp(
-          debugShowCheckedModeBanner: false,
-          theme: ThemeModel.lightTheme,
-          darkTheme: ThemeModel.darkTheme,
-          initialRoute: 'splashScreen',
-          routes: {
-            'splashScreen': (context) => SplashScreen(),
-            'introScreen': (context) => IntroScreen(),
-            'logSignPage': (context) => LogSignPage(),
-            'signInScreen': (context) => SignInScreen(),
-            'logInScreen': (context) => LogInScreen(),
-            // 'homePage': (context) => HomePage(),
-            // 'viewScreen': (context) => ViewScreen(),
-            // 'DetailPage': (context) => DetailPage(),
-            // 'favouriteScreen': (context) => FavouriteScreen(),
-            // 'CartScreen': (context) => CartScreen(),
-          },
-        );
+    return FutureBuilder(
+      future: Firebase.initializeApp(),
+      builder: (context, snapshot) {
+        // Check for errors
+        if (snapshot.hasError) {
+          return exit(0);
+        }
+
+        // Once complete
+        if (snapshot.connectionState == ConnectionState.done) {
+          return MyProvider(
+            auth: AuthService(),
+            child: AnnotatedRegion<SystemUiOverlayStyle>(
+              value: SystemUiOverlayStyle(
+                statusBarColor: Colors.transparent,
+                statusBarIconBrightness: Brightness.dark,
+                systemNavigationBarIconBrightness: Brightness.dark,
+              ),
+              child: HomeController(),
+            ),
+          );
+        }
+        return SplashScreen();
       },
     );
+  }
+}
+
+class HomeController extends StatefulWidget {
+  const HomeController({Key key}) : super(key: key);
+
+  @override
+  _HomeControllerState createState() => _HomeControllerState();
+}
+
+class _HomeControllerState extends State<HomeController> {
+  @override
+  Widget build(BuildContext context) {
+    final AuthService auth = MyProvider.of(context).auth;
+
+    return StreamBuilder(
+        stream: auth.onAuthStateChanged,
+        builder: (context, AsyncSnapshot<String> snapshot) {
+          if (snapshot.connectionState == ConnectionState.active) {
+            final bool signedIn = snapshot.hasData;
+            return MaterialApp(
+              title: "Pet Shop",
+              theme: ThemeData(
+                accentColor: MColors.primaryPurple,
+                primaryColor: MColors.primaryPurple,
+              ),
+              debugShowCheckedModeBanner: false,
+              home: signedIn
+                  ? MultiProvider(
+                      providers: [
+                        ChangeNotifierProvider(
+                          create: (context) => ProductsNotifier(),
+                        ),
+                        ChangeNotifierProvider(
+                          create: (context) => BrandsNotifier(),
+                        ),
+                        ChangeNotifierProvider(
+                          create: (context) => CartNotifier(),
+                        ),
+                        ChangeNotifierProvider(
+                          create: (context) => UserDataProfileNotifier(),
+                        ),
+                        ChangeNotifierProvider(
+                          create: (context) => UserDataAddressNotifier(),
+                        ),
+                        ChangeNotifierProvider(
+                          create: (context) => OrderListNotifier(),
+                        ),
+                        ChangeNotifierProvider(
+                          create: (context) => NotificationsNotifier(),
+                        ),
+                        ChangeNotifierProvider(
+                          create: (context) => BannerAdNotifier(),
+                        ),
+                      ],
+                      child: TabsLayout(),
+                    )
+                  : IntroScreen(),
+            );
+          }
+          return SplashScreen();
+        });
   }
 }
