@@ -31,7 +31,13 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: MColors.primaryWhiteSmoke,
+      appBar: AppBar(
+        leading: BackButton(
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        title: Text('My App'),
+      ),
+      backgroundColor: MColors.primaryGreen,
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: primaryContainer(
@@ -41,42 +47,13 @@ class _LoginScreenState extends State<LoginScreen> {
               Container(
                 padding: const EdgeInsets.only(top: 100.0),
                 child: Text(
-                  "Sign in to your account",
-                  style: boldFont(MColors.textDark, 38.0),
+                  "Войдите в свой аккаунт",
+                  style: boldFont(MColors.primaryWhite, 38.0),
                   textAlign: TextAlign.start,
                 ),
               ),
 
               SizedBox(height: 20.0),
-
-              Row(
-                children: <Widget>[
-                  Container(
-                    child: Text(
-                      "Do not have an account? ",
-                      style: normalFont(MColors.textGrey, 16.0),
-                      textAlign: TextAlign.start,
-                    ),
-                  ),
-                  Container(
-                    child: GestureDetector(
-                      child: Text(
-                        "Create it!",
-                        style: normalFont(MColors.primaryPurple, 16.0),
-                        textAlign: TextAlign.start,
-                      ),
-                      onTap: () {
-                        formKey.currentState.reset();
-                        Navigator.of(context).pushReplacement(
-                          CupertinoPageRoute(
-                            builder: (_) => RegistrationScreen(),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ],
-              ),
 
               SizedBox(height: 10.0),
 
@@ -87,7 +64,7 @@ class _LoginScreenState extends State<LoginScreen> {
               //FORM
               Form(
                 key: formKey,
-                autovalidateMode: AutovalidateMode.always,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
                 child: Column(
                   children: <Widget>[
                     Column(
@@ -96,14 +73,14 @@ class _LoginScreenState extends State<LoginScreen> {
                         Container(
                           padding: const EdgeInsets.only(bottom: 5.0),
                           child: Text(
-                            "Email",
-                            style: normalFont(MColors.textGrey, null),
+                            "Ваш email-адрес",
+                            style: normalFont(MColors.whiteText, null),
                           ),
                         ),
                         primaryTextField(
                           null,
                           null,
-                          "e.g Remiola2034@gmail.com",
+                          "share@map.com",
                           (val) => _email = val,
                           _isEnabled,
                           EmailValiditor.validate,
@@ -124,8 +101,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         Container(
                           padding: const EdgeInsets.only(bottom: 5.0),
                           child: Text(
-                            "Password",
-                            style: normalFont(MColors.textGrey, null),
+                            "Ваш пароль",
+                            style: normalFont(MColors.whiteText, null),
                           ),
                         ),
                         primaryTextField(
@@ -146,9 +123,9 @@ class _LoginScreenState extends State<LoginScreen> {
                             child: RawMaterialButton(
                               onPressed: _toggle,
                               child: Text(
-                                _obscureText ? "Show" : "Hide",
+                                _obscureText ? "Показать" : "Скрыть",
                                 style: TextStyle(
-                                  color: MColors.primaryPurple,
+                                  color: MColors.secondaryGreen,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -163,12 +140,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       children: <Widget>[
                         Icon(
                           Icons.check_box,
-                          color: MColors.primaryPurple,
+                          color: MColors.secondaryGreen,
                         ),
                         SizedBox(width: 5.0),
                         Container(
                           child: Text(
-                            "Remember me.",
+                            "Запомнить меня.",
                             style: normalFont(MColors.textDark, null),
                           ),
                         ),
@@ -201,7 +178,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         );
                       },
                       child: Text(
-                        "Forgot password?",
+                        "Забыли пароль?",
                         style: normalFont(MColors.textGrey, null),
                       ),
                     ),
@@ -225,7 +202,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final form = formKey.currentState;
 
     try {
-      final auth = MyProvider.of(context).auth;
+      // final auth = MyProvider.of(context).auth;
       if (form.validate()) {
         form.save();
 
@@ -236,7 +213,8 @@ class _LoginScreenState extends State<LoginScreen> {
           });
         }
 
-        String uid = await auth.signInWithEmailAndPassword(_email, _password);
+        String uid =
+            '111'; //await auth.signInWithEmailAndPassword(_email, _password);
         print("Signed in with $uid");
 
         Navigator.of(context).pushReplacement(

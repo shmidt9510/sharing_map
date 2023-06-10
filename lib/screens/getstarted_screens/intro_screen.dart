@@ -30,15 +30,15 @@ class _IntroScreenState extends State<IntroScreen> {
                 Container(
                   padding: const EdgeInsets.all(20.0),
                   child: SvgPicture.asset(
-                    "assets/images/pets.svg",
+                    "assets/images/sharing_map_logo.svg",
                     height: 200,
                   ),
                 ),
                 SizedBox(height: 30.0),
                 Container(
                   child: Text(
-                    "Welcome to Pet Shop",
-                    style: boldFont(MColors.textDark, 30.0),
+                    "Привет",
+                    style: boldFont(MColors.primaryWhiteSmoke, 30.0),
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -46,7 +46,7 @@ class _IntroScreenState extends State<IntroScreen> {
                 Container(
                   child: Text(
                     Strings.onBoardTitle_sub1,
-                    style: normalFont(MColors.textGrey, 18.0),
+                    style: normalFont(MColors.primaryWhiteSmoke, 18.0),
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -56,15 +56,15 @@ class _IntroScreenState extends State<IntroScreen> {
         ),
         bottomNavigationBar: Container(
           height: 150.0,
-          color: MColors.primaryWhite,
+          color: MColors.primaryGreen,
           padding: const EdgeInsets.all(20.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              primaryButtonPurple(
+              secondaryButtonGreen(
                 Text(
-                  "Sign in",
-                  style: boldFont(MColors.primaryWhite, 16.0),
+                  "Войти",
+                  style: boldFont(MColors.appBarDark, 16.0),
                 ),
                 () {
                   Navigator.of(context).push(
@@ -77,10 +77,10 @@ class _IntroScreenState extends State<IntroScreen> {
               SizedBox(
                 height: 10.0,
               ),
-              primaryButtonWhiteSmoke(
+              secondaryButtonGreenSmoke(
                 Text(
-                  "Create an account",
-                  style: boldFont(MColors.primaryPurple, 16.0),
+                  "Зарегестрироваться",
+                  style: boldFont(MColors.appBarDark, 16.0),
                 ),
                 () {
                   Navigator.of(context).push(

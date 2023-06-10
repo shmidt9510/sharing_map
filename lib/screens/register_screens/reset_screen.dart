@@ -240,32 +240,32 @@ class _ResetScreenState extends State<ResetScreen> {
   void _submit() async {
     final form = formKey.currentState;
 
-    try {
-      final auth = MyProvider.of(context).auth;
-      if (form.validate()) {
-        form.save();
+    //   try {
+    //     final auth = MyProvider.of(context).auth;
+    //     if (form.validate()) {
+    //       form.save();
 
-        setState(() {
-          _isButtonDisabled = true;
-        });
+    //       setState(() {
+    //         _isButtonDisabled = true;
+    //       });
 
-        await auth.sendPasswordResetEmail(_email);
-        print("Password reset link sent to $_email");
+    //       await auth.sendPasswordResetEmail(_email);
+    //       print("Password reset link sent to $_email");
 
-        _showModalSheet();
-      } else {
-        setState(() {
-          _autoValidate = true;
-        });
-      }
-    } catch (e) {
-      setState(() {
-        warning = e.message;
-        _isButtonDisabled = false;
-      });
+    //       _showModalSheet();
+    //     } else {
+    //       setState(() {
+    //         _autoValidate = true;
+    //       });
+    //     }
+    //   } catch (e) {
+    //     setState(() {
+    //       warning = e.message;
+    //       _isButtonDisabled = false;
+    //     });
 
-      print("ERRORR ==>");
-      print(e);
-    }
+    //     print("ERRORR ==>");
+    //     print(e);
+    //   }
   }
 }

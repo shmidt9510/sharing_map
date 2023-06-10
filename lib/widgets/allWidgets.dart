@@ -16,7 +16,7 @@ Widget primaryContainer(
 ) {
   return Container(
     padding: const EdgeInsets.symmetric(horizontal: 20.0),
-    color: MColors.primaryWhiteSmoke,
+    color: MColors.primaryGreen,
     child: containerChild,
   );
 }
@@ -104,6 +104,50 @@ Widget primaryButtonPurple(
       focusElevation: 0.0,
       highlightElevation: 0.0,
       fillColor: MColors.primaryPurple,
+      child: buttonChild,
+      onPressed: onPressed,
+      shape: RoundedRectangleBorder(
+        borderRadius: new BorderRadius.circular(10.0),
+      ),
+    ),
+  );
+}
+
+Widget secondaryButtonGreen(
+  Widget buttonChild,
+  void Function() onPressed,
+) {
+  return SizedBox(
+    width: double.infinity,
+    height: 50.0,
+    child: RawMaterialButton(
+      elevation: 0.0,
+      hoverElevation: 0.0,
+      focusElevation: 0.0,
+      highlightElevation: 0.0,
+      fillColor: MColors.secondaryGreen,
+      child: buttonChild,
+      onPressed: onPressed,
+      shape: RoundedRectangleBorder(
+        borderRadius: new BorderRadius.circular(10.0),
+      ),
+    ),
+  );
+}
+
+Widget secondaryButtonGreenSmoke(
+  Widget buttonChild,
+  void Function() onPressed,
+) {
+  return SizedBox(
+    width: double.infinity,
+    height: 50.0,
+    child: RawMaterialButton(
+      elevation: 0.0,
+      hoverElevation: 0.0,
+      focusElevation: 0.0,
+      highlightElevation: 0.0,
+      fillColor: MColors.primaryWhiteSmoke,
       child: buttonChild,
       onPressed: onPressed,
       shape: RoundedRectangleBorder(
@@ -731,220 +775,220 @@ orderTrackerWidget(String status) {
 }
 
 //-------------------------------------------
-Widget blockWigdet(
-  String blockTitle,
-  String blockSubTitle,
-  double _picHeight,
-  double _itemHeight,
-  List<ProdProducts> prods,
-  CartNotifier cartNotifier,
-  Iterable<String> cartProdID,
-  GlobalKey _scaffoldKey,
-  BuildContext context,
-  allProds,
-  void Function() seeMore,
-) {
-  void addToBagshowDialog(
-      _product, cartNotifier, cartProdID, scaffoldKey) async {
-    await showCupertinoDialog(
-        context: context,
-        builder: (context) {
-          return CupertinoAlertDialog(
-            content: Text(
-              "Sure you want to add to Bag?",
-              style: normalFont(MColors.textDark, null),
-            ),
-            actions: <Widget>[
-              CupertinoDialogAction(
-                child: Text(
-                  "Cancel",
-                  style: normalFont(Colors.red, null),
-                ),
-                onPressed: () async {
-                  getCart(cartNotifier);
+// Widget blockWigdet(
+//   String blockTitle,
+//   String blockSubTitle,
+//   double _picHeight,
+//   double _itemHeight,
+//   List<ProdProducts> prods,
+//   CartNotifier cartNotifier,
+//   Iterable<String> cartProdID,
+//   GlobalKey _scaffoldKey,
+//   BuildContext context,
+//   allProds,
+//   void Function() seeMore,
+// ) {
+//   void addToBagshowDialog(
+//       _product, cartNotifier, cartProdID, scaffoldKey) async {
+//     await showCupertinoDialog(
+//         context: context,
+//         builder: (context) {
+//           return CupertinoAlertDialog(
+//             content: Text(
+//               "Sure you want to add to Bag?",
+//               style: normalFont(MColors.textDark, null),
+//             ),
+//             actions: <Widget>[
+//               CupertinoDialogAction(
+//                 child: Text(
+//                   "Cancel",
+//                   style: normalFont(Colors.red, null),
+//                 ),
+//                 onPressed: () async {
+//                   getCart(cartNotifier);
 
-                  Navigator.of(context).pop();
-                },
-              ),
-              CupertinoDialogAction(
-                isDefaultAction: true,
-                child: Text(
-                  "Yes",
-                  style: normalFont(Colors.blue, null),
-                ),
-                onPressed: () {
-                  getCart(cartNotifier);
+//                   Navigator.of(context).pop();
+//                 },
+//               ),
+//               CupertinoDialogAction(
+//                 isDefaultAction: true,
+//                 child: Text(
+//                   "Yes",
+//                   style: normalFont(Colors.blue, null),
+//                 ),
+//                 onPressed: () {
+//                   getCart(cartNotifier);
 
-                  if (cartProdID.contains(_product.productID)) {
-                    showSimpleSnack(
-                      "Product already in bag",
-                      Icons.error_outline,
-                      Colors.amber,
-                      scaffoldKey,
-                    );
-                  } else {
-                    addProductToCart(_product);
-                    showSimpleSnack(
-                      "Product added to bag",
-                      Icons.check_circle_outline,
-                      Colors.green,
-                      scaffoldKey,
-                    );
+//                   if (cartProdID.contains(_product.productID)) {
+//                     showSimpleSnack(
+//                       "Product already in bag",
+//                       Icons.error_outline,
+//                       Colors.amber,
+//                       scaffoldKey,
+//                     );
+//                   } else {
+//                     addProductToCart(_product);
+//                     showSimpleSnack(
+//                       "Product added to bag",
+//                       Icons.check_circle_outline,
+//                       Colors.green,
+//                       scaffoldKey,
+//                     );
 
-                    getCart(cartNotifier);
-                  }
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        });
-  }
+//                     getCart(cartNotifier);
+//                   }
+//                   Navigator.of(context).pop();
+//                 },
+//               ),
+//             ],
+//           );
+//         });
+//   }
 
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              blockTitle,
-              style: boldFont(MColors.textDark, 16.0),
-            ),
-            SizedBox(height: 3.0),
-            Row(
-              children: [
-                Text(
-                  blockSubTitle,
-                  style: normalFont(MColors.textGrey, 14.0),
-                ),
-                Spacer(),
-                Container(
-                  height: 15.0,
-                  child: RawMaterialButton(
-                    onPressed: seeMore,
-                    child: Text(
-                      "See more",
-                      style: boldFont(MColors.primaryPurple, 14.0),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-      SizedBox(height: 5.0),
-      Container(
-        height: _itemHeight / 1.15,
-        padding: EdgeInsets.symmetric(horizontal: 10.0),
-        child: ListView.builder(
-            physics: BouncingScrollPhysics(),
-            scrollDirection: Axis.horizontal,
-            itemCount: prods.length,
-            itemBuilder: (context, i) {
-              var product = prods[i];
+//   return Column(
+//     crossAxisAlignment: CrossAxisAlignment.start,
+//     children: [
+//       Padding(
+//         padding: const EdgeInsets.symmetric(horizontal: 15.0),
+//         child: Column(
+//           crossAxisAlignment: CrossAxisAlignment.start,
+//           children: [
+//             Text(
+//               blockTitle,
+//               style: boldFont(MColors.textDark, 16.0),
+//             ),
+//             SizedBox(height: 3.0),
+//             Row(
+//               children: [
+//                 Text(
+//                   blockSubTitle,
+//                   style: normalFont(MColors.textGrey, 14.0),
+//                 ),
+//                 Spacer(),
+//                 Container(
+//                   height: 15.0,
+//                   child: RawMaterialButton(
+//                     onPressed: seeMore,
+//                     child: Text(
+//                       "See more",
+//                       style: boldFont(MColors.primaryPurple, 14.0),
+//                     ),
+//                   ),
+//                 ),
+//               ],
+//             ),
+//           ],
+//         ),
+//       ),
+//       SizedBox(height: 5.0),
+//       Container(
+//         height: _itemHeight / 1.15,
+//         padding: EdgeInsets.symmetric(horizontal: 10.0),
+//         child: ListView.builder(
+//             physics: BouncingScrollPhysics(),
+//             scrollDirection: Axis.horizontal,
+//             itemCount: prods.length,
+//             itemBuilder: (context, i) {
+//               var product = prods[i];
 
-              return GestureDetector(
-                onTap: () async {
-                  var navigationResult = await Navigator.of(context).push(
-                    CupertinoPageRoute(
-                      builder: (context) =>
-                          ProductDetailsProv(product, allProds),
-                    ),
-                  );
-                  if (navigationResult == true) {
-                    getCart(cartNotifier);
-                  }
-                },
-                child: Container(
-                  margin: EdgeInsets.all(5.0),
-                  width: 180.0,
-                  padding: EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: MColors.primaryWhite,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(10.0),
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                          color: Color.fromRGBO(0, 0, 0, 0.03),
-                          offset: Offset(0, 10),
-                          blurRadius: 10,
-                          spreadRadius: 0),
-                    ],
-                  ),
-                  child: Column(
-                    children: <Widget>[
-                      Container(
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10.0),
-                          child: Hero(
-                            child: FadeInImage.assetNetwork(
-                              image: product.productImage,
-                              fit: BoxFit.fill,
-                              height: _picHeight,
-                              placeholder: "assets/images/placeholder.jpg",
-                              placeholderScale:
-                                  MediaQuery.of(context).size.height / 2,
-                            ),
-                            tag: product.productID,
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 10.0),
-                      Align(
-                        alignment: Alignment.bottomLeft,
-                        child: Container(
-                          child: Text(
-                            product.name,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: normalFont(MColors.textGrey, 14.0),
-                          ),
-                        ),
-                      ),
-                      Spacer(),
-                      Container(
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            Container(
-                              child: Text(
-                                "\$${product.price}",
-                                style: boldFont(MColors.primaryPurple, 20.0),
-                              ),
-                            ),
-                            Spacer(),
-                            GestureDetector(
-                              onTap: () => addToBagshowDialog(product,
-                                  cartNotifier, cartProdID, _scaffoldKey),
-                              child: Container(
-                                width: 40.0,
-                                height: 40.0,
-                                padding: const EdgeInsets.all(8.0),
-                                decoration: BoxDecoration(
-                                  color: MColors.dashPurple,
-                                  borderRadius: BorderRadius.circular(8.0),
-                                ),
-                                child: SvgPicture.asset(
-                                  "assets/images/icons/basket.svg",
-                                  height: 22.0,
-                                  color: MColors.textGrey,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            }),
-      ),
-    ],
-  );
-}
+//               return GestureDetector(
+//                 onTap: () async {
+//                   var navigationResult = await Navigator.of(context).push(
+//                     CupertinoPageRoute(
+//                       builder: (context) =>
+//                           ProductDetailsProv(product, allProds),
+//                     ),
+//                   );
+//                   if (navigationResult == true) {
+//                     getCart(cartNotifier);
+//                   }
+//                 },
+//                 child: Container(
+//                   margin: EdgeInsets.all(5.0),
+//                   width: 180.0,
+//                   padding: EdgeInsets.all(10),
+//                   decoration: BoxDecoration(
+//                     color: MColors.primaryWhite,
+//                     borderRadius: BorderRadius.all(
+//                       Radius.circular(10.0),
+//                     ),
+//                     boxShadow: [
+//                       BoxShadow(
+//                           color: Color.fromRGBO(0, 0, 0, 0.03),
+//                           offset: Offset(0, 10),
+//                           blurRadius: 10,
+//                           spreadRadius: 0),
+//                     ],
+//                   ),
+//                   child: Column(
+//                     children: <Widget>[
+//                       Container(
+//                         child: ClipRRect(
+//                           borderRadius: BorderRadius.circular(10.0),
+//                           child: Hero(
+//                             child: FadeInImage.assetNetwork(
+//                               image: product.productImage,
+//                               fit: BoxFit.fill,
+//                               height: _picHeight,
+//                               placeholder: "assets/images/placeholder.jpg",
+//                               placeholderScale:
+//                                   MediaQuery.of(context).size.height / 2,
+//                             ),
+//                             tag: product.productID,
+//                           ),
+//                         ),
+//                       ),
+//                       SizedBox(height: 10.0),
+//                       Align(
+//                         alignment: Alignment.bottomLeft,
+//                         child: Container(
+//                           child: Text(
+//                             product.name,
+//                             maxLines: 2,
+//                             overflow: TextOverflow.ellipsis,
+//                             style: normalFont(MColors.textGrey, 14.0),
+//                           ),
+//                         ),
+//                       ),
+//                       Spacer(),
+//                       Container(
+//                         child: Row(
+//                           crossAxisAlignment: CrossAxisAlignment.center,
+//                           children: <Widget>[
+//                             Container(
+//                               child: Text(
+//                                 "\$${product.price}",
+//                                 style: boldFont(MColors.primaryPurple, 20.0),
+//                               ),
+//                             ),
+//                             Spacer(),
+//                             GestureDetector(
+//                               onTap: () => addToBagshowDialog(product,
+//                                   cartNotifier, cartProdID, _scaffoldKey),
+//                               child: Container(
+//                                 width: 40.0,
+//                                 height: 40.0,
+//                                 padding: const EdgeInsets.all(8.0),
+//                                 decoration: BoxDecoration(
+//                                   color: MColors.dashPurple,
+//                                   borderRadius: BorderRadius.circular(8.0),
+//                                 ),
+//                                 child: SvgPicture.asset(
+//                                   "assets/images/icons/basket.svg",
+//                                   height: 22.0,
+//                                   color: MColors.textGrey,
+//                                 ),
+//                               ),
+//                             ),
+//                           ],
+//                         ),
+//                       ),
+//                     ],
+//                   ),
+//                 ),
+//               );
+//             }),
+//       ),
+//     ],
+//   );
+// }

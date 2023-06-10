@@ -1,88 +1,88 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:sharing_map/screens/settings_screens/changePassword.dart';
-import 'package:sharing_map/utils/colors.dart';
-import 'package:sharing_map/utils/permission_handler.dart';
-import 'package:sharing_map/widgets/allWidgets.dart';
-import 'package:permission_handler/permission_handler.dart';
+// import 'package:flutter/cupertino.dart';
+// import 'package:flutter/material.dart';
+// import 'package:sharing_map/screens/settings_screens/changePassword.dart';
+// import 'package:sharing_map/utils/colors.dart';
+// import 'package:sharing_map/utils/permission_handler.dart';
+// import 'package:sharing_map/widgets/allWidgets.dart';
+// import 'package:permission_handler/permission_handler.dart';
 
-class SecurityScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final listTileIcons = [
-      "assets/images/key.svg",
-      "assets/images/icons/Location.svg",
-    ];
+// class SecurityScreen extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     final listTileIcons = [
+//       "assets/images/key.svg",
+//       "assets/images/icons/Location.svg",
+//     ];
 
-    final listTileNames = [
-      "Change password",
-      "Location",
-    ];
+//     final listTileNames = [
+//       "Change password",
+//       "Location",
+//     ];
 
-    final listTileActions = [
-      () {
-        Navigator.of(context).push(
-          CupertinoPageRoute(
-            builder: (_) => ChangePasswordScreen(),
-          ),
-        );
-      },
-      () {
-        PermissionUtil.isLocationServiceAndPermissionsActive().then((value) {
-          if (value == false) {
-            Permission.location;
-          }
-        });
-      },
-    ];
+//     final listTileActions = [
+//       () {
+//         Navigator.of(context).push(
+//           CupertinoPageRoute(
+//             builder: (_) => ChangePasswordScreen(),
+//           ),
+//         );
+//       },
+//       () {
+//         PermissionUtil.isLocationServiceAndPermissionsActive().then((value) {
+//           if (value == false) {
+//             Permission.location;
+//           }
+//         });
+//       },
+//     ];
 
-    return Scaffold(
-      backgroundColor: MColors.primaryWhiteSmoke,
-      appBar: primaryAppBar(
-        IconButton(
-          icon: Icon(
-            Icons.arrow_back_ios,
-            color: MColors.textGrey,
-          ),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-        Text(
-          "Security",
-          style: boldFont(MColors.primaryPurple, 16.0),
-        ),
-        MColors.primaryWhiteSmoke,
-        null,
-        true,
-        null,
-      ),
-      body: primaryContainer(
-        Container(
-          child: ListView.builder(
-            physics: NeverScrollableScrollPhysics(),
-            itemCount: listTileNames.length,
-            shrinkWrap: true,
-            itemBuilder: (context, i) {
-              return Container(
-                child: Column(
-                  children: <Widget>[
-                    listTileButton(
-                      listTileActions[i],
-                      listTileIcons[i],
-                      listTileNames[i],
-                      MColors.primaryPurple,
-                    ),
-                    Divider(
-                      height: 1.0,
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),
-        ),
-      ),
-    );
-  }
-}
+//     return Scaffold(
+//       backgroundColor: MColors.primaryWhiteSmoke,
+//       appBar: primaryAppBar(
+//         IconButton(
+//           icon: Icon(
+//             Icons.arrow_back_ios,
+//             color: MColors.textGrey,
+//           ),
+//           onPressed: () {
+//             Navigator.of(context).pop();
+//           },
+//         ),
+//         Text(
+//           "Security",
+//           style: boldFont(MColors.primaryPurple, 16.0),
+//         ),
+//         MColors.primaryWhiteSmoke,
+//         null,
+//         true,
+//         null,
+//       ),
+//       body: primaryContainer(
+//         Container(
+//           child: ListView.builder(
+//             physics: NeverScrollableScrollPhysics(),
+//             itemCount: listTileNames.length,
+//             shrinkWrap: true,
+//             itemBuilder: (context, i) {
+//               return Container(
+//                 child: Column(
+//                   children: <Widget>[
+//                     listTileButton(
+//                       listTileActions[i],
+//                       listTileIcons[i],
+//                       listTileNames[i],
+//                       MColors.primaryPurple,
+//                     ),
+//                     Divider(
+//                       height: 1.0,
+//                     ),
+//                   ],
+//                 ),
+//               );
+//             },
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }

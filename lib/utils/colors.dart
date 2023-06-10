@@ -4,6 +4,7 @@ class MColors {
   static const Color primaryPurple = const Color(0xFF6334DC);
   static const Color primaryWhite = const Color(0xFFFFFFFF);
   static const Color primaryWhiteSmoke = const Color(0xFFF5F5F5);
+  static const Color whiteText = const Color(0xFFF5F5F5);
   static const Color primaryPlatinum = const Color(0xFFE5E4E2);
   static const Color textDark = const Color(0xFF444444);
   static const Color textGrey = const Color(0xFF808080);
@@ -12,4 +13,6 @@ class MColors {
   static const Color dashBlue = const Color(0xFFDFF0FC);
   static const Color dashPurple = const Color(0xFFE2DDF9);
   static const Color dashAmber = const Color(0xFFF2E4D7);
+  static const Color primaryGreen = const Color.fromARGB(255, 54, 106, 83);
+  static const Color secondaryGreen = const Color.fromARGB(255, 153, 202, 87);
 }

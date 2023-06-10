@@ -39,6 +39,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       child: Consumer<UserDataProfileNotifier>(
         builder: (context, profileNotifier, _) {
           return Scaffold(
+            appBar: AppBar(
+              leading: BackButton(
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+              title: Text('My App'),
+            ),
             backgroundColor: MColors.primaryWhiteSmoke,
             body: SingleChildScrollView(
               physics: BouncingScrollPhysics(),
@@ -336,50 +342,50 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   void _submit() async {
     final form = formKey.currentState;
 
-    try {
-      final auth = MyProvider.of(context).auth;
+    // try {
+    //   final auth = MyProvider.of(context).auth;
 
-      if (form.validate()) {
-        form.save();
+    //   if (form.validate()) {
+    //     form.save();
 
-        if (mounted) {
-          setState(() {
-            _isButtonDisabled = true;
-            _isEnabled = false;
-          });
-        }
+    //     if (mounted) {
+    //       setState(() {
+    //         _isButtonDisabled = true;
+    //         _isEnabled = false;
+    //       });
+    //     }
 
-        String uid = await auth.createUserWithEmailAndPassword(
-          _email,
-          _password,
-          _phone,
-        );
+    //     String uid = await auth.createUserWithEmailAndPassword(
+    //       _email,
+    //       _password,
+    //       _phone,
+    //     );
 
-        storeNewUser(_name, _phone, _email);
-        print("Signed Up with new $uid");
+    //     storeNewUser(_name, _phone, _email);
+    //     print("Signed Up with new $uid");
 
-        Navigator.of(context).pushReplacement(
-          CupertinoPageRoute(
-            builder: (_) => MyApp(),
-          ),
-        );
-      } else {
-        setState(() {
-          _autoValidate = true;
-          _isEnabled = true;
-        });
-      }
-    } catch (e) {
-      if (mounted) {
-        setState(() {
-          _error = e.message;
-          _isButtonDisabled = false;
-          _isEnabled = true;
-        });
-      }
+    //     Navigator.of(context).pushReplacement(
+    //       CupertinoPageRoute(
+    //         builder: (_) => MyApp(),
+    //       ),
+    //     );
+    //   } else {
+    //     setState(() {
+    //       _autoValidate = true;
+    //       _isEnabled = true;
+    //     });
+    //   }
+    // } catch (e) {
+    //   if (mounted) {
+    //     setState(() {
+    //       _error = e.message;
+    //       _isButtonDisabled = false;
+    //       _isEnabled = true;
+    //     });
+    //   }
 
-      print("ERRORR ==>");
-      print(e);
-    }
+    //   print("ERRORR ==>");
+    //   print(e);
+    // }
   }
 }
