@@ -7,9 +7,10 @@ import 'package:sharing_map/utils/colors.dart';
 import 'package:sharing_map/utils/textFieldFormaters.dart';
 import 'package:sharing_map/widgets/provider.dart';
 import 'package:sharing_map/widgets/allWidgets.dart';
+import 'package:sharing_map/screens/home_screens/home.dart';
 
 class LoginScreen extends StatefulWidget {
-  LoginScreen({Key key}) : super(key: key);
+  LoginScreen({Key? key}) : super(key: key);
 
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -20,9 +21,9 @@ class _LoginScreenState extends State<LoginScreen> {
   final formKey = GlobalKey<FormState>();
   final loginKey = GlobalKey<_LoginScreenState>();
 
-  String _email;
-  String _password;
-  String _error;
+  String _email = "";
+  String _password = "";
+  String _error = "";
   bool _autoValidate = false;
   bool _isButtonDisabled = false;
   bool _obscureText = true;
@@ -74,24 +75,24 @@ class _LoginScreenState extends State<LoginScreen> {
                           padding: const EdgeInsets.only(bottom: 5.0),
                           child: Text(
                             "Ваш email-адрес",
-                            style: normalFont(MColors.whiteText, null),
+                            style: normalFont(MColors.whiteText, 16),
                           ),
                         ),
-                        primaryTextField(
-                          null,
-                          null,
-                          "share@map.com",
-                          (val) => _email = val,
-                          _isEnabled,
-                          EmailValiditor.validate,
-                          false,
-                          _autoValidate,
-                          true,
-                          TextInputType.emailAddress,
-                          null,
-                          null,
-                          0.50,
-                        ),
+                        // primaryTextField(
+                        //   null,
+                        //   null,
+                        //   "share@map.com",
+                        //   (val) => _email = val,
+                        //   _isEnabled,
+                        //   EmailValiditor.validate,
+                        //   false,
+                        //   _autoValidate,
+                        //   true,
+                        //   TextInputType.emailAddress,
+                        //   null,
+                        //   null,
+                        //   0.50,
+                        // ),
                       ],
                     ),
                     SizedBox(height: 20.0),
@@ -102,37 +103,37 @@ class _LoginScreenState extends State<LoginScreen> {
                           padding: const EdgeInsets.only(bottom: 5.0),
                           child: Text(
                             "Ваш пароль",
-                            style: normalFont(MColors.whiteText, null),
+                            style: normalFont(MColors.whiteText, 16),
                           ),
                         ),
-                        primaryTextField(
-                          null,
-                          null,
-                          null,
-                          (val) => _password = val,
-                          _isEnabled,
-                          PasswordValiditor.validate,
-                          _obscureText,
-                          _autoValidate,
-                          false,
-                          TextInputType.text,
-                          null,
-                          SizedBox(
-                            height: 20.0,
-                            width: 40.0,
-                            child: RawMaterialButton(
-                              onPressed: _toggle,
-                              child: Text(
-                                _obscureText ? "Показать" : "Скрыть",
-                                style: TextStyle(
-                                  color: MColors.secondaryGreen,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ),
-                          0.50,
-                        ),
+                        // primaryTextField(
+                        //   null,
+                        //   null,
+                        //   null,
+                        //   (val) => _password = val,
+                        //   _isEnabled,
+                        //   PasswordValiditor.validate,
+                        //   _obscureText,
+                        //   _autoValidate,
+                        //   false,
+                        //   TextInputType.text,
+                        //   null,
+                        //   SizedBox(
+                        //     height: 20.0,
+                        //     width: 40.0,
+                        //     child: RawMaterialButton(
+                        //       onPressed: _toggle,
+                        //       child: Text(
+                        //         _obscureText ? "Показать" : "Скрыть",
+                        //         style: TextStyle(
+                        //           color: MColors.secondaryGreen,
+                        //           fontWeight: FontWeight.bold,
+                        //         ),
+                        //       ),
+                        //     ),
+                        //   ),
+                        //   0.50,
+                        // ),
                       ],
                     ),
                     SizedBox(height: 20.0),
@@ -146,7 +147,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         Container(
                           child: Text(
                             "Запомнить меня.",
-                            style: normalFont(MColors.textDark, null),
+                            style: normalFont(MColors.textDark, 16),
                           ),
                         ),
                       ],
@@ -179,7 +180,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       },
                       child: Text(
                         "Забыли пароль?",
-                        style: normalFont(MColors.textGrey, null),
+                        style: normalFont(MColors.textGrey, 16),
                       ),
                     ),
                   ],
@@ -203,8 +204,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
     try {
       // final auth = MyProvider.of(context).auth;
-      if (form.validate()) {
-        form.save();
+      if (form?.validate() ?? false) {
+        form?.save();
 
         if (mounted) {
           setState(() {
@@ -217,11 +218,11 @@ class _LoginScreenState extends State<LoginScreen> {
             '111'; //await auth.signInWithEmailAndPassword(_email, _password);
         print("Signed in with $uid");
 
-        Navigator.of(context).pushReplacement(
-          CupertinoPageRoute(
-            builder: (_) => MyApp(),
-          ),
-        );
+        // Navigator.of(context).pushReplacement(
+        //   CupertinoPageRoute(
+        //     builder: (_) => HomeView(),
+        //   ),
+        // );
       } else {
         setState(() {
           _autoValidate = true;
@@ -231,7 +232,7 @@ class _LoginScreenState extends State<LoginScreen> {
     } catch (e) {
       if (mounted) {
         setState(() {
-          _error = e.message;
+          _error = "error";
           _isButtonDisabled = false;
           _isEnabled = true;
         });

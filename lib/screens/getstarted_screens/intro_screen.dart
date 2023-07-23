@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:sharing_map/screens/register_screens/login_screen.dart';
-import 'package:sharing_map/screens/register_screens/registration_screen.dart';
+// import 'package:sharing_map/screens/register_screens/registration_screen.dart';
 import 'package:sharing_map/utils/colors.dart';
 import 'package:sharing_map/utils/strings.dart';
 import 'package:sharing_map/widgets/allWidgets.dart';
@@ -85,7 +85,7 @@ class _IntroScreenState extends State<IntroScreen> {
                 () {
                   Navigator.of(context).push(
                     CupertinoPageRoute(
-                      builder: (_) => RegistrationScreen(),
+                      builder: (_) => LoginScreen(),
                     ),
                   );
                 },

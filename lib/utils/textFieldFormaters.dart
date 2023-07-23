@@ -8,7 +8,7 @@ var maskTextInputFormatter = MaskTextInputFormatter(
 //VALIDATORS
 
 class NameValiditor {
-  static String validate(String val) {
+  static String? validate(String val) {
     print(val);
     if (val.isEmpty) {
       return "Enter your name";
@@ -23,7 +23,7 @@ class NameValiditor {
 }
 
 class EmailValiditor {
-  static String validate(String val) {
+  static String? validate(String val) {
     print(val);
     if (!val.contains("@") || !val.contains(".")) {
       return "Enter a valid Email address";
@@ -36,22 +36,22 @@ class EmailValiditor {
 }
 
 class PasswordValiditor {
-  static String validate(String val) {
-    Pattern pattern = r'(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])';
-    RegExp regex = RegExp(pattern);
-    print(val);
-    if (val.isEmpty) {
-      return "Enter a password";
-    } else if (val.length < 6 || (!regex.hasMatch(val))) {
-      return "Password not strong enough";
-    } else {
-      return null;
-    }
+  static String? validate(String val) {
+    // Pattern pattern = r'(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])';
+    // RegExp regex = RegExp(pattern);
+    // print(val);
+    // if (val.isEmpty) {
+    //   return "Enter a password";
+    // } else if (val.length < 6 || (!regex.hasMatch(val))) {
+    //   return "Password not strong enough";
+    // } else {
+    return null;
+    // }
   }
 }
 
 class PhoneNumberValiditor {
-  static String validate(String val) {
+  static String? validate(String val) {
     print(val);
     if (val.length < 15) {
       return "Enter a valid phone number";

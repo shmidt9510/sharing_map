@@ -2,12 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sharing_map/screens/register_screens/login_screen.dart';
 import 'package:sharing_map/utils/colors.dart';
-import 'package:sharing_map/utils/textFieldFormaters.dart';
+// import 'package:sharing_map/utils/textFieldFormaters.dart';
 import 'package:sharing_map/widgets/allWidgets.dart';
 import 'package:sharing_map/widgets/provider.dart';
 
 class ResetScreen extends StatefulWidget {
-  ResetScreen({Key key}) : super(key: key);
+  ResetScreen({Key? key}) : super(key: key);
 
   @override
   _ResetScreenState createState() => _ResetScreenState();
@@ -17,8 +17,8 @@ class _ResetScreenState extends State<ResetScreen> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final formKey = GlobalKey<FormState>();
 
-  String _email;
-  String warning;
+  late String _email;
+  late String warning;
   bool _autoValidate = false;
   bool _isButtonDisabled = false;
 
@@ -26,22 +26,22 @@ class _ResetScreenState extends State<ResetScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: MColors.primaryWhiteSmoke,
-      appBar: primaryAppBar(
-        IconButton(
-          icon: Icon(
-            Icons.arrow_back_ios,
-            color: MColors.textDark,
-          ),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-        null,
-        MColors.primaryWhiteSmoke,
-        null,
-        false,
-        null,
-      ),
+      // appBar: primaryAppBar(
+      //   IconButton(
+      //     icon: Icon(
+      //       Icons.arrow_back_ios,
+      //       color: MColors.textDark,
+      //     ),
+      //     onPressed: () {
+      //       Navigator.of(context).pop();
+      //     },
+      //   ),
+      //   null,
+      //   MColors.primaryWhiteSmoke,
+      //   null,
+      //   false,
+      //   null,
+      // ),
       body: SingleChildScrollView(
         child: primaryContainer(
           Column(
@@ -79,26 +79,26 @@ class _ResetScreenState extends State<ResetScreen> {
                         textAlign: TextAlign.start,
                       ),
                     ),
-                    primaryTextField(
-                      null,
-                      null,
-                      "e.g Remiola2034@gmail.com",
-                      (val) => _email = val,
-                      true,
-                      EmailValiditor.validate,
-                      false,
-                      _autoValidate,
-                      true,
-                      TextInputType.emailAddress,
-                      null,
-                      null,
-                      0.50,
-                    ),
+                    // primaryTextField(
+                    //   null,
+                    //   null,
+                    //   "e.g Remiola2034@gmail.com",
+                    //   (val) => _email = val,
+                    //   true,
+                    //   EmailValiditor.validate,
+                    //   false,
+                    //   _autoValidate,
+                    //   true,
+                    //   TextInputType.emailAddress,
+                    //   null,
+                    //   null,
+                    //   0.50,
+                    // ),
                     SizedBox(height: 10.0),
                     Container(
                       child: Text(
                         "We will send a link to reset your password to that email.",
-                        style: normalFont(MColors.primaryPurple, null),
+                        style: normalFont(MColors.primaryPurple, 16),
                       ),
                     ),
                     SizedBox(height: 20.0),
@@ -106,7 +106,7 @@ class _ResetScreenState extends State<ResetScreen> {
                         ? primaryButtonPurple(
                             //if button is loading
                             progressIndicator(Colors.white),
-                            null,
+                            _submit,
                           )
                         : primaryButtonPurple(
                             Text(
@@ -116,8 +116,9 @@ class _ResetScreenState extends State<ResetScreen> {
                                 16.0,
                               ),
                             ),
-                            _isButtonDisabled ? null : _submit,
-                          ),
+                            _submit
+                            // _isButtonDisabled ? null : _submit,
+                            ),
                   ],
                 ),
               ),

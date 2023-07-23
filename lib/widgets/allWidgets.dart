@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sharing_map/model/data/Products.dart';
-import 'package:sharing_map/model/notifiers/cart_notifier.dart';
-import 'package:sharing_map/model/services/Product_service.dart';
-import 'package:sharing_map/screens/tab_screens/homeScreen_pages/productDetailsScreen.dart';
+// import 'package:sharing_map/model/data/Products.dart';
+// import 'package:sharing_map/model/notifiers/cart_notifier.dart';
+// import 'package:sharing_map/model/services/Product_service.dart';
+// import '../../deprecated/tab_screens/homeScreen_pages/productDetailsScreen.dart';
 import 'package:sharing_map/utils/colors.dart';
 import 'package:wc_flutter_share/wc_flutter_share.dart';
 
@@ -93,7 +93,7 @@ TextStyle normalFont(Color color, double size) {
 //BUTTONS-------------------------------------
 Widget primaryButtonPurple(
   Widget buttonChild,
-  void Function() onPressed,
+  void Function()? onPressed,
 ) {
   return SizedBox(
     width: double.infinity,
@@ -222,9 +222,9 @@ Widget primaryTextField(
   TextEditingController controller,
   String initialValue,
   String labelText,
-  void Function(String) onsaved,
+  void Function(String?)? onsaved,
   bool enabled,
-  String Function(String) validator,
+  String Function(String?)? validator,
   bool obscureText,
   bool autoValidate,
   bool enableSuggestions,
@@ -258,7 +258,7 @@ Widget primaryTextField(
         child: suffix,
       ),
       labelText: labelText,
-      labelStyle: normalFont(null, 14.0),
+      labelStyle: normalFont(Colors.black, 14.0),
       contentPadding: EdgeInsets.symmetric(horizontal: 25.0),
       fillColor: MColors.primaryWhite,
       floatingLabelBehavior: FloatingLabelBehavior.never,
@@ -295,86 +295,86 @@ Widget primaryTextField(
   );
 }
 
-Widget searchTextField(
-  bool autofocus,
-  TextEditingController controller,
-  String initialValue,
-  String labelText,
-  void Function(String) onsaved,
-  void Function(String) onChanged,
-  bool enabled,
-  String Function(String) validator,
-  bool obscureText,
-  bool autoValidate,
-  bool enableSuggestions,
-  TextInputType keyboardType,
-  List<TextInputFormatter> inputFormatters,
-  Widget suffix,
-  double textfieldBorder,
-) {
-  return TextFormField(
-    autofocus: autofocus,
-    controller: controller,
-    initialValue: initialValue,
-    onSaved: onsaved,
-    onChanged: onChanged,
-    enabled: enabled,
-    validator: validator,
-    obscureText: obscureText,
-    keyboardType: keyboardType,
-    inputFormatters: inputFormatters,
-    autovalidateMode: AutovalidateMode.always,
-    enableSuggestions: enableSuggestions,
-    style: normalFont(
-      enabled == true ? MColors.textDark : MColors.textGrey,
-      16.0,
-    ),
-    cursorColor: MColors.primaryPurple,
-    decoration: InputDecoration(
-      suffixIcon: Padding(
-        padding: EdgeInsets.only(
-          right: suffix == null ? 0.0 : 15.0,
-          left: suffix == null ? 0.0 : 15.0,
-        ),
-        child: suffix,
-      ),
-      labelText: labelText,
-      labelStyle: normalFont(null, 14.0),
-      contentPadding: EdgeInsets.symmetric(horizontal: 25.0),
-      fillColor: MColors.primaryWhite,
-      floatingLabelBehavior: FloatingLabelBehavior.never,
-      filled: true,
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8.0),
-        borderSide: BorderSide(
-          color: textfieldBorder == 0.0 ? Colors.transparent : MColors.textGrey,
-          width: textfieldBorder,
-        ),
-      ),
-      errorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8.0),
-        borderSide: BorderSide(
-          color: Colors.red,
-          width: 1.0,
-        ),
-      ),
-      focusedErrorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8.0),
-        borderSide: BorderSide(
-          color: Colors.red,
-          width: 1.0,
-        ),
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8.0),
-        borderSide: BorderSide(
-          color: MColors.primaryPurple,
-          width: 1.0,
-        ),
-      ),
-    ),
-  );
-}
+// Widget searchTextField(
+//   bool autofocus,
+//   TextEditingController controller,
+//   String initialValue,
+//   String labelText,
+//   void Function(String) onsaved,
+//   void Function(String) onChanged,
+//   bool enabled,
+//   String Function(String) validator,
+//   bool obscureText,
+//   bool autoValidate,
+//   bool enableSuggestions,
+//   TextInputType keyboardType,
+//   List<TextInputFormatter> inputFormatters,
+//   Widget suffix,
+//   double textfieldBorder,
+// ) {
+//   return TextFormField(
+//     autofocus: autofocus,
+//     controller: controller,
+//     initialValue: initialValue,
+//     onSaved: onsaved,
+//     onChanged: onChanged,
+//     enabled: enabled,
+//     validator: validator,
+//     obscureText: obscureText,
+//     keyboardType: keyboardType,
+//     inputFormatters: inputFormatters,
+//     autovalidateMode: AutovalidateMode.always,
+//     enableSuggestions: enableSuggestions,
+//     style: normalFont(
+//       enabled == true ? MColors.textDark : MColors.textGrey,
+//       16.0,
+//     ),
+//     cursorColor: MColors.primaryPurple,
+//     decoration: InputDecoration(
+//       suffixIcon: Padding(
+//         padding: EdgeInsets.only(
+//           right: suffix == null ? 0.0 : 15.0,
+//           left: suffix == null ? 0.0 : 15.0,
+//         ),
+//         child: suffix,
+//       ),
+//       labelText: labelText,
+//       labelStyle: normalFont(null, 14.0),
+//       contentPadding: EdgeInsets.symmetric(horizontal: 25.0),
+//       fillColor: MColors.primaryWhite,
+//       floatingLabelBehavior: FloatingLabelBehavior.never,
+//       filled: true,
+//       enabledBorder: OutlineInputBorder(
+//         borderRadius: BorderRadius.circular(8.0),
+//         borderSide: BorderSide(
+//           color: textfieldBorder == 0.0 ? Colors.transparent : MColors.textGrey,
+//           width: textfieldBorder,
+//         ),
+//       ),
+//       errorBorder: OutlineInputBorder(
+//         borderRadius: BorderRadius.circular(8.0),
+//         borderSide: BorderSide(
+//           color: Colors.red,
+//           width: 1.0,
+//         ),
+//       ),
+//       focusedErrorBorder: OutlineInputBorder(
+//         borderRadius: BorderRadius.circular(8.0),
+//         borderSide: BorderSide(
+//           color: Colors.red,
+//           width: 1.0,
+//         ),
+//       ),
+//       focusedBorder: OutlineInputBorder(
+//         borderRadius: BorderRadius.circular(8.0),
+//         borderSide: BorderSide(
+//           color: MColors.primaryPurple,
+//           width: 1.0,
+//         ),
+//       ),
+//     ),
+//   );
+// }
 //-------------------------------------------
 
 //PROGRESS----------------------------------
@@ -408,64 +408,64 @@ Widget gettingLocationIndicator() {
 //-------------------------------------------
 
 //SNACKBARS----------------------------------
-void showSimpleSnack(
-  String value,
-  IconData icon,
-  Color iconColor,
-  GlobalKey<ScaffoldMessengerState> _scaffoldMessengerKey,
-) {
-  _scaffoldMessengerKey.currentState.showSnackBar(
-    SnackBar(
-      behavior: SnackBarBehavior.floating,
-      duration: Duration(milliseconds: 1000),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-      content: Row(
-        children: <Widget>[
-          Expanded(
-            child: Text(
-              value,
-              style: normalFont(null, null),
-            ),
-          ),
-          Icon(
-            icon,
-            color: iconColor,
-          )
-        ],
-      ),
-    ),
-  );
-}
+// void showSimpleSnack(
+//   String value,
+//   IconData icon,
+//   Color iconColor,
+//   GlobalKey<ScaffoldMessengerState> _scaffoldMessengerKey,
+// ) {
+//   _scaffoldMessengerKey.currentState.showSnackBar(
+//     SnackBar(
+//       behavior: SnackBarBehavior.floating,
+//       duration: Duration(milliseconds: 1000),
+//       shape: RoundedRectangleBorder(
+//         borderRadius: BorderRadius.circular(10.0),
+//       ),
+//       content: Row(
+//         children: <Widget>[
+//           Expanded(
+//             child: Text(
+//               value,
+//               style: normalFont(null, null),
+//             ),
+//           ),
+//           Icon(
+//             icon,
+//             color: iconColor,
+//           )
+//         ],
+//       ),
+//     ),
+//   );
+// }
 
-void showNoInternetSnack(
-  GlobalKey<ScaffoldMessengerState> _scaffoldMessengerKey,
-) {
-  _scaffoldMessengerKey.currentState.showSnackBar(
-    SnackBar(
-      behavior: SnackBarBehavior.floating,
-      duration: Duration(milliseconds: 7000),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-      content: Row(
-        children: <Widget>[
-          Expanded(
-            child: Text(
-              "No internet connection! Please connect to the internet to continue.",
-              style: normalFont(null, null),
-            ),
-          ),
-          Icon(
-            Icons.error_outline,
-            color: Colors.amber,
-          )
-        ],
-      ),
-    ),
-  );
-}
+// void showNoInternetSnack(
+//   GlobalKey<ScaffoldMessengerState> _scaffoldMessengerKey,
+// ) {
+//   _scaffoldMessengerKey.currentState.showSnackBar(
+//     SnackBar(
+//       behavior: SnackBarBehavior.floating,
+//       duration: Duration(milliseconds: 7000),
+//       shape: RoundedRectangleBorder(
+//         borderRadius: BorderRadius.circular(10.0),
+//       ),
+//       content: Row(
+//         children: <Widget>[
+//           Expanded(
+//             child: Text(
+//               "No internet connection! Please connect to the internet to continue.",
+//               style: normalFont(null, null),
+//             ),
+//           ),
+//           Icon(
+//             Icons.error_outline,
+//             color: Colors.amber,
+//           )
+//         ],
+//       ),
+//     ),
+//   );
+// }
 //-------------------------------------------
 
 //EMPTYCART----------------------------------
@@ -610,169 +610,169 @@ modalBarWidget() {
 //-------------------------------------------
 
 //ORDER TRACKER WIDGET-------------------------------
-orderTrackerWidget(String status) {
-  bool processing = false,
-      confirmed = false,
-      enRoute = false,
-      delivered = false;
+// orderTrackerWidget(String status) {
+//   bool processing = false,
+//       confirmed = false,
+//       enRoute = false,
+//       delivered = false;
 
-  if (status == "processing") {
-    processing = true;
-  } else if (status == "confirmed") {
-    processing = true;
-    confirmed = true;
-  } else if (status == "enRoute") {
-    processing = true;
-    confirmed = true;
-    enRoute = true;
-  } else if (status == "delivered") {
-    processing = true;
-    confirmed = true;
-    enRoute = true;
-    delivered = true;
-  } else {
-    processing = true;
-  }
+//   if (status == "processing") {
+//     processing = true;
+//   } else if (status == "confirmed") {
+//     processing = true;
+//     confirmed = true;
+//   } else if (status == "enRoute") {
+//     processing = true;
+//     confirmed = true;
+//     enRoute = true;
+//   } else if (status == "delivered") {
+//     processing = true;
+//     confirmed = true;
+//     enRoute = true;
+//     delivered = true;
+//   } else {
+//     processing = true;
+//   }
 
-  Widget checkMark() {
-    return Icon(
-      Icons.check,
-      color: MColors.primaryWhite,
-      size: 12.0,
-    );
-  }
+//   Widget checkMark() {
+//     return Icon(
+//       Icons.check,
+//       color: MColors.primaryWhite,
+//       size: 12.0,
+//     );
+//   }
 
-  Widget smallDonut() {
-    return Container(
-      width: 5.0,
-      height: 5.0,
-      decoration: BoxDecoration(
-        color: MColors.primaryWhiteSmoke,
-        borderRadius: BorderRadius.all(
-          Radius.circular(20.0),
-        ),
-      ),
-    );
-  }
+//   Widget smallDonut() {
+//     return Container(
+//       width: 5.0,
+//       height: 5.0,
+//       decoration: BoxDecoration(
+//         color: MColors.primaryWhiteSmoke,
+//         borderRadius: BorderRadius.all(
+//           Radius.circular(20.0),
+//         ),
+//       ),
+//     );
+//   }
 
-  Widget bar(Color color) {
-    return Container(
-      width: 70.0,
-      height: 3.0,
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.all(
-          Radius.circular(10.0),
-        ),
-      ),
-    );
-  }
+//   Widget bar(Color color) {
+//     return Container(
+//       width: 70.0,
+//       height: 3.0,
+//       decoration: BoxDecoration(
+//         color: color,
+//         borderRadius: BorderRadius.all(
+//           Radius.circular(10.0),
+//         ),
+//       ),
+//     );
+//   }
 
-  Widget checkPoint(Color color, Widget center) {
-    return Container(
-        width: 16.0,
-        height: 16.0,
-        decoration: BoxDecoration(
-          color: color,
-          borderRadius: BorderRadius.all(
-            Radius.circular(20.0),
-          ),
-        ),
-        child: center);
-  }
+//   Widget checkPoint(Color color, Widget center) {
+//     return Container(
+//         width: 16.0,
+//         height: 16.0,
+//         decoration: BoxDecoration(
+//           color: color,
+//           borderRadius: BorderRadius.all(
+//             Radius.circular(20.0),
+//           ),
+//         ),
+//         child: center);
+//   }
 
-  return Container(
-    child: Column(
-      children: <Widget>[
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              "Processing",
-              style: normalFont(
-                  processing ? Colors.green : Colors.grey[400], 12.0),
-            ),
-            SizedBox(width: 35.0),
-            Text(
-              "confirmed",
-              style:
-                  normalFont(confirmed ? Colors.green : Colors.grey[400], 12.0),
-            ),
-            SizedBox(width: 35.0),
-            Text(
-              "En Route",
-              style:
-                  normalFont(enRoute ? Colors.green : Colors.grey[400], 12.0),
-            ),
-            SizedBox(width: 35.0),
-            Text(
-              "Delivered",
-              style:
-                  normalFont(delivered ? Colors.green : Colors.grey[400], 12.0),
-            ),
-          ],
-        ),
-        SizedBox(height: 5.0),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            //PROCESSING
-            checkPoint(
-              processing ? Colors.green : Colors.grey[400],
-              Center(
-                child: processing && confirmed ? checkMark() : smallDonut(),
-              ),
-            ),
+//   return Container(
+//     child: Column(
+//       children: <Widget>[
+//         Row(
+//           mainAxisAlignment: MainAxisAlignment.center,
+//           crossAxisAlignment: CrossAxisAlignment.center,
+//           children: <Widget>[
+//             Text(
+//               "Processing",
+//               style: normalFont(
+//                   processing ? Colors.green : Colors.grey[400], 12.0),
+//             ),
+//             SizedBox(width: 35.0),
+//             Text(
+//               "confirmed",
+//               style:
+//                   normalFont(confirmed ? Colors.green : Colors.grey[400], 12.0),
+//             ),
+//             SizedBox(width: 35.0),
+//             Text(
+//               "En Route",
+//               style:
+//                   normalFont(enRoute ? Colors.green : Colors.grey[400], 12.0),
+//             ),
+//             SizedBox(width: 35.0),
+//             Text(
+//               "Delivered",
+//               style:
+//                   normalFont(delivered ? Colors.green : Colors.grey[400], 12.0),
+//             ),
+//           ],
+//         ),
+//         SizedBox(height: 5.0),
+//         Row(
+//           mainAxisAlignment: MainAxisAlignment.center,
+//           crossAxisAlignment: CrossAxisAlignment.center,
+//           children: <Widget>[
+//             //PROCESSING
+//             checkPoint(
+//               processing ? Colors.green : Colors.grey[400],
+//               Center(
+//                 child: processing && confirmed ? checkMark() : smallDonut(),
+//               ),
+//             ),
 
-            SizedBox(width: 5.0),
+//             SizedBox(width: 5.0),
 
-            bar(confirmed ? Colors.green : Colors.grey[400]),
+//             bar(confirmed ? Colors.green : Colors.grey[400]),
 
-            SizedBox(width: 5.0),
+//             SizedBox(width: 5.0),
 
-            //CONFIRMED
-            checkPoint(
-              confirmed ? Colors.green : Colors.grey[400],
-              Center(
-                child: confirmed && enRoute ? checkMark() : smallDonut(),
-              ),
-            ),
+//             //CONFIRMED
+//             checkPoint(
+//               confirmed ? Colors.green : Colors.grey[400],
+//               Center(
+//                 child: confirmed && enRoute ? checkMark() : smallDonut(),
+//               ),
+//             ),
 
-            SizedBox(width: 5.0),
+//             SizedBox(width: 5.0),
 
-            bar(enRoute ? Colors.green : Colors.grey[400]),
+//             bar(enRoute ? Colors.green : Colors.grey[400]),
 
-            SizedBox(width: 5.0),
+//             SizedBox(width: 5.0),
 
-            //EN ROUTE
-            checkPoint(
-              enRoute ? Colors.green : Colors.grey[400],
-              Center(
-                child: enRoute && delivered ? checkMark() : smallDonut(),
-              ),
-            ),
+//             //EN ROUTE
+//             checkPoint(
+//               enRoute ? Colors.green : Colors.grey[400],
+//               Center(
+//                 child: enRoute && delivered ? checkMark() : smallDonut(),
+//               ),
+//             ),
 
-            SizedBox(width: 5.0),
+//             SizedBox(width: 5.0),
 
-            bar(delivered ? Colors.green : Colors.grey[400]),
+//             bar(delivered ? Colors.green : Colors.grey[400]),
 
-            SizedBox(width: 5.0),
+//             SizedBox(width: 5.0),
 
-            //DELIVERED
-            checkPoint(
-              delivered ? Colors.green : Colors.grey[400],
-              Center(
-                child: delivered ? checkMark() : smallDonut(),
-              ),
-            ),
-          ],
-        ),
-      ],
-    ),
-  );
-}
+//             //DELIVERED
+//             checkPoint(
+//               delivered ? Colors.green : Colors.grey[400],
+//               Center(
+//                 child: delivered ? checkMark() : smallDonut(),
+//               ),
+//             ),
+//           ],
+//         ),
+//       ],
+//     ),
+//   );
+// }
 
 //-------------------------------------------
 // Widget blockWigdet(
