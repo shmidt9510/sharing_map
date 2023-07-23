@@ -22,25 +22,52 @@ class ItemDetailPage extends StatelessWidget {
         appBar: AppBar(
           title: Text("item Detail Page"),
         ),
+        floatingActionButton: Padding(
+          padding: const EdgeInsets.only(bottom: 10.0),
+          child: FloatingActionButton.extended(
+            onPressed: () {
+              // Add your onPressed code here!
+            },
+            label: const Text('Связаться'),
+            icon: const Icon(Icons.messenger_outline_outlined),
+            backgroundColor: Colors.green,
+          ),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         body: ListView(
           // padding: const EdgeInsets.all(8),
           children: [
-            GetSlider(images, context),
             Container(
-              height: 50,
-              color: Colors.amber[600],
-              child: const Center(child: Text('Entry A')),
+              decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 5,
+                    blurRadius: 7,
+                    offset: Offset(0, 3), // changes position of shadow
+                  ),
+                ],
+              ),
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 16.0),
+                child: GetSlider(images, context),
+              ),
             ),
             Container(
-              height: 50,
-              color: Colors.amber[500],
-              child: const Center(child: Text('Entry B')),
-            ),
+                height: 50,
+                child: Text(item.creationDate.toString(),
+                    style: TextStyle(
+                        fontWeight: FontWeight.normal,
+                        fontStyle: FontStyle.italic))),
             Container(
-              height: 50,
-              color: Colors.amber[100],
-              child: const Center(child: Text('Entry C')),
-            ),
+                height: 50,
+                child: Text(item.name,
+                    style: TextStyle(fontWeight: FontWeight.bold))),
+            Container(
+                child: Text(item.desc,
+                    style: TextStyle(
+                        fontWeight: FontWeight.normal,
+                        fontStyle: FontStyle.normal))),
           ],
         ));
   }
@@ -62,30 +89,56 @@ Widget GetSlider(images1, context) {
     items: images1.map<Widget>((image) {
       return Builder(
         builder: (BuildContext context) {
-          return Container(
-              width: MediaQuery.of(context).size.width,
-              // height: 100,
-              // width: 500,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: NetworkImage(image), fit: BoxFit.fitHeight),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 5,
-                    blurRadius: 7,
-                    offset: Offset(0, 3), // changes position of shadow
-                  ),
-                ],
-                borderRadius: BorderRadius.only(
-                  bottomRight: Radius.circular(20.0),
-                  bottomLeft: Radius.circular(20.0),
-                ),
-                // цвет Container'а мы указываем в BoxDecoration
-                color: Colors.white,
-              ));
+          return GestureDetector(
+            child: Hero(
+              tag: 'carusel_image_list',
+              child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  // height: 100,
+                  // width: 500,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: NetworkImage(image), fit: BoxFit.fitHeight),
+                    borderRadius: BorderRadius.only(
+                      bottomRight: Radius.circular(20.0),
+                      bottomLeft: Radius.circular(20.0),
+                    ),
+                    // цвет Container'а мы указываем в BoxDecoration
+                    color: Colors.white,
+                  )),
+            ),
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (_) {
+                return GetFullscreenSlider(image, context);
+              }));
+            },
+          );
         },
       );
     }).toList(),
+  );
+}
+
+Widget GetFullscreenSlider(image, context) {
+  final double height = MediaQuery.of(context).size.height;
+  return Scaffold(
+    appBar: AppBar(
+      title: Text("item Detail Page"),
+    ),
+    body: Center(
+      child: GestureDetector(
+        child: Hero(
+          tag: 'carusel_image_list',
+          child: Image.network(
+            image,
+            fit: BoxFit.cover,
+            height: height,
+          ),
+        ),
+        onTap: () {
+          Navigator.pop(context);
+        },
+      ),
+    ),
   );
 }
