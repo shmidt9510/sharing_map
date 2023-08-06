@@ -12,7 +12,7 @@ class ItemListPage extends StatelessWidget {
       appBar: AppBar(title: Text("List Page")),
       // зададим небольшие отступы для списка
       body: Padding(
-          padding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+          padding: EdgeInsets.symmetric(vertical: 0, horizontal: 0),
           // создаем наш список
           child: ListView.separated(
               padding: const EdgeInsets.all(8),

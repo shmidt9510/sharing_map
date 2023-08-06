@@ -17,6 +17,11 @@ class App extends StatelessWidget {
     return MaterialApp(
         title: "Sharing Map",
         theme: ThemeData(
+          appBarTheme: AppBarTheme(
+            backgroundColor: MColors.secondaryGreen,
+            surfaceTintColor: MColors.primaryGreen,
+            actionsIconTheme: const IconThemeData(color: Colors.white),
+          ),
           secondaryHeaderColor: MColors.primaryGreen,
           primaryColor: MColors.secondaryGreen,
         ),

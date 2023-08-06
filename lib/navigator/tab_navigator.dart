@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sharing_map/navigator/tab.dart';
 
 import 'package:sharing_map/items/item_list_page.dart';
+import 'package:sharing_map/items/add_new_item_page.dart';
 
 class TabNavigator extends StatelessWidget {
   // TabNavigator принимает:
@@ -33,12 +34,16 @@ class TabNavigator extends StatelessWidget {
       // мы можем переопределить метод onGenerateRoute
       onGenerateRoute: (routeSettings) {
         // сначала определяем текущую страницу
-        Widget currentPage;
+        Widget currentPage = ItemListPage();
         if (tabItem == TabItem.HOME) {
           // пока мы будем использовать PonyListPage
           currentPage = ItemListPage();
         } else if (tabItem == TabItem.FAVORITE) {
           currentPage = ItemListPage();
+        } else if (tabItem == TabItem.ADD) {
+          currentPage = AddNewItemPage(
+              // key: navigatorKey,
+              );
         } else {
           currentPage = ItemListPage();
         }
