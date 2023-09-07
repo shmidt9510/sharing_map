@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sharing_map/items/item.dart';
+import 'package:sharing_map/items/models/item.dart';
 
 class TextDescriptionBlock extends StatelessWidget {
   Item _item;
@@ -16,7 +16,7 @@ class TextDescriptionBlock extends StatelessWidget {
           child: Container(
             constraints: BoxConstraints(maxWidth: context.width * 3 / 5),
             child: Text(
-              _item.desc,
+              _item.desc ?? "",
               maxLines: 3,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
@@ -48,7 +48,7 @@ class TextDescriptionBlock extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(left: 2.0),
                       child: Text(
-                        _item.name,
+                        _item.name ?? "",
                         textAlign: TextAlign.start,
                         style: TextStyle(fontSize: 12),
                       ),
@@ -103,7 +103,7 @@ class ItemBlock extends StatelessWidget {
                   topLeft: Radius.circular(10.0),
                   bottomLeft: Radius.circular(10.0),
                 ),
-                child: Image.asset(_item.picture, fit: BoxFit.fitHeight)),
+                child: Image.asset(_item.picture ?? "", fit: BoxFit.fitHeight)),
           ),
           Flexible(
             flex: 2,

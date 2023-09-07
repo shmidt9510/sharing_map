@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
-import 'package:sharing_map/items/item.dart';
+import 'package:sharing_map/items/models/item.dart';
 
 List<String> images = [
   "https://extxe.com/wp-content/uploads/2019/04/%D0%BB%D0%B5%D1%81.jpg",
@@ -11,13 +11,12 @@ List<String> images = [
 ];
 
 class ItemDetailPage extends StatelessWidget {
-  final int itemId;
+  final Item item;
 
-  ItemDetailPage(this.itemId);
+  ItemDetailPage(this.item);
 
   @override
   Widget build(BuildContext context) {
-    final item = items[itemId];
     return Scaffold(
         appBar: AppBar(
           title: Text("item Detail Page"),
@@ -61,10 +60,10 @@ class ItemDetailPage extends StatelessWidget {
                         fontStyle: FontStyle.italic))),
             Container(
                 height: 50,
-                child: Text(item.name,
+                child: Text(item.name ?? "",
                     style: TextStyle(fontWeight: FontWeight.bold))),
             Container(
-                child: Text(item.desc,
+                child: Text(item.desc ?? "",
                     style: TextStyle(
                         fontWeight: FontWeight.normal,
                         fontStyle: FontStyle.normal))),

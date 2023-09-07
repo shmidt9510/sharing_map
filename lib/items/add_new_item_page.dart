@@ -1,4 +1,4 @@
-import 'item.dart';
+import 'models/item.dart';
 
 import 'dart:io';
 
@@ -6,29 +6,33 @@ import 'widgets/image_picker.dart';
 
 import 'package:flutter/material.dart';
 import 'package:sharing_map/items/list_page.dart';
-import 'package:sharing_map/items/item.dart';
+import 'package:sharing_map/items/models/item.dart';
 import 'package:sharing_map/items/item_block.dart';
 import 'package:sharing_map/items/item_list_page.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 import 'package:image_picker/image_picker.dart';
 
+import 'package:sharing_map/items/controllers/item_controller.dart';
+import 'package:get/get.dart';
+import 'package:sharing_map/items/models/item.dart';
+
 class AddNewItemPage extends StatefulWidget {
   @override
-  _HomeState createState() => _HomeState();
+  _AddNewItemPageState createState() => _AddNewItemPageState();
 }
 
-class _HomeState extends State<AddNewItemPage> {
-  ImagePicker imagePicker = ImagePicker();
-  List<XFile>? imageFileList = [];
+class _AddNewItemPageState extends State<AddNewItemPage> {
+  // ImagePicker imagePicker = ImagePicker();
+  // List<XFile>? imageFileList = [];
 
-  void selectImages() async {
-    final List<XFile>? selectedImages = await imagePicker.pickMultiImage();
-    if (selectedImages!.isNotEmpty) {
-      imageFileList!.addAll(selectedImages);
-    }
-    setState(() {});
-  }
+  // void selectImages() async {
+  //   final List<XFile>? selectedImages = await imagePicker.pickMultiImage();
+  //   if (selectedImages!.isNotEmpty) {
+  //     imageFileList!.addAll(selectedImages);
+  //   }
+  //   setState(() {});
+  // }
 
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
@@ -83,41 +87,42 @@ class _HomeState extends State<AddNewItemPage> {
                   border: OutlineInputBorder(),
                 ),
               ),
-              Container(
-                  padding: EdgeInsets.only(top: 20, left: 20, right: 20),
-                  alignment: Alignment.topCenter,
-                  child: Column(
-                    children: [
-                      MaterialButton(
-                          color: Colors.blue,
-                          child: const Text("Pick Images from Gallery",
-                              style: TextStyle(
-                                  color: Colors.white70,
-                                  fontWeight: FontWeight.bold)),
-                          onPressed: () {
-                            selectImages();
-                          }),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: SizedBox(
-                          height: 400,
-                          child: GridView.builder(
-                              itemCount: imageFileList!.length,
-                              gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 3),
-                              itemBuilder: (BuildContext context, int index) {
-                                return Image.file(
-                                    File(imageFileList![index].path),
-                                    fit: BoxFit.cover);
-                              }),
-                        ),
-                      )
-                    ],
-                  )),
+              // Container(child: ImagePickerWidget()),
+              // Container(
+              //     padding: EdgeInsets.only(top: 20, left: 20, right: 20),
+              //     alignment: Alignment.topCenter,
+              //     child: Column(
+              //       children: [
+              //         MaterialButton(
+              //             color: Colors.blue,
+              //             child: const Text("Pick Images from Gallery",
+              //                 style: TextStyle(
+              //                     color: Colors.white70,
+              //                     fontWeight: FontWeight.bold)),
+              //             onPressed: () {
+              //               selectImages();
+              //             }),
+              //         SizedBox(
+              //           height: 20,
+              //         ),
+              //         Padding(
+              //           padding: const EdgeInsets.all(8.0),
+              //           child: SizedBox(
+              //             height: 400,
+              //             child: GridView.builder(
+              //                 itemCount: imageFileList!.length,
+              //                 gridDelegate:
+              //                     SliverGridDelegateWithFixedCrossAxisCount(
+              //                         crossAxisCount: 3),
+              //                 itemBuilder: (BuildContext context, int index) {
+              //                   return Image.file(
+              //                       File(imageFileList![index].path),
+              //                       fit: BoxFit.cover);
+              //                 }),
+              //           ),
+              //         )
+              //       ],
+              //     )),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [

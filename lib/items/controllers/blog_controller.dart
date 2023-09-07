@@ -4,7 +4,7 @@
 // import 'package:sharing_map/items/repostitories/all_blogs.dart';
 // import 'package:sharing_map/items/repostitories/blogs_abstract.dart';
 
-// abstract class BlogController {
+// abstract class BlogCoantroller {
 //   BlogController();
 
 //   Stream<List<Blog>>? get stream;
