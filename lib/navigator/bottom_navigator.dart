@@ -13,8 +13,6 @@ const Map<TabItem, MyTab> tabs = {
   TabItem.ADD: const MyTab(name: "Add", color: Colors.green, icon: Icons.add),
   TabItem.MESSAGES:
       const MyTab(name: "Message", color: Colors.green, icon: Icons.message),
-  TabItem.PROFILE:
-      const MyTab(name: "Profile", color: Colors.green, icon: Icons.person)
 };
 
 class MyBottomNavigation extends StatelessWidget {
@@ -44,7 +42,6 @@ class MyBottomNavigation extends StatelessWidget {
           _buildItem(TabItem.FAVORITE),
           _buildItem(TabItem.ADD),
           _buildItem(TabItem.MESSAGES),
-          _buildItem(TabItem.PROFILE),
         ],
         // обработка нажатия на пункт меню
         // здесь мы делаем вызов функции onSelectTab,

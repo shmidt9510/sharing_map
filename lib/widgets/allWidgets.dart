@@ -33,7 +33,7 @@ Widget primaryAppBar(
   List<Widget> actions,
 ) {
   return AppBar(
-    brightness: Brightness.light,
+    // brightness: Brightness.light,
     elevation: 0.0,
     backgroundColor: backgroundColor,
     leading: leading,
@@ -57,7 +57,7 @@ Widget primarySliverAppBar(
   Widget flexibleSpace,
 ) {
   return SliverAppBar(
-    brightness: Brightness.light,
+    // brightness: Brightness.light,
     elevation: 0.0,
     backgroundColor: backgroundColor,
     leading: leading,
@@ -115,7 +115,7 @@ Widget primaryButtonPurple(
 
 Widget secondaryButtonGreen(
   Widget buttonChild,
-  void Function() onPressed,
+  void Function()? onPressed,
 ) {
   return SizedBox(
     width: double.infinity,

@@ -1,5 +1,7 @@
+import 'package:uuid/uuid.dart';
+
 class Item {
-  final int? id;
+  final Uuid? id;
   final String? name;
   final String? desc;
   final String? picture;
@@ -59,9 +61,9 @@ class Item {
 //   "address": "Moscow"
 // }
 final String picture = "assets/images/forest.jpg";
-final List<Item> items = [
+final List<Item> TestItemList = [
   Item(
-      id: 0,
+      id: Uuid(),
       name: "Item1",
       desc:
           "Generate descriptions of paintings, drawings, and the like. Use to create objects for stories and campaigns, or spark ideas for your own art.",
@@ -72,14 +74,14 @@ final List<Item> items = [
       categoryId: 1,
       subcategoryId: 1),
   Item(
-      id: 1,
+      id: Uuid(),
       name: "Item2",
       desc:
           "Create basic descriptions of books, though you get to figure out what the contents are. ;)",
       picture: picture,
       creationDate: DateTime.parse("2002-01-27")),
   Item(
-      id: 2,
+      id: Uuid(),
       name: "Item3",
       desc:
           "Stock a bakery window or figure out what your character's cake-baking auntie made with this generator.",

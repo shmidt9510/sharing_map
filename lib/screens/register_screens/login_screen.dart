@@ -1,12 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:sharing_map/main.dart';
+import 'package:sharing_map/screens/home.dart';
 import 'package:sharing_map/screens/register_screens/registration_screen.dart';
 import 'package:sharing_map/screens/register_screens/reset_screen.dart';
 import 'package:sharing_map/utils/colors.dart';
 import 'package:sharing_map/utils/textFieldFormaters.dart';
 import 'package:sharing_map/widgets/provider.dart';
 import 'package:sharing_map/widgets/allWidgets.dart';
+import 'package:sharing_map/widgets/textInputWidget.dart';
 import 'package:sharing_map/screens/home_screens/home.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -28,16 +32,16 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _isButtonDisabled = false;
   bool _obscureText = true;
   bool _isEnabled = true;
-
+  TextEditingController mailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: BackButton(
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        title: Text('My App'),
-      ),
+      // appBar: AppBar(
+      //   leading: BackButton(
+      //     onPressed: () => Navigator.of(context).pop(),
+      //   ),
+      // ),
       backgroundColor: MColors.primaryGreen,
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
@@ -58,8 +62,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
               SizedBox(height: 10.0),
 
-              showAlert(),
-
               SizedBox(height: 10.0),
 
               //FORM
@@ -78,21 +80,19 @@ class _LoginScreenState extends State<LoginScreen> {
                             style: normalFont(MColors.whiteText, 16),
                           ),
                         ),
-                        // primaryTextField(
-                        //   null,
-                        //   null,
-                        //   "share@map.com",
-                        //   (val) => _email = val,
-                        //   _isEnabled,
-                        //   EmailValiditor.validate,
-                        //   false,
-                        //   _autoValidate,
-                        //   true,
-                        //   TextInputType.emailAddress,
-                        //   null,
-                        //   null,
-                        //   0.50,
-                        // ),
+                        TextInputField(
+                            mailController,
+                            null,
+                            "share@map.com",
+                            _isEnabled,
+                            EmailValiditor.validate,
+                            _autoValidate,
+                            true,
+                            TextInputType.emailAddress,
+                            null,
+                            null,
+                            0.50,
+                            context.theme),
                       ],
                     ),
                     SizedBox(height: 20.0),
@@ -106,34 +106,32 @@ class _LoginScreenState extends State<LoginScreen> {
                             style: normalFont(MColors.whiteText, 16),
                           ),
                         ),
-                        // primaryTextField(
-                        //   null,
-                        //   null,
-                        //   null,
-                        //   (val) => _password = val,
-                        //   _isEnabled,
-                        //   PasswordValiditor.validate,
-                        //   _obscureText,
-                        //   _autoValidate,
-                        //   false,
-                        //   TextInputType.text,
-                        //   null,
-                        //   SizedBox(
-                        //     height: 20.0,
-                        //     width: 40.0,
-                        //     child: RawMaterialButton(
-                        //       onPressed: _toggle,
-                        //       child: Text(
-                        //         _obscureText ? "Показать" : "Скрыть",
-                        //         style: TextStyle(
-                        //           color: MColors.secondaryGreen,
-                        //           fontWeight: FontWeight.bold,
-                        //         ),
-                        //       ),
-                        //     ),
-                        //   ),
-                        //   0.50,
-                        // ),
+                        TextInputField(
+                            passwordController,
+                            null,
+                            "password",
+                            _isEnabled,
+                            PasswordValiditor.validate,
+                            _autoValidate,
+                            false,
+                            TextInputType.text,
+                            null,
+                            SizedBox(
+                              height: 15.0,
+                              width: 70.0,
+                              child: RawMaterialButton(
+                                onPressed: _toggle,
+                                child: Text(
+                                  _obscureText ? "Показать" : "Скрыть",
+                                  style: TextStyle(
+                                    color: MColors.secondaryGreen,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            0.50,
+                            context.theme),
                       ],
                     ),
                     SizedBox(height: 20.0),
@@ -153,22 +151,25 @@ class _LoginScreenState extends State<LoginScreen> {
                       ],
                     ),
                     SizedBox(height: 20.0),
-                    _isButtonDisabled == true
-                        ? primaryButtonPurple(
-                            //if button is loading
-                            progressIndicator(Colors.white),
-                            null,
-                          )
-                        : primaryButtonPurple(
-                            Text(
-                              "Sign in",
-                              style: boldFont(
-                                MColors.primaryWhite,
-                                16.0,
-                              ),
-                            ),
-                            _isButtonDisabled ? null : _submit,
+                    // secondaryButtonGreen(
+                    //         //if button is loading
+                    //         progressIndicator(Colors.white),
+                    //         null,
+                    //       )
+                    secondaryButtonGreen(
+                        Text(
+                          "Войти",
+                          style: boldFont(
+                            MColors.primaryWhite,
+                            16.0,
                           ),
+                        ), () {
+                      Navigator.of(context).pushReplacement(
+                        CupertinoPageRoute(
+                          builder: (BuildContext context) => HomePage(),
+                        ),
+                      );
+                    }),
                     SizedBox(height: 20.0),
                     GestureDetector(
                       onTap: () {

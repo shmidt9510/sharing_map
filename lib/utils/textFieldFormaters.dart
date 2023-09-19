@@ -23,20 +23,23 @@ class NameValiditor {
 }
 
 class EmailValiditor {
-  static String? validate(String val) {
+  static String validate(String? val) {
     print(val);
+    if (val == null) {
+      return "";
+    }
     if (!val.contains("@") || !val.contains(".")) {
-      return "Enter a valid Email address";
+      return "Введите верный email";
     } else if (val.isEmpty) {
-      return "Enter your Email address";
+      return "Введите email";
     } else {
-      return null;
+      return "";
     }
   }
 }
 
 class PasswordValiditor {
-  static String? validate(String val) {
+  static String validate(String? val) {
     // Pattern pattern = r'(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])';
     // RegExp regex = RegExp(pattern);
     // print(val);
@@ -45,7 +48,7 @@ class PasswordValiditor {
     // } else if (val.length < 6 || (!regex.hasMatch(val))) {
     //   return "Password not strong enough";
     // } else {
-    return null;
+    return "";
     // }
   }
 }

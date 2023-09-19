@@ -14,7 +14,7 @@ description: Pet Shop is an e-commerce application for Android built with Flutte
 version: 1.0.0+3
 
 environment:
-  sdk: '>=2.17.0-417.0.dev <4.0.0'
+  sdk: ">2.17.0 <4.0.0"
 
 dependencies:
   flutter:
@@ -39,17 +39,17 @@ dependencies:
   #image processing magic
   carousel_slider: ^4.2.1
   image_cropper: ^3.0.3
-  flutter_spinkit: "^4.1.2"
+  flutter_spinkit: "^5.2.0"
   image_picker: ^1.0.1
-  photo_view: ^0.9.1
-  shared_preferences: ^0.5.6+3
+  photo_view: ^0.14.0
+  shared_preferences: ^2.2.1
   path: ^1.6.4
 
   #location and permission handling stuff
   permission_handler: ^10.2.0
-  geolocator: ^9.0.2
-  geolocation: ^1.1.2
-  geocoder: ^0.2.1
+  # geolocator: ^9.0.2
+  # geolocation: ^1.1.2
+  # geocoder: ^0.2.1
   location: ^4.4.0
   dio: ^5.1.2
   get: ^4.6.5

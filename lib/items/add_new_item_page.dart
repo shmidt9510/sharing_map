@@ -15,7 +15,12 @@ import 'package:image_picker/image_picker.dart';
 
 import 'package:sharing_map/items/controllers/item_controller.dart';
 import 'package:get/get.dart';
-import 'package:sharing_map/items/models/item.dart';
+import 'package:sharing_map/items/moEdels/item.dart';
+import 'package:sharing_map/items/images/main_window.dart';
+
+enum PhotoSource { FILE, NETWORK }
+
+const List<String> itemType = <String>['Отдам', 'Возьму'];
 
 class AddNewItemPage extends StatefulWidget {
   @override
@@ -23,34 +28,30 @@ class AddNewItemPage extends StatefulWidget {
 }
 
 class _AddNewItemPageState extends State<AddNewItemPage> {
-  // ImagePicker imagePicker = ImagePicker();
-  // List<XFile>? imageFileList = [];
+  ImagePicker imagePicker = ImagePicker();
+  List<XFile>? imageFileList = [];
 
-  // void selectImages() async {
-  //   final List<XFile>? selectedImages = await imagePicker.pickMultiImage();
-  //   if (selectedImages!.isNotEmpty) {
-  //     imageFileList!.addAll(selectedImages);
-  //   }
-  //   setState(() {});
-  // }
+  void selectImages() async {
+    final List<XFile>? selectedImages = await imagePicker.pickMultiImage();
+    if (selectedImages!.isNotEmpty) {
+      imageFileList!.addAll(selectedImages);
+    }
+    setState(() {});
+  }
 
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
-  final dateController =
-      TextEditingController(); //MaskedTextController(mask: '00.00.0000');
+  String dropdownValue = itemType.first;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text("abfjhbsadklvassa  Page")),
+        appBar: AppBar(title: Text("Создать объявление")),
         // зададим небольшие отступы для списка
         body: Container(
           padding: const EdgeInsets.all(20),
           child: SingleChildScrollView(
             child: Column(children: [
-              const Text(
-                'Add Task',
-                style: TextStyle(fontSize: 24),
-              ),
               const SizedBox(
                 height: 10,
               ),
@@ -58,21 +59,9 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
                 padding: const EdgeInsets.only(top: 10, bottom: 10),
                 child: TextField(
                   autofocus: true,
-                  controller: dateController,
-                  keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(
-                    label: Text('Date'),
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 10, bottom: 10),
-                child: TextField(
-                  autofocus: true,
                   controller: titleController,
                   decoration: const InputDecoration(
-                    label: Text('Title'),
+                    label: Text('Заголовок'),
                     border: OutlineInputBorder(),
                   ),
                 ),
@@ -83,46 +72,69 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
                 minLines: 3,
                 maxLines: 5,
                 decoration: const InputDecoration(
-                  label: Text('Description'),
+                  label: Text('Описание'),
                   border: OutlineInputBorder(),
                 ),
               ),
-              // Container(child: ImagePickerWidget()),
-              // Container(
-              //     padding: EdgeInsets.only(top: 20, left: 20, right: 20),
-              //     alignment: Alignment.topCenter,
-              //     child: Column(
-              //       children: [
-              //         MaterialButton(
-              //             color: Colors.blue,
-              //             child: const Text("Pick Images from Gallery",
-              //                 style: TextStyle(
-              //                     color: Colors.white70,
-              //                     fontWeight: FontWeight.bold)),
-              //             onPressed: () {
-              //               selectImages();
-              //             }),
-              //         SizedBox(
-              //           height: 20,
-              //         ),
-              //         Padding(
-              //           padding: const EdgeInsets.all(8.0),
-              //           child: SizedBox(
-              //             height: 400,
-              //             child: GridView.builder(
-              //                 itemCount: imageFileList!.length,
-              //                 gridDelegate:
-              //                     SliverGridDelegateWithFixedCrossAxisCount(
-              //                         crossAxisCount: 3),
-              //                 itemBuilder: (BuildContext context, int index) {
-              //                   return Image.file(
-              //                       File(imageFileList![index].path),
-              //                       fit: BoxFit.cover);
-              //                 }),
-              //           ),
-              //         )
-              //       ],
-              //     )),
+              SizedBox(
+                height: 20,
+              ),
+              // SizedBox(width: 500.0, height: 300.0, child: ImagePickerWidget()),
+              Container(
+                  child: DropdownMenu<String>(
+                initialSelection: itemType.first,
+                onSelected: (String? value) {
+                  // This is called when the user selects an item.
+                  setState(() {
+                    dropdownValue = value!;
+                  });
+                },
+                dropdownMenuEntries:
+                    itemType.map<DropdownMenuEntry<String>>((String value) {
+                  return DropdownMenuEntry<String>(value: value, label: value);
+                }).toList(),
+              )),
+              SizedBox(
+                height: 20,
+              ),
+              Container(
+                  padding: EdgeInsets.only(top: 20, left: 20, right: 20),
+                  alignment: Alignment.topCenter,
+                  child: Column(
+                    children: [
+                      MaterialButton(
+                          color: Colors.blue,
+                          child: const Text("Pick Images from Gallery",
+                              style: TextStyle(
+                                  color: Colors.white70,
+                                  fontWeight: FontWeight.bold)),
+                          onPressed: () {
+                            selectImages();
+                          }),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: SizedBox(
+                          height: 400,
+                          child: GridView.builder(
+                              itemCount: imageFileList!.length,
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 3),
+                              itemBuilder: (BuildContext context, int index) {
+                                return Image.file(
+                                    File(imageFileList![index].path),
+                                    fit: BoxFit.cover);
+                              }),
+                        ),
+                      )
+                    ],
+                  )),
+              SizedBox(
+                height: 30,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -133,7 +145,6 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
                   ElevatedButton(
                     onPressed: () {
                       // Item(this.id, this.name, this.desc, this.picture, this.creationDate);
-
                       // var item = Item(
                       //   id: titleController.text,
                       //   name: descriptionController.text,

@@ -9,6 +9,7 @@ class ItemController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    items = RxList(TestItemList);
     fetchItems();
   }
 

@@ -19,7 +19,6 @@ class _HomePageState extends State<HomePage> {
     TabItem.FAVORITE: GlobalKey<NavigatorState>(),
     TabItem.ADD: GlobalKey<NavigatorState>(),
     TabItem.MESSAGES: GlobalKey<NavigatorState>(),
-    TabItem.PROFILE: GlobalKey<NavigatorState>(),
   };
 
   // текущий выбранный элемент
@@ -63,7 +62,6 @@ class _HomePageState extends State<HomePage> {
           _buildOffstageNavigator(TabItem.FAVORITE),
           _buildOffstageNavigator(TabItem.ADD),
           _buildOffstageNavigator(TabItem.MESSAGES),
-          _buildOffstageNavigator(TabItem.PROFILE),
         ]),
         // MyBottomNavigation мы создадим позже
         bottomNavigationBar: MyBottomNavigation(

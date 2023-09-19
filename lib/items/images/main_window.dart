@@ -47,7 +47,7 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
 
   loadImages() async {
     sharedPreferences = await SharedPreferences.getInstance();
-    List<String> photos = sharedPreferences.getStringList("images");
+    List<String>? photos = sharedPreferences.getStringList("images");
     if (photos == null) {
       return;
     }
@@ -148,27 +148,27 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
               },
             ),
           ),
-          Container(
-            margin: EdgeInsets.all(16),
-            child: ElevatedButton(
-              child: Text('Save'),
-              onPressed: _onSaveClicked,
-            ),
-          )
+          // Container(
+          //   margin: EdgeInsets.all(16),
+          //   child: ElevatedButton(
+          //     child: Text('Save'),
+          //     onPressed: _onSaveClicked,
+          //   ),
+          // )
         ],
       ),
     );
   }
 
-  _onSaveClicked() async {
-    try {
-      sharedPreferences = await SharedPreferences.getInstance();
-      await sharedPreferences.setStringList("images", _photosUrls);
-      print('Successfully saved');
-    } catch (e) {
-      print('Error saving ');
-    }
-  }
+  // _onSaveClicked() async {
+  //   try {
+  //     sharedPreferences = await SharedPreferences.getInstance();
+  //     await sharedPreferences.setStringList("images", _photosUrls);
+  //     print('Successfully saved');
+  //   } catch (e) {
+  //     print('Error saving ');
+  //   }
+  // }
 
   Future<bool> _onDeleteReviewPhotoClicked(int index) async {
     if (_photosStatus[index] == PhotoStatus.LOADED) {

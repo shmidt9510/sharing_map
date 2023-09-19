@@ -14,4 +14,4 @@ class MyTab {
 // выбранного элемента меню
 // у нас будет три пункта меню и три страницы:
 // посты, альбомы и задания
-enum TabItem { HOME, FAVORITE, ADD, MESSAGES, PROFILE }
+enum TabItem { HOME, FAVORITE, ADD, MESSAGES }

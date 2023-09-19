@@ -1,9 +1,13 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sharing_map/items/list_page.dart';
 import 'package:sharing_map/items/models/item.dart';
 import 'package:sharing_map/items/item_block.dart';
 import 'package:sharing_map/items/controllers/item_controller.dart';
+import 'package:sharing_map/user/widgets/profile.dart';
+import 'package:sharing_map/user/utils/user_preferences.dart';
+import 'package:sharing_map/user/page/profile_page.dart';
 
 class ItemListPage extends StatefulWidget {
   // final String id;
@@ -30,12 +34,14 @@ class _ItemListPageState extends State<ItemListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("List Page")),
+      appBar: AppBar(
+        actions: [buildImage()],
+      ),
       body: Padding(
           padding: EdgeInsets.symmetric(vertical: 0, horizontal: 0),
           child: ListView.separated(
               padding: const EdgeInsets.all(8),
-              itemCount: items.length,
+              itemCount: TestItemList.length,
               separatorBuilder: (BuildContext context, int index) => Container(
                     height: 20,
                   ),
@@ -59,6 +65,28 @@ class _ItemListPageState extends State<ItemListPage> {
               //   // преобразовать в список с помощью toList() функции
               // }).toList(),
               )),
+    );
+  }
+
+  Widget buildImage() {
+    final image = NetworkImage(UserPreferences.myUser.imagePath);
+
+    return ClipOval(
+      child: Material(
+        color: Colors.transparent,
+        child: Ink.image(
+          image: image,
+          fit: BoxFit.cover,
+          width: 64,
+          child: InkWell(onTap: () {
+            Navigator.of(context).pushReplacement(
+              CupertinoPageRoute(
+                builder: (BuildContext context) => ProfilePage(),
+              ),
+            );
+          }),
+        ),
+      ),
     );
   }
 }
