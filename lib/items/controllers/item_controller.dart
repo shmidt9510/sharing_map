@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:sharing_map/items/models/item.dart';
 import 'package:sharing_map/items/services/item_service.dart';
 import 'package:get/get.dart';
@@ -9,11 +10,10 @@ class ItemController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    items = RxList(TestItemList);
-    fetchItems();
+    fetchItems().then((value) => printInfo());
   }
 
-  void fetchItems() async {
+  Future<void> fetchItems() async {
     isLoading(true);
 
     try {
@@ -25,6 +25,11 @@ class ItemController extends GetxController {
     } finally {
       isLoading(false);
     }
+  }
+
+  Future<RxList<Item>> waitItem() async {
+    await fetchItems();
+    return items;
   }
 
   void onRefresh() async {
@@ -51,6 +56,9 @@ class ItemController extends GetxController {
     try {
       isLoading(true);
       var response = await ItemWebService.addItem(item);
+      if (response!.isEmpty) {
+        isLoading(false);
+      }
     } finally {
       isLoading(false);
     }

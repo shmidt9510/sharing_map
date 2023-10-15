@@ -289,8 +289,7 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
           await generateImageUrl.call(fileExtension);
 
           String uploadUrl;
-          if (generateImageUrl.isGenerated != null &&
-              generateImageUrl.isGenerated) {
+          if (generateImageUrl.isGenerated) {
             uploadUrl = generateImageUrl.uploadUrl;
           } else {
             throw generateImageUrl.message;

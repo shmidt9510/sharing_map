@@ -1,9 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sharing_map/user/model/user.dart';
 import 'package:sharing_map/user/utils/user_preferences.dart';
 import 'package:sharing_map/user/widgets/appbar.dart';
-import 'package:sharing_map/user/widgets/buttons.dart';
 import 'package:sharing_map/user/widgets/numbers.dart';
 import 'package:sharing_map/user/widgets/profile.dart';
 

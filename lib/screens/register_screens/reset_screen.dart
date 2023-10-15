@@ -4,7 +4,6 @@ import 'package:sharing_map/screens/register_screens/login_screen.dart';
 import 'package:sharing_map/utils/colors.dart';
 // import 'package:sharing_map/utils/textFieldFormaters.dart';
 import 'package:sharing_map/widgets/allWidgets.dart';
-import 'package:sharing_map/widgets/provider.dart';
 
 class ResetScreen extends StatefulWidget {
   ResetScreen({Key? key}) : super(key: key);

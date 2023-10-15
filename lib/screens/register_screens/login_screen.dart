@@ -1,17 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:sharing_map/main.dart';
 import 'package:sharing_map/screens/home.dart';
-import 'package:sharing_map/screens/register_screens/registration_screen.dart';
 import 'package:sharing_map/screens/register_screens/reset_screen.dart';
 import 'package:sharing_map/utils/colors.dart';
 import 'package:sharing_map/utils/textFieldFormaters.dart';
-import 'package:sharing_map/widgets/provider.dart';
 import 'package:sharing_map/widgets/allWidgets.dart';
 import 'package:sharing_map/widgets/textInputWidget.dart';
-import 'package:sharing_map/screens/home_screens/home.dart';
 
 class LoginScreen extends StatefulWidget {
   LoginScreen({Key? key}) : super(key: key);

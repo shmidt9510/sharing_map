@@ -1,9 +1,12 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 import 'package:sharing_map/items/models/item.dart';
+import 'package:sharing_map/items/models/photo.dart';
+import 'package:sharing_map/widgets/image.dart';
 
-List<String> images = [
+List<String> imagesMock = [
   "https://extxe.com/wp-content/uploads/2019/04/%D0%BB%D0%B5%D1%81.jpg",
   "https://img.freepik.com/premium-photo/a-forest-with-trees-and-a-path-that-has-the-word-forest-on-it_421632-823.jpg",
   "https://natworld.info/wp-content/uploads/2016/08/Igra-solnechnogo-sveta-v-utrennem-lesu.jpg",
@@ -49,7 +52,7 @@ class ItemDetailPage extends StatelessWidget {
               ),
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 16.0),
-                child: GetSlider(images, context),
+                child: GetSlider(item.images, context),
               ),
             ),
             Container(
@@ -72,7 +75,11 @@ class ItemDetailPage extends StatelessWidget {
   }
 }
 
-Widget GetSlider(images1, context) {
+Widget GetSlider(images, context) {
+  List<Widget> list = [];
+  for (var i = 0; i < images.length; i++) {
+    list.add(CachedImage.Get(images[i]));
+  }
   return CarouselSlider(
     options: CarouselOptions(
       height: MediaQuery.of(context).size.height / 3,
@@ -85,19 +92,20 @@ Widget GetSlider(images1, context) {
       },
       enableInfiniteScroll: false,
     ),
-    items: images1.map<Widget>((image) {
+    items: list.map<Widget>((image) {
       return Builder(
         builder: (BuildContext context) {
           return GestureDetector(
             child: Hero(
               tag: 'carusel_image_list',
               child: Container(
+                  child: image,
                   width: MediaQuery.of(context).size.width,
                   // height: 100,
                   // width: 500,
                   decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: NetworkImage(image), fit: BoxFit.fitHeight),
+                    // image: DecorationImage(
+                    // image: Cached(image), fit: BoxFit.fitHeight),
                     borderRadius: BorderRadius.only(
                       bottomRight: Radius.circular(20.0),
                       bottomLeft: Radius.circular(20.0),
@@ -126,14 +134,7 @@ Widget GetFullscreenSlider(image, context) {
     ),
     body: Center(
       child: GestureDetector(
-        child: Hero(
-          tag: 'carusel_image_list',
-          child: Image.network(
-            image,
-            fit: BoxFit.cover,
-            height: height,
-          ),
-        ),
+        child: Hero(tag: 'carusel_image_list', child: image),
         onTap: () {
           Navigator.pop(context);
         },

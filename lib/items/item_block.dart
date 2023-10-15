@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sharing_map/items/models/item.dart';
+import 'package:sharing_map/widgets/image.dart';
 
 class TextDescriptionBlock extends StatelessWidget {
   Item _item;
@@ -98,13 +99,13 @@ class ItemBlock extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Flexible(
-            child: ClipRRect(
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(10.0),
-                  bottomLeft: Radius.circular(10.0),
-                ),
-                child: Image.asset(_item.picture ?? "", fit: BoxFit.fitHeight)),
-          ),
+              child: ClipRRect(
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(10.0),
+              bottomLeft: Radius.circular(10.0),
+            ),
+            child: CachedImage.Get(_item.images![0]),
+          )),
           Flexible(
             flex: 2,
             child: Padding(

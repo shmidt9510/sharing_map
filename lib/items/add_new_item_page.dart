@@ -1,22 +1,13 @@
-import 'models/item.dart';
-
 import 'dart:io';
 
-import 'widgets/image_picker.dart';
-
 import 'package:flutter/material.dart';
-import 'package:sharing_map/items/list_page.dart';
-import 'package:sharing_map/items/models/item.dart';
-import 'package:sharing_map/items/item_block.dart';
+import 'package:get/get.dart';
 import 'package:sharing_map/items/item_list_page.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 
 import 'package:image_picker/image_picker.dart';
 
-import 'package:sharing_map/items/controllers/item_controller.dart';
-import 'package:get/get.dart';
-import 'package:sharing_map/items/moEdels/item.dart';
-import 'package:sharing_map/items/images/main_window.dart';
+import 'controllers/item_controller.dart';
+import 'models/item.dart';
 
 enum PhotoSource { FILE, NETWORK }
 
@@ -30,6 +21,7 @@ class AddNewItemPage extends StatefulWidget {
 class _AddNewItemPageState extends State<AddNewItemPage> {
   ImagePicker imagePicker = ImagePicker();
   List<XFile>? imageFileList = [];
+  ItemController _itemsController = Get.find<ItemController>();
 
   void selectImages() async {
     final List<XFile>? selectedImages = await imagePicker.pickMultiImage();
@@ -104,7 +96,7 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
                     children: [
                       MaterialButton(
                           color: Colors.blue,
-                          child: const Text("Pick Images from Gallery",
+                          child: const Text("Выберите картинки",
                               style: TextStyle(
                                   color: Colors.white70,
                                   fontWeight: FontWeight.bold)),
@@ -116,9 +108,10 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: SizedBox(
-                          height: 400,
+                        child: Container(
+                          height: 200,
                           child: GridView.builder(
+                              physics: ScrollPhysics(),
                               itemCount: imageFileList!.length,
                               gridDelegate:
                                   SliverGridDelegateWithFixedCrossAxisCount(
@@ -140,28 +133,30 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
                 children: [
                   TextButton(
                     onPressed: () => Navigator.pop(context),
-                    child: const Text('cancel'),
+                    child: const Text('Отменить'),
                   ),
                   ElevatedButton(
                     onPressed: () {
                       // Item(this.id, this.name, this.desc, this.picture, this.creationDate);
-                      // var item = Item(
-                      //   id: titleController.text,
-                      //   name: descriptionController.text,
-                      //   desc: GUIDGen.generate(),
-                      //   picture: dateController.text,
-                      //   creationDat:
-                      // ),
+                      var item = Item(
+                          userId: 'dc94023b-8658-42e6-bcdc-2c810feb07af',
+                          name: titleController.text,
+                          desc: descriptionController.text,
+                          cityId: 1,
+                          categoryId: 1,
+                          subcategoryId: 1,
+                          downloadableImages: imageFileList);
+                      _itemsController.addItem(item);
                       // context.read<TasksBloc>().add(AddTask(item: item));
                       // context
                       //     .read<TasksBloc>()
                       //     .add(GetTodayTasks(date: dateController.text));
-                      Navigator.pushReplacement(context,
-                          MaterialPageRoute(builder: (_) {
-                        return ItemListPage();
-                      }));
+                      // Navigator.pushReplacement(context,
+                      //     MaterialPageRoute(builder: (_) {
+                      //   return ItemListPage();
+                      // }));
                     },
-                    child: const Text('Add'),
+                    child: const Text('Добавить'),
                   ),
                 ],
               ),

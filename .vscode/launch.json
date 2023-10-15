@@ -1,0 +1,30 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "shaaring_map",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart",
+            "args" : [
+                "--dart-define=AWS_ACCESS_KEY_ID=YCAJEDpt9bO7gWdLfW1uk9t1W",
+                "--dart-define=AWS_SECRET_ACCESS_KEY=YCMrGFqgc-QHdbNItg0QDqJ1gP44ze9pmIWgGCBJ"
+            ]
+        },
+        {
+            "name": "shaaring_map (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "shaaring_map (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        }
+    ]
+}
