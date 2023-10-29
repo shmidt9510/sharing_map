@@ -5,8 +5,6 @@ import 'package:sharing_map/controllers/user_controller.dart';
 import 'package:sharing_map/router.dart';
 import 'package:sharing_map/screens/add_new_item_page.dart';
 import 'package:sharing_map/controllers/item_controller.dart';
-import 'package:sharing_map/screens/home.dart';
-import 'package:sharing_map/screens/home_screens/home_test.dart';
 import 'package:sharing_map/utils/shared.dart';
 // import 'screens/getstarted_screens/intro_screen.dart';
 // import 'screens/home_screens/home_test.dart';

@@ -5,7 +5,6 @@ import 'package:sharing_map/scaffold_with_nav.dart';
 import 'package:sharing_map/screens/add_new_item_page.dart';
 import 'package:sharing_map/screens/getstarted_screens/get_start.dart';
 import 'package:sharing_map/screens/getstarted_screens/intro_screen.dart';
-import 'package:sharing_map/screens/home.dart';
 import 'package:sharing_map/screens/item_list_page.dart';
 import 'package:sharing_map/screens/register_screens/registration_screen.dart';
 import 'package:sharing_map/screens/register_screens/reset_screen.dart';
@@ -15,6 +14,7 @@ import 'package:sharing_map/path.dart';
 
 import 'package:sharing_map/screens/register_screens/login_screen.dart';
 import 'package:sharing_map/theme.dart';
+import 'package:sharing_map/user/page/profile_page.dart';
 import 'package:sharing_map/utils/colors.dart';
 
 class RouterStart extends StatefulWidget {
@@ -107,7 +107,7 @@ class _RouterStartState extends State<RouterStart> {
                 StatefulShellBranch(
                   routes: <RouteBase>[
                     GoRoute(
-                      path: SMPath.favorite,
+                      path: SMPath.addItem,
                       builder: (BuildContext context, GoRouterState state) =>
                           AddNewItemPage(),
                     ),
@@ -116,9 +116,9 @@ class _RouterStartState extends State<RouterStart> {
                 StatefulShellBranch(
                   routes: <RouteBase>[
                     GoRoute(
-                      path: SMPath.addItem,
+                      path: SMPath.profile,
                       builder: (BuildContext context, GoRouterState state) =>
-                          AddNewItemPage(),
+                          ProfilePage(),
                     ),
                   ],
                 ),

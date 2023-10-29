@@ -36,36 +36,33 @@ class _ItemListPageState extends State<ItemListPage> {
     _itemsController.fetchItems();
 
     return Scaffold(
-        appBar: AppBar(
-          actions: [buildImage()],
-        ),
         body: RefreshIndicator(
-          onRefresh: () => _itemsController.fetchItems(),
-          child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 0, horizontal: 0),
-              child: FutureBuilder<RxList<Item>>(
-                  future: _itemsController.waitItem(),
-                  builder: (BuildContext context,
-                      AsyncSnapshot<RxList<Item>> snapshot) {
-                    if (snapshot.hasData) {
-                      return buildItemList();
-                    } else if (snapshot.hasError) {
-                      return Placeholder();
-                    } else {
-                      return Row(children: [
-                        SizedBox(
-                          width: 60,
-                          height: 60,
-                          child: CircularProgressIndicator(),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(top: 16),
-                          child: Text('Awaiting result...'),
-                        ),
-                      ]);
-                    }
-                  })),
-        ));
+      onRefresh: () => _itemsController.fetchItems(),
+      child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 0, horizontal: 0),
+          child: FutureBuilder<RxList<Item>>(
+              future: _itemsController.waitItem(),
+              builder:
+                  (BuildContext context, AsyncSnapshot<RxList<Item>> snapshot) {
+                if (snapshot.hasData) {
+                  return buildItemList();
+                } else if (snapshot.hasError) {
+                  return Placeholder();
+                } else {
+                  return Row(children: [
+                    SizedBox(
+                      width: 60,
+                      height: 60,
+                      child: CircularProgressIndicator(),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 16),
+                      child: Text('Awaiting result...'),
+                    ),
+                  ]);
+                }
+              })),
+    ));
   }
 
   Widget buildItemList() {

@@ -99,12 +99,18 @@ class ItemBlock extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Flexible(
+              child: Container(
+            width: 100,
+            child: FittedBox(
+              fit: BoxFit.fitHeight,
               child: ClipRRect(
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(10.0),
-              bottomLeft: Radius.circular(10.0),
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(10.0),
+                  bottomLeft: Radius.circular(10.0),
+                ),
+                child: CachedImage.Get(_item.images![0]),
+              ),
             ),
-            child: CachedImage.Get(_item.images![0]),
           )),
           Flexible(
             flex: 2,

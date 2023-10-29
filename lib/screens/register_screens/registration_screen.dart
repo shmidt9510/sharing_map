@@ -5,7 +5,6 @@ import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sharing_map/controllers/user_controller.dart';
 import 'package:sharing_map/path.dart';
-import 'package:sharing_map/screens/home.dart';
 import 'package:sharing_map/screens/register_screens/reset_screen.dart';
 import 'package:sharing_map/utils/colors.dart';
 import 'package:sharing_map/utils/shared.dart';
