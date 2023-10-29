@@ -157,15 +157,10 @@ class _LoginState extends State<LoginScreen> {
                       ),
                     ),
                     onPressed: () async {
-                      debugPrint("here");
                       SnackBar snackBar;
-                      // if (_formKey.currentState?.validate() ?? false) {
-                      debugPrint("her1");
                       var result = await _userController.Login(
                           _controllerUsername.text, _controllerPassword.text);
-                      debugPrint("here2");
                       if (result) {
-                        debugPrint("has result");
                         snackBar = SnackBar(
                           content: const Text('Получилось :)'),
                           action: SnackBarAction(
@@ -187,10 +182,7 @@ class _LoginState extends State<LoginScreen> {
                             },
                           ),
                         );
-                        // Find the ScaffoldMessenger in the widget tree
-                        // and use it to show a SnackBar.
                         ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                        // GoRouter.of(context).go(SMPath.home);
                       }
                       // }
                     },
