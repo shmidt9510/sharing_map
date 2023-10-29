@@ -2,9 +2,9 @@ import 'dart:convert';
 import 'interceptors.dart';
 import 'constants.dart';
 
-import 'package:sharing_map/items/models/category.dart';
-import 'package:sharing_map/items/models/subcategory.dart';
-import 'package:sharing_map/items/models/city.dart';
+import 'package:sharing_map/models/category.dart';
+import 'package:sharing_map/models/subcategory.dart';
+import 'package:sharing_map/models/city.dart';
 import 'package:http_interceptor/http_interceptor.dart';
 
 class CommonWebService {

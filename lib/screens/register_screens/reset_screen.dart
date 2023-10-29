@@ -223,11 +223,11 @@ class _ResetScreenState extends State<ResetScreen> {
                 ),
                 () {
                   Navigator.of(context).pop();
-                  Navigator.of(context).pushReplacement(
-                    CupertinoPageRoute(
-                      builder: (_) => LoginScreen(),
-                    ),
-                  );
+                  // Navigator.of(context).pushReplacement(
+                  //   CupertinoPageRoute(
+                  //     builder: (_) => LoginScreen(),
+                  //   ),
+                  // );
                 },
               ),
             ],

@@ -2,16 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
-import 'package:sharing_map/items/models/item.dart';
-import 'package:sharing_map/items/models/photo.dart';
+import 'package:sharing_map/models/item.dart';
+import 'package:sharing_map/models/photo.dart';
 import 'package:sharing_map/widgets/image.dart';
-
-List<String> imagesMock = [
-  "https://extxe.com/wp-content/uploads/2019/04/%D0%BB%D0%B5%D1%81.jpg",
-  "https://img.freepik.com/premium-photo/a-forest-with-trees-and-a-path-that-has-the-word-forest-on-it_421632-823.jpg",
-  "https://natworld.info/wp-content/uploads/2016/08/Igra-solnechnogo-sveta-v-utrennem-lesu.jpg",
-  "https://relax-fm.ru/proxy/vardata/modules/news/files/1/441/news_file_441_5dadd965d5e57.jpg?w=1020&h=680&t=1571674380"
-];
 
 class ItemDetailPage extends StatelessWidget {
   final Item item;

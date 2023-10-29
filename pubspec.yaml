@@ -61,6 +61,9 @@ dependencies:
   cached_network_image: ^3.3.0
   flutter_blurhash: ^0.7.0
   baseflow_plugin_template: ^2.1.2
+  passwordfield: ^0.2.0
+  email_validator: ^2.1.17
+  jwt_decoder: ^2.0.1
 flutter_icons:
   android: true
   ios: true

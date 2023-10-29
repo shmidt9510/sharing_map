@@ -1,7 +1,7 @@
-import 'package:sharing_map/items/models/category.dart';
-import 'package:sharing_map/items/models/subcategory.dart';
-import 'package:sharing_map/items/models/city.dart';
-import 'package:sharing_map/items/services/common_service.dart';
+import 'package:sharing_map/models/category.dart';
+import 'package:sharing_map/models/subcategory.dart';
+import 'package:sharing_map/models/city.dart';
+import 'package:sharing_map/services/common_service.dart';
 import 'package:get/get.dart';
 
 class CommonController extends GetxController {

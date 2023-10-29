@@ -2,10 +2,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sharing_map/items/list_page.dart';
-import 'package:sharing_map/items/models/item.dart';
-import 'package:sharing_map/items/item_block.dart';
-import 'package:sharing_map/items/controllers/item_controller.dart';
+import 'package:sharing_map/screens/item_detail_page.dart';
+import 'package:sharing_map/models/item.dart';
+import 'package:sharing_map/widgets/item_block.dart';
+import 'package:sharing_map/controllers/item_controller.dart';
 import 'package:sharing_map/user/utils/user_preferences.dart';
 import 'package:sharing_map/user/page/profile_page.dart';
 import 'package:sharing_map/widgets/image.dart';
@@ -39,30 +39,33 @@ class _ItemListPageState extends State<ItemListPage> {
         appBar: AppBar(
           actions: [buildImage()],
         ),
-        body: Padding(
-            padding: EdgeInsets.symmetric(vertical: 0, horizontal: 0),
-            child: FutureBuilder<RxList<Item>>(
-                future: _itemsController.waitItem(),
-                builder: (BuildContext context,
-                    AsyncSnapshot<RxList<Item>> snapshot) {
-                  if (snapshot.hasData) {
-                    return buildItemList();
-                  } else if (snapshot.hasError) {
-                    return Placeholder();
-                  } else {
-                    return Row(children: [
-                      SizedBox(
-                        width: 60,
-                        height: 60,
-                        child: CircularProgressIndicator(),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(top: 16),
-                        child: Text('Awaiting result...'),
-                      ),
-                    ]);
-                  }
-                })));
+        body: RefreshIndicator(
+          onRefresh: () => _itemsController.fetchItems(),
+          child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 0, horizontal: 0),
+              child: FutureBuilder<RxList<Item>>(
+                  future: _itemsController.waitItem(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<RxList<Item>> snapshot) {
+                    if (snapshot.hasData) {
+                      return buildItemList();
+                    } else if (snapshot.hasError) {
+                      return Placeholder();
+                    } else {
+                      return Row(children: [
+                        SizedBox(
+                          width: 60,
+                          height: 60,
+                          child: CircularProgressIndicator(),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(top: 16),
+                          child: Text('Awaiting result...'),
+                        ),
+                      ]);
+                    }
+                  })),
+        ));
   }
 
   Widget buildItemList() {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sharing_map/items/models/item.dart';
+import 'package:sharing_map/models/item.dart';
 import 'package:sharing_map/widgets/image.dart';
 
 class TextDescriptionBlock extends StatelessWidget {

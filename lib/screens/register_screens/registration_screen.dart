@@ -1,391 +1,266 @@
-// import 'package:flutter/cupertino.dart';
-// import 'package:flutter/material.dart';
-// import 'package:flutter/services.dart';
-// import 'package:sharing_map/main.dart';
-// // import 'package:sharing_map/model/notifiers/userData_notifier.dart';
-// // import 'package:sharing_map/model/services/user_management.dart';
-// import 'package:sharing_map/screens/register_screens/login_screen.dart';
-// import 'package:sharing_map/utils/colors.dart';
-// import 'package:sharing_map/utils/textFieldFormaters.dart';
-// import 'package:sharing_map/widgets/allWidgets.dart';
-// import 'package:sharing_map/widgets/provider.dart';
-// import 'package:provider/provider.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sharing_map/controllers/user_controller.dart';
+import 'package:sharing_map/path.dart';
+import 'package:sharing_map/screens/home.dart';
+import 'package:sharing_map/screens/register_screens/reset_screen.dart';
+import 'package:sharing_map/utils/colors.dart';
+import 'package:sharing_map/utils/shared.dart';
+import 'package:sharing_map/utils/textFieldFormaters.dart';
+import 'package:sharing_map/widgets/allWidgets.dart';
+// import 'package:sharing_map/widgets/textInputWidget.dart';
+import 'package:passwordfield/passwordfield.dart';
+import 'package:email_validator/email_validator.dart';
 
-// class RegistrationScreen extends StatefulWidget {
-//   RegistrationScreen({Key? key}) : super(key: key);
+class RegistrationScreen extends StatefulWidget {
+  const RegistrationScreen({
+    Key? key,
+  }) : super(key: key);
 
-//   @override
-//   _RegistrationScreenState createState() => _RegistrationScreenState();
-// }
+  @override
+  State<RegistrationScreen> createState() => _LoginState();
+}
 
-// class _RegistrationScreenState extends State<RegistrationScreen> {
-//   final scaffoldKey = GlobalKey<ScaffoldState>();
-//   final formKey = GlobalKey<FormState>();
+class _LoginState extends State<RegistrationScreen> {
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  // final prefs = SharedPreferences.getInstance().then((value) => );
+  // final FocusNode _focusNodePassword = FocusNode();
+  final TextEditingController _controllerUsername = TextEditingController();
+  final TextEditingController _controllerMail = TextEditingController();
+  final TextEditingController _controllerPassword = TextEditingController();
+  UserController _userController = Get.find<UserController>();
 
-//   late String _name;
-//   late String _phone;
-//   late String _email;
-//   late String _password;
-//   late String _error;
-//   bool _autoValidate = false;
-//   bool _isButtonDisabled = false;
-//   bool _obscureText = true;
-//   bool _isEnabled = true;
+  bool _obscurePassword = true;
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return ChangeNotifierProvider<UserDataProfileNotifier>(
-//       create: (BuildContext context) => UserDataProfileNotifier(),
-//       child: Consumer<UserDataProfileNotifier>(
-//         builder: (context, profileNotifier, _) {
-//           return Scaffold(
-//             appBar: AppBar(
-//               leading: BackButton(
-//                 onPressed: () => Navigator.of(context).pop(),
-//               ),
-//               title: Text('My App'),
-//             ),
-//             backgroundColor: MColors.primaryWhiteSmoke,
-//             body: SingleChildScrollView(
-//               physics: BouncingScrollPhysics(),
-//               child: primaryContainer(
-//                 Column(
-//                   mainAxisAlignment: MainAxisAlignment.start,
-//                   children: <Widget>[
-//                     Container(
-//                       padding: const EdgeInsets.only(top: 100.0),
-//                       child: Text(
-//                         "Create your free account",
-//                         style: boldFont(MColors.textDark, 38.0),
-//                         textAlign: TextAlign.start,
-//                       ),
-//                     ),
+  @override
+  Widget build(BuildContext context) {
+    // if (SharedPrefs().logged) {
+    //   return HomePage();
+    // }
 
-//                     SizedBox(height: 20.0),
+    return Scaffold(
+      floatingActionButton: BackButton(color: MColors.whiteText),
+      floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
+      backgroundColor: MColors.primaryGreen,
+      body: Form(
+        key: _formKey,
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(30.0),
+          child: Column(
+            children: [
+              const SizedBox(height: 12),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "Ваш электронный адрес",
+                  textAlign: TextAlign.left,
+                  style: TextStyle(color: Colors.white, fontSize: 16),
+                ),
+              ),
+              const SizedBox(height: 12),
+              TextFormField(
+                focusNode: null,
+                controller: _controllerMail,
+                keyboardType: TextInputType.emailAddress,
+                decoration: InputDecoration(
+                  floatingLabelBehavior: FloatingLabelBehavior.never,
+                  fillColor: Colors.white,
+                  filled: true,
+                  labelText: "Введите свой email",
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: MColors.secondaryGreen),
+                      borderRadius: BorderRadius.circular(10)),
+                ),
+                // onEditingComplete: () => _focusNodePassword.requestFocus(),
+                validator: (String? value) {
+                  if (!EmailValidator.validate(value ?? "")) {
+                    return "Пожалуйста введите почту";
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 10),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "Ваш пароль",
+                  textAlign: TextAlign.left,
+                  style: TextStyle(color: Colors.white, fontSize: 16),
+                ),
+              ),
+              const SizedBox(height: 10),
+              TextFormField(
+                controller: _controllerPassword,
+                // focusNode: _focusNodePassword,
+                obscureText: _obscurePassword,
+                keyboardType: TextInputType.visiblePassword,
+                decoration: InputDecoration(
+                  floatingLabelBehavior: FloatingLabelBehavior.never,
+                  filled: true,
+                  fillColor: Colors.white,
+                  labelText: "Пароль",
+                  suffixIcon: IconButton(
+                      onPressed: () {
+                        setState(() {
+                          _obscurePassword = !_obscurePassword;
+                        });
+                      },
+                      icon: _obscurePassword
+                          ? const Icon(Icons.visibility_outlined)
+                          : const Icon(Icons.visibility_off_outlined)),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: MColors.secondaryGreen),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: MColors.secondaryGreen),
+                      borderRadius: BorderRadius.circular(10)),
+                ),
+                validator: (String? value) {
+                  if (value == null || value.isEmpty || value.length < 8) {
+                    return "Введите пароль (минимум 8 символов)";
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 16),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "Как вас зовут?",
+                  textAlign: TextAlign.left,
+                  style: TextStyle(color: Colors.white, fontSize: 16),
+                ),
+              ),
+              const SizedBox(height: 12),
+              TextFormField(
+                focusNode: null,
+                controller: _controllerUsername,
+                keyboardType: TextInputType.name,
+                decoration: InputDecoration(
+                  floatingLabelBehavior: FloatingLabelBehavior.never,
+                  fillColor: Colors.white,
+                  filled: true,
+                  labelText: "Ваше имя",
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: MColors.secondaryGreen),
+                      borderRadius: BorderRadius.circular(10)),
+                ),
+                // onEditingComplete: () => _focusNodePassword.requestFocus(),
+                validator: (String? value) {
+                  if (value?.isEmpty ?? false) {
+                    return "Пожалуйста напишите что-нибудь)";
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 60),
+              Column(
+                children: [
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: MColors.secondaryGreen,
+                      minimumSize: const Size.fromHeight(50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
+                    onPressed: () async {
+                      debugPrint("here");
+                      SnackBar snackBar;
+                      if (_formKey.currentState?.validate() ?? false) {
+                        debugPrint("her1");
+                        var result = await _userController.Signup(
+                            _controllerMail.text,
+                            _controllerUsername.text,
+                            _controllerPassword.text);
+                        if (result) {
+                          debugPrint("here ok ");
 
-//                     Row(
-//                       children: <Widget>[
-//                         Container(
-//                           child: Text(
-//                             "Already have an account? ",
-//                             style: normalFont(MColors.textGrey, 16.0),
-//                             textAlign: TextAlign.start,
-//                           ),
-//                         ),
-//                         Container(
-//                           child: GestureDetector(
-//                             child: Text(
-//                               "Sign in!",
-//                               style: normalFont(MColors.primaryPurple, 16.0),
-//                               textAlign: TextAlign.start,
-//                             ),
-//                             onTap: () {
-//                               formKey.currentState?.reset();
-//                               Navigator.of(context).pushReplacement(
-//                                 CupertinoPageRoute(
-//                                   builder: (_) => LoginScreen(),
-//                                 ),
-//                               );
-//                             },
-//                           ),
-//                         ),
-//                       ],
-//                     ),
+                          snackBar = SnackBar(
+                            content: const Text('Пройдите по ссылке в письме'),
+                            action: SnackBarAction(
+                              label: 'Закрыть',
+                              onPressed: () {
+                                // Some code to undo the change.
+                              },
+                            ),
+                          );
+                          debugPrint(SharedPrefs().userId);
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                          GoRouter.of(context)
+                              .go(SMPath.start + "/" + SMPath.login);
+                        } else {
+                          debugPrint("here not ok ");
 
-//                     SizedBox(height: 10.0),
+                          snackBar = SnackBar(
+                            content: const Text('Не получилось :('),
+                            action: SnackBarAction(
+                              label: 'Закрыть',
+                              onPressed: () {
+                                // Some code to undo the change.
+                              },
+                            ),
+                          );
+                          // Find the ScaffoldMessenger in the widget tree
+                          // and use it to show a SnackBar.
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                          // GoRouter.of(context).go(SMPath.home);
+                        }
+                      }
+                    },
+                    child: const Text("Зарегестрироваться"),
+                  ),
+                  const SizedBox(height: 10),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: MColors.lightGrey,
+                      minimumSize: const Size.fromHeight(50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
+                    onPressed: () {
+                      GoRouter.of(context).go(SMPath.home);
+                    },
+                    child: const Text("Продолжить без регистрации"),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 
-//                     showAlert(),
-
-//                     SizedBox(height: 10.0),
-
-//                     //FORM
-//                     Form(
-//                       key: formKey,
-//                       autovalidateMode: AutovalidateMode.always,
-//                       child: Column(
-//                         children: <Widget>[
-//                           Column(
-//                             crossAxisAlignment: CrossAxisAlignment.start,
-//                             children: <Widget>[
-//                               Container(
-//                                 padding: const EdgeInsets.only(bottom: 5.0),
-//                                 child: Text(
-//                                   "Name",
-//                                   style: normalFont(MColors.textGrey, null),
-//                                 ),
-//                               ),
-//                               primaryTextField(
-//                                 null,
-//                                 null,
-//                                 "Remiola",
-//                                 (val) => _name = val,
-//                                 _isEnabled,
-//                                 NameValiditor.validate,
-//                                 false,
-//                                 _autoValidate,
-//                                 true,
-//                                 TextInputType.text,
-//                                 null,
-//                                 null,
-//                                 0.50,
-//                               ),
-//                             ],
-//                           ),
-//                           SizedBox(height: 20.0),
-//                           Column(
-//                             crossAxisAlignment: CrossAxisAlignment.start,
-//                             children: <Widget>[
-//                               Container(
-//                                 padding: const EdgeInsets.only(bottom: 5.0),
-//                                 child: Text(
-//                                   "Email",
-//                                   style: normalFont(MColors.textGrey, null),
-//                                 ),
-//                               ),
-//                               primaryTextField(
-//                                 null,
-//                                 null,
-//                                 "e.g Remiola2034@gmail.com",
-//                                 (val) => _email = val,
-//                                 _isEnabled,
-//                                 EmailValiditor.validate,
-//                                 false,
-//                                 _autoValidate,
-//                                 true,
-//                                 TextInputType.emailAddress,
-//                                 null,
-//                                 null,
-//                                 0.50,
-//                               ),
-//                             ],
-//                           ),
-//                           SizedBox(height: 20.0),
-//                           Column(
-//                             crossAxisAlignment: CrossAxisAlignment.start,
-//                             children: <Widget>[
-//                               Container(
-//                                 padding: const EdgeInsets.only(bottom: 5.0),
-//                                 child: Text(
-//                                   "Password",
-//                                   style: normalFont(MColors.textGrey, null),
-//                                 ),
-//                               ),
-//                               primaryTextField(
-//                                 null,
-//                                 null,
-//                                 null,
-//                                 (val) => _password = val,
-//                                 _isEnabled,
-//                                 PasswordValiditor.validate,
-//                                 _obscureText,
-//                                 _autoValidate,
-//                                 false,
-//                                 TextInputType.text,
-//                                 null,
-//                                 SizedBox(
-//                                   height: 20.0,
-//                                   width: 40.0,
-//                                   child: RawMaterialButton(
-//                                     onPressed: _toggle,
-//                                     child: Text(
-//                                       _obscureText ? "Show" : "Hide",
-//                                       style: TextStyle(
-//                                         color: MColors.primaryPurple,
-//                                         fontWeight: FontWeight.bold,
-//                                       ),
-//                                     ),
-//                                   ),
-//                                 ),
-//                                 0.50,
-//                               ),
-//                             ],
-//                           ),
-//                           SizedBox(height: 10.0),
-//                           Container(
-//                             child: Text(
-//                               "Your password must have 6 or more characters, a capital letter and must contain at least one number.",
-//                               style: normalFont(MColors.primaryPurple, null),
-//                             ),
-//                           ),
-//                           SizedBox(height: 20.0),
-//                           Column(
-//                             crossAxisAlignment: CrossAxisAlignment.start,
-//                             children: <Widget>[
-//                               Container(
-//                                 padding: const EdgeInsets.only(bottom: 5.0),
-//                                 child: Text(
-//                                   "Phone number",
-//                                   style: normalFont(MColors.textGrey, null),
-//                                 ),
-//                               ),
-//                               primaryTextField(
-//                                 null,
-//                                 null,
-//                                 "e.g +55 (47) 12345 6789",
-//                                 (val) => _phone = val,
-//                                 _isEnabled,
-//                                 PhoneNumberValiditor.validate,
-//                                 false,
-//                                 _autoValidate,
-//                                 true,
-//                                 TextInputType.numberWithOptions(),
-//                                 [maskTextInputFormatter],
-//                                 null,
-//                                 0.50,
-//                               ),
-//                               SizedBox(height: 10.0),
-//                               Container(
-//                                 child: Text(
-//                                   "Your number should contain your country code and state code.",
-//                                   style:
-//                                       normalFont(MColors.primaryPurple, null),
-//                                 ),
-//                               ),
-//                               SizedBox(height: 20.0),
-//                               Row(
-//                                 children: <Widget>[
-//                                   Icon(
-//                                     Icons.verified_user,
-//                                     color: MColors.primaryPurple,
-//                                   ),
-//                                   SizedBox(
-//                                     width: 5.0,
-//                                   ),
-//                                   Expanded(
-//                                     child: Container(
-//                                       child: Text(
-//                                         "By continuing, you agree to our Terms of Service.",
-//                                         style:
-//                                             normalFont(MColors.textGrey, null),
-//                                       ),
-//                                     ),
-//                                   ),
-//                                 ],
-//                               ),
-//                               SizedBox(height: 20.0),
-//                               _isButtonDisabled == true
-//                                   ? primaryButtonPurple(
-//                                       //if button is loading
-//                                       progressIndicator(Colors.white),
-//                                       null,
-//                                     )
-//                                   : primaryButtonPurple(
-//                                       Text(
-//                                         "Next step",
-//                                         style: boldFont(
-//                                           MColors.primaryWhite,
-//                                           16.0,
-//                                         ),
-//                                       ),
-//                                       _isButtonDisabled ? null : _submit,
-//                                     ),
-//                               SizedBox(height: 20.0),
-//                             ],
-//                           ),
-//                         ],
-//                       ),
-//                     ),
-//                   ],
-//                 ),
-//               ),
-//             ),
-//           );
-//         },
-//       ),
-//     );
-//   }
-
-//   Widget showAlert() {
-//     if (_error != null) {
-//       return Container(
-//         child: Row(
-//           children: <Widget>[
-//             Padding(
-//               padding: const EdgeInsets.only(right: 5.0),
-//               child: Icon(
-//                 Icons.error_outline,
-//                 color: Colors.redAccent,
-//               ),
-//             ),
-//             Expanded(
-//               child: Text(
-//                 _error,
-//                 style: normalFont(Colors.redAccent, 15.0),
-//               ),
-//             ),
-//           ],
-//         ),
-//         height: 60,
-//         width: double.infinity,
-//         padding: const EdgeInsets.all(10.0),
-//         decoration: BoxDecoration(
-//           color: MColors.primaryWhiteSmoke,
-//           border: Border.all(width: 1.0, color: Colors.redAccent),
-//           borderRadius: BorderRadius.all(
-//             Radius.circular(4.0),
-//           ),
-//         ),
-//       );
-//     } else {
-//       return Container(
-//         height: 0.0,
-//       );
-//     }
-//   }
-
-//   void _toggle() {
-//     setState(() {
-//       _obscureText = !_obscureText;
-//     });
-//   }
-
-//   void _submit() async {
-//     final form = formKey.currentState;
-
-//     // try {
-//     //   final auth = MyProvider.of(context).auth;
-
-//     //   if (form.validate()) {
-//     //     form.save();
-
-//     //     if (mounted) {
-//     //       setState(() {
-//     //         _isButtonDisabled = true;
-//     //         _isEnabled = false;
-//     //       });
-//     //     }
-
-//     //     String uid = await auth.createUserWithEmailAndPassword(
-//     //       _email,
-//     //       _password,
-//     //       _phone,
-//     //     );
-
-//     //     storeNewUser(_name, _phone, _email);
-//     //     print("Signed Up with new $uid");
-
-//     //     Navigator.of(context).pushReplacement(
-//     //       CupertinoPageRoute(
-//     //         builder: (_) => MyApp(),
-//     //       ),
-//     //     );
-//     //   } else {
-//     //     setState(() {
-//     //       _autoValidate = true;
-//     //       _isEnabled = true;
-//     //     });
-//     //   }
-//     // } catch (e) {
-//     //   if (mounted) {
-//     //     setState(() {
-//     //       _error = e.message;
-//     //       _isButtonDisabled = false;
-//     //       _isEnabled = true;
-//     //     });
-//     //   }
-
-//     //   print("ERRORR ==>");
-//     //   print(e);
-//     // }
-//   }
-// }
+  @override
+  void dispose() {
+    // _focusNodePassword.dispose();
+    _controllerUsername.dispose();
+    _controllerPassword.dispose();
+    super.dispose();
+  }
+}

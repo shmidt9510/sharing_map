@@ -2,12 +2,13 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sharing_map/items/item_list_page.dart';
+import 'package:sharing_map/screens/item_list_page.dart';
 
 import 'package:image_picker/image_picker.dart';
 
-import 'controllers/item_controller.dart';
-import 'models/item.dart';
+import 'package:sharing_map/controllers/item_controller.dart';
+import 'package:sharing_map/models/item.dart';
+import 'package:sharing_map/utils/shared.dart';
 
 enum PhotoSource { FILE, NETWORK }
 
@@ -139,7 +140,7 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
                     onPressed: () {
                       // Item(this.id, this.name, this.desc, this.picture, this.creationDate);
                       var item = Item(
-                          userId: 'dc94023b-8658-42e6-bcdc-2c810feb07af',
+                          userId: SharedPrefs().userId,
                           name: titleController.text,
                           desc: descriptionController.text,
                           cityId: 1,

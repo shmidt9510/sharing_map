@@ -1,9 +1,12 @@
+import 'package:sharing_map/path.dart';
+
 import 'intro_screen.dart';
 
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:sharing_map/utils/colors.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class OnBoardingPage extends StatefulWidget {
   const OnBoardingPage({Key? key}) : super(key: key);
@@ -16,9 +19,7 @@ class OnBoardingPageState extends State<OnBoardingPage> {
   final introKey = GlobalKey<IntroductionScreenState>();
 
   void _onIntroEnd(context) {
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (_) => IntroScreen()),
-    );
+    GoRouter.of(context).go(SMPath.start);
   }
 
   Widget _buildFullscreenImage() {

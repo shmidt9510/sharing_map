@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sharing_map/items/models/item.dart';
-import 'package:sharing_map/items/services/item_service.dart';
+import 'package:sharing_map/models/item.dart';
+import 'package:sharing_map/services/item_service.dart';
 import 'package:get/get.dart';
 
 class ItemController extends GetxController {
@@ -15,13 +15,12 @@ class ItemController extends GetxController {
 
   Future<void> fetchItems() async {
     isLoading(true);
-
     try {
       isLoading(true);
       var itemTemp = await ItemWebService.fetchItems();
-      if (itemTemp != null) {
-        items(itemTemp);
-      }
+      items(itemTemp);
+    } catch (e) {
+      Future.error("no_data");
     } finally {
       isLoading(false);
     }
@@ -56,7 +55,7 @@ class ItemController extends GetxController {
     try {
       isLoading(true);
       var response = await ItemWebService.addItem(item);
-      if (response!.isEmpty) {
+      if (response.isEmpty) {
         isLoading(false);
       }
     } finally {
