@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sharing_map/screens/item_list_page.dart';
 
 import 'package:image_picker/image_picker.dart';
 

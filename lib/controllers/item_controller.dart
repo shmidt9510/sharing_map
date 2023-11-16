@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:sharing_map/models/item.dart';
 import 'package:sharing_map/services/item_service.dart';
 import 'package:get/get.dart';

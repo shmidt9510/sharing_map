@@ -6,7 +6,6 @@ import 'package:sharing_map/utils/constants.dart';
 import 'interceptors.dart';
 
 import 'package:sharing_map/models/item.dart';
-import 'package:flutter/foundation.dart';
 import 'package:http_interceptor/http_interceptor.dart';
 
 class ItemWebService {
@@ -15,7 +14,8 @@ class ItemWebService {
   );
 
   static Future<List<Item>> fetchItems() async {
-    var response = await client.get(Uri.parse(Constants.BACK_URL + "/items"));
+    var response =
+        await client.get(Uri.parse(Constants.BACK_URL + "/items/all"));
 
     if (response.statusCode != 200) {
       return Future.error("failed_get_data");

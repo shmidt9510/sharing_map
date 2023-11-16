@@ -8,5 +8,6 @@ class SMPath {
   static const String home = "/home";
   static const String addItem = "/addItem";
   static const String profile = "/profile";
+  static const String profileEdit = "edit";
   static const String favorite = "/favirote";
 }

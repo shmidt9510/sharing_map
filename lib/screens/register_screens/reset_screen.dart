@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:sharing_map/screens/register_screens/login_screen.dart';
 import 'package:sharing_map/utils/colors.dart';
 // import 'package:sharing_map/utils/textFieldFormaters.dart';
 import 'package:sharing_map/widgets/allWidgets.dart';

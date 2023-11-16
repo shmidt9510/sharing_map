@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'constants.dart';
 
 Future checkInternetConnectivity() async {
   bool isConnected = false;

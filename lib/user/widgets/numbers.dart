@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:sharing_map/models/user.dart';
 
 class NumbersWidget extends StatelessWidget {
+  NumbersWidget(User user);
   @override
   Widget build(BuildContext context) => Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          buildButton(context, '4.8', 'Рейтинг'),
+        children: [
+          buildButton(context, '0', 'Объявлений'),
           buildDivider(),
-          buildButton(context, '35', 'Объявлений'),
-          buildDivider(),
-          buildButton(context, '50', 'Отзывы'),
+          buildButton(context, '0', 'Отзывов'),
         ],
       );
   Widget buildDivider() => Container(
-        height: 24,
+        height: 12,
         child: VerticalDivider(),
       );
 

@@ -1,19 +1,17 @@
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
-import 'package:sharing_map/main.dart';
 import 'package:sharing_map/scaffold_with_nav.dart';
 import 'package:sharing_map/screens/add_new_item_page.dart';
-import 'package:sharing_map/screens/getstarted_screens/get_start.dart';
 import 'package:sharing_map/screens/getstarted_screens/intro_screen.dart';
 import 'package:sharing_map/screens/item_list_page.dart';
 import 'package:sharing_map/screens/register_screens/registration_screen.dart';
 import 'package:sharing_map/screens/register_screens/reset_screen.dart';
 import 'package:sharing_map/test_details_screen.dart';
-import 'package:sharing_map/test_root_page.dart';
 import 'package:sharing_map/path.dart';
 
 import 'package:sharing_map/screens/register_screens/login_screen.dart';
 import 'package:sharing_map/theme.dart';
+import 'package:sharing_map/user/page/edit_profile.dart';
 import 'package:sharing_map/user/page/profile_page.dart';
 import 'package:sharing_map/utils/colors.dart';
 
@@ -116,10 +114,17 @@ class _RouterStartState extends State<RouterStart> {
                 StatefulShellBranch(
                   routes: <RouteBase>[
                     GoRoute(
-                      path: SMPath.profile,
-                      builder: (BuildContext context, GoRouterState state) =>
-                          ProfilePage(),
-                    ),
+                        path: SMPath.profile,
+                        builder: (BuildContext context, GoRouterState state) =>
+                            ProfilePage(),
+                        routes: [
+                          GoRoute(
+                            path: SMPath.profileEdit,
+                            builder:
+                                (BuildContext context, GoRouterState state) =>
+                                    EditProfilePage(),
+                          ),
+                        ]),
                   ],
                 ),
                 // The route branch for the third tab of the bottom navigation bar.

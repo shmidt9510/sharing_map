@@ -1,6 +1,7 @@
 import 'dart:convert';
+import 'package:sharing_map/utils/constants.dart';
+
 import 'interceptors.dart';
-import 'constants.dart';
 
 import 'package:sharing_map/models/category.dart';
 import 'package:sharing_map/models/subcategory.dart';
@@ -15,7 +16,8 @@ class CommonWebService {
   );
 
   static Future<List<ItemCategory>?> fetchCategories() async {
-    var response = await client.get(Uri.parse(Constants.url + "/categories"));
+    var response =
+        await client.get(Uri.parse(Constants.BACK_URL + "/categories/all"));
 
     if (response.statusCode == 200) {
       var jsonData = jsonDecode(response.body);
@@ -28,7 +30,7 @@ class CommonWebService {
 
   static Future<List<Subcategory>?> fetchSubcategories() async {
     var response =
-        await client.get(Uri.parse(Constants.url + "/subcategories"));
+        await client.get(Uri.parse(Constants.BACK_URL + "/subcategories/all"));
     if (response.statusCode == 200) {
       var jsonData = jsonDecode(response.body);
 
@@ -39,7 +41,8 @@ class CommonWebService {
   }
 
   static Future<List<City>?> fetchCities() async {
-    var response = await client.get(Uri.parse(Constants.url + "/cities"));
+    var response =
+        await client.get(Uri.parse(Constants.BACK_URL + "/cities/all"));
 
     if (response.statusCode == 200) {
       var jsonData = jsonDecode(response.body);

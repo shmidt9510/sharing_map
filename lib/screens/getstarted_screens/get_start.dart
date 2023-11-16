@@ -1,6 +1,5 @@
 import 'package:sharing_map/path.dart';
 
-import 'intro_screen.dart';
 
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:sharing_map/utils/colors.dart';

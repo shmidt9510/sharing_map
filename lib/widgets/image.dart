@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -17,5 +16,12 @@ class CachedImage {
                 color: Colors.red,
               ),
             ));
+  }
+
+  static CachedNetworkImageProvider GetProvider(SMImage image) {
+    final url = S3Client.GetPresigned(image.BuildPath()).toString();
+    return CachedNetworkImageProvider(
+      url,
+    );
   }
 }

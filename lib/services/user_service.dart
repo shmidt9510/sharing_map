@@ -1,13 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:sharing_map/models/user.dart';
 import 'package:sharing_map/services/photo_service.dart';
 
 import 'package:sharing_map/utils/constants.dart';
 import 'package:sharing_map/utils/shared.dart';
 import 'interceptors.dart';
 
-import 'package:sharing_map/models/item.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http_interceptor/http_interceptor.dart';
 
@@ -100,5 +100,54 @@ class UserWebService {
     } else {
       return "";
     }
+  }
+
+  static Future<bool> updateUser(User user, XFile? file) async {
+    var uri = "/users/update";
+    if (file != null) {
+      PhotoWebService service = PhotoWebService();
+      await service.addPhotos([file], "user"); //TBD
+    }
+
+    var response = await client.put(Uri.parse(Constants.BACK_URL + uri),
+        headers: {
+          "content-type": "application/json",
+          "accept": "application/json",
+        },
+        body: jsonEncode(user.toJson()));
+
+    if (response.statusCode != HttpStatus.ok) {
+      Future.error("error code " + response.statusCode.toString());
+      return Future.error("failed_create_item");
+    }
+    return true;
+  }
+
+  static Future<User> getUser(String id) async {
+    var uri = "/users/info";
+
+    // if (file != null) {
+    //   PhotoWebService service = PhotoWebService();
+    //   service.addPhotos([file], "user"); //TBD
+    // }
+
+    var response =
+        await client.get(Uri.parse(Constants.BACK_URL + uri), headers: {
+      "content-type": "application/json",
+      "accept": "application/json",
+    }, params: {
+      "id": id
+    });
+
+    debugPrint(response.toString());
+    if (response.statusCode != HttpStatus.ok) {
+      Future.error("error code " + response.statusCode.toString());
+      return Future.error("failed_create_item");
+    }
+
+    var jsonData = jsonDecode(response.body);
+    var user = User.fromJson(jsonData);
+    // return (jsonData as List).map((e) => Item.fromJson(e)).toList();
+    return user;
   }
 }

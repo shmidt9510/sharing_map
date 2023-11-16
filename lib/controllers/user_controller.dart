@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:sharing_map/models/user.dart';
 import 'package:sharing_map/services/user_service.dart';
 import 'package:get/get.dart';
 import 'package:sharing_map/utils/shared.dart';
-import 'package:sharing_map/services/user_service.dart';
 
 class UserController extends GetxController {
   var isLoading = true.obs;
-
+  User? myself = null;
   @override
   void onInit() {
     super.onInit();
@@ -18,16 +18,10 @@ class UserController extends GetxController {
     if (!SharedPrefs().logged) {
       return;
     }
-    isLoading(true);
-    try {
-      isLoading(true);
-      await UserWebService.refresh();
-    } catch (e) {
-      Future.error("no_data");
-    } finally {
-      isLoading(false);
+
+    if (SharedPrefs().userId.isNotEmpty) {
+      myself = await GetUser(SharedPrefs().userId);
     }
-    return;
   }
 
   Future<bool> Signup(String email, String username, String password) async {
@@ -51,13 +45,55 @@ class UserController extends GetxController {
   Future<bool> Login(String email, String password) async {
     try {
       bool result = await UserWebService.login(email, password);
-      debugPrint("find_ok");
+      return result;
+    } catch (e) {
+      debugPrint(e.toString());
+      return false;
+    }
+  }
+
+  Future<bool> UpdateUser(User user, XFile? xfile) async {
+    try {
+      bool result = await UserWebService.updateUser(user, xfile);
+      if (result && myself != null) {
+        myself?.bio = user.bio;
+        myself?.username = user.username;
+      }
       return result;
     } catch (e) {
       debugPrint(e.toString());
       debugPrint("why here");
       return false;
     }
+  }
+
+  Future<User> GetUser(String id) async {
+    var result = await UserWebService.getUser(id);
+    if (id == SharedPrefs().userId) {
+      myself = result;
+    }
+    return result;
+  }
+
+  Future<User> GetMyself() async {
+    if (myself != null) {
+      return myself!;
+    }
+    return await UserWebService.getUser(SharedPrefs().userId);
+  }
+
+  Future<bool> Logout() async {
+    // var result = await UserWebService.getUser(id);
+    // if (id == SharedPrefs().userId) {
+    //   myself = result;
+    // }
+    // return result;
+    return true;
+  }
+
+  Future<bool> DeleteMyself() async {
+    return true;
+    // return await UserWebService.getUser(SharedPrefs().userId);
   }
   // Future
   // Future<RxList<Item>> waitItem() async {

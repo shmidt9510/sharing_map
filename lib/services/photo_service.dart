@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -21,6 +20,7 @@ class PhotoWebService {
   );
 
   Future addPhotos(List<XFile> files, String itemId) async {
+    debugPrint("in new photo");
     var uri = "/" + itemId + "/image/urls";
     var imageCount = files.length;
     var response =

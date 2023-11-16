@@ -1,13 +1,13 @@
-
 import 'package:flutter/material.dart';
+import 'package:sharing_map/models/user.dart';
 
 class ProfileWidget extends StatelessWidget {
-  final String imagePath;
+  final User user;
   final VoidCallback onClicked;
 
   const ProfileWidget({
     Key? key,
-    required this.imagePath,
+    required this.user,
     required this.onClicked,
   }) : super(key: key);
 
@@ -15,22 +15,11 @@ class ProfileWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = Theme.of(context).colorScheme.primary;
 
-    return Center(
-      child: Stack(
-        children: [
-          buildImage(),
-          Positioned(
-            bottom: 0,
-            right: 4,
-            child: buildEditIcon(color),
-          ),
-        ],
-      ),
-    );
+    return Center(child: buildImage());
   }
 
   Widget buildImage() {
-    final image = NetworkImage(imagePath);
+    final image = user.buildImage().GetProvider();
 
     return ClipOval(
       child: Material(

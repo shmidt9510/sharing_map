@@ -1,15 +1,17 @@
+import 'package:sharing_map/models/photo.dart';
+
 class User {
   final String id;
-  final String username;
-  final String? imagePath;
-  final String email;
-  final String bio;
+  String username;
+  SMImage? profileImage;
+  String? email;
+  String bio;
 
-  const User({
+  User({
     required this.id,
     required this.username,
-    this.imagePath,
-    required this.email,
+    this.profileImage,
+    this.email,
     required this.bio,
   });
 
@@ -17,9 +19,14 @@ class User {
       id: json["id"],
       username: json["username"],
       email: json["email"],
-      imagePath: json["imagePath"],
+      // profileImage: json["imagePath"],
       bio: json["bio"]);
 
   Map<String, dynamic> toJson() =>
       {"id": id, "username": username, "bio": bio, "email": email};
+
+  SMImage buildImage() {
+    return SMImage(id: id, itemId: id, updatedAt: DateTime.now());
+  }
+  // profileImage.toJson()
 }

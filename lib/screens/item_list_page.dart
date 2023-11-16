@@ -1,14 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sharing_map/screens/item_detail_page.dart';
 import 'package:sharing_map/models/item.dart';
 import 'package:sharing_map/widgets/item_block.dart';
 import 'package:sharing_map/controllers/item_controller.dart';
-import 'package:sharing_map/user/utils/user_preferences.dart';
-import 'package:sharing_map/user/page/profile_page.dart';
-import 'package:sharing_map/widgets/image.dart';
 
 class ItemListPage extends StatefulWidget {
   // final String id;
@@ -101,7 +97,8 @@ class _ItemListPageState extends State<ItemListPage> {
       child: Material(
         color: Colors.transparent,
         child: CachedNetworkImage(
-            imageUrl: UserPreferences.myUser.imagePath.toString()),
+            imageUrl:
+                "https://hips.hearstapps.com/hmg-prod/images/little-cute-maltipoo-puppy-royalty-free-image-1652926025.jpg"),
 
         // Ink.image(
         //   image:,

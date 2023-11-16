@@ -1,9 +1,7 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 import 'package:sharing_map/models/item.dart';
-import 'package:sharing_map/models/photo.dart';
 import 'package:sharing_map/widgets/image.dart';
 
 class ItemDetailPage extends StatelessWidget {

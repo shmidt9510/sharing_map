@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.shaaring_map">
+    <uses-permission android:name="android.permission.INTERNET"/>
    <application
         android:label="shaaring_map"
         android:name="${applicationName}"

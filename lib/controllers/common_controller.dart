@@ -21,10 +21,10 @@ class CommonController extends GetxController {
 
     try {
       isLoading(true);
-      var categoriesTemp = await CommonWebService.fetchCategories();
-      if (categoriesTemp != null) {
-        categories(categoriesTemp);
-      }
+      // var categoriesTemp = await CommonWebService.fetchCategories();
+      // if (categoriesTemp != null) {
+      //   categories(categoriesTemp);
+      // }
       var subcategoriesTemp = await CommonWebService.fetchSubcategories();
       if (subcategoriesTemp != null) {
         subcategories(subcategoriesTemp);

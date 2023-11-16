@@ -1,17 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sharing_map/controllers/user_controller.dart';
 import 'package:sharing_map/path.dart';
-import 'package:sharing_map/screens/register_screens/reset_screen.dart';
 import 'package:sharing_map/utils/colors.dart';
-import 'package:sharing_map/utils/shared.dart';
-import 'package:sharing_map/utils/textFieldFormaters.dart';
-import 'package:sharing_map/widgets/allWidgets.dart';
 // import 'package:sharing_map/widgets/textInputWidget.dart';
-import 'package:passwordfield/passwordfield.dart';
 import 'package:email_validator/email_validator.dart';
 
 class LoginScreen extends StatefulWidget {

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 AppBar buildAppBar(BuildContext context) {
   final icon = CupertinoIcons.moon_stars;
@@ -13,7 +14,10 @@ AppBar buildAppBar(BuildContext context) {
     elevation: 0,
     actions: [
       IconButton(
-        icon: Icon(icon),
+        icon: Icon(
+          Icons.edit,
+          color: context.theme.secondaryHeaderColor,
+        ),
         onPressed: () {},
       ),
     ],
