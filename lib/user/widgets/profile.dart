@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:sharing_map/models/user.dart';
 
 class ProfileWidget extends StatelessWidget {
@@ -19,18 +20,17 @@ class ProfileWidget extends StatelessWidget {
   }
 
   Widget buildImage() {
-    final image = user.buildImage().GetProvider();
+    final image = user.buildImage().Get();
 
     return ClipOval(
       child: Material(
         color: Colors.transparent,
-        child: Ink.image(
-          image: image,
-          fit: BoxFit.cover,
-          width: 128,
-          height: 128,
-          child: InkWell(onTap: onClicked),
-        ),
+        child: InkWell(child: image, onTap: onClicked
+            // fit: BoxFit.cover,
+            // width: 128,
+            // height: 128,
+            // child: InkWell(onTap: onClicked),
+            ),
       ),
     );
   }

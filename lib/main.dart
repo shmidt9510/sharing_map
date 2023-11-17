@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sharing_map/controllers/user_controller.dart';
 import 'package:sharing_map/router.dart';
 import 'package:sharing_map/controllers/item_controller.dart';
@@ -12,6 +13,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:sharing_map/path.dart';
 
 void main() async {
+  // SharedPreferences preferences = await SharedPreferences.getInstance();
+  // await preferences.clear();
   WidgetsFlutterBinding.ensureInitialized();
   await SharedPrefs().init();
   await dotenv.load(fileName: ".env");
@@ -53,7 +56,6 @@ class _AppState extends State<App> {
   }
 
   String _getInitPath() {
-    return SMPath.profile;
     if (SharedPrefs().logged && SharedPrefs().authToken.length > 0) {
       return SMPath.home;
     }

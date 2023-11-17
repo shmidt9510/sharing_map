@@ -102,7 +102,7 @@ class _IntroScreenState extends State<IntroScreen> {
             actions: <Widget>[
               ElevatedButton(
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  GoRouter.of(context).pop();
                 },
                 child: Text(
                   "Cancel",

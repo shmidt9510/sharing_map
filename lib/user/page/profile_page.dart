@@ -26,7 +26,7 @@ class _ProfilePageState extends State<ProfilePage> {
       appBar: AppBar(
         leading: BackButton(
           color: Colors.green,
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () => GoRouter.of(context).go(SMPath.home),
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -118,7 +118,7 @@ class _ProfilePageState extends State<ProfilePage> {
               child: const Text('Да'),
               onPressed: () {
                 _result = true;
-                Navigator.of(context).pop();
+                Navigator.of(context).maybePop();
               },
             ),
             TextButton(
@@ -127,7 +127,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               child: const Text('Нет'),
               onPressed: () {
-                Navigator.of(context).pop();
+                Navigator.of(context).maybePop();
               },
             ),
           ],
@@ -152,7 +152,7 @@ class _ProfilePageState extends State<ProfilePage> {
               child: const Text('Да'),
               onPressed: () {
                 _result = true;
-                Navigator.of(context).pop();
+                Navigator.of(context).maybePop();
               },
             ),
             TextButton(
@@ -161,7 +161,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               child: const Text('Нет'),
               onPressed: () {
-                Navigator.of(context).pop();
+                Navigator.of(context).maybePop();
               },
             ),
           ],

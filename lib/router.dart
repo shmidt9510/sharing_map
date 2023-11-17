@@ -1,15 +1,14 @@
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 import 'package:sharing_map/scaffold_with_nav.dart';
-import 'package:sharing_map/screens/add_new_item_page.dart';
-import 'package:sharing_map/screens/getstarted_screens/intro_screen.dart';
-import 'package:sharing_map/screens/item_list_page.dart';
-import 'package:sharing_map/screens/register_screens/registration_screen.dart';
-import 'package:sharing_map/screens/register_screens/reset_screen.dart';
-import 'package:sharing_map/test_details_screen.dart';
+import 'package:sharing_map/screens/items/add_new_item_page.dart';
+import 'package:sharing_map/screens/getstarted/intro_screen.dart';
+import 'package:sharing_map/screens/items/item_list_page.dart';
+import 'package:sharing_map/screens/register/registration_code.dart';
+import 'package:sharing_map/screens/register/registration_screen.dart';
 import 'package:sharing_map/path.dart';
 
-import 'package:sharing_map/screens/register_screens/login_screen.dart';
+import 'package:sharing_map/screens/register/login_screen.dart';
 import 'package:sharing_map/theme.dart';
 import 'package:sharing_map/user/page/edit_profile.dart';
 import 'package:sharing_map/user/page/profile_page.dart';
@@ -66,11 +65,19 @@ class _RouterStartState extends State<RouterStart> {
                         path: SMPath.registration,
                         builder: (BuildContext context, GoRouterState state) =>
                             RegistrationScreen(),
+                        routes: <RouteBase>[
+                          GoRoute(
+                            path: SMPath.registrationCode,
+                            builder:
+                                (BuildContext context, GoRouterState state) =>
+                                    RegistrationCodeScreen(),
+                          ),
+                        ],
                       ),
                       GoRoute(
                         path: SMPath.forgetPassword,
                         builder: (BuildContext context, GoRouterState state) =>
-                            ResetScreen(),
+                            RegistrationCodeScreen(),
                       ),
                     ],
                   ),
@@ -89,15 +96,15 @@ class _RouterStartState extends State<RouterStart> {
                       builder: (BuildContext context, GoRouterState state) =>
                           ItemListPage(),
                       routes: <RouteBase>[
-                        GoRoute(
-                          path: 'details/:param',
-                          builder:
-                              (BuildContext context, GoRouterState state) =>
-                                  DetailsScreen(
-                            label: 'B',
-                            param: state.pathParameters['param'],
-                          ),
-                        ),
+                        // GoRoute(
+                        //   path: 'details/:param',
+                        //   builder:
+                        //       (BuildContext context, GoRouterState state) =>
+                        //           DetailsScreen(
+                        //     label: 'B',
+                        //     param: state.pathParameters['param'],
+                        //   ),
+                        // ),
                       ],
                     ),
                   ],

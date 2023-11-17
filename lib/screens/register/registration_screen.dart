@@ -181,19 +181,14 @@ class _LoginState extends State<RegistrationScreen> {
                       ),
                     ),
                     onPressed: () async {
-                      debugPrint("here");
-                      SnackBar snackBar;
                       if (_formKey.currentState?.validate() ?? false) {
-                        debugPrint("her1");
                         var result = await _userController.Signup(
                             _controllerMail.text,
                             _controllerUsername.text,
                             _controllerPassword.text);
                         if (result) {
-                          debugPrint("here ok ");
-
-                          snackBar = SnackBar(
-                            content: const Text('Пройдите по ссылке в письме'),
+                          var snackBar = SnackBar(
+                            content: const Text('Отправили вам код в письме)'),
                             action: SnackBarAction(
                               label: 'Закрыть',
                               onPressed: () {
@@ -203,12 +198,15 @@ class _LoginState extends State<RegistrationScreen> {
                           );
                           debugPrint(SharedPrefs().userId);
                           ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                          GoRouter.of(context)
-                              .go(SMPath.start + "/" + SMPath.login);
+                          GoRouter.of(context).go(SMPath.start +
+                              "/" +
+                              SMPath.registration +
+                              "/" +
+                              SMPath.registrationCode);
                         } else {
                           debugPrint("here not ok ");
 
-                          snackBar = SnackBar(
+                          var snackBar = SnackBar(
                             content: const Text('Не получилось :('),
                             action: SnackBarAction(
                               label: 'Закрыть',
@@ -217,10 +215,7 @@ class _LoginState extends State<RegistrationScreen> {
                               },
                             ),
                           );
-                          // Find the ScaffoldMessenger in the widget tree
-                          // and use it to show a SnackBar.
                           ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                          // GoRouter.of(context).go(SMPath.home);
                         }
                       }
                     },

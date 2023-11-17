@@ -32,12 +32,29 @@ class UserController extends GetxController {
         debugPrint("isEmpty");
         return false;
       }
-      debugPrint("set result");
-      SharedPrefs().userId = result;
+      SharedPrefs().confirmationToken = result;
       return true;
     } catch (e) {
       debugPrint(e.toString());
-      debugPrint("why here");
+      return false;
+    }
+  }
+
+  Future<bool> SignupConfirm(String token) async {
+    if (SharedPrefs().confirmationToken.isEmpty) {
+      return false;
+    }
+    try {
+      String result = await UserWebService.signupConfirm(
+          SharedPrefs().confirmationToken, token);
+      debugPrint("result result");
+      if (result.isEmpty) {
+        debugPrint("isEmpty");
+        return false;
+      }
+      return true;
+    } catch (e) {
+      debugPrint(e.toString());
       return false;
     }
   }
@@ -78,6 +95,9 @@ class UserController extends GetxController {
   Future<User> GetMyself() async {
     if (myself != null) {
       return myself!;
+    }
+    if (SharedPrefs().userId.isEmpty) {
+      return Future.error("no_data");
     }
     return await UserWebService.getUser(SharedPrefs().userId);
   }

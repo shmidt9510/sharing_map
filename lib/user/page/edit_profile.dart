@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -37,7 +36,7 @@ class _ProfilePageState extends State<EditProfilePage> {
         appBar: AppBar(
           leading: BackButton(
             color: context.theme.primaryColor,
-            onPressed: () => Navigator.of(context).pop(),
+            onPressed: () => Navigator.of(context).maybePop(),
           ),
           backgroundColor: Colors.transparent,
           elevation: 0,
@@ -81,7 +80,7 @@ class _ProfilePageState extends State<EditProfilePage> {
               ),
               child: const Text('Камера'),
               onPressed: () {
-                Navigator.of(context).pop();
+                Navigator.of(context).maybePop();
               },
             ),
             TextButton(
@@ -90,7 +89,7 @@ class _ProfilePageState extends State<EditProfilePage> {
               ),
               child: const Text('Галерея'),
               onPressed: () {
-                Navigator.of(context).pop();
+                Navigator.of(context).maybePop();
               },
             ),
           ],
@@ -149,7 +148,7 @@ class _ProfilePageState extends State<EditProfilePage> {
                   var result =
                       await _userController.UpdateUser(user, profileImage);
                   if (result) {
-                    Navigator.of(context).pop();
+                    Navigator.of(context).maybePop();
                   }
                 },
                 child: const Text('Добавить'),

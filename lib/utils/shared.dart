@@ -36,6 +36,13 @@ class SharedPrefs {
   set refreshToken(String value) {
     _sharedPrefs.setString(keyRefreshToken, value);
   }
+
+  String get confirmationToken =>
+      _sharedPrefs.getString(keyConfirmationToken) ?? "";
+
+  set confirmationToken(String value) {
+    _sharedPrefs.setString(keyConfirmationToken, value);
+  }
 }
 // String get isLogged => _sharedPrefs!.getString(keyUsername) ?? "";
 
@@ -50,3 +57,4 @@ const String keyIsLogged = "is_logged";
 const String keyIsFirst = "first_start";
 const String keyAuthToken = "key_auth_token";
 const String keyRefreshToken = "refresh_token";
+const String keyConfirmationToken = "confirmation_token";
