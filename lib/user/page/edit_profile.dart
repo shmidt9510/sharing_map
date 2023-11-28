@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -5,6 +7,7 @@ import 'package:sharing_map/controllers/user_controller.dart';
 import 'package:sharing_map/models/user.dart';
 import 'package:sharing_map/user/widgets/profile.dart';
 import 'package:sharing_map/utils/shared.dart';
+import 'package:sharing_map/widgets/image.dart';
 
 class EditProfilePage extends StatefulWidget {
   @override
@@ -15,7 +18,6 @@ class _ProfilePageState extends State<EditProfilePage> {
   // User _currentUser;
   ImagePicker imagePicker = ImagePicker();
   XFile? profileImage;
-  ImageSource _imageSource = ImageSource.gallery;
   UserController _userController = Get.find<UserController>();
 
   TextEditingController _userNameController = TextEditingController();
@@ -54,11 +56,17 @@ class _ProfilePageState extends State<EditProfilePage> {
                 physics: BouncingScrollPhysics(),
                 children: [
                   Center(
-                      child: ProfileWidget(
-                    user: user,
-                    onClicked: () async {
-                      selectImage();
-                    },
+                      child: Container(
+                    width: 200.0,
+                    height: 200.0,
+                    decoration: BoxDecoration(shape: BoxShape.circle),
+                    child: InkWell(
+                        onTap: () async {
+                          selectImage();
+                        },
+                        child: profileImage != null
+                            ? Image.file(File(profileImage!.path))
+                            : CachedImage.Get(user.getSMImage())),
                   )),
                   buildForm(user),
                 ],
@@ -151,7 +159,7 @@ class _ProfilePageState extends State<EditProfilePage> {
                     Navigator.of(context).maybePop();
                   }
                 },
-                child: const Text('Добавить'),
+                child: const Text('Сохранить'),
               ),
             ],
           ),

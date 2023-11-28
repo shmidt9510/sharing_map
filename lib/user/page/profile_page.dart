@@ -6,6 +6,7 @@ import 'package:sharing_map/models/user.dart';
 import 'package:sharing_map/path.dart';
 import 'package:sharing_map/user/widgets/numbers.dart';
 import 'package:sharing_map/user/widgets/profile.dart';
+import 'package:sharing_map/utils/shared.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -161,7 +162,8 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               child: const Text('Нет'),
               onPressed: () {
-                Navigator.of(context).maybePop();
+                SharedPrefs().clear();
+                GoRouter.of(context).go(SMPath.start);
               },
             ),
           ],
@@ -190,6 +192,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   },
                 ),
               ));
+              SharedPrefs().clear(); // TBD
               await Future.delayed(const Duration(seconds: 2));
               GoRouter.of(context).go(SMPath.start);
             }

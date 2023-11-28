@@ -1,27 +1,88 @@
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:sharing_map/models/photo.dart';
 import 'package:sharing_map/utils/s3_client.dart';
 
 class CachedImage {
-  static CachedNetworkImage Get(SMImage image) {
-    return CachedNetworkImage(
-        imageUrl: S3Client.GetPresigned(image.BuildPath()).toString(),
-        progressIndicatorBuilder: (context, url, progress) =>
-            const CircularProgressIndicator(),
-        errorWidget: (context, url, error) => const Center(
-              child: Icon(
-                Icons.error,
-                color: Colors.red,
-              ),
-            ));
+  static Widget Get(SMImage image) {
+    return FutureBuilder<Uri>(
+        future: S3Client.GetPresigned(image.BuildPath()),
+        builder: (BuildContext context, AsyncSnapshot<Uri> snapshot) {
+          if (snapshot.hasData) {
+            debugPrint("here");
+            var uri = snapshot.data as Uri;
+            return CachedNetworkImage(
+                imageUrl: uri.toString(),
+                progressIndicatorBuilder: (context, url, progress) =>
+                    const CircularProgressIndicator(),
+                errorWidget: (context, url, error) => const Center(
+                      child: Icon(
+                        Icons.error,
+                        color: Colors.red,
+                      ),
+                    ));
+          } else if (snapshot.hasError) {
+            debugPrint("has error");
+            return Row(
+              children: [
+                Placeholder(),
+                Text("fuck"),
+              ],
+            );
+          } else {
+            return Center(
+              child: Row(children: [
+                SizedBox(
+                  width: 60,
+                  height: 60,
+                  child: CircularProgressIndicator(),
+                ),
+              ]),
+            );
+          }
+        });
+    // String url = (S3Client.GetPresigned(image.BuildPath())).toString();
+    // return CachedNetworkImage(
+    //     imageUrl: url,
+    //     progressIndicatorBuilder: (context, url, progress) =>
+    //         const CircularProgressIndicator(),
+    //     errorWidget: (context, url, error) => const Center(
+    //           child: Icon(
+    //             Icons.error,
+    //             color: Colors.red,
+    //           ),
+    //         ));
   }
 
-  static CachedNetworkImageProvider GetProvider(SMImage image) {
-    final url = S3Client.GetPresigned(image.BuildPath()).toString();
-    return CachedNetworkImageProvider(
-      url,
-    );
+  static Widget GetProvider(SMImage image) {
+    return FutureBuilder<Uri>(
+        future: S3Client.GetPresigned(image.BuildPath()),
+        builder: (BuildContext context, AsyncSnapshot<Uri> snapshot) {
+          if (snapshot.hasData) {
+            var uri = snapshot.data as Uri;
+            return CachedNetworkImage(
+                imageUrl: uri.toString(),
+                progressIndicatorBuilder: (context, url, progress) =>
+                    const CircularProgressIndicator(),
+                errorWidget: (context, url, error) => const Center(
+                      child: Icon(
+                        Icons.error,
+                        color: Colors.red,
+                      ),
+                    ));
+          } else if (snapshot.hasError) {
+            return Placeholder();
+          } else {
+            return Center(
+              child: Row(children: [
+                SizedBox(
+                  width: 60,
+                  height: 60,
+                  child: CircularProgressIndicator(),
+                ),
+              ]),
+            );
+          }
+        });
   }
 }

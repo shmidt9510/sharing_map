@@ -28,23 +28,5 @@ class SMImage {
     return itemId! + "/" + id!;
   }
 
-  CachedNetworkImage Get() {
-    return CachedNetworkImage(
-        imageUrl: S3Client.GetPresigned(BuildPath()).toString(),
-        progressIndicatorBuilder: (context, url, progress) =>
-            const CircularProgressIndicator(),
-        errorWidget: (context, url, error) => const Center(
-              child: Icon(
-                Icons.error,
-                color: Colors.red,
-              ),
-            ));
-  }
-
-  CachedNetworkImageProvider GetProvider() {
-    final url = S3Client.GetPresigned(BuildPath()).toString();
-    return CachedNetworkImageProvider(
-      url,
-    );
-  }
+  static Placeholder() {}
 }

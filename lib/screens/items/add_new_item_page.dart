@@ -2,11 +2,13 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 import 'package:image_picker/image_picker.dart';
 
 import 'package:sharing_map/controllers/item_controller.dart';
 import 'package:sharing_map/models/item.dart';
+import 'package:sharing_map/path.dart';
 import 'package:sharing_map/utils/shared.dart';
 
 enum PhotoSource { FILE, NETWORK }
@@ -31,6 +33,7 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
     setState(() {});
   }
 
+  final FocusNode _focusNodePassword = FocusNode();
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   String dropdownValue = itemType.first;
@@ -50,6 +53,7 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
               Padding(
                 padding: const EdgeInsets.only(top: 10, bottom: 10),
                 child: TextField(
+                  focusNode: null,
                   autofocus: true,
                   controller: titleController,
                   decoration: const InputDecoration(
@@ -59,6 +63,7 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
                 ),
               ),
               TextField(
+                focusNode: _focusNodePassword,
                 autofocus: true,
                 controller: descriptionController,
                 minLines: 3,
@@ -136,8 +141,9 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
                     child: const Text('Отменить'),
                   ),
                   ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       // Item(this.id, this.name, this.desc, this.picture, this.creationDate);
+                      debugPrint("has user id " + SharedPrefs().userId);
                       var item = Item(
                           userId: SharedPrefs().userId,
                           name: titleController.text,
@@ -146,15 +152,21 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
                           categoryId: 1,
                           subcategoryId: 1,
                           downloadableImages: imageFileList);
-                      _itemsController.addItem(item);
-                      // context.read<TasksBloc>().add(AddTask(item: item));
-                      // context
-                      //     .read<TasksBloc>()
-                      //     .add(GetTodayTasks(date: dateController.text));
-                      // Navigator.pushReplacement(context,
-                      //     MaterialPageRoute(builder: (_) {
-                      //   return ItemListPage();
-                      // }));
+                      if (await _itemsController.addItem(item)) {
+                        await _itemsController.fetchItems();
+                        GoRouter.of(context).go(SMPath.home);
+                      } else {
+                        var snackBar = SnackBar(
+                          content: const Text('Не получилось :('),
+                          action: SnackBarAction(
+                            label: 'Закрыть',
+                            onPressed: () {
+                              // Some code to undo the change.
+                            },
+                          ),
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                      }
                     },
                     child: const Text('Добавить'),
                   ),
@@ -163,5 +175,11 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
             ]),
           ),
         ));
+  }
+
+  @override
+  void dispose() {
+    _focusNodePassword.dispose();
+    super.dispose();
   }
 }

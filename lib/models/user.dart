@@ -1,16 +1,21 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
 import 'package:sharing_map/models/photo.dart';
+import 'package:sharing_map/widgets/image.dart';
+
+const String PlaceholderId = "8d762611-38ff-41ff-ba2d-7dbfab85d750";
 
 class User {
   final String id;
   String username;
-  SMImage? profileImage;
+  bool? hasProfileImage = false;
   String? email;
   String bio;
 
   User({
     required this.id,
     required this.username,
-    this.profileImage,
+    this.hasProfileImage,
     this.email,
     required this.bio,
   });
@@ -19,13 +24,29 @@ class User {
       id: json["id"],
       username: json["username"],
       email: json["email"],
+      hasProfileImage: json["hasImage"],
       // profileImage: json["imagePath"],
       bio: json["bio"]);
 
   Map<String, dynamic> toJson() =>
       {"id": id, "username": username, "bio": bio, "email": email};
 
-  SMImage buildImage() {
+  Widget buildImage() {
+    if (hasProfileImage != null && hasProfileImage!) {
+      return CachedImage.Get(
+          SMImage(id: id, itemId: id, updatedAt: DateTime.now()));
+    }
+
+    return CachedImage.Get(SMImage(
+        id: PlaceholderId, itemId: PlaceholderId, updatedAt: DateTime.now()));
+  }
+
+  SMImage getSMImage() {
+    if (hasProfileImage != null && !(hasProfileImage!)) {
+      return SMImage(
+          id: PlaceholderId, itemId: PlaceholderId, updatedAt: DateTime.now());
+    }
+
     return SMImage(id: id, itemId: id, updatedAt: DateTime.now());
   }
   // profileImage.toJson()

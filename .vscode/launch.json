@@ -24,7 +24,11 @@
             "name": "shaaring_map (release mode)",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "release"
+            "flutterMode": "release",
+            "args" : [
+                "--dart-define=AWS_ACCESS_KEY_ID=YCAJEDpt9bO7gWdLfW1uk9t1W",
+                "--dart-define=AWS_SECRET_ACCESS_KEY=YCMrGFqgc-QHdbNItg0QDqJ1gP44ze9pmIWgGCBJ"
+            ]
         }
     ]
 }

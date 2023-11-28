@@ -8,7 +8,7 @@ import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 
 class S3Client {
-  static Uri GetPresigned(String path) {
+  static Future<Uri> GetPresigned(String path) async {
     final host = GetHost_();
     // Create a pre-signed URL for downloading the file
     final urlRequest = AWSHttpRequest.get(
@@ -17,7 +17,7 @@ class S3Client {
         AWSHeaders.host: host,
       },
     );
-    final signedUrl = GetSigner_().presignSync(
+    final signedUrl = await GetSigner_().presignSync(
       urlRequest,
       credentialScope: GetScope_(),
       serviceConfiguration: S3ServiceConfiguration(),
@@ -28,10 +28,10 @@ class S3Client {
   }
 
   static AWSSigV4Signer GetSigner_() {
-    var ss = const AWSSigV4Signer(
-      credentialsProvider: AWSCredentialsProvider.dartEnvironment(),
-    );
-    return ss;
+    debugPrint(dotenv.get('AWS_ACCESS_KEY_ID'));
+    debugPrint(dotenv.get('AWS_SECRET_ACCESS_KEY'));
+    return AWSSigV4Signer(
+        credentialsProvider: AWSCredentialsProvider.dartEnvironment());
   }
 
   static String GetHost_() {
@@ -52,7 +52,6 @@ class S3Client {
         headers: {"Content-Type": "image/jpg"});
     debugPrint(response.toString());
     if (response.statusCode / 200 != 1) {
-      debugPrint("not ok");
       return Future.error(response.toString());
     }
   }

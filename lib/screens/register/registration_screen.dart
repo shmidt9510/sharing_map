@@ -191,12 +191,9 @@ class _LoginState extends State<RegistrationScreen> {
                             content: const Text('Отправили вам код в письме)'),
                             action: SnackBarAction(
                               label: 'Закрыть',
-                              onPressed: () {
-                                // Some code to undo the change.
-                              },
+                              onPressed: () {},
                             ),
                           );
-                          debugPrint(SharedPrefs().userId);
                           ScaffoldMessenger.of(context).showSnackBar(snackBar);
                           GoRouter.of(context).go(SMPath.start +
                               "/" +
@@ -204,15 +201,11 @@ class _LoginState extends State<RegistrationScreen> {
                               "/" +
                               SMPath.registrationCode);
                         } else {
-                          debugPrint("here not ok ");
-
                           var snackBar = SnackBar(
                             content: const Text('Не получилось :('),
                             action: SnackBarAction(
                               label: 'Закрыть',
-                              onPressed: () {
-                                // Some code to undo the change.
-                              },
+                              onPressed: () {},
                             ),
                           );
                           ScaffoldMessenger.of(context).showSnackBar(snackBar);

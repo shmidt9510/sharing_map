@@ -107,7 +107,7 @@ class UserWebService {
     }
   }
 
-  static Future<String> signupConfirm(String token, String tokenId) async {
+  static Future<bool> signupConfirm(String token, String tokenId) async {
     var response =
         await client.post(Uri.parse(Constants.BACK_URL + "/signup/confirm"),
             headers: {
@@ -115,31 +115,38 @@ class UserWebService {
               "accept": "application/json",
             },
             body: jsonEncode(ConfirmDTO(tokenId, token).toJson()));
-
-    if (response.statusCode == 200) {
-      // SharedPrefs().userId = response["user_id"].toString();
-      var jsonData = jsonDecode(response.body);
-      debugPrint(jsonData);
-      // if (jsonData["confirmationTokenId"].toString().isEmpty) {
-      //   return Future.error("failed_get_confirmation_token");
-      // }
-      return jsonData["user_id"].toString();
-    } else {
+    var bodyDecoded = jsonDecode(response.body);
+    if (response.statusCode != 200) {
       return Future.error(
           "failed_with_status_code_" + response.statusCode.toString());
     }
+    SharedPrefs().logged = true;
+    SharedPrefs().authToken = bodyDecoded["accessToken"].toString();
+    SharedPrefs().refreshToken = bodyDecoded["refreshToken"].toString();
+    debugPrint("Access token " + bodyDecoded["accessToken"].toString());
+    debugPrint("Refresh token " + bodyDecoded["refreshToken"].toString());
+
+    Map<String, dynamic> decodedToken =
+        JwtDecoder.decode(SharedPrefs().authToken);
+    SharedPrefs().userId = decodedToken["user_id"] as String;
+    return true;
   }
 
-  static Future<String> isAuth() async {
-    var response =
-        await client.get(Uri.parse(Constants.BACK_URL + "/get_token"));
+  static Future<bool> isAuth() async {
+    try {
+      debugPrint("here");
+      var response =
+          await client.get(Uri.parse(Constants.BACK_URL + "/is_auth"));
+      debugPrint(response.toString());
+      if (response.statusCode == 200) {
+        var jsonData = jsonDecode(response.body);
 
-    if (response.statusCode == 200) {
-      var jsonData = jsonDecode(response.body);
-
-      return "";
-    } else {
-      return "";
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      return false;
     }
   }
 
@@ -191,7 +198,6 @@ class UserWebService {
 
     var jsonData = jsonDecode(response.body);
     var user = User.fromJson(jsonData);
-    // return (jsonData as List).map((e) => Item.fromJson(e)).toList();
     return user;
   }
 }

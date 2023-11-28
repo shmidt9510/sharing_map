@@ -20,7 +20,6 @@ class PhotoWebService {
   );
 
   Future addPhotos(List<XFile> files, String itemId) async {
-    debugPrint("in new photo");
     var uri = "/" + itemId + "/image/urls";
     var imageCount = files.length;
     var response =
@@ -39,10 +38,6 @@ class PhotoWebService {
       return Future.error("length of urls and photos are not equal");
     }
     for (int i = 0; i < files.length; i++) {
-      debugPrint('11111111111start download ' +
-          i.toString() +
-          '__' +
-          data[i].toString());
       await S3Client.UploadFile(Uri.parse(data[i].toString()), files[i])
           .onError((error, stackTrace) {
         return false;

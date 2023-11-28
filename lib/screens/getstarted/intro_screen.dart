@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sharing_map/path.dart';
@@ -35,6 +36,13 @@ class _IntroScreenState extends State<IntroScreen> {
                   ),
                 ),
                 SizedBox(height: 30.0),
+                Container(
+                  child: Text(
+                    dotenv.get('S3_BUCKET'),
+                    style: boldFont(MColors.primaryWhiteSmoke, 30.0),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
                 Container(
                   child: Text(
                     "Привет",

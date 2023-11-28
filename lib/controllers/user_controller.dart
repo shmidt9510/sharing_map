@@ -14,14 +14,23 @@ class UserController extends GetxController {
     CheckAuthorization();
   }
 
-  Future<void> CheckAuthorization() async {
+  Future<bool> CheckAuthorization() async {
     if (!SharedPrefs().logged) {
-      return;
+      debugPrint("IS FALSE 1");
+      return false;
     }
 
     if (SharedPrefs().userId.isNotEmpty) {
-      myself = await GetUser(SharedPrefs().userId);
+      // myself = await GetUser(SharedPrefs().userId);
+      if (!await UserWebService.isAuth()) {
+        debugPrint("IS FALSE 2");
+        return false;
+      }
+      debugPrint("IS TRUE");
+      return true;
     }
+    debugPrint("IS FALSE 3");
+    return false;
   }
 
   Future<bool> Signup(String email, String username, String password) async {
@@ -45,14 +54,8 @@ class UserController extends GetxController {
       return false;
     }
     try {
-      String result = await UserWebService.signupConfirm(
+      return await UserWebService.signupConfirm(
           SharedPrefs().confirmationToken, token);
-      debugPrint("result result");
-      if (result.isEmpty) {
-        debugPrint("isEmpty");
-        return false;
-      }
-      return true;
     } catch (e) {
       debugPrint(e.toString());
       return false;

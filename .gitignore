@@ -4,6 +4,7 @@
 *.log
 *.pyc
 *.swp
+*credentials
 .DS_Store
 .atom/
 .buildlog/

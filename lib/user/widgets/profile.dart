@@ -20,18 +20,13 @@ class ProfileWidget extends StatelessWidget {
   }
 
   Widget buildImage() {
-    final image = user.buildImage().Get();
-
-    return ClipOval(
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(300.0),
       child: Material(
-        color: Colors.transparent,
-        child: InkWell(child: image, onTap: onClicked
-            // fit: BoxFit.cover,
-            // width: 128,
-            // height: 128,
-            // child: InkWell(onTap: onClicked),
-            ),
-      ),
+          color: Colors.transparent,
+          child: Stack(
+            children: [user.buildImage(), InkWell(onTap: onClicked)],
+          )),
     );
   }
 

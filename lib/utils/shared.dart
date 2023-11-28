@@ -43,6 +43,16 @@ class SharedPrefs {
   set confirmationToken(String value) {
     _sharedPrefs.setString(keyConfirmationToken, value);
   }
+
+  void clear() {
+    _sharedPrefs.clear();
+  }
+
+  bool get isFirstRun => _sharedPrefs.getBool(keyIsFirst) ?? true;
+
+  set isFirstRun(bool value) {
+    _sharedPrefs.setBool(keyIsFirst, value);
+  }
 }
 // String get isLogged => _sharedPrefs!.getString(keyUsername) ?? "";
 

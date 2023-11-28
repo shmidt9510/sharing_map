@@ -1,6 +1,5 @@
 import 'package:sharing_map/path.dart';
 
-
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:sharing_map/utils/colors.dart';
 import 'package:flutter/foundation.dart';
@@ -56,40 +55,7 @@ class OnBoardingPageState extends State<OnBoardingPage> {
       globalBackgroundColor: MColors.primaryGreen,
       allowImplicitScrolling: true,
       autoScrollDuration: 3000,
-      // globalHeader: Align(
-      //   alignment: Alignment.topRight,
-      //   child: SafeArea(
-      //     child: Padding(
-      //       padding: const EdgeInsets.only(top: 16, right: 16),
-      //       child: _buildImage('intro_0.png', 100),
-      //     ),
-      //   ),
-      // ),
-      // globalFooter: SizedBox(
-      //   width: double.infinity,
-      //   height: 60,
-      //   child: ElevatedButton(
-      //     child: const Text(
-      //       'Let\'s go right away!',
-      //       style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
-      //     ),
-      //     onPressed: () => _onIntroEnd(context),
-      //   ),
-      // ),
       pages: [
-        // PageViewModel(
-        //   title: "Full Screen Page",
-        //   // body:
-        //   //     "Pages can be full screen as well.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc id euismod lectus, non tempor felis. Nam rutrum rhoncus est ac venenatis.",
-        //   bodyWidget: _buildImage('intro_0.png'),
-        //   // decoration: pageDecoration.copyWith(
-        //   //   contentMargin: const EdgeInsets.symmetric(horizontal: 16),
-        //   //   fullScreen: true,
-        //   //   bodyFlex: 2,
-        //   //   imageFlex: 3,
-        //   //   safeArea: 100,
-        //   // ),
-        // ),
         PageViewModel(
           title: "Поделись",
           body:
@@ -109,51 +75,6 @@ class OnBoardingPageState extends State<OnBoardingPage> {
           image: _buildImage('intro_3.png'),
           decoration: pageDecoration,
         ),
-
-        // PageViewModel(
-        //   title: "Another title page",
-        //   body: "Another beautiful body text for this example onboarding",
-        //   image: _buildImage('images/intro/intro_2.svg'),
-        //   footer: ElevatedButton(
-        //     onPressed: () {
-        //       introKey.currentState?.animateScroll(0);
-        //     },
-        //     style: ElevatedButton.styleFrom(
-        //       backgroundColor: Colors.lightBlue,
-        //       shape: RoundedRectangleBorder(
-        //         borderRadius: BorderRadius.circular(8.0),
-        //       ),
-        //     ),
-        //     child: const Text(
-        //       'FooButton',
-        //       style: TextStyle(color: Colors.white),
-        //     ),
-        //   ),
-        //   decoration: pageDecoration.copyWith(
-        //     bodyFlex: 6,
-        //     imageFlex: 6,
-        //     safeArea: 80,
-        //   ),
-        // ),
-        // PageViewModel(
-        //   title: "Title of last page - reversed",
-        //   bodyWidget: Row(
-        //     mainAxisAlignment: MainAxisAlignment.center,
-        //     children: [
-        //       Text("Click on ", style: bodyStyle),
-        //       Icon(Icons.edit),
-        //       Text(" to edit a post", style: bodyStyle),
-        //     ],
-        //   ),
-        //   decoration: pageDecoration.copyWith(
-        //     bodyFlex: 2,
-        //     imageFlex: 4,
-        //     bodyAlignment: Alignment.bottomCenter,
-        //     imageAlignment: Alignment.topCenter,
-        //   ),
-        //   image: _buildImage('images/intro/intro_3.svg'),
-        //   reverse: true,
-        // ),
       ],
       onDone: () => _onIntroEnd(context),
       onSkip: () => _onIntroEnd(context), // You can override onSkip callback

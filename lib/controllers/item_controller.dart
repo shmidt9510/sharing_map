@@ -48,17 +48,15 @@ class ItemController extends GetxController {
   //   }
   // }
 
-  void addItem(Item item) async {
-    isLoading(true);
-
+  Future<bool> addItem(Item item) async {
     try {
-      isLoading(true);
       var response = await ItemWebService.addItem(item);
       if (response.isEmpty) {
-        isLoading(false);
+        return false;
       }
-    } finally {
-      isLoading(false);
+      return true;
+    } catch (e) {
+      return false;
     }
   }
 }

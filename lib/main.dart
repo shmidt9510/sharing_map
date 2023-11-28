@@ -13,8 +13,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:sharing_map/path.dart';
 
 void main() async {
-  // SharedPreferences preferences = await SharedPreferences.getInstance();
-  // await preferences.clear();
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  await preferences.clear();
   WidgetsFlutterBinding.ensureInitialized();
   await SharedPrefs().init();
   await dotenv.load(fileName: ".env");
@@ -56,9 +56,22 @@ class _AppState extends State<App> {
   }
 
   String _getInitPath() {
+    String _path = SMPath.start;
+    if (SharedPrefs().isFirstRun) {
+      SharedPrefs().isFirstRun = false;
+      return SMPath.onboard;
+    }
+    _usersController.CheckAuthorization().then((value) {
+      if (!value) {
+        return _path;
+      }
+      debugPrint("IS OK");
+      _path = SMPath.home;
+    });
     if (SharedPrefs().logged && SharedPrefs().authToken.length > 0) {
+      debugPrint("IS LOGGED YAY!!");
       return SMPath.home;
     }
-    return SMPath.start;
+    return _path;
   }
 }

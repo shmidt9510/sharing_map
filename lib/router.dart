@@ -1,6 +1,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 import 'package:sharing_map/scaffold_with_nav.dart';
+import 'package:sharing_map/screens/getstarted/get_start.dart';
 import 'package:sharing_map/screens/items/add_new_item_page.dart';
 import 'package:sharing_map/screens/getstarted/intro_screen.dart';
 import 'package:sharing_map/screens/items/item_list_page.dart';
@@ -81,6 +82,10 @@ class _RouterStartState extends State<RouterStart> {
                       ),
                     ],
                   ),
+                  GoRoute(
+                      path: SMPath.onboard,
+                      builder: (BuildContext context, GoRouterState state) =>
+                          OnBoardingPage()),
                 ]),
             StatefulShellRoute.indexedStack(
               builder: (BuildContext context, GoRouterState state,

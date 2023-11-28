@@ -84,7 +84,7 @@ class _LoginState extends State<RegistrationCodeScreen> {
     bool result = await _userController.SignupConfirm(code);
     if (!result) {
       var snackBar = SnackBar(
-        content: const Text('Ура можно залогиниться'),
+        content: const Text('Что-то пошло не так'),
         action: SnackBarAction(
           label: 'Закрыть',
           onPressed: () {
@@ -96,17 +96,7 @@ class _LoginState extends State<RegistrationCodeScreen> {
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
       return false;
     }
-    var snackBar = SnackBar(
-      content: const Text('Ура можно залогиниться'),
-      action: SnackBarAction(
-        label: 'Закрыть',
-        onPressed: () {
-          // Some code to undo the change.
-        },
-      ),
-    );
-    debugPrint(SharedPrefs().userId);
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    GoRouter.of(context).go(SMPath.home);
     return true;
   }
 

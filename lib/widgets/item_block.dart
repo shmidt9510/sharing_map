@@ -108,7 +108,9 @@ class ItemBlock extends StatelessWidget {
                   topLeft: Radius.circular(10.0),
                   bottomLeft: Radius.circular(10.0),
                 ),
-                child: CachedImage.Get(_item.images![0]),
+                child: _item.images!.length > 0
+                    ? Container(child: CachedImage.Get(_item.images![0]))
+                    : Placeholder(),
               ),
             ),
           )),
