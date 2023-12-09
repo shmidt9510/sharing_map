@@ -6,7 +6,7 @@ class ProfileWidget extends StatelessWidget {
   final User user;
   final VoidCallback onClicked;
 
-  const ProfileWidget({
+  ProfileWidget({
     Key? key,
     required this.user,
     required this.onClicked,
@@ -20,14 +20,18 @@ class ProfileWidget extends StatelessWidget {
   }
 
   Widget buildImage() {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(300.0),
-      child: Material(
-          color: Colors.transparent,
-          child: Stack(
-            children: [user.buildImage(), InkWell(onTap: onClicked)],
-          )),
-    );
+    return Placeholder();
+    // ClipRRect(
+    //   borderRadius: BorderRadius.circular(300.0),
+    //   child: Material(color: Colors.transparent, child: user.buildImage()
+    //       // Stack(
+    //       //   children: [
+    //       //     ,
+    //       //     // InkWell(child: Placeholder(), onTap: onClicked)
+    //       //   ],
+    //       // )
+    //       ),
+    // );
   }
 
   Widget buildEditIcon(Color color) => buildCircle(

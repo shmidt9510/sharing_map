@@ -14,6 +14,7 @@ import 'package:sharing_map/utils/s3_client.dart';
 class PhotoWebService {
   static var client = InterceptedClient.build(
     interceptors: [
+      RefreshTokenInterceptor(),
       LoggerInterceptor(),
       AuthorizationInterceptor(),
     ],

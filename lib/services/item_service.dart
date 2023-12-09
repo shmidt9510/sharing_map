@@ -10,18 +10,40 @@ import 'package:http_interceptor/http_interceptor.dart';
 
 class ItemWebService {
   static var client = InterceptedClient.build(
-    interceptors: [LoggerInterceptor(), AuthorizationInterceptor()],
+    interceptors: [
+      RefreshTokenInterceptor(),
+      LoggerInterceptor(),
+      AuthorizationInterceptor()
+    ],
   );
 
-  static Future<List<Item>> fetchItems() async {
-    var response =
-        await client.get(Uri.parse(Constants.BACK_URL + "/items/all"));
+  static Future<List<Item>> fetchItems(
+      {int pageSize = 10,
+      int page = 0,
+      userId = null,
+      itemFilter = null}) async {
+    String uri = "/items/all";
+    if (userId != null) {
+      uri = "/users/$userId/items";
+    }
+    var response = await client.get(Uri.parse(Constants.BACK_URL + uri),
+        params: {
+          "size": pageSize,
+          "page": page,
+          "categoryId": itemFilter ?? 0
+        });
 
     if (response.statusCode != 200) {
       return Future.error("failed_get_data");
     }
-    var jsonData = jsonDecode(response.body);
-    return (jsonData as List).map((e) => Item.fromJson(e)).toList();
+    var jsonData = jsonDecode(utf8.decode(response.bodyBytes));
+    try {
+      return (jsonData["content"] as List)
+          .map((e) => Item.fromJson(e))
+          .toList();
+    } catch (e) {
+      return Future.error("failed_parse_content");
+    }
   }
 
   static Future<String> addItem(Item item) async {

@@ -8,7 +8,6 @@ class CommonController extends GetxController {
   var categories = <ItemCategory>[].obs;
   var subcategories = <Subcategory>[].obs;
   var cities = <City>[].obs;
-  var isLoading = true.obs;
 
   @override
   void onInit() {
@@ -16,15 +15,12 @@ class CommonController extends GetxController {
     fetchItems();
   }
 
-  void fetchItems() async {
-    isLoading(true);
-
+  Future<void> fetchItems() async {
     try {
-      isLoading(true);
-      // var categoriesTemp = await CommonWebService.fetchCategories();
-      // if (categoriesTemp != null) {
-      //   categories(categoriesTemp);
-      // }
+      var categoriesTemp = await CommonWebService.fetchCategories();
+      if (categoriesTemp != null) {
+        categories(categoriesTemp);
+      }
       var subcategoriesTemp = await CommonWebService.fetchSubcategories();
       if (subcategoriesTemp != null) {
         subcategories(subcategoriesTemp);
@@ -33,8 +29,8 @@ class CommonController extends GetxController {
       if (citiesTemp != null) {
         cities(citiesTemp);
       }
-    } finally {
-      isLoading(false);
+    } catch (e) {
+      return Future.error("fetch_common_objects_go_wrong");
     }
   }
 

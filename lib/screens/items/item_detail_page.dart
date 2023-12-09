@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:intl/intl.dart';
 
 import 'package:sharing_map/models/item.dart';
 import 'package:sharing_map/widgets/image.dart';
@@ -12,21 +13,19 @@ class ItemDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text("item Detail Page"),
-        ),
-        floatingActionButton: Padding(
-          padding: const EdgeInsets.only(bottom: 10.0),
-          child: FloatingActionButton.extended(
-            onPressed: () {
-              // Add your onPressed code here!
-            },
-            label: const Text('Связаться'),
-            icon: const Icon(Icons.messenger_outline_outlined),
-            backgroundColor: Colors.green,
-          ),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        appBar: AppBar(),
+        // floatingActionButton: Padding(
+        //   padding: const EdgeInsets.only(bottom: 10.0),
+        //   child: FloatingActionButton.extended(
+        //     onPressed: () {
+        //       // Add your onPressed code here!
+        //     },
+        //     label: const Text('Связаться'),
+        //     icon: const Icon(Icons.messenger_outline_outlined),
+        //     backgroundColor: Colors.green,
+        //   ),
+        // ),
+        // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         body: ListView(
           // padding: const EdgeInsets.all(8),
           children: [
@@ -41,26 +40,51 @@ class ItemDetailPage extends StatelessWidget {
                   ),
                 ],
               ),
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 16.0),
-                child: GetSlider(item.images, context),
+              child: GetSlider(item.images, context),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Row(
+                children: [
+                  Container(
+                      child: Text("",
+                          style: TextStyle(
+                              fontWeight: FontWeight.normal,
+                              fontStyle: FontStyle.italic))),
+                  Spacer(),
+                  Container(
+                      height: 50,
+                      child: Text(
+                          DateFormat('dd.MM.yyyy')
+                              .format(item.creationDate ?? DateTime.now()),
+                          style: TextStyle(
+                              fontWeight: FontWeight.normal,
+                              fontStyle: FontStyle.italic))),
+                ],
               ),
             ),
             Container(
-                height: 50,
-                child: Text(item.creationDate.toString(),
-                    style: TextStyle(
-                        fontWeight: FontWeight.normal,
-                        fontStyle: FontStyle.italic))),
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                child: Text(
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                    item.name ?? "",
+                    style:
+                        TextStyle(fontSize: 30, fontWeight: FontWeight.bold))),
             Container(
-                height: 50,
-                child: Text(item.name ?? "",
-                    style: TextStyle(fontWeight: FontWeight.bold))),
-            Container(
+                padding: EdgeInsets.symmetric(horizontal: 10),
                 child: Text(item.desc ?? "",
+                    style: TextStyle(fontWeight: FontWeight.normal))),
+            Container(
+              height: 20,
+            ),
+            Container(
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                child: Text(item.adress ?? "",
                     style: TextStyle(
                         fontWeight: FontWeight.normal,
                         fontStyle: FontStyle.normal))),
+            // Container(child: Image(image: ))
           ],
         ));
   }

@@ -9,14 +9,15 @@ class SMImage {
   // final Url? url;
   SMImage({this.id, this.itemId, this.updatedAt});
 
-  factory SMImage.fromJson(Map<String, dynamic> json, String itemId_) =>
-      SMImage(
-          id: json["id"],
-          itemId: itemId_,
-          // picture: json["picture"],
-          updatedAt: json["updated_at"] == null
-              ? null
-              : DateTime.parse(json["updated_at"]));
+  factory SMImage.fromJson(String imageId, String itemId_) => SMImage(
+      id: imageId,
+      itemId: itemId_,
+      // picture: json["picture"],
+      updatedAt: null
+      // ["updated_at"] == null
+      //     ? null
+      //     : DateTime.parse(json["updated_at"])
+      );
 
   Map<String, dynamic> toJson() =>
       {"id": id, "item_id": itemId, "updated_at": updatedAt};

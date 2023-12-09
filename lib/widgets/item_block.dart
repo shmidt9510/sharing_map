@@ -17,7 +17,7 @@ class TextDescriptionBlock extends StatelessWidget {
           child: Container(
             constraints: BoxConstraints(maxWidth: context.width * 3 / 5),
             child: Text(
-              _item.desc ?? "",
+              _item.name ?? "",
               maxLines: 3,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
@@ -31,7 +31,9 @@ class TextDescriptionBlock extends StatelessWidget {
         ),
         Flexible(
             child: Text(
-          "_item.name",
+          overflow: TextOverflow.ellipsis,
+          _item.desc ?? "",
+          maxLines: 1,
           textAlign: TextAlign.start,
         )),
         Flexible(
@@ -49,7 +51,9 @@ class TextDescriptionBlock extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(left: 2.0),
                       child: Text(
-                        _item.name ?? "",
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        _item.adress ?? "",
                         textAlign: TextAlign.start,
                         style: TextStyle(fontSize: 12),
                       ),
@@ -85,34 +89,28 @@ class ItemBlock extends StatelessWidget {
             color: Colors.grey.withOpacity(0.5),
             spreadRadius: 5,
             blurRadius: 7,
-            offset: Offset(0, 3), // changes position of shadow
+            offset: Offset(0, 3),
           ),
         ],
         borderRadius: BorderRadius.all(Radius.circular(10)),
-        // цвет Container'а мы указываем в BoxDecoration
         color: Colors.white,
       ),
-      // color: Colors.green,
-      // InkWell позволяет отслеживать
-      // различные события, например: нажатие
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Flexible(
               child: Container(
             width: 100,
-            child: FittedBox(
-              fit: BoxFit.fitHeight,
-              child: ClipRRect(
+            child: ClipRRect(
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(10.0),
                   bottomLeft: Radius.circular(10.0),
                 ),
-                child: _item.images!.length > 0
-                    ? Container(child: CachedImage.Get(_item.images![0]))
-                    : Placeholder(),
-              ),
-            ),
+                child: FittedBox(
+                    fit: BoxFit.fitWidth,
+                    child: _item.images!.length > 0
+                        ? Container(child: CachedImage.Get(_item.images![0]))
+                        : Placeholder())),
           )),
           Flexible(
             flex: 2,

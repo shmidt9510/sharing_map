@@ -13,6 +13,7 @@ class Item {
   final DateTime? creationDate;
   final List<SMImage>? images;
   final List<XFile>? downloadableImages;
+  final String? adress;
   // final Set<
   // final String? author;
 
@@ -28,21 +29,22 @@ class Item {
       this.subcategoryId,
       this.userId,
       this.images = null,
-      this.downloadableImages = null});
+      this.downloadableImages = null,
+      this.adress = null});
 
   factory Item.fromJson(Map<String, dynamic> json) => Item(
       id: json["id"].toString(),
       name: json["name"],
       desc: json["text"],
-      creationDate: json["creationDate"] == null
-          ? null
-          : DateTime.parse(json["creationDate"]),
-      userId: json["user"]["id"],
-      cityId: json["city"]["id"],
-      categoryId: json["category"]["id"],
-      subcategoryId: json["subcategory"]["id"],
-      images: List<SMImage>.from(json["images"]
-          .map((model) => SMImage.fromJson(model, json["id"].toString()))));
+      creationDate:
+          json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
+      userId: json["userId"],
+      cityId: json["cityId"],
+      categoryId: json["categoryId"],
+      subcategoryId: json["subcategoryId"],
+      adress: json["address"],
+      images: List<SMImage>.from(json["imagesId"].map((model) =>
+          SMImage.fromJson(model.toString(), json["id"].toString()))));
   // (json["images"].map((x) => SMImage.fromJson(x))).toList<SMImage>());
 
   Map<String, dynamic> toJson() => {
@@ -54,7 +56,7 @@ class Item {
         "category": {"id": categoryId},
         "subcategory": {"id": subcategoryId},
         "images": images?.map((x) => x.toJson()),
-        "adress": "asvasdvasdv"
+        "adress": adress
       };
 }
 

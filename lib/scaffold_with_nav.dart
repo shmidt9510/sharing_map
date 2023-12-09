@@ -8,7 +8,7 @@ class ScaffoldWithNavBar extends StatelessWidget {
   const ScaffoldWithNavBar({
     required this.navigationShell,
     Key? key,
-  }) : super(key: key ?? const ValueKey<String>('SomeTestFuckingScaffold'));
+  }) : super(key: key ?? const ValueKey<String>('ScaffoldKey'));
 
   /// The navigation shell and container for the branch Navigators.
   final StatefulNavigationShell navigationShell;
@@ -28,11 +28,12 @@ class ScaffoldWithNavBar extends StatelessWidget {
         // `navigationShell.route.branches`.
         items: [
           BottomNavigationBarItem(
-              activeIcon: Icon(Icons.safety_check),
+              activeIcon: Icon(Icons.home),
               icon: Icon(Icons.home, color: _color),
               label: 'Главная'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.add, color: _color), label: 'Добавить'),
+              icon: Icon(Icons.add_circle_outlined, color: _color),
+              label: 'Добавить'),
           BottomNavigationBarItem(
               icon: Icon(Icons.supervised_user_circle_rounded),
               label: 'Профиль'),

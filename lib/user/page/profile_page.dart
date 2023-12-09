@@ -7,6 +7,7 @@ import 'package:sharing_map/path.dart';
 import 'package:sharing_map/user/widgets/numbers.dart';
 import 'package:sharing_map/user/widgets/profile.dart';
 import 'package:sharing_map/utils/shared.dart';
+import 'package:sharing_map/screens/items/item_widgets.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -40,33 +41,44 @@ class _ProfilePageState extends State<ProfilePage> {
               return Center(child: CircularProgressIndicator());
             }
             _user = snapshot.data as User;
-            return ListView(
-              physics: BouncingScrollPhysics(),
-              children: [
-                Padding(
-                  padding: EdgeInsetsDirectional.only(start: 20, end: 20),
-                  child: Row(
-                    children: [
-                      Flexible(
-                          flex: 1,
-                          child: ProfileWidget(
-                            user: _user!,
-                            onClicked: () async {},
-                          )),
-                      Flexible(
-                          flex: 2,
-                          child: Column(
-                            children: [
-                              buildName(_user!),
-                              NumbersWidget(_user!),
-                            ],
-                          )),
-                    ],
-                  ),
+            if (_user == null) {
+              return Center(child: Placeholder());
+            }
+            return SingleChildScrollView(
+              physics: ScrollPhysics(),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: context.height / 5,
+                      child: Padding(
+                        padding: EdgeInsetsDirectional.only(start: 20, end: 20),
+                        child: Row(
+                          children: [
+                            Flexible(
+                                flex: 1,
+                                child: _user?.buildImage() ?? Placeholder()),
+                            Flexible(
+                              flex: 2,
+                              child: Column(
+                                children: [
+                                  buildName(_user!),
+                                  NumbersWidget(_user!),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    buildAbout(_user!),
+                    const SizedBox(height: 48),
+                    ItemsListView(userId: _user!.id)
+                  ],
                 ),
-                const SizedBox(height: 48),
-                buildAbout(_user!),
-              ],
+              ),
             );
           }),
     );
@@ -80,7 +92,7 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
           const SizedBox(height: 4),
           Text(
-            user.email!,
+            user.email ?? "no email",
             style: TextStyle(color: Colors.grey),
           )
         ],

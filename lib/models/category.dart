@@ -1,4 +1,3 @@
-
 class ItemCategory {
   final int? id;
   final String? name;
@@ -11,18 +10,17 @@ class ItemCategory {
 
   factory ItemCategory.fromJson(Map<String, dynamic> json) => ItemCategory(
       id: json["id"],
-      name: json["category_name"],
+      name: json["name"],
       description: json["description"],
       imageUrl: json["imageUrl"],
-      updatedAt: json["updated_at"] == null
-          ? null
-          : DateTime.parse(json["updated_at"]));
+      updatedAt:
+          json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]));
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "category_name": name,
+        "name": name,
         "description": description,
-        "image_url": imageUrl,
-        "updated_at": updatedAt
+        "imageUrl": imageUrl,
+        "updatedAt": updatedAt
       };
 }

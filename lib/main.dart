@@ -13,11 +13,19 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:sharing_map/path.dart';
 
 void main() async {
-  SharedPreferences preferences = await SharedPreferences.getInstance();
-  await preferences.clear();
   WidgetsFlutterBinding.ensureInitialized();
+  // SharedPreferences preferences = await SharedPreferences.getInstance();
+  // await preferences.clear();
   await SharedPrefs().init();
   await dotenv.load(fileName: ".env");
+  WidgetsFlutterBinding.ensureInitialized();
+  final CommonController _commonController = Get.put(CommonController());
+  final ItemController _itemsController = Get.put(ItemController());
+  final UserController _usersController = Get.put(UserController());
+  WidgetsFlutterBinding.ensureInitialized();
+  await _itemsController.fetchItems();
+  await _usersController.CheckAuthorization();
+  await _commonController.fetchItems();
   runApp(App());
 }
 
@@ -27,15 +35,17 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-  final CommonController _commonController = Get.put(CommonController());
-  final ItemController _itemsController = Get.put(ItemController());
-  final UserController _usersController = Get.put(UserController());
+  final CommonController _commonController = Get.find<CommonController>();
+  final ItemController _itemsController = Get.find<ItemController>();
+  final UserController _usersController = Get.find<UserController>();
 
   @override
   void initState() {
+    debugPrint("on init");
     _itemsController.onInit();
     _usersController.onInit();
     _commonController.onInit();
+    debugPrint("on init end");
     debugPrint("on init " + SharedPrefs().userId);
     debugPrint("auth token " + SharedPrefs().authToken);
     debugPrint("refresh token " + SharedPrefs().refreshToken);
@@ -56,10 +66,11 @@ class _AppState extends State<App> {
   }
 
   String _getInitPath() {
+    return SMPath.home;
     String _path = SMPath.start;
     if (SharedPrefs().isFirstRun) {
       SharedPrefs().isFirstRun = false;
-      return SMPath.onboard;
+      return SMPath.start;
     }
     _usersController.CheckAuthorization().then((value) {
       if (!value) {

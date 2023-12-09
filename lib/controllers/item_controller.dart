@@ -4,24 +4,22 @@ import 'package:get/get.dart';
 
 class ItemController extends GetxController {
   var items = <Item>[].obs;
-  var isLoading = true.obs;
 
-  @override
-  void onInit() {
-    super.onInit();
-    fetchItems().then((value) => printInfo());
-  }
-
-  Future<void> fetchItems() async {
-    isLoading(true);
+  Future<List<Item>> fetchItems(
+      {int pageSize = 10,
+      int page = 0,
+      String? userId = null,
+      int? itemFilter}) async {
     try {
-      isLoading(true);
-      var itemTemp = await ItemWebService.fetchItems();
-      items(itemTemp);
+      var itemTemp = await ItemWebService.fetchItems(
+          pageSize: pageSize,
+          page: page,
+          userId: userId,
+          itemFilter: itemFilter);
+      items.addAll(itemTemp);
+      return itemTemp;
     } catch (e) {
-      Future.error("no_data");
-    } finally {
-      isLoading(false);
+      return Future.error("no_data");
     }
   }
 
@@ -33,20 +31,6 @@ class ItemController extends GetxController {
   void onRefresh() async {
     fetchItems();
   }
-
-  // void fetchQuery(String query) async {
-  //   isLoading(true);
-
-  //   try {
-  //     isLoading(true);
-  //     var articleTemp = await ItemWebService.fetchItemsQuery(query);
-  //     if (articleTemp != null) {
-  //       articles(articleTemp);
-  //     }
-  //   } finally {
-  //     isLoading(false);
-  //   }
-  // }
 
   Future<bool> addItem(Item item) async {
     try {

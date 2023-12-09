@@ -40,6 +40,7 @@ class ConfirmDTO {
 class UserWebService {
   static var client = InterceptedClient.build(
     interceptors: [
+      RefreshTokenInterceptor(),
       LoggerInterceptor(),
       AuthorizationInterceptor(),
     ],
@@ -96,7 +97,7 @@ class UserWebService {
 
     if (response.statusCode == 200) {
       // SharedPrefs().userId = response["user_id"].toString();
-      var jsonData = jsonDecode(response.body);
+      var jsonData = jsonDecode(utf8.decode(response.bodyBytes));
       if (jsonData["confirmationTokenId"].toString().isEmpty) {
         return Future.error("failed_get_confirmation_token");
       }
@@ -139,8 +140,6 @@ class UserWebService {
           await client.get(Uri.parse(Constants.BACK_URL + "/is_auth"));
       debugPrint(response.toString());
       if (response.statusCode == 200) {
-        var jsonData = jsonDecode(response.body);
-
         return true;
       } else {
         return false;
@@ -196,7 +195,7 @@ class UserWebService {
       return Future.error("failed_create_item");
     }
 
-    var jsonData = jsonDecode(response.body);
+    var jsonData = jsonDecode(utf8.decode(response.bodyBytes));
     var user = User.fromJson(jsonData);
     return user;
   }
