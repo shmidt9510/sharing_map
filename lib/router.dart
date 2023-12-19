@@ -13,7 +13,9 @@ import 'package:sharing_map/screens/register/login_screen.dart';
 import 'package:sharing_map/theme.dart';
 import 'package:sharing_map/user/page/edit_profile.dart';
 import 'package:sharing_map/user/page/profile_page.dart';
+import 'package:sharing_map/user/page/user_profile_page.dart';
 import 'package:sharing_map/utils/colors.dart';
+import 'package:sharing_map/utils/shared.dart';
 
 class RouterStart extends StatefulWidget {
   RouterStart({super.key, required this.initLocation});
@@ -46,7 +48,6 @@ class _RouterStartState extends State<RouterStart> {
             ShellRoute(
                 builder: (context, state, child) {
                   return Scaffold(
-                    backgroundColor: MColors.dashAmber,
                     // appBar: AppBar(),
                     body: Center(child: child),
                   );
@@ -101,15 +102,13 @@ class _RouterStartState extends State<RouterStart> {
                       builder: (BuildContext context, GoRouterState state) =>
                           ItemListPage(),
                       routes: <RouteBase>[
-                        // GoRoute(
-                        //   path: 'details/:param',
-                        //   builder:
-                        //       (BuildContext context, GoRouterState state) =>
-                        //           DetailsScreen(
-                        //     label: 'B',
-                        //     param: state.pathParameters['param'],
-                        //   ),
-                        // ),
+                        GoRoute(
+                            path: 'user/:userId',
+                            builder:
+                                (BuildContext context, GoRouterState state) {
+                              final userId = state.pathParameters['userId'];
+                              return UserProfilePage(userId: userId ?? "");
+                            }),
                       ],
                     ),
                   ],

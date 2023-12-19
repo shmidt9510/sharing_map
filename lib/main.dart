@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sharing_map/controllers/user_controller.dart';
 import 'package:sharing_map/router.dart';
@@ -22,14 +23,19 @@ void main() async {
   final CommonController _commonController = Get.put(CommonController());
   final ItemController _itemsController = Get.put(ItemController());
   final UserController _usersController = Get.put(UserController());
+  String _initPath = await _getInitPath(_usersController);
+  debugPrint("I AM INIT PATH " + _initPath);
   WidgetsFlutterBinding.ensureInitialized();
   await _itemsController.fetchItems();
   await _usersController.CheckAuthorization();
   await _commonController.fetchItems();
-  runApp(App());
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(App(_initPath));
 }
 
 class App extends StatefulWidget {
+  final String initPath;
+  App(this.initPath);
   @override
   State<App> createState() => _AppState();
 }
@@ -41,14 +47,10 @@ class _AppState extends State<App> {
 
   @override
   void initState() {
-    debugPrint("on init");
     _itemsController.onInit();
     _usersController.onInit();
     _commonController.onInit();
-    debugPrint("on init end");
-    debugPrint("on init " + SharedPrefs().userId);
-    debugPrint("auth token " + SharedPrefs().authToken);
-    debugPrint("refresh token " + SharedPrefs().refreshToken);
+    _commonController.getLocations(1);
     super.initState();
   }
 
@@ -62,27 +64,18 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
-    return RouterStart(initLocation: _getInitPath());
+    return RouterStart(initLocation: widget.initPath);
   }
+}
 
-  String _getInitPath() {
-    return SMPath.home;
-    String _path = SMPath.start;
-    if (SharedPrefs().isFirstRun) {
-      SharedPrefs().isFirstRun = false;
-      return SMPath.start;
-    }
-    _usersController.CheckAuthorization().then((value) {
-      if (!value) {
-        return _path;
-      }
-      debugPrint("IS OK");
-      _path = SMPath.home;
-    });
-    if (SharedPrefs().logged && SharedPrefs().authToken.length > 0) {
-      debugPrint("IS LOGGED YAY!!");
-      return SMPath.home;
-    }
-    return _path;
+Future<String> _getInitPath(UserController _usersController) async {
+  if (SharedPrefs().isFirstRun) {
+    SharedPrefs().isFirstRun = false;
+    return SMPath.onboard;
   }
+  var isAuhtorized = await _usersController.CheckAuthorization();
+  if (!isAuhtorized) {
+    return SMPath.start;
+  }
+  return SMPath.home;
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sharing_map/models/user.dart';
+import 'package:sharing_map/models/contact.dart';
 import 'package:sharing_map/services/user_service.dart';
 import 'package:get/get.dart';
 import 'package:sharing_map/utils/shared.dart';
@@ -155,4 +156,22 @@ class UserController extends GetxController {
   //     isLoading(false);
   //   }
   // }
+
+  Future<List<UserContact>> getUserContact(String userId) async {
+    try {
+      return UserWebService.getUserContact(userId);
+    } catch (e) {
+      return Future.error(e.toString());
+    }
+  }
+
+  Future<UserContact> saveContact(UserContact contact) async {
+    try {
+      return contact.id == null
+          ? UserWebService.saveContact(contact)
+          : UserWebService.updateContact(contact);
+    } catch (e) {
+      return Future.error(e.toString());
+    }
+  }
 }

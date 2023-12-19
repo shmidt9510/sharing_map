@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:sharing_map/models/contact.dart';
 import 'package:sharing_map/models/user.dart';
 import 'package:sharing_map/services/photo_service.dart';
 
@@ -40,8 +41,8 @@ class ConfirmDTO {
 class UserWebService {
   static var client = InterceptedClient.build(
     interceptors: [
-      RefreshTokenInterceptor(),
       LoggerInterceptor(),
+      RefreshTokenInterceptor(),
       AuthorizationInterceptor(),
     ],
   );
@@ -124,8 +125,6 @@ class UserWebService {
     SharedPrefs().logged = true;
     SharedPrefs().authToken = bodyDecoded["accessToken"].toString();
     SharedPrefs().refreshToken = bodyDecoded["refreshToken"].toString();
-    debugPrint("Access token " + bodyDecoded["accessToken"].toString());
-    debugPrint("Refresh token " + bodyDecoded["refreshToken"].toString());
 
     Map<String, dynamic> decodedToken =
         JwtDecoder.decode(SharedPrefs().authToken);
@@ -138,7 +137,7 @@ class UserWebService {
       debugPrint("here");
       var response =
           await client.get(Uri.parse(Constants.BACK_URL + "/is_auth"));
-      debugPrint(response.toString());
+      debugPrint(response.body.toString());
       if (response.statusCode == 200) {
         return true;
       } else {
@@ -161,7 +160,8 @@ class UserWebService {
           "content-type": "application/json",
           "accept": "application/json",
         },
-        body: jsonEncode(user.toJson()));
+        body: jsonEncode(user.toJson()),
+        params: {"id": SharedPrefs().userId});
 
     if (response.statusCode != HttpStatus.ok) {
       Future.error("error code " + response.statusCode.toString());
@@ -174,29 +174,75 @@ class UserWebService {
     if (id.isEmpty) {
       return Future.error("empty_user_id");
     }
-    var uri = "/users/info";
-
-    // if (file != null) {
-    //   PhotoWebService service = PhotoWebService();
-    //   service.addPhotos([file], "user"); //TBD
-    // }
-
+    var uri = "/users/$id";
     var response =
         await client.get(Uri.parse(Constants.BACK_URL + uri), headers: {
       "content-type": "application/json",
       "accept": "application/json",
-    }, params: {
-      "id": id
     });
 
-    debugPrint(response.toString());
     if (response.statusCode != HttpStatus.ok) {
       Future.error("error code " + response.statusCode.toString());
       return Future.error("failed_create_item");
     }
-
     var jsonData = jsonDecode(utf8.decode(response.bodyBytes));
-    var user = User.fromJson(jsonData);
-    return user;
+    return User.fromJson(jsonData);
+  }
+
+  static Future<List<UserContact>> getUserContact(String id) async {
+    if (id.isEmpty) {
+      return Future.error("empty_user_id");
+    }
+    var uri = "/users/$id/contacts";
+    var response =
+        await client.get(Uri.parse(Constants.BACK_URL + uri), headers: {
+      "content-type": "application/json",
+      "accept": "application/json",
+    }).timeout(Duration(seconds: 3));
+
+    if (response.statusCode != HttpStatus.ok) {
+      Future.error("error code " + response.statusCode.toString());
+      return Future.error("failed_create_item");
+    }
+    return (jsonDecode(utf8.decode(response.bodyBytes)) as List)
+        .map((e) => UserContact.fromJson(e))
+        .toList();
+  }
+
+  static Future<UserContact> saveContact(UserContact contact) async {
+    var uri = "/contacts/create";
+    var response = await client.post(Uri.parse(Constants.BACK_URL + uri),
+        headers: {
+          "content-type": "application/json",
+          "accept": "application/json",
+        },
+        body: jsonEncode(contact.toJson()),
+        params: {"id": SharedPrefs().userId});
+    if (response.statusCode / 200 != 1) {
+      return Future.error(
+          "failed_with_status_code_" + response.statusCode.toString());
+    }
+    UserContact newContact =
+        UserContact.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
+    return newContact;
+  }
+
+  static Future<UserContact> updateContact(UserContact contact) async {
+    var uri = "/contacts/update";
+    var response = await client.put(Uri.parse(Constants.BACK_URL + uri),
+        headers: {
+          "content-type": "application/json",
+          "accept": "application/json",
+        },
+        body: jsonEncode(contact.toJson()),
+        params: {"id": SharedPrefs().userId});
+    if (response.statusCode / 200 != 1) {
+      return Future.error(
+          "failed_with_status_code_" + response.statusCode.toString());
+    }
+    debugPrint(response.body);
+    UserContact newContact =
+        UserContact.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
+    return newContact;
   }
 }

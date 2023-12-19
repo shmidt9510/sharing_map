@@ -1,18 +1,21 @@
 import 'package:flutter/painting.dart';
 
 class MColors {
-  static const Color primaryPurple = const Color(0xFF6334DC);
-  static const Color primaryWhite = const Color(0xFFFFFFFF);
-  static const Color primaryWhiteSmoke = const Color(0xFFF5F5F5);
-  static const Color whiteText = const Color(0xFFF5F5F5);
-  static const Color primaryPlatinum = const Color(0xFFE5E4E2);
-  static const Color textDark = const Color(0xFF444444);
-  static const Color textGrey = const Color(0xFF808080);
-  static const Color lightGrey = const Color(0xFFD0D0D0);
-  static const Color appBarDark = const Color(0xFF0B0320);
-  static const Color dashBlue = const Color(0xFFDFF0FC);
-  static const Color dashPurple = const Color(0xFFE2DDF9);
-  static const Color dashAmber = const Color(0xFFF2E4D7);
+  static const Color appBarDark = Color.fromARGB(255, 208, 58, 12);
   static const Color primaryGreen = const Color.fromARGB(255, 54, 106, 83);
   static const Color secondaryGreen = const Color.fromARGB(255, 153, 202, 87);
+  static const Color white = const Color.fromARGB(255, 255, 255, 255);
+  static const Color black = const Color.fromARGB(255, 60, 60, 60);
+  static const Color overlay = Color.fromARGB(138, 60, 60, 60);
+  static const Color darkGrey = const Color.fromARGB(204, 60, 60, 60);
+  static const Color grey1 = const Color.fromARGB(255, 151, 151, 151);
+  static const Color grey2 = const Color.fromARGB(255, 173, 179, 188);
+  static const Color lightGrey = const Color.fromARGB(255, 224, 224, 224);
+  static const Color inputField = const Color.fromARGB(255, 242, 242, 242);
+  static const Color darkGreen = const Color.fromARGB(255, 54, 106, 83);
+  static const Color green = const Color.fromARGB(255, 153, 202, 87);
+  static const Color lightGreen = const Color.fromARGB(255, 223, 255, 181);
+  static const Color red1 = const Color.fromARGB(255, 238, 52, 26);
+  static const Color red2 = const Color.fromARGB(255, 215, 171, 96);
+  static const Color orange = const Color.fromARGB(255, 181, 35, 16);
 }

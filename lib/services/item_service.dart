@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/material.dart';
 import 'package:sharing_map/services/photo_service.dart';
 
 import 'package:sharing_map/utils/constants.dart';
+import 'package:sharing_map/utils/shared.dart';
 import 'interceptors.dart';
 
 import 'package:sharing_map/models/item.dart';
@@ -11,9 +13,9 @@ import 'package:http_interceptor/http_interceptor.dart';
 class ItemWebService {
   static var client = InterceptedClient.build(
     interceptors: [
-      RefreshTokenInterceptor(),
       LoggerInterceptor(),
-      AuthorizationInterceptor()
+      RefreshTokenInterceptor(),
+      AuthorizationInterceptor(),
     ],
   );
 
@@ -48,7 +50,9 @@ class ItemWebService {
 
   static Future<String> addItem(Item item) async {
     var uri = "/items/create";
+    debugPrint(item.toJson().toString());
     var response = await client.post(Uri.parse(Constants.BACK_URL + uri),
+        params: {"id": SharedPrefs().userId},
         headers: {
           "content-type": "application/json",
           "accept": "application/json",
@@ -64,5 +68,19 @@ class ItemWebService {
       service.addPhotos(item.downloadableImages!, response.body.toString());
     }
     return response.body.toString();
+  }
+
+  static Future<bool> deleteItem(String itemId) async {
+    var uri = "/items/$itemId/delete";
+    var response = await client.delete(
+      Uri.parse(Constants.BACK_URL + uri),
+      params: {"id": SharedPrefs().userId},
+    );
+
+    if (response.statusCode != HttpStatus.ok) {
+      Future.error("error code " + response.statusCode.toString());
+      return false;
+    }
+    return true;
   }
 }

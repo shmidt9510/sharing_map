@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sharing_map/controllers/common_controller.dart';
+import 'package:sharing_map/controllers/item_controller.dart';
 import 'package:sharing_map/models/item.dart';
+import 'package:sharing_map/models/location.dart';
+import 'package:sharing_map/utils/colors.dart';
 import 'package:sharing_map/widgets/image.dart';
 
 class TextDescriptionBlock extends StatelessWidget {
@@ -8,6 +12,15 @@ class TextDescriptionBlock extends StatelessWidget {
   TextDescriptionBlock(this._item);
   @override
   Widget build(BuildContext context) {
+    var _commonController = Get.find<CommonController>();
+    String _location = "";
+    if (_item.locationIds != null && _item.locationIds!.length > 0) {
+      _location = _commonController.locations
+              .elementAtOrNull(_item.locationIds![0] ?? 0)
+              ?.name ??
+          "";
+    }
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -53,7 +66,7 @@ class TextDescriptionBlock extends StatelessWidget {
                       child: Text(
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        _item.adress ?? "",
+                        _location,
                         textAlign: TextAlign.start,
                         style: TextStyle(fontSize: 12),
                       ),
@@ -107,10 +120,12 @@ class ItemBlock extends StatelessWidget {
                   bottomLeft: Radius.circular(10.0),
                 ),
                 child: FittedBox(
-                    fit: BoxFit.fitWidth,
+                    fit: BoxFit.cover,
                     child: _item.images!.length > 0
                         ? Container(child: CachedImage.Get(_item.images![0]))
-                        : Placeholder())),
+                        : Placeholder(
+                            color: MColors.black,
+                          ))),
           )),
           Flexible(
             flex: 2,

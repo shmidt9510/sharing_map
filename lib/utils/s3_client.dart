@@ -50,7 +50,6 @@ class S3Client {
     var response = await put(url,
         body: await image.readAsBytes(),
         headers: {"Content-Type": "image/jpg"});
-    debugPrint(response.toString());
     if (response.statusCode / 200 != 1) {
       return Future.error(response.toString());
     }

@@ -6,7 +6,6 @@ import 'package:go_router/go_router.dart';
 import 'package:sharing_map/path.dart';
 // import 'package:sharing_map/screens/register_screens/registration_screen.dart';
 import 'package:sharing_map/utils/colors.dart';
-import 'package:sharing_map/utils/strings.dart';
 import 'package:sharing_map/widgets/allWidgets.dart';
 
 class IntroScreen extends StatefulWidget {
@@ -39,22 +38,14 @@ class _IntroScreenState extends State<IntroScreen> {
                 Container(
                   child: Text(
                     dotenv.get('S3_BUCKET'),
-                    style: boldFont(MColors.primaryWhiteSmoke, 30.0),
+                    style: boldFont(MColors.white, 30.0),
                     textAlign: TextAlign.center,
                   ),
                 ),
                 Container(
                   child: Text(
                     "Привет",
-                    style: boldFont(MColors.primaryWhiteSmoke, 30.0),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                SizedBox(height: 10.0),
-                Container(
-                  child: Text(
-                    Strings.onBoardTitle_sub1,
-                    style: normalFont(MColors.primaryWhiteSmoke, 18.0),
+                    style: boldFont(MColors.white, 30.0),
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -72,7 +63,7 @@ class _IntroScreenState extends State<IntroScreen> {
               secondaryButtonGreen(
                 Text(
                   "Войти",
-                  style: boldFont(MColors.appBarDark, 16.0),
+                  style: boldFont(MColors.black, 16.0),
                 ),
                 () {
                   GoRouter.of(context).go(SMPath.start + "/" + SMPath.login);
@@ -83,8 +74,8 @@ class _IntroScreenState extends State<IntroScreen> {
               ),
               secondaryButtonGreenSmoke(
                 Text(
-                  "Зарегестрироваться",
-                  style: boldFont(MColors.appBarDark, 16.0),
+                  "Зарегистрироваться",
+                  style: boldFont(MColors.black, 16.0),
                 ),
                 () {
                   GoRouter.of(context)
@@ -105,7 +96,7 @@ class _IntroScreenState extends State<IntroScreen> {
           return AlertDialog(
             content: Text(
               "Are you sure you want to leave?",
-              style: normalFont(MColors.textGrey, 14.0),
+              style: normalFont(MColors.grey1, 14.0),
             ),
             actions: <Widget>[
               ElevatedButton(
@@ -114,7 +105,7 @@ class _IntroScreenState extends State<IntroScreen> {
                 },
                 child: Text(
                   "Cancel",
-                  style: normalFont(MColors.textGrey, 14.0),
+                  style: normalFont(MColors.grey1, 14.0),
                 ),
               ),
               ElevatedButton(

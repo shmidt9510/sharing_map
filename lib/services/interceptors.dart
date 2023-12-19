@@ -1,8 +1,10 @@
 import 'dart:convert';
 
-import 'package:http/http.dart';
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:http_interceptor/http_interceptor.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:sharing_map/path.dart';
 import 'package:sharing_map/utils/constants.dart';
 import 'package:sharing_map/utils/shared.dart';
 
@@ -55,8 +57,15 @@ class RefreshTokenInterceptor implements InterceptorContract {
   @override
   Future<RequestData> interceptRequest({required RequestData data}) async {
     try {
+      debugPrint(SharedPrefs().authToken);
       if (SharedPrefs().authToken.isNotEmpty) {
+        debugPrint("AZAZAZA " +
+            JwtDecoder.isExpired(SharedPrefs().authToken).toString());
+        debugPrint("AZAZAsbfdbdfbdbf " +
+            JwtDecoder.getExpirationDate(SharedPrefs().authToken).toString());
+
         if (JwtDecoder.isExpired(SharedPrefs().authToken)) {
+          debugPrint("avknalkjvnvnjsdvkmsadkvma");
           var response = await client.post(
               Uri.parse(Constants.BACK_URL + "/refreshToken"),
               headers: {
@@ -65,15 +74,27 @@ class RefreshTokenInterceptor implements InterceptorContract {
               },
               body: jsonEncode(
                   RefreshTokenDTO(SharedPrefs().refreshToken).toJson()));
+          debugPrint(response.body.toString());
+          debugPrint("WHERE IS MY DATA");
+          debugPrint("code is " + response.statusCode.toString());
+          debugPrint("HAS AUTH TOKEN " + SharedPrefs().authToken);
           if (response.statusCode == 200) {
+            debugPrint("K:NVDS:LNVKLNSDKL");
             var jsonData = jsonDecode(response.body);
+            debugPrint(jsonData["accessToken"].toString());
+            debugPrint(jsonData["refreshToken"].toString());
             SharedPrefs().authToken = jsonData["accessToken"].toString();
-            SharedPrefs().refreshToken = jsonData["refreshToken"];
+            SharedPrefs().refreshToken = jsonData["refreshToken"].toString();
+          } else {
+            SharedPrefs().authToken = "";
+            SharedPrefs().logged = false;
+            SharedPrefs().refreshToken = "";
+            return Future.error("unuathorized");
           }
         }
       }
     } catch (e) {
-      print(e);
+      return Future.error("500");
     }
     return data;
   }

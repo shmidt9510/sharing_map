@@ -10,7 +10,12 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 class ItemsListView extends StatefulWidget {
   final String? userId;
   final int? itemFilter;
-  const ItemsListView({Key? key, this.userId = null, this.itemFilter = null})
+  final bool addDeleteButton;
+  const ItemsListView(
+      {Key? key,
+      this.userId = null,
+      this.itemFilter = null,
+      this.addDeleteButton = false})
       : super(key: key);
 
   @override
@@ -72,7 +77,28 @@ class _ItemsListViewState extends State<ItemsListView> {
                       MaterialPageRoute(
                           builder: (context) => ItemDetailPage(item)));
                 },
-                child: ItemBlock(item)),
+                child: Stack(
+                  children: [
+                    ItemBlock(item),
+                    widget.addDeleteButton
+                        ? Positioned(
+                            top: 3,
+                            right: 3,
+                            child: IconButton(
+                                onPressed: () async {
+                                  await _deleteItemDialogBuilder(
+                                      context, item.id ?? "");
+                                  _pagingController.refresh();
+                                  setState(() {});
+                                },
+                                icon: Icon(
+                                  Icons.delete,
+                                  color: Colors.red,
+                                )),
+                          )
+                        : Container(),
+                  ],
+                )),
           ),
           separatorBuilder: (context, index) => Container(
             height: 10,
@@ -84,5 +110,42 @@ class _ItemsListViewState extends State<ItemsListView> {
   void dispose() {
     _pagingController.dispose();
     super.dispose();
+  }
+
+  Future<bool> _deleteItemDialogBuilder(
+      BuildContext context, String itemId) async {
+    final ItemController _itemsController = Get.find<ItemController>();
+    bool _result = false;
+    await showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Вы точно хотите удалить объявление?'),
+          actions: [
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: Theme.of(context).textTheme.labelLarge,
+              ),
+              child: const Text('Да'),
+              onPressed: () {
+                _itemsController.deleteItem(itemId);
+                _result = true;
+                Navigator.of(context).maybePop();
+              },
+            ),
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: Theme.of(context).textTheme.labelLarge,
+              ),
+              child: const Text('Нет'),
+              onPressed: () {
+                Navigator.of(context).maybePop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+    return _result;
   }
 }

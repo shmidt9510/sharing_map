@@ -1,6 +1,7 @@
 import 'package:sharing_map/models/category.dart';
 import 'package:sharing_map/models/subcategory.dart';
 import 'package:sharing_map/models/city.dart';
+import 'package:sharing_map/models/location.dart';
 import 'package:sharing_map/services/common_service.dart';
 import 'package:get/get.dart';
 
@@ -8,6 +9,7 @@ class CommonController extends GetxController {
   var categories = <ItemCategory>[].obs;
   var subcategories = <Subcategory>[].obs;
   var cities = <City>[].obs;
+  var locations = <SMLocation>[].obs;
 
   @override
   void onInit() {
@@ -36,5 +38,16 @@ class CommonController extends GetxController {
 
   void onRefresh() async {
     fetchItems();
+  }
+
+  Future<void> getLocations(int cityId) async {
+    try {
+      var locationsTemp = await CommonWebService.fetchLocations(cityId);
+      if (locationsTemp != null) {
+        locations(locationsTemp);
+      }
+    } catch (e) {
+      return Future.error("error_getting_locations");
+    }
   }
 }

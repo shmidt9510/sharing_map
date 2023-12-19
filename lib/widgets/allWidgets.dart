@@ -91,27 +91,6 @@ TextStyle normalFont(Color color, double size) {
 //--------------------------------------------
 
 //BUTTONS-------------------------------------
-Widget primaryButtonPurple(
-  Widget buttonChild,
-  void Function()? onPressed,
-) {
-  return SizedBox(
-    width: double.infinity,
-    height: 50.0,
-    child: RawMaterialButton(
-      elevation: 0.0,
-      hoverElevation: 0.0,
-      focusElevation: 0.0,
-      highlightElevation: 0.0,
-      fillColor: MColors.primaryPurple,
-      child: buttonChild,
-      onPressed: onPressed,
-      shape: RoundedRectangleBorder(
-        borderRadius: new BorderRadius.circular(10.0),
-      ),
-    ),
-  );
-}
 
 Widget secondaryButtonGreen(
   Widget buttonChild,
@@ -147,7 +126,7 @@ Widget secondaryButtonGreenSmoke(
       hoverElevation: 0.0,
       focusElevation: 0.0,
       highlightElevation: 0.0,
-      fillColor: MColors.primaryWhiteSmoke,
+      fillColor: MColors.white,
       child: buttonChild,
       onPressed: onPressed,
       shape: RoundedRectangleBorder(
@@ -157,143 +136,143 @@ Widget secondaryButtonGreenSmoke(
   );
 }
 
-Widget primaryButtonWhiteSmoke(
-  Widget buttonChild,
-  void Function() onPressed,
-) {
-  return SizedBox(
-    width: double.infinity,
-    height: 50.0,
-    child: RawMaterialButton(
-      elevation: 0.0,
-      hoverElevation: 0.0,
-      focusElevation: 0.0,
-      highlightElevation: 0.0,
-      fillColor: MColors.primaryWhiteSmoke,
-      child: buttonChild,
-      onPressed: onPressed,
-      shape: RoundedRectangleBorder(
-        borderRadius: new BorderRadius.circular(10.0),
-      ),
-    ),
-  );
-}
+// Widget primaryButtonWhiteSmoke(
+//   Widget buttonChild,
+//   void Function() onPressed,
+// ) {
+//   return SizedBox(
+//     width: double.infinity,
+//     height: 50.0,
+//     child: RawMaterialButton(
+//       elevation: 0.0,
+//       hoverElevation: 0.0,
+//       focusElevation: 0.0,
+//       highlightElevation: 0.0,
+//       fillColor: MColors.primaryWhiteSmoke,
+//       child: buttonChild,
+//       onPressed: onPressed,
+//       shape: RoundedRectangleBorder(
+//         borderRadius: new BorderRadius.circular(10.0),
+//       ),
+//     ),
+//   );
+// }
 
-Widget listTileButton(
-  void Function() onPressed,
-  String iconImage,
-  String listTileName,
-  Color color,
-) {
-  return SizedBox(
-    height: 60.0,
-    width: double.infinity,
-    child: RawMaterialButton(
-      onPressed: onPressed,
-      child: Row(
-        children: <Widget>[
-          SvgPicture.asset(
-            iconImage,
-            height: 20,
-            color: MColors.textGrey,
-          ),
-          SizedBox(width: 15.0),
-          Expanded(
-            child: Text(
-              listTileName,
-              style: normalFont(color, 14.0),
-            ),
-          ),
-          Icon(
-            Icons.arrow_forward_ios,
-            color: Colors.grey[400],
-            size: 16.0,
-          ),
-        ],
-      ),
-    ),
-  );
-}
+// Widget listTileButton(
+//   void Function() onPressed,
+//   String iconImage,
+//   String listTileName,
+//   Color color,
+// ) {
+//   return SizedBox(
+//     height: 60.0,
+//     width: double.infinity,
+//     child: RawMaterialButton(
+//       onPressed: onPressed,
+//       child: Row(
+//         children: <Widget>[
+//           SvgPicture.asset(
+//             iconImage,
+//             height: 20,
+//             color: MColors.textGrey,
+//           ),
+//           SizedBox(width: 15.0),
+//           Expanded(
+//             child: Text(
+//               listTileName,
+//               style: normalFont(color, 14.0),
+//             ),
+//           ),
+//           Icon(
+//             Icons.arrow_forward_ios,
+//             color: Colors.grey[400],
+//             size: 16.0,
+//           ),
+//         ],
+//       ),
+//     ),
+//   );
+// }
 //-------------------------------------------
 
 //TEXTFIELDS--------------------------------
 
-Widget primaryTextField(
-  TextEditingController controller,
-  String initialValue,
-  String labelText,
-  void Function(String?)? onsaved,
-  bool enabled,
-  String Function(String?)? validator,
-  bool obscureText,
-  bool autoValidate,
-  bool enableSuggestions,
-  TextInputType keyboardType,
-  List<TextInputFormatter> inputFormatters,
-  Widget suffix,
-  double textfieldBorder,
-) {
-  return TextFormField(
-    controller: controller,
-    initialValue: initialValue,
-    onSaved: onsaved,
-    enabled: enabled,
-    validator: validator,
-    obscureText: obscureText,
-    keyboardType: keyboardType,
-    inputFormatters: inputFormatters,
-    autovalidateMode: AutovalidateMode.always,
-    enableSuggestions: enableSuggestions,
-    style: normalFont(
-      enabled == true ? MColors.textDark : MColors.textGrey,
-      16.0,
-    ),
-    cursorColor: MColors.primaryPurple,
-    decoration: InputDecoration(
-      suffixIcon: Padding(
-        padding: EdgeInsets.only(
-          right: suffix == null ? 0.0 : 15.0,
-          left: suffix == null ? 0.0 : 15.0,
-        ),
-        child: suffix,
-      ),
-      labelText: labelText,
-      labelStyle: normalFont(Colors.black, 14.0),
-      contentPadding: EdgeInsets.symmetric(horizontal: 25.0),
-      fillColor: MColors.primaryWhite,
-      floatingLabelBehavior: FloatingLabelBehavior.never,
-      filled: true,
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8.0),
-        borderSide: BorderSide(
-          color: textfieldBorder == 0.0 ? Colors.transparent : MColors.textGrey,
-          width: textfieldBorder,
-        ),
-      ),
-      errorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8.0),
-        borderSide: BorderSide(
-          color: Colors.red,
-          width: 1.0,
-        ),
-      ),
-      focusedErrorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8.0),
-        borderSide: BorderSide(
-          color: Colors.red,
-          width: 1.0,
-        ),
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8.0),
-        borderSide: BorderSide(
-          color: MColors.primaryPurple,
-          width: 1.0,
-        ),
-      ),
-    ),
-  );
-}
+// Widget primaryTextField(
+//   TextEditingController controller,
+//   String initialValue,
+//   String labelText,
+//   void Function(String?)? onsaved,
+//   bool enabled,
+//   String Function(String?)? validator,
+//   bool obscureText,
+//   bool autoValidate,
+//   bool enableSuggestions,
+//   TextInputType keyboardType,
+//   List<TextInputFormatter> inputFormatters,
+//   Widget suffix,
+//   double textfieldBorder,
+// ) {
+//   return TextFormField(
+//     controller: controller,
+//     initialValue: initialValue,
+//     onSaved: onsaved,
+//     enabled: enabled,
+//     validator: validator,
+//     obscureText: obscureText,
+//     keyboardType: keyboardType,
+//     inputFormatters: inputFormatters,
+//     autovalidateMode: AutovalidateMode.always,
+//     enableSuggestions: enableSuggestions,
+//     style: normalFont(
+//       enabled == true ? MColors.textDark : MColors.textGrey,
+//       16.0,
+//     ),
+//     cursorColor: MColors.primaryPurple,
+//     decoration: InputDecoration(
+//       suffixIcon: Padding(
+//         padding: EdgeInsets.only(
+//           right: suffix == null ? 0.0 : 15.0,
+//           left: suffix == null ? 0.0 : 15.0,
+//         ),
+//         child: suffix,
+//       ),
+//       labelText: labelText,
+//       labelStyle: normalFont(Colors.black, 14.0),
+//       contentPadding: EdgeInsets.symmetric(horizontal: 25.0),
+//       fillColor: MColors.primaryWhite,
+//       floatingLabelBehavior: FloatingLabelBehavior.never,
+//       filled: true,
+//       enabledBorder: OutlineInputBorder(
+//         borderRadius: BorderRadius.circular(8.0),
+//         borderSide: BorderSide(
+//           color: textfieldBorder == 0.0 ? Colors.transparent : MColors.textGrey,
+//           width: textfieldBorder,
+//         ),
+//       ),
+//       errorBorder: OutlineInputBorder(
+//         borderRadius: BorderRadius.circular(8.0),
+//         borderSide: BorderSide(
+//           color: Colors.red,
+//           width: 1.0,
+//         ),
+//       ),
+//       focusedErrorBorder: OutlineInputBorder(
+//         borderRadius: BorderRadius.circular(8.0),
+//         borderSide: BorderSide(
+//           color: Colors.red,
+//           width: 1.0,
+//         ),
+//       ),
+//       focusedBorder: OutlineInputBorder(
+//         borderRadius: BorderRadius.circular(8.0),
+//         borderSide: BorderSide(
+//           color: MColors.primaryPurple,
+//           width: 1.0,
+//         ),
+//       ),
+//     ),
+//   );
+// }
 
 // Widget searchTextField(
 //   bool autofocus,
@@ -377,34 +356,22 @@ Widget primaryTextField(
 // }
 //-------------------------------------------
 
-//PROGRESS----------------------------------
-Widget progressIndicator(Color color) {
-  return Container(
-    color: MColors.primaryWhiteSmoke,
-    child: Center(
-      child: CupertinoActivityIndicator(
-        radius: 12.0,
-      ),
-    ),
-  );
-}
-
-Widget gettingLocationIndicator() {
-  return Center(
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-        Text(
-          "Getting your current location",
-          style: normalFont(MColors.textGrey, 14.0),
-        ),
-        SizedBox(width: 5.0),
-        progressIndicator(MColors.primaryPurple),
-      ],
-    ),
-  );
-}
+// Widget gettingLocationIndicator() {
+//   return Center(
+//     child: Row(
+//       mainAxisAlignment: MainAxisAlignment.center,
+//       crossAxisAlignment: CrossAxisAlignment.center,
+//       children: <Widget>[
+//         Text(
+//           "Getting your current location",
+//           style: normalFont(MColors.textGrey, 14.0),
+//         ),
+//         SizedBox(width: 5.0),
+//         progressIndicator(MColors.primaryPurple),
+//       ],
+//     ),
+//   );
+// }
 //-------------------------------------------
 
 //SNACKBARS----------------------------------
@@ -469,76 +436,76 @@ Widget gettingLocationIndicator() {
 //-------------------------------------------
 
 //EMPTYCART----------------------------------
-Widget emptyScreen(
-  String image,
-  String title,
-  String subTitle,
-) {
-  return primaryContainer(
-    Center(
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Container(
-              padding: const EdgeInsets.all(20.0),
-              child: SvgPicture.asset(
-                image,
-                height: 150,
-              ),
-            ),
-            Container(
-              child: Text(
-                title,
-                style: boldFont(MColors.textDark, 20),
-                textAlign: TextAlign.center,
-              ),
-            ),
-            SizedBox(height: 10.0),
-            Container(
-              child: Text(
-                subTitle,
-                style: normalFont(MColors.textGrey, 16),
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ],
-        ),
-      ),
-    ),
-  );
-}
+// Widget emptyScreen(
+//   String image,
+//   String title,
+//   String subTitle,
+// ) {
+//   return primaryContainer(
+//     Center(
+//       child: SingleChildScrollView(
+//         child: Column(
+//           mainAxisAlignment: MainAxisAlignment.center,
+//           crossAxisAlignment: CrossAxisAlignment.center,
+//           children: <Widget>[
+//             Container(
+//               padding: const EdgeInsets.all(20.0),
+//               child: SvgPicture.asset(
+//                 image,
+//                 height: 150,
+//               ),
+//             ),
+//             Container(
+//               child: Text(
+//                 title,
+//                 style: boldFont(MColors.textDark, 20),
+//                 textAlign: TextAlign.center,
+//               ),
+//             ),
+//             SizedBox(height: 10.0),
+//             Container(
+//               child: Text(
+//                 subTitle,
+//                 style: normalFont(MColors.textGrey, 16),
+//                 textAlign: TextAlign.center,
+//               ),
+//             ),
+//           ],
+//         ),
+//       ),
+//     ),
+//   );
+// }
 
 // ------------------------------------------
 
 //CART DISMISS-------------------------------
-Widget backgroundDismiss(AlignmentGeometry alignment) {
-  return Container(
-    decoration: BoxDecoration(
-      color: MColors.primaryWhiteSmoke,
-      borderRadius: BorderRadius.all(
-        Radius.circular(10.0),
-      ),
-    ),
-    padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-    alignment: alignment,
-    child: Container(
-      height: double.infinity,
-      width: 50.0,
-      decoration: BoxDecoration(
-        color: Colors.red,
-        borderRadius: BorderRadius.all(
-          Radius.circular(10.0),
-        ),
-      ),
-      child: Icon(
-        Icons.delete_outline,
-        color: Colors.white,
-      ),
-    ),
-  );
-}
+// Widget backgroundDismiss(AlignmentGeometry alignment) {
+//   return Container(
+//     decoration: BoxDecoration(
+//       color: MColors.primaryWhiteSmoke,
+//       borderRadius: BorderRadius.all(
+//         Radius.circular(10.0),
+//       ),
+//     ),
+//     padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+//     alignment: alignment,
+//     child: Container(
+//       height: double.infinity,
+//       width: 50.0,
+//       decoration: BoxDecoration(
+//         color: Colors.red,
+//         borderRadius: BorderRadius.all(
+//           Radius.circular(10.0),
+//         ),
+//       ),
+//       child: Icon(
+//         Icons.delete_outline,
+//         color: Colors.white,
+//       ),
+//     ),
+//   );
+// }
 //-------------------------------------------
 
 //WARNING------------------------------------

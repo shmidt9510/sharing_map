@@ -37,8 +37,7 @@ class User {
           SMImage(id: id, itemId: id, updatedAt: DateTime.now()));
     }
 
-    return CachedImage.Get(SMImage(
-        id: PlaceholderId, itemId: PlaceholderId, updatedAt: DateTime.now()));
+    return Image.asset('assets/images/user_placeholder.jpg');
   }
 
   SMImage getSMImage() {

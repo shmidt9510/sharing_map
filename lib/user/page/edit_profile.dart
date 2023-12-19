@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sharing_map/controllers/user_controller.dart';
+import 'package:sharing_map/models/contact.dart';
 import 'package:sharing_map/models/user.dart';
-import 'package:sharing_map/user/widgets/profile.dart';
+import 'package:sharing_map/user/page/editable_contact_text_field.dart';
 import 'package:sharing_map/utils/shared.dart';
 import 'package:sharing_map/widgets/image.dart';
 
@@ -57,17 +58,17 @@ class _ProfilePageState extends State<EditProfilePage> {
                 children: [
                   Center(
                       child: Container(
-                    width: 200.0,
-                    height: 200.0,
-                    decoration: BoxDecoration(shape: BoxShape.circle),
-                    child: InkWell(
-                        onTap: () async {
-                          selectImage();
-                        },
-                        child: profileImage != null
-                            ? Image.file(File(profileImage!.path))
-                            : CachedImage.Get(user.getSMImage())),
-                  )),
+                          width: 200.0,
+                          height: 200.0,
+                          decoration: BoxDecoration(shape: BoxShape.circle),
+                          child: InkWell(
+                            onTap: () async {
+                              selectImage();
+                            },
+                            child: profileImage != null
+                                ? Image.file(File(profileImage!.path))
+                                : CachedImage.Get(user.getSMImage()),
+                          ))),
                   buildForm(user),
                 ],
               );
@@ -137,7 +138,7 @@ class _ProfilePageState extends State<EditProfilePage> {
             ),
           ),
           SizedBox(
-            height: 20,
+            height: 10,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -187,9 +188,11 @@ class _ProfilePageState extends State<EditProfilePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'О себе',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            Center(
+              child: Text(
+                'О себе',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
             ),
             const SizedBox(height: 16),
             Text(
@@ -199,4 +202,11 @@ class _ProfilePageState extends State<EditProfilePage> {
           ],
         ),
       );
+
+  @override
+  void dispose() {
+    _userNameController.dispose();
+    _bioController.dispose();
+    super.dispose();
+  }
 }

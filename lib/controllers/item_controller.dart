@@ -43,4 +43,12 @@ class ItemController extends GetxController {
       return false;
     }
   }
+
+  Future<bool> deleteItem(String itemId) async {
+    try {
+      return await ItemWebService.deleteItem(itemId);
+    } catch (e) {
+      return false;
+    }
+  }
 }

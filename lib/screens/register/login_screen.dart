@@ -29,7 +29,7 @@ class _LoginState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: BackButton(color: MColors.whiteText),
+      floatingActionButton: BackButton(color: MColors.white),
       floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
       backgroundColor: MColors.primaryGreen,
       body: Form(
@@ -38,16 +38,7 @@ class _LoginState extends State<LoginScreen> {
           padding: const EdgeInsets.all(30.0),
           child: Column(
             children: [
-              const SizedBox(height: 12),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  "email",
-                  textAlign: TextAlign.left,
-                  style: TextStyle(color: Colors.white, fontSize: 16),
-                ),
-              ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 30),
               TextFormField(
                 focusNode: null,
                 controller: _controllerUsername,
@@ -126,17 +117,13 @@ class _LoginState extends State<LoginScreen> {
                       TextButton(
                         onPressed: () {
                           _formKey.currentState?.reset();
-
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //     builder: (context) {
-                          //       return const Signup();
-                          //     },
-                          //   ),
-                          // );
+                          GoRouter.of(context)
+                              .go(SMPath.start + "/" + SMPath.registration);
                         },
-                        child: const Text("Зарегестрируйтесь"),
+                        child: const Text(
+                          "Зарегестрируйтесь",
+                          style: TextStyle(color: MColors.orange),
+                        ),
                       ),
                     ],
                   ),
@@ -149,23 +136,12 @@ class _LoginState extends State<LoginScreen> {
                       ),
                     ),
                     onPressed: () async {
-                      SnackBar snackBar;
                       var result = await _userController.Login(
                           _controllerUsername.text, _controllerPassword.text);
                       if (result) {
-                        snackBar = SnackBar(
-                          content: const Text('Получилось :)'),
-                          action: SnackBarAction(
-                            label: 'Закрыть',
-                            onPressed: () {
-                              // Some code to undo the change.
-                            },
-                          ),
-                        );
-                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
                         GoRouter.of(context).go(SMPath.home);
                       } else {
-                        snackBar = SnackBar(
+                        SnackBar snackBar = SnackBar(
                           content: const Text('Не получилось :('),
                           action: SnackBarAction(
                             label: 'Закрыть',
@@ -176,9 +152,11 @@ class _LoginState extends State<LoginScreen> {
                         );
                         ScaffoldMessenger.of(context).showSnackBar(snackBar);
                       }
-                      // }
                     },
-                    child: const Text("Войти"),
+                    child: Text(
+                      "Войти",
+                      style: TextStyle(color: MColors.black),
+                    ),
                   ),
                   const SizedBox(height: 10),
                   ElevatedButton(
@@ -192,7 +170,10 @@ class _LoginState extends State<LoginScreen> {
                     onPressed: () {
                       GoRouter.of(context).go(SMPath.home);
                     },
-                    child: const Text("Продолжить без регистрации"),
+                    child: const Text(
+                      "Продолжить без регистрации",
+                      style: TextStyle(color: MColors.black),
+                    ),
                   ),
                 ],
               ),

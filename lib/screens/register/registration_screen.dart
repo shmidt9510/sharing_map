@@ -35,7 +35,7 @@ class _LoginState extends State<RegistrationScreen> {
     // }
 
     return Scaffold(
-      floatingActionButton: BackButton(color: MColors.whiteText),
+      floatingActionButton: BackButton(color: MColors.white),
       floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
       backgroundColor: MColors.primaryGreen,
       body: Form(
@@ -212,7 +212,10 @@ class _LoginState extends State<RegistrationScreen> {
                         }
                       }
                     },
-                    child: const Text("Зарегестрироваться"),
+                    child: const Text(
+                      "Зарегистрироваться",
+                      style: TextStyle(color: MColors.black),
+                    ),
                   ),
                   const SizedBox(height: 10),
                   ElevatedButton(
@@ -226,7 +229,10 @@ class _LoginState extends State<RegistrationScreen> {
                     onPressed: () {
                       GoRouter.of(context).go(SMPath.home);
                     },
-                    child: const Text("Продолжить без регистрации"),
+                    child: const Text(
+                      "Продолжить без регистрации",
+                      style: TextStyle(color: MColors.black),
+                    ),
                   ),
                 ],
               ),
