@@ -212,13 +212,12 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   TextButton(
-                    onPressed: () => Navigator.pop(context),
+                    onPressed: () => GoRouter.of(context).go(SMPath.home),
                     child: const Text('Отменить'),
                   ),
                   ElevatedButton(
                     onPressed: () async {
                       // Item(this.id, this.name, this.desc, this.picture, this.creationDate);
-                      debugPrint("has user id " + SharedPrefs().userId);
                       var item = Item(
                           userId: SharedPrefs().userId,
                           name: titleController.text,

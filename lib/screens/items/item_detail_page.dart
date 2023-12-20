@@ -1,25 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:get/get.dart';
-import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart';
+import 'package:sharing_map/controllers/common_controller.dart';
 import 'package:sharing_map/controllers/user_controller.dart';
 import 'package:sharing_map/models/contact.dart';
 
 import 'package:sharing_map/models/item.dart';
+import 'package:sharing_map/models/location.dart';
 import 'package:sharing_map/models/user.dart';
-import 'package:sharing_map/user/page/profile_page.dart';
 import 'package:sharing_map/user/page/user_profile_page.dart';
 import 'package:sharing_map/utils/colors.dart';
 import 'package:sharing_map/utils/shared.dart';
 import 'package:sharing_map/widgets/image.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ItemDetailPage extends StatelessWidget {
   final Item item;
   final UserController _userController = Get.find<UserController>();
+  final CommonController _commonController = Get.find<CommonController>();
 
   ItemDetailPage(this.item);
 
@@ -97,25 +97,65 @@ class ItemDetailPage extends StatelessWidget {
                     style: TextStyle(
                         fontWeight: FontWeight.normal,
                         fontStyle: FontStyle.normal))),
-            // GetLocationsWidget(context, item),
+            GetLocationsWidget(context, item, _commonController),
+            Container(
+              height: 20,
+            ),
             GetUserWidget(context, item),
           ],
         ));
   }
 }
 
-// Widget GetLocationsWidget(BuildContext context, Item item) {
-//   return Container(
-//     child: ListView.builder(
-//       itemCount: item.location,
-//       itemBuilder: (BuildContext context, int index) {
-//         return ListTile(
-//           title: Text(items[index]),
-//         );
-//       },
-//     ),
-//   );
-// }
+Widget GetLocationsWidget(
+    BuildContext context, Item item, CommonController controller) {
+  if (item.locationIds == null) {
+    return Container(
+      height: 40,
+    );
+  }
+  var locationsMap = controller.locationsMap;
+  List<SMLocation> locations = [];
+
+  item.locationIds?.forEach((locId) {
+    if (locationsMap.containsKey(locId)) {
+      locations.add(locationsMap[locId]!);
+    }
+  });
+  debugPrint("has length " + locations.length.toString());
+  return Container(
+    height: 25.0 * locations.length,
+    child: ListView.builder(
+      scrollDirection: Axis.vertical,
+      itemCount: locations.length,
+      itemBuilder: (BuildContext context, int index) {
+        return Container(
+            height: 25,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 2.0),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.subway_outlined,
+                    size: 14,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 2.0),
+                    child: Text(
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      locations[index].name,
+                      textAlign: TextAlign.start,
+                      style: TextStyle(fontSize: 14),
+                    ),
+                  ),
+                ],
+              ),
+            ));
+      },
+    ),
+  );
+}
 
 Widget GetSlider(images, context) {
   int _count = 0;

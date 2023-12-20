@@ -39,39 +39,42 @@ class _UserProfilePageState extends State<UserProfilePage> {
               return Center(child: CircularProgressIndicator());
             }
             var _user = snapshot.data as User;
-            return SingleChildScrollView(
-              physics: ScrollPhysics(),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: context.height / 5,
-                      child: Padding(
-                        padding: EdgeInsetsDirectional.only(start: 20, end: 20),
-                        child: Row(
-                          children: [
-                            Flexible(flex: 1, child: _user.buildImage()),
-                            Flexible(
-                              flex: 2,
-                              child: Center(
-                                child: Column(
-                                  children: [
-                                    buildName(_user!),
-                                    // NumbersWidget(_user!),
-                                  ],
+            return Expanded(
+              child: SingleChildScrollView(
+                physics: NeverScrollableScrollPhysics(),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: context.height / 5,
+                        child: Padding(
+                          padding:
+                              EdgeInsetsDirectional.only(start: 20, end: 20),
+                          child: Row(
+                            children: [
+                              Flexible(flex: 1, child: _user.buildImage()),
+                              Flexible(
+                                flex: 2,
+                                child: Center(
+                                  child: Column(
+                                    children: [
+                                      buildName(_user!),
+                                      // NumbersWidget(_user!),
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 10),
-                    buildAbout(_user!),
-                    const SizedBox(height: 48),
-                    ItemsListView(userId: _user.id)
-                  ],
+                      const SizedBox(height: 10),
+                      buildAbout(_user),
+                      const SizedBox(height: 48),
+                      ItemsListView(userId: _user.id)
+                    ],
+                  ),
                 ),
               ),
             );

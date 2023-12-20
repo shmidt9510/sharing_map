@@ -28,8 +28,6 @@ class S3Client {
   }
 
   static AWSSigV4Signer GetSigner_() {
-    debugPrint(dotenv.get('AWS_ACCESS_KEY_ID'));
-    debugPrint(dotenv.get('AWS_SECRET_ACCESS_KEY'));
     return AWSSigV4Signer(
         credentialsProvider: AWSCredentialsProvider.dartEnvironment());
   }

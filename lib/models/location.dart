@@ -1,9 +1,13 @@
 class SMLocation {
-  final int? id;
-  final int? cityId;
+  final int id;
+  final int cityId;
   final String locationType;
-  final String? name;
-  SMLocation({this.id, this.cityId, this.name, this.locationType = "METRO"});
+  final String name;
+  SMLocation(
+      {required this.id,
+      required this.cityId,
+      required this.name,
+      this.locationType = "METRO"});
 
   factory SMLocation.fromJson(Map<String, dynamic> json) => SMLocation(
       id: json["id"],

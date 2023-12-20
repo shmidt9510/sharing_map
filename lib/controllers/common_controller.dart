@@ -10,6 +10,7 @@ class CommonController extends GetxController {
   var subcategories = <Subcategory>[].obs;
   var cities = <City>[].obs;
   var locations = <SMLocation>[].obs;
+  Map<int, SMLocation> locationsMap = {};
 
   @override
   void onInit() {
@@ -44,6 +45,9 @@ class CommonController extends GetxController {
     try {
       var locationsTemp = await CommonWebService.fetchLocations(cityId);
       if (locationsTemp != null) {
+        locationsTemp.forEach((element) {
+          locationsMap[element.id] = element;
+        });
         locations(locationsTemp);
       }
     } catch (e) {

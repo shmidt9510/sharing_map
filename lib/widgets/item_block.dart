@@ -14,11 +14,10 @@ class TextDescriptionBlock extends StatelessWidget {
   Widget build(BuildContext context) {
     var _commonController = Get.find<CommonController>();
     String _location = "";
-    if (_item.locationIds != null && _item.locationIds!.length > 0) {
-      _location = _commonController.locations
-              .elementAtOrNull(_item.locationIds![0] ?? 0)
-              ?.name ??
-          "";
+    if (_item.locationIds != null &&
+        _item.locationIds!.length > 0 &&
+        _commonController.locationsMap.containsKey(_item.locationIds![0])) {
+      _location = _commonController.locationsMap[_item.locationIds![0]]!.name;
     }
 
     return Column(

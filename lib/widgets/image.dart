@@ -14,7 +14,14 @@ class CachedImage {
                 fit: fit,
                 imageUrl: uri.toString(),
                 progressIndicatorBuilder: (context, url, progress) =>
-                    const CircularProgressIndicator(),
+                    const Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Row(children: [
+                          CircularProgressIndicator(),
+                        ]),
+                      ),
+                    ),
                 errorWidget: (context, url, error) => const Center(
                       child: Icon(
                         Icons.error,
@@ -25,13 +32,16 @@ class CachedImage {
             return Placeholder();
           } else {
             return Center(
-              child: Row(children: [
-                SizedBox(
-                  width: 60,
-                  height: 60,
-                  child: CircularProgressIndicator(),
-                ),
-              ]),
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Row(children: [
+                  SizedBox(
+                    width: 5,
+                    height: 5,
+                    child: CircularProgressIndicator(),
+                  ),
+                ]),
+              ),
             );
           }
         });

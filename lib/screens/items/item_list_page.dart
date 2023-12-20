@@ -34,32 +34,39 @@ class _ItemListPageState extends State<ItemListPage> {
   @override
   Widget build(BuildContext context) {
     double height = context.height / 5;
-    return Scaffold(
-        body: RefreshIndicator(
-      onRefresh: () {
-        return _updateOnFetch();
-      },
-      child: SingleChildScrollView(
-          child: Column(children: [
-        SizedBox(
-          height: height,
-          child: ListView.builder(
-            physics: const AlwaysScrollableScrollPhysics(),
-            shrinkWrap: true,
-            scrollDirection: Axis.horizontal,
-            itemCount: _commonController.categories.length,
-            itemBuilder: (BuildContext context, int index) => Card(
-              child: _buildButton(
-                  context, _commonController.categories[index], height),
-            ),
-          ),
+    return SafeArea(
+      child: Scaffold(
+          body: RefreshIndicator(
+        onRefresh: () {
+          return _updateOnFetch();
+        },
+        child: Expanded(
+          child: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              physics: ScrollPhysics(),
+              child: Column(children: [
+                SizedBox(
+                  height: height,
+                  child: ListView.builder(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: _commonController.categories.length,
+                    itemBuilder: (BuildContext context, int index) => Card(
+                      child: _buildButton(
+                          context, _commonController.categories[index], height),
+                    ),
+                  ),
+                ),
+                Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                    child: ItemsListView(
+                        itemFilter: _chosenFilter,
+                        key: ValueKey(_chosenFilter)))
+              ])),
         ),
-        Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-            child: ItemsListView(
-                itemFilter: _chosenFilter, key: ValueKey(_chosenFilter)))
-      ])),
-    ));
+      )),
+    );
   }
 
   Future<void> _updateOnFetch() async {

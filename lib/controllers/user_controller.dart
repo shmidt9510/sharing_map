@@ -17,35 +17,28 @@ class UserController extends GetxController {
 
   Future<bool> CheckAuthorization() async {
     if (!SharedPrefs().logged) {
-      debugPrint("IS FALSE 1");
       return false;
     }
 
     if (SharedPrefs().userId.isNotEmpty) {
       // myself = await GetUser(SharedPrefs().userId);
       if (!await UserWebService.isAuth()) {
-        debugPrint("IS FALSE 2");
         return false;
       }
-      debugPrint("IS TRUE");
       return true;
     }
-    debugPrint("IS FALSE 3");
     return false;
   }
 
   Future<bool> Signup(String email, String username, String password) async {
     try {
       String result = await UserWebService.signup(email, username, password);
-      debugPrint("result result");
       if (result.isEmpty) {
-        debugPrint("isEmpty");
         return false;
       }
       SharedPrefs().confirmationToken = result;
       return true;
     } catch (e) {
-      debugPrint(e.toString());
       return false;
     }
   }
@@ -58,7 +51,6 @@ class UserController extends GetxController {
       return await UserWebService.signupConfirm(
           SharedPrefs().confirmationToken, token);
     } catch (e) {
-      debugPrint(e.toString());
       return false;
     }
   }

@@ -65,7 +65,8 @@ class _ItemsListViewState extends State<ItemsListView> {
           () => _pagingController.refresh(),
         ),
         child: PagedListView<int, Item>.separated(
-          // scrollDirection: Axis.vertical,
+          physics: NeverScrollableScrollPhysics(),
+          scrollDirection: Axis.vertical,
           shrinkWrap: true,
           pagingController: _pagingController,
           builderDelegate: PagedChildBuilderDelegate<Item>(
