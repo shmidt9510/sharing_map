@@ -67,20 +67,20 @@ class _RouterStartState extends State<RouterStart> {
                         path: SMPath.registration,
                         builder: (BuildContext context, GoRouterState state) =>
                             RegistrationScreen(),
-                        routes: <RouteBase>[
-                          GoRoute(
-                            path: SMPath.registrationCode,
-                            builder:
-                                (BuildContext context, GoRouterState state) =>
-                                    RegistrationCodeScreen(),
-                          ),
-                        ],
+                        // routes: <RouteBase>[
+                        //   GoRoute(
+                        //     path: SMPath.registrationCode,
+                        //     builder:
+                        //         (BuildContext context, GoRouterState state) =>
+                        //             RegistrationCodeScreen(),
+                        //   ),
+                        // ],
                       ),
-                      GoRoute(
-                        path: SMPath.forgetPassword,
-                        builder: (BuildContext context, GoRouterState state) =>
-                            RegistrationCodeScreen(),
-                      ),
+                      // GoRoute(
+                      //   path: SMPath.forgetPassword,
+                      //   builder: (BuildContext context, GoRouterState state) =>
+                      //       RegistrationCodeScreen(),
+                      // ),
                     ],
                   ),
                   GoRoute(

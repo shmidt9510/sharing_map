@@ -70,6 +70,13 @@ class _ItemsListViewState extends State<ItemsListView> {
           shrinkWrap: true,
           pagingController: _pagingController,
           builderDelegate: PagedChildBuilderDelegate<Item>(
+            noItemsFoundIndicatorBuilder: (_) => Center(
+              child: Expanded(
+                  child: Column(children: [
+                Image.asset('assets/images/no_data_placeholder.png'),
+                Text("Здесь пока ничего нет")
+              ])),
+            ),
             animateTransitions: true,
             itemBuilder: (context, item, index) => InkWell(
                 onTap: () {

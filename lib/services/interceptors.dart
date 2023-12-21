@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:http_interceptor/http_interceptor.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:sharing_map/utils/constants.dart';
@@ -54,8 +56,14 @@ class RefreshTokenInterceptor implements InterceptorContract {
   @override
   Future<RequestData> interceptRequest({required RequestData data}) async {
     try {
+      debugPrint(SharedPrefs().authToken);
+      debugPrint(SharedPrefs().refreshToken);
+      debugPrint(SharedPrefs().userId);
+      debugPrint(SharedPrefs().logged.toString());
       if (SharedPrefs().authToken.isNotEmpty) {
+        debugPrint("have token");
         if (JwtDecoder.isExpired(SharedPrefs().authToken)) {
+          debugPrint("isexpired");
           var response = await client.post(
               Uri.parse(Constants.BACK_URL + "/refreshToken"),
               headers: {
@@ -72,6 +80,7 @@ class RefreshTokenInterceptor implements InterceptorContract {
             SharedPrefs().authToken = "";
             SharedPrefs().logged = false;
             SharedPrefs().refreshToken = "";
+            SharedPrefs().userId = "";
             return Future.error("unuathorized");
           }
         }
