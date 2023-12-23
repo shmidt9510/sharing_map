@@ -57,18 +57,34 @@ class _ProfilePageState extends State<EditProfilePage> {
                 physics: BouncingScrollPhysics(),
                 children: [
                   Center(
-                      child: Container(
-                          width: 200.0,
-                          height: 200.0,
-                          decoration: BoxDecoration(shape: BoxShape.circle),
-                          child: InkWell(
-                            onTap: () async {
+                      child: Stack(
+                    children: [
+                      Container(
+                        width: 200.0,
+                        height: 200.0,
+                        // decoration: BoxDecoration(shape: BoxShape.circle),
+                        child: InkWell(
+                          onTap: () async {
+                            selectImage();
+                          },
+                          child: CircleAvatar(
+                              child: profileImage != null
+                                  ? Image.file(File(profileImage!.path),
+                                      fit: BoxFit.cover)
+                                  : user.buildImage()),
+                        ),
+                      ),
+                      Positioned(
+                        top: 3,
+                        right: 3,
+                        child: IconButton(
+                            onPressed: () async {
                               selectImage();
                             },
-                            child: profileImage != null
-                                ? Image.file(File(profileImage!.path))
-                                : CachedImage.Get(user.getSMImage()),
-                          ))),
+                            icon: Icon(Icons.edit)),
+                      )
+                    ],
+                  )),
                   buildForm(user),
                 ],
               );

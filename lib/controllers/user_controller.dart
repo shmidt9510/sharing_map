@@ -99,6 +99,8 @@ class UserController extends GetxController {
   }
 
   Future<bool> Logout() async {
+    await SharedPrefs().clear();
+    SharedPrefs().isFirstRun = false;
     // var result = await UserWebService.getUser(id);
     // if (id == SharedPrefs().userId) {
     //   myself = result;
@@ -108,6 +110,8 @@ class UserController extends GetxController {
   }
 
   Future<bool> DeleteMyself() async {
+    await SharedPrefs().clear();
+    SharedPrefs().isFirstRun = false;
     return true;
     // return await UserWebService.getUser(SharedPrefs().userId);
   }

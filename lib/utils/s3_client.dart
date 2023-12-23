@@ -8,8 +8,8 @@ import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 
 class S3Client {
-  static Future<Uri> GetPresigned(String path) async {
-    final host = GetHost_();
+  static Uri GetPresigned(String path) {
+    final host = GetHost();
     // Create a pre-signed URL for downloading the file
     final urlRequest = AWSHttpRequest.get(
       Uri.https(host, path),
@@ -17,7 +17,7 @@ class S3Client {
         AWSHeaders.host: host,
       },
     );
-    final signedUrl = await GetSigner_().presignSync(
+    final signedUrl = GetSigner_().presignSync(
       urlRequest,
       credentialScope: GetScope_(),
       serviceConfiguration: S3ServiceConfiguration(),
@@ -32,7 +32,7 @@ class S3Client {
         credentialsProvider: AWSCredentialsProvider.dartEnvironment());
   }
 
-  static String GetHost_() {
+  static String GetHost() {
     return dotenv.get('S3_BUCKET') + "." + dotenv.get('S3_STORAGE_URL');
   }
 

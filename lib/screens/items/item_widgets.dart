@@ -32,7 +32,6 @@ class _ItemsListViewState extends State<ItemsListView> {
 
   @override
   void initState() {
-    debugPrint("onInit");
     _pagingController.addPageRequestListener((pageKey) {
       _fetchPage(pageKey, widget.itemFilter ?? 0);
     });
@@ -70,6 +69,17 @@ class _ItemsListViewState extends State<ItemsListView> {
           shrinkWrap: true,
           pagingController: _pagingController,
           builderDelegate: PagedChildBuilderDelegate<Item>(
+            firstPageErrorIndicatorBuilder: (_) => Center(
+              child: Column(children: [
+                Image.asset('assets/images/no_data_placeholder.png'),
+              ]),
+            ),
+            newPageErrorIndicatorBuilder: (_) => Center(
+              child: Column(children: [
+                Image.asset('assets/images/no_data_placeholder.png'),
+                Text("Здесь пока ничего нет")
+              ]),
+            ),
             noItemsFoundIndicatorBuilder: (_) => Center(
               child: Expanded(
                   child: Column(children: [
@@ -96,8 +106,9 @@ class _ItemsListViewState extends State<ItemsListView> {
                                 onPressed: () async {
                                   await _deleteItemDialogBuilder(
                                       context, item.id ?? "");
-                                  _pagingController.refresh();
-                                  setState(() {});
+                                  setState(() {
+                                    _pagingController.refresh();
+                                  });
                                 },
                                 icon: Icon(
                                   Icons.delete,

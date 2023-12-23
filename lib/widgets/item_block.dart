@@ -24,7 +24,7 @@ class TextDescriptionBlock extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Expanded(
+        Flexible(
           flex: 2,
           child: Container(
             constraints: BoxConstraints(maxWidth: context.width * 3 / 5),

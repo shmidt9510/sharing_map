@@ -7,6 +7,7 @@ import 'package:sharing_map/utils/colors.dart';
 import 'package:sharing_map/utils/shared.dart';
 // import 'package:sharing_map/widgets/textInputWidget.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({
@@ -25,6 +26,7 @@ class _LoginState extends State<RegistrationScreen> {
   final TextEditingController _controllerMail = TextEditingController();
   final TextEditingController _controllerPassword = TextEditingController();
   UserController _userController = Get.find<UserController>();
+  bool _isChecked = false;
 
   bool _obscurePassword = true;
 
@@ -170,6 +172,24 @@ class _LoginState extends State<RegistrationScreen> {
                 },
               ),
               const SizedBox(height: 60),
+              Row(
+                children: [
+                  Checkbox(
+                    checkColor: Colors.white,
+                    // fillColor: MaterialStateProperty.resolveWith(getColor),
+                    value: _isChecked,
+                    onChanged: (bool? value) {
+                      setState(() {
+                        _isChecked = value!;
+                      });
+                    },
+                  ),
+                  InkWell(
+                      child: Text('пожалуйста подтвердите условия'),
+                      onTap: () => launchUrl(Uri.parse(
+                          'https://docs.flutter.io/flutter/services/UrlLauncher-class.html'))),
+                ],
+              ),
               Column(
                 children: [
                   ElevatedButton(
@@ -195,11 +215,16 @@ class _LoginState extends State<RegistrationScreen> {
                             ),
                           );
                           ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                          GoRouter.of(context).go(SMPath.start +
-                              "/" +
-                              SMPath.registration +
-                              "/" +
-                              SMPath.registrationCode);
+                          GoRouter.of(context).go(
+                            SMPath.start +
+                                "/" +
+                                SMPath.registration +
+                                "/" +
+                                SMPath.registrationCode,
+                            // queryParameters: {
+                            //   "mail": _controllerUsername.text
+                            // }
+                          );
                         } else {
                           var snackBar = SnackBar(
                             content: const Text('Не получилось :('),

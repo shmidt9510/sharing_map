@@ -44,8 +44,8 @@ class SharedPrefs {
     _sharedPrefs.setString(keyConfirmationToken, value);
   }
 
-  void clear() {
-    _sharedPrefs.clear();
+  Future<void> clear() async {
+    await _sharedPrefs.clear();
   }
 
   bool get isFirstRun => _sharedPrefs.getBool(keyIsFirst) ?? true;

@@ -15,66 +15,59 @@ class RegistrationCodeScreen extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<RegistrationCodeScreen> createState() => _LoginState();
+  State<RegistrationCodeScreen> createState() => _RegistrationCodeScreenState();
 }
 
-class _LoginState extends State<RegistrationCodeScreen> {
+class _RegistrationCodeScreenState extends State<RegistrationCodeScreen> {
   UserController _userController = Get.find<UserController>();
 
+  @override
+  void initState() {
+    super.initState();
+  }
+
   bool _onEditing = true;
-  String? _code;
 
   @override
   build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Center(
-          child: Text('Введите код 1112)'),
-        ),
-      ),
+      appBar: AppBar(),
       body: Column(
         children: [
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Center(
-              child: Text(
-                'Enter your code',
-                style: TextStyle(fontSize: 20.0),
+          Padding(
+            padding: EdgeInsets.only(top: context.height / 3),
+            child: const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Center(
+                child: Text(
+                  'Мы отправили вам код на почту',
+                  style: TextStyle(fontSize: 20.0),
+                ),
               ),
             ),
           ),
-          VerificationCode(
-            textStyle: Theme.of(context)
-                .textTheme
-                .bodyMedium!
-                .copyWith(color: Theme.of(context).primaryColor),
-            keyboardType: TextInputType.number,
-            underlineColor: Colors
-                .amber, // If this is null it will use primaryColor: Colors.red from Theme
-            length: 4,
-            cursorColor:
-                Colors.green, // If this is null it will default to the ambient
-            margin: const EdgeInsets.all(12),
-            onCompleted: (String value) {
-              setState(() {
-                _waitSignupResult(value, context);
-              });
-            },
-            onEditing: (bool value) {
-              setState(() {
-                _onEditing = value;
-              });
-              if (!_onEditing) FocusScope.of(context).unfocus();
-            },
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Center(
-              child: _onEditing
-                  ? const Text('Please enter full code')
-                  : Text('Your code: $_code'),
+          Center(
+            child: VerificationCode(
+              textStyle: Theme.of(context)
+                  .textTheme
+                  .bodyMedium!
+                  .copyWith(color: Theme.of(context).primaryColor),
+              keyboardType: TextInputType.number,
+              length: 4,
+              margin: const EdgeInsets.all(12),
+              onCompleted: (String value) {
+                setState(() {
+                  _waitSignupResult(value, context);
+                });
+              },
+              onEditing: (bool value) {
+                setState(() {
+                  _onEditing = value;
+                });
+                if (!_onEditing) FocusScope.of(context).unfocus();
+              },
             ),
-          )
+          ),
         ],
       ),
     );

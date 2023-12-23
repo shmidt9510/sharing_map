@@ -23,9 +23,10 @@
     </intent>
     </queries>
    <application
-        android:label="shaaring_map"
+        android:label="Sharing Map"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/sn_launch"
+        android:requestLegacyExternalStorage="true">
         <activity
             android:name=".MainActivity"
             android:exported="true"

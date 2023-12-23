@@ -117,7 +117,7 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
                 ),
                 popupProps: PopupPropsMultiSelection.menu(
                   title: Text(" Выберите категории"),
-                  showSearchBox: true,
+                  showSearchBox: false,
                 ),
               ),
               SizedBox(

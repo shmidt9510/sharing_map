@@ -22,11 +22,13 @@ class _IntroScreenState extends State<IntroScreen> {
         return Future.value(true);
       },
       child: Scaffold(
-        body: primaryContainer(
-          Center(
+        body: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          color: MColors.primaryGreen,
+          child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
+              children: [
                 Container(
                   padding: const EdgeInsets.all(20.0),
                   child: SvgPicture.asset(
@@ -35,13 +37,6 @@ class _IntroScreenState extends State<IntroScreen> {
                   ),
                 ),
                 SizedBox(height: 30.0),
-                Container(
-                  child: Text(
-                    dotenv.get('S3_BUCKET'),
-                    style: boldFont(MColors.white, 30.0),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
                 Container(
                   child: Text(
                     "Привет",

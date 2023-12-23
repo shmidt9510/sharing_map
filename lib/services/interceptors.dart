@@ -51,11 +51,12 @@ class RefreshTokenDTO {
 
 class RefreshTokenInterceptor implements InterceptorContract {
   static var client = InterceptedClient.build(
-    interceptors: [],
+    interceptors: [LoggerInterceptor()],
   );
   @override
   Future<RequestData> interceptRequest({required RequestData data}) async {
     try {
+      debugPrint("onInit");
       debugPrint(SharedPrefs().authToken);
       debugPrint(SharedPrefs().refreshToken);
       debugPrint(SharedPrefs().userId);

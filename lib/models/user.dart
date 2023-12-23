@@ -36,8 +36,7 @@ class User {
       return CachedImage.Get(
           SMImage(id: id, itemId: id, updatedAt: DateTime.now()));
     }
-
-    return Image.asset('assets/images/user_placeholder.jpg');
+    return Image.asset('assets/images/categories/pet.png');
   }
 
   SMImage getSMImage() {

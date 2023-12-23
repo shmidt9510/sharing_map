@@ -70,7 +70,10 @@ class _ItemListPageState extends State<ItemListPage> {
   }
 
   Future<void> _updateOnFetch() async {
-    setState(() {});
+    await _itemsController.fetchItems(itemFilter: _chosenFilter);
+    setState(() {
+      _itemsController.fetchItems(itemFilter: _chosenFilter);
+    });
   }
 
   var categoriesAssetsName = {

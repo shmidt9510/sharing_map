@@ -158,254 +158,6 @@ Widget secondaryButtonGreenSmoke(
 //   );
 // }
 
-// Widget listTileButton(
-//   void Function() onPressed,
-//   String iconImage,
-//   String listTileName,
-//   Color color,
-// ) {
-//   return SizedBox(
-//     height: 60.0,
-//     width: double.infinity,
-//     child: RawMaterialButton(
-//       onPressed: onPressed,
-//       child: Row(
-//         children: <Widget>[
-//           SvgPicture.asset(
-//             iconImage,
-//             height: 20,
-//             color: MColors.textGrey,
-//           ),
-//           SizedBox(width: 15.0),
-//           Expanded(
-//             child: Text(
-//               listTileName,
-//               style: normalFont(color, 14.0),
-//             ),
-//           ),
-//           Icon(
-//             Icons.arrow_forward_ios,
-//             color: Colors.grey[400],
-//             size: 16.0,
-//           ),
-//         ],
-//       ),
-//     ),
-//   );
-// }
-//-------------------------------------------
-
-//TEXTFIELDS--------------------------------
-
-// Widget primaryTextField(
-//   TextEditingController controller,
-//   String initialValue,
-//   String labelText,
-//   void Function(String?)? onsaved,
-//   bool enabled,
-//   String Function(String?)? validator,
-//   bool obscureText,
-//   bool autoValidate,
-//   bool enableSuggestions,
-//   TextInputType keyboardType,
-//   List<TextInputFormatter> inputFormatters,
-//   Widget suffix,
-//   double textfieldBorder,
-// ) {
-//   return TextFormField(
-//     controller: controller,
-//     initialValue: initialValue,
-//     onSaved: onsaved,
-//     enabled: enabled,
-//     validator: validator,
-//     obscureText: obscureText,
-//     keyboardType: keyboardType,
-//     inputFormatters: inputFormatters,
-//     autovalidateMode: AutovalidateMode.always,
-//     enableSuggestions: enableSuggestions,
-//     style: normalFont(
-//       enabled == true ? MColors.textDark : MColors.textGrey,
-//       16.0,
-//     ),
-//     cursorColor: MColors.primaryPurple,
-//     decoration: InputDecoration(
-//       suffixIcon: Padding(
-//         padding: EdgeInsets.only(
-//           right: suffix == null ? 0.0 : 15.0,
-//           left: suffix == null ? 0.0 : 15.0,
-//         ),
-//         child: suffix,
-//       ),
-//       labelText: labelText,
-//       labelStyle: normalFont(Colors.black, 14.0),
-//       contentPadding: EdgeInsets.symmetric(horizontal: 25.0),
-//       fillColor: MColors.primaryWhite,
-//       floatingLabelBehavior: FloatingLabelBehavior.never,
-//       filled: true,
-//       enabledBorder: OutlineInputBorder(
-//         borderRadius: BorderRadius.circular(8.0),
-//         borderSide: BorderSide(
-//           color: textfieldBorder == 0.0 ? Colors.transparent : MColors.textGrey,
-//           width: textfieldBorder,
-//         ),
-//       ),
-//       errorBorder: OutlineInputBorder(
-//         borderRadius: BorderRadius.circular(8.0),
-//         borderSide: BorderSide(
-//           color: Colors.red,
-//           width: 1.0,
-//         ),
-//       ),
-//       focusedErrorBorder: OutlineInputBorder(
-//         borderRadius: BorderRadius.circular(8.0),
-//         borderSide: BorderSide(
-//           color: Colors.red,
-//           width: 1.0,
-//         ),
-//       ),
-//       focusedBorder: OutlineInputBorder(
-//         borderRadius: BorderRadius.circular(8.0),
-//         borderSide: BorderSide(
-//           color: MColors.primaryPurple,
-//           width: 1.0,
-//         ),
-//       ),
-//     ),
-//   );
-// }
-
-// Widget searchTextField(
-//   bool autofocus,
-//   TextEditingController controller,
-//   String initialValue,
-//   String labelText,
-//   void Function(String) onsaved,
-//   void Function(String) onChanged,
-//   bool enabled,
-//   String Function(String) validator,
-//   bool obscureText,
-//   bool autoValidate,
-//   bool enableSuggestions,
-//   TextInputType keyboardType,
-//   List<TextInputFormatter> inputFormatters,
-//   Widget suffix,
-//   double textfieldBorder,
-// ) {
-//   return TextFormField(
-//     autofocus: autofocus,
-//     controller: controller,
-//     initialValue: initialValue,
-//     onSaved: onsaved,
-//     onChanged: onChanged,
-//     enabled: enabled,
-//     validator: validator,
-//     obscureText: obscureText,
-//     keyboardType: keyboardType,
-//     inputFormatters: inputFormatters,
-//     autovalidateMode: AutovalidateMode.always,
-//     enableSuggestions: enableSuggestions,
-//     style: normalFont(
-//       enabled == true ? MColors.textDark : MColors.textGrey,
-//       16.0,
-//     ),
-//     cursorColor: MColors.primaryPurple,
-//     decoration: InputDecoration(
-//       suffixIcon: Padding(
-//         padding: EdgeInsets.only(
-//           right: suffix == null ? 0.0 : 15.0,
-//           left: suffix == null ? 0.0 : 15.0,
-//         ),
-//         child: suffix,
-//       ),
-//       labelText: labelText,
-//       labelStyle: normalFont(null, 14.0),
-//       contentPadding: EdgeInsets.symmetric(horizontal: 25.0),
-//       fillColor: MColors.primaryWhite,
-//       floatingLabelBehavior: FloatingLabelBehavior.never,
-//       filled: true,
-//       enabledBorder: OutlineInputBorder(
-//         borderRadius: BorderRadius.circular(8.0),
-//         borderSide: BorderSide(
-//           color: textfieldBorder == 0.0 ? Colors.transparent : MColors.textGrey,
-//           width: textfieldBorder,
-//         ),
-//       ),
-//       errorBorder: OutlineInputBorder(
-//         borderRadius: BorderRadius.circular(8.0),
-//         borderSide: BorderSide(
-//           color: Colors.red,
-//           width: 1.0,
-//         ),
-//       ),
-//       focusedErrorBorder: OutlineInputBorder(
-//         borderRadius: BorderRadius.circular(8.0),
-//         borderSide: BorderSide(
-//           color: Colors.red,
-//           width: 1.0,
-//         ),
-//       ),
-//       focusedBorder: OutlineInputBorder(
-//         borderRadius: BorderRadius.circular(8.0),
-//         borderSide: BorderSide(
-//           color: MColors.primaryPurple,
-//           width: 1.0,
-//         ),
-//       ),
-//     ),
-//   );
-// }
-//-------------------------------------------
-
-// Widget gettingLocationIndicator() {
-//   return Center(
-//     child: Row(
-//       mainAxisAlignment: MainAxisAlignment.center,
-//       crossAxisAlignment: CrossAxisAlignment.center,
-//       children: <Widget>[
-//         Text(
-//           "Getting your current location",
-//           style: normalFont(MColors.textGrey, 14.0),
-//         ),
-//         SizedBox(width: 5.0),
-//         progressIndicator(MColors.primaryPurple),
-//       ],
-//     ),
-//   );
-// }
-//-------------------------------------------
-
-//SNACKBARS----------------------------------
-// void showSimpleSnack(
-//   String value,
-//   IconData icon,
-//   Color iconColor,
-//   GlobalKey<ScaffoldMessengerState> _scaffoldMessengerKey,
-// ) {
-//   _scaffoldMessengerKey.currentState.showSnackBar(
-//     SnackBar(
-//       behavior: SnackBarBehavior.floating,
-//       duration: Duration(milliseconds: 1000),
-//       shape: RoundedRectangleBorder(
-//         borderRadius: BorderRadius.circular(10.0),
-//       ),
-//       content: Row(
-//         children: <Widget>[
-//           Expanded(
-//             child: Text(
-//               value,
-//               style: normalFont(null, null),
-//             ),
-//           ),
-//           Icon(
-//             icon,
-//             color: iconColor,
-//           )
-//         ],
-//       ),
-//     ),
-//   );
-// }
-
 // void showNoInternetSnack(
 //   GlobalKey<ScaffoldMessengerState> _scaffoldMessengerKey,
 // ) {
@@ -508,53 +260,53 @@ Widget secondaryButtonGreenSmoke(
 // }
 //-------------------------------------------
 
-//WARNING------------------------------------
-Widget warningWidget() {
-  return Padding(
-    padding: const EdgeInsets.all(20.0),
-    child: Container(
-      child: Row(
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(right: 5.0),
-            child: Icon(
-              Icons.error_outline,
-              color: Colors.redAccent,
-            ),
-          ),
-          Expanded(
-            child: Container(
-              child: Text(
-                "PLEASE NOTE -  This is a side project by Nifemi. Please do not enter real info. Thank you!",
-                style: normalFont(Colors.redAccent, 14.0),
-              ),
-            ),
-          ),
-        ],
-      ),
-      width: double.infinity,
-      padding: const EdgeInsets.all(10.0),
-      decoration: BoxDecoration(
-        border: Border.all(width: 1.0, color: Colors.redAccent),
-        borderRadius: BorderRadius.all(
-          Radius.circular(4.0),
-        ),
-      ),
-    ),
-  );
-}
+// //WARNING------------------------------------
+// Widget warningWidget() {
+//   return Padding(
+//     padding: const EdgeInsets.all(20.0),
+//     child: Container(
+//       child: Row(
+//         children: <Widget>[
+//           Padding(
+//             padding: const EdgeInsets.only(right: 5.0),
+//             child: Icon(
+//               Icons.error_outline,
+//               color: Colors.redAccent,
+//             ),
+//           ),
+//           Expanded(
+//             child: Container(
+//               child: Text(
+//                 "PLEASE NOTE -  This is a side project by Nifemi. Please do not enter real info. Thank you!",
+//                 style: normalFont(Colors.redAccent, 14.0),
+//               ),
+//             ),
+//           ),
+//         ],
+//       ),
+//       width: double.infinity,
+//       padding: const EdgeInsets.all(10.0),
+//       decoration: BoxDecoration(
+//         border: Border.all(width: 1.0, color: Colors.redAccent),
+//         borderRadius: BorderRadius.all(
+//           Radius.circular(4.0),
+//         ),
+//       ),
+//     ),
+//   );
+// }
 //-------------------------------------------
 
-//SHARE WIDGET-------------------------------
-Future shareWidget() {
-  return WcFlutterShare.share(
-      sharePopupTitle: 'Pet Shop',
-      subject: 'Hi!',
-      text:
-          'Hi, I use Pet Shop to care for my pets fast and easy, Download it here at https://github.com/thenifemi/sharing_map and for every download, a dog gets a treat.',
-      mimeType: 'text/plain');
-}
-//-------------------------------------------
+// //SHARE WIDGET-------------------------------
+// Future shareWidget() {
+//   return WcFlutterShare.share(
+//       sharePopupTitle: 'Pet Shop',
+//       subject: 'Hi!',
+//       text:
+//           'Hi, I use Pet Shop to care for my pets fast and easy, Download it here at https://github.com/thenifemi/sharing_map and for every download, a dog gets a treat.',
+//       mimeType: 'text/plain');
+// }
+// //-------------------------------------------
 
 //MODAL BAR WIDGET-------------------------------
 modalBarWidget() {

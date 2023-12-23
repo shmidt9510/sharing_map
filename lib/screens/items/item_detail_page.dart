@@ -259,12 +259,7 @@ Widget GetUserWidget(BuildContext context, Item item) {
                           child: Container(
                             width: 45,
                             height: 45,
-                            child: _user.hasProfileImage ?? false
-                                ? CachedImage.Get(_user.getSMImage(),
-                                    fit: BoxFit.cover)
-                                : Image.asset(
-                                    'assets/images/user_placeholder.jpg'),
-                            // backgroundColor: Colors.blue,
+                            child: _user.buildImage(),
                           ),
                         ),
                       ),

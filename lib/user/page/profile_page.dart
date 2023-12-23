@@ -132,7 +132,9 @@ class _ProfilePageState extends State<ProfilePage> {
         itemCount: contacts.length,
         itemBuilder: (BuildContext context, int index) {
           var controller = TextEditingController();
-          controller.text = contacts[index].contact;
+          if (contacts[index].contact.length > 0) {
+            controller.text = contacts[index].contact;
+          }
           return Row(children: [
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 5.0),
@@ -158,10 +160,6 @@ class _ProfilePageState extends State<ProfilePage> {
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
           ),
           const SizedBox(height: 4),
-          Text(
-            user.email ?? "no email",
-            style: TextStyle(color: Colors.grey),
-          )
         ],
       );
 
@@ -229,7 +227,7 @@ class _ProfilePageState extends State<ProfilePage> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Разлогиниться'),
-          actions: <Widget>[
+          actions: [
             TextButton(
               style: TextButton.styleFrom(
                 textStyle: Theme.of(context).textTheme.labelLarge,
@@ -246,7 +244,6 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               child: const Text('Нет'),
               onPressed: () {
-                SharedPrefs().clear();
                 GoRouter.of(context).go(SMPath.start);
               },
             ),
@@ -267,6 +264,7 @@ class _ProfilePageState extends State<ProfilePage> {
         onPressed: () async {
           if (await _deleteDialogBuilder(context)) {
             if (await _userController.DeleteMyself()) {
+              //TODO
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 content: const Text('До скорых встреч'),
                 action: SnackBarAction(
@@ -276,8 +274,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   },
                 ),
               ));
-              SharedPrefs().clear(); // TBD
-              await Future.delayed(const Duration(seconds: 2));
+              await Future.delayed(const Duration(seconds: 1));
               GoRouter.of(context).go(SMPath.start);
             }
           }
@@ -292,15 +289,13 @@ class _ProfilePageState extends State<ProfilePage> {
           if (await _logoutDialog(context)) {
             if (await _userController.Logout()) {
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: const Text('Ты заходи, если что'),
+                content: const Text('До скорых встреч'),
                 action: SnackBarAction(
                   label: 'Закрыть',
-                  onPressed: () {
-                    // Some code to undo the change.
-                  },
+                  onPressed: () {},
                 ),
               ));
-              await Future.delayed(const Duration(seconds: 2));
+              await Future.delayed(const Duration(seconds: 1));
               GoRouter.of(context).go(SMPath.start);
             }
           }
