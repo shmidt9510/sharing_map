@@ -24,7 +24,7 @@ class TextDescriptionBlock extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Flexible(
+        Expanded(
           flex: 2,
           child: Container(
             constraints: BoxConstraints(maxWidth: context.width * 3 / 5),
@@ -41,14 +41,14 @@ class TextDescriptionBlock extends StatelessWidget {
             ),
           ),
         ),
-        Flexible(
+        Expanded(
             child: Text(
           overflow: TextOverflow.ellipsis,
           _item.desc ?? "",
           maxLines: 1,
           textAlign: TextAlign.start,
         )),
-        Flexible(
+        Expanded(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

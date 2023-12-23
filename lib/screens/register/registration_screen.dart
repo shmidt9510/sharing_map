@@ -175,8 +175,16 @@ class _LoginState extends State<RegistrationScreen> {
               Row(
                 children: [
                   Checkbox(
-                    checkColor: Colors.white,
-                    // fillColor: MaterialStateProperty.resolveWith(getColor),
+                    checkColor: Colors.black,
+                    focusColor: MColors.lightGreen,
+                    activeColor: MColors.lightGreen,
+                    fillColor: MaterialStateColor.resolveWith((states) {
+                      if (states.contains(MaterialState.pressed)) {
+                        return MColors.darkGreen;
+                      }
+                      return MColors.lightGreen;
+                    }),
+                    // fillColor: MColors.white,,
                     value: _isChecked,
                     onChanged: (bool? value) {
                       setState(() {
@@ -184,12 +192,19 @@ class _LoginState extends State<RegistrationScreen> {
                       });
                     },
                   ),
-                  InkWell(
-                      child: Text('пожалуйста подтвердите условия'),
-                      onTap: () => launchUrl(Uri.parse(
-                          'https://docs.flutter.io/flutter/services/UrlLauncher-class.html'))),
+                  Text(
+                    'Я принимаю условия пользовательского соглашения',
+                    style: TextStyle(color: MColors.white),
+                  ),
                 ],
               ),
+              const SizedBox(height: 20),
+              InkWell(
+                  child: Text('Посмотреть условия пользовательского соглашения',
+                      style: TextStyle(color: MColors.white)),
+                  onTap: () => launchUrl(Uri.parse(
+                      'https://docs.google.com/document/d/1dVBC3nqMVMLXrZ6H6h3d340dCDHdBPxivykTD_Vfa_E/edit'))),
+              const SizedBox(height: 20),
               Column(
                 children: [
                   ElevatedButton(
@@ -201,6 +216,18 @@ class _LoginState extends State<RegistrationScreen> {
                       ),
                     ),
                     onPressed: () async {
+                      if (!_isChecked) {
+                        var snackBar = SnackBar(
+                          content: const Text(
+                              'Нужно подтвердить условия пользовательского соглашения'),
+                          action: SnackBarAction(
+                            label: 'Закрыть',
+                            onPressed: () {},
+                          ),
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        return;
+                      }
                       if (_formKey.currentState?.validate() ?? false) {
                         var result = await _userController.Signup(
                             _controllerMail.text,

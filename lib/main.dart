@@ -24,6 +24,7 @@ void main() async {
   final ItemController _itemsController = Get.put(ItemController());
   final UserController _usersController = Get.put(UserController());
   String _initPath = await _getInitPath(_usersController);
+  // debugPrint("MY PATH IS $_initPath");
   WidgetsFlutterBinding.ensureInitialized();
   await _itemsController.fetchItems();
   await _usersController.CheckAuthorization();

@@ -51,6 +51,7 @@ class _ItemsListViewState extends State<ItemsListView> {
         _pagingController.appendLastPage(newItems);
       } else {
         final nextPageKey = pageKey + 1;
+        //newItems.length;
         _pagingController.appendPage(newItems, nextPageKey);
       }
     } catch (error) {
@@ -81,11 +82,10 @@ class _ItemsListViewState extends State<ItemsListView> {
               ]),
             ),
             noItemsFoundIndicatorBuilder: (_) => Center(
-              child: Expanded(
-                  child: Column(children: [
+              child: Column(children: [
                 Image.asset('assets/images/no_data_placeholder.png'),
                 Text("Здесь пока ничего нет")
-              ])),
+              ]),
             ),
             animateTransitions: true,
             itemBuilder: (context, item, index) => InkWell(

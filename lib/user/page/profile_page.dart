@@ -41,46 +41,43 @@ class _ProfilePageState extends State<ProfilePage> {
               return Center(child: CircularProgressIndicator());
             }
             var _user = snapshot.data as User;
-            return Expanded(
-              child: SingleChildScrollView(
-                physics: AlwaysScrollableScrollPhysics(),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: context.height / 5,
-                        child: Padding(
-                          padding:
-                              EdgeInsetsDirectional.only(start: 20, end: 20),
-                          child: Row(
-                            children: [
-                              Flexible(flex: 1, child: _user.buildImage()),
-                              Flexible(
-                                flex: 2,
-                                child: Center(
-                                  child: Column(
-                                    children: [
-                                      buildName(_user),
-                                      // NumbersWidget(_user!),
-                                    ],
-                                  ),
+            return SingleChildScrollView(
+              physics: AlwaysScrollableScrollPhysics(),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: context.height / 5,
+                      child: Padding(
+                        padding: EdgeInsetsDirectional.only(start: 20, end: 20),
+                        child: Row(
+                          children: [
+                            Flexible(flex: 1, child: _user.buildImage()),
+                            Flexible(
+                              flex: 2,
+                              child: Center(
+                                child: Column(
+                                  children: [
+                                    buildName(_user),
+                                    // NumbersWidget(_user!),
+                                  ],
                                 ),
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
-                      const SizedBox(height: 10),
-                      buildAbout(_user),
-                      buildContacts(context, _userController),
-                      const SizedBox(height: 48),
-                      ItemsListView(
-                        userId: _user.id,
-                        addDeleteButton: true,
-                      )
-                    ],
-                  ),
+                    ),
+                    const SizedBox(height: 10),
+                    buildAbout(_user),
+                    buildContacts(context, _userController),
+                    const SizedBox(height: 48),
+                    ItemsListView(
+                      userId: _user.id,
+                      addDeleteButton: true,
+                    )
+                  ],
                 ),
               ),
             );
