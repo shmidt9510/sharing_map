@@ -192,9 +192,13 @@ class _LoginState extends State<RegistrationScreen> {
                       });
                     },
                   ),
-                  Text(
-                    'Я принимаю условия пользовательского соглашения',
-                    style: TextStyle(color: MColors.white),
+                  SizedBox(
+                    width: context.width * 0.6,
+                    child: Text(
+                      'Я принимаю условия пользовательского соглашения',
+                      maxLines: 2,
+                      style: TextStyle(color: MColors.white),
+                    ),
                   ),
                 ],
               ),
