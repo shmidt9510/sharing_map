@@ -124,6 +124,7 @@ Widget GetLocationsWidget(
   });
   debugPrint("has length " + locations.length.toString());
   return Container(
+    padding: EdgeInsets.only(left: 23),
     height: 25.0 * locations.length,
     child: ListView.builder(
       scrollDirection: Axis.vertical,
