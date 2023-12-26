@@ -33,10 +33,9 @@ class _ItemListPageState extends State<ItemListPage> {
 
   @override
   Widget build(BuildContext context) {
-    double height = context.height / 5;
+    double height = context.height / 7;
     return SafeArea(
-      child: Scaffold(
-          body: RefreshIndicator(
+      child: RefreshIndicator(
         onRefresh: () {
           return _updateOnFetch();
         },
@@ -47,7 +46,7 @@ class _ItemListPageState extends State<ItemListPage> {
               SizedBox(
                 height: height,
                 child: ListView.builder(
-                  physics: const AlwaysScrollableScrollPhysics(),
+                  physics: AlwaysScrollableScrollPhysics(),
                   shrinkWrap: true,
                   scrollDirection: Axis.horizontal,
                   itemCount: _commonController.categories.length,
@@ -62,7 +61,7 @@ class _ItemListPageState extends State<ItemListPage> {
                   child: ItemsListView(
                       itemFilter: _chosenFilter, key: ValueKey(_chosenFilter)))
             ])),
-      )),
+      ),
     );
   }
 

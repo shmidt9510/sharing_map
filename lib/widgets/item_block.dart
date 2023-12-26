@@ -30,7 +30,7 @@ class TextDescriptionBlock extends StatelessWidget {
             constraints: BoxConstraints(maxWidth: context.width * 3 / 5),
             child: Text(
               _item.name ?? "",
-              maxLines: 3,
+              maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 fontSize: 13.0,
@@ -111,21 +111,23 @@ class ItemBlock extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Flexible(
+              flex: 2,
               child: Container(
-            width: 100,
-            child: ClipRRect(
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(10.0),
-                  bottomLeft: Radius.circular(10.0),
-                ),
-                child: FittedBox(
-                    fit: BoxFit.cover,
-                    child: _item.images!.length > 0
-                        ? Container(child: CachedImage.Get(_item.images![0]))
-                        : Placeholder(
-                            color: MColors.black,
-                          ))),
-          )),
+                width: 100,
+                child: ClipRRect(
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(10.0),
+                      bottomLeft: Radius.circular(10.0),
+                    ),
+                    child: FittedBox(
+                        fit: BoxFit.cover,
+                        child: _item.images!.length > 0
+                            ? Container(
+                                child: CachedImage.Get(_item.images![0]))
+                            : Placeholder(
+                                color: MColors.black,
+                              ))),
+              )),
           Flexible(
             flex: 2,
             child: Padding(
