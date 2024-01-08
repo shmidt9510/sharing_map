@@ -134,7 +134,6 @@ class UserWebService {
 
   static Future<bool> isAuth() async {
     try {
-      debugPrint("here");
       var response =
           await client.get(Uri.parse(Constants.BACK_URL + "/is_auth"));
       debugPrint(response.body.toString());

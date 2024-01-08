@@ -1,5 +1,6 @@
 import 'package:sharing_map/controllers/common_controller.dart';
 import 'package:sharing_map/models/category.dart';
+import 'package:sharing_map/utils/colors.dart';
 
 import 'item_widgets.dart';
 
@@ -20,6 +21,7 @@ class _ItemListPageState extends State<ItemListPage> {
   bool isLoading = false;
   CommonController _commonController = Get.find<CommonController>();
   ItemController _itemsController = Get.find<ItemController>();
+  ScrollController _scrollController = ScrollController();
   int _chosenFilter = 0;
   @override
   void initState() {
@@ -33,34 +35,94 @@ class _ItemListPageState extends State<ItemListPage> {
 
   @override
   Widget build(BuildContext context) {
-    double height = context.height / 7;
+    double height = context.height * 0.14;
     return SafeArea(
-      child: RefreshIndicator(
-        onRefresh: () {
-          return _updateOnFetch();
-        },
-        child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            physics: ScrollPhysics(),
-            child: Column(children: [
-              SizedBox(
-                height: height,
-                child: ListView.builder(
-                  physics: AlwaysScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  itemCount: _commonController.categories.length,
-                  itemBuilder: (BuildContext context, int index) => Card(
-                    child: _buildButton(
-                        context, _commonController.categories[index], height),
-                  ),
-                ),
-              ),
-              Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                  child: ItemsListView(
-                      itemFilter: _chosenFilter, key: ValueKey(_chosenFilter)))
-            ])),
+      child: Scaffold(
+        body: RefreshIndicator(
+          onRefresh: () {
+            return _updateOnFetch();
+          },
+          child: NestedScrollView(
+            floatHeaderSlivers: true,
+            headerSliverBuilder: ((context, innerBoxIsScrolled) => [
+                  SliverAppBar(
+                    backgroundColor: MColors.transparent,
+                    toolbarHeight: height,
+                    title: SizedBox(
+                      height: height,
+                      child: ListView.builder(
+                        physics: AlwaysScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        itemCount: _commonController.categories.length,
+                        itemBuilder: (BuildContext context, int index) => Card(
+                          child: _buildButton(context,
+                              _commonController.categories[index], height),
+                        ),
+                      ),
+                    ),
+                    primary: false,
+                    floating: true,
+                    titleSpacing: 0,
+                    // bottom: PreferredSize(
+                    //   preferredSize: Size.fromHeight(height),
+                    //   child: SizedBox(
+                    //     height: height,
+                    //     child: ListView.builder(
+                    //       physics: AlwaysScrollableScrollPhysics(),
+                    //       shrinkWrap: true,
+                    //       scrollDirection: Axis.horizontal,
+                    //       itemCount: _commonController.categories.length,
+                    //       itemBuilder: (BuildContext context, int index) => Card(
+                    //         child: _buildButton(context,
+                    //             _commonController.categories[index], height),
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
+                  )
+                ]),
+            body: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+              child: ItemsListView(
+                  itemFilter: _chosenFilter, key: ValueKey(_chosenFilter)),
+            ),
+
+            // body: Container(
+            //   height: context.height * 0.8,
+            //   child: Padding(
+            //       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+            //       child: ItemsListView(
+            //           itemFilter: _chosenFilter, key: ValueKey(_chosenFilter))),
+            // ),
+            // child: ListView(
+            //     scrollDirection: Axis.vertical,
+            //     physics: ScrollPhysics(),
+            //     children: [
+            //       SizedBox(
+            //         height: height,
+            //         child: ListView.builder(
+            //           physics: AlwaysScrollableScrollPhysics(),
+            //           shrinkWrap: true,
+            //           scrollDirection: Axis.horizontal,
+            //           itemCount: _commonController.categories.length,
+            //           itemBuilder: (BuildContext context, int index) => Card(
+            //             child: _buildButton(
+            //                 context, _commonController.categories[index], height),
+            //           ),
+            //         ),
+            //       ),
+            //       Padding(
+            //           padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+            //           child: SizedBox(
+            //             height: context.height * 0.74,
+            //             child: ItemsListView(
+            //                 itemFilter: _chosenFilter,
+            //                 key: ValueKey(_chosenFilter)),
+            //           ))
+            //     ]),
+          ),
+        ),
       ),
     );
   }
@@ -77,12 +139,13 @@ class _ItemListPageState extends State<ItemListPage> {
     1: 'home',
     2: 'books',
     3: 'clothes',
-    4: 'pet',
-    5: 'sport',
-    6: 'appliance',
-    7: 'food',
-    8: 'auto',
-    9: 'other'
+    4: 'child',
+    5: 'pet',
+    6: 'sport',
+    7: 'appliance',
+    8: 'food',
+    9: 'auto',
+    10: 'other',
   };
 
   Widget _buildButton(
@@ -95,11 +158,6 @@ class _ItemListPageState extends State<ItemListPage> {
 
     return ElevatedButton(
         style: ElevatedButton.styleFrom(
-            // backgroundColor: Color.fromARGB(0, 255, 255, 255),
-            // shadowColor: Color.fromARGB(0, 255, 255, 255),
-            // surfaceTintColor: Color.fromARGB(0, 255, 255, 255),
-            // disabledBackgroundColor: Color.fromARGB(0, 255, 255, 255),
-            // disabledForegroundColor: Color.fromARGB(0, 255, 255, 255),
             padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(25),
@@ -118,7 +176,7 @@ class _ItemListPageState extends State<ItemListPage> {
           });
         },
         child: Container(
-          width: size * 0.7,
+          width: size,
           height: size,
           // padding: const EdgeInsets.only(bottom: 8),
           decoration: ShapeDecoration(
@@ -145,15 +203,24 @@ class _ItemListPageState extends State<ItemListPage> {
                   ),
                 ),
               ),
+              SizedBox(
+                height: size * 0.05,
+              ),
               Container(
-                // clipBehavior: Clip.antiAlias,
-                // decoration: BoxDecoration(),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
+                      style: TextStyle(
+                        color: MColors.grey1,
+                        fontSize: size * 0.12,
+                        fontFamily: 'Roboto',
+                        fontWeight: FontWeight.w400,
+                        height: 0.07,
+                        letterSpacing: -0.41,
+                      ),
                       category.description ?? "_",
                       textAlign: TextAlign.center,
                     ),

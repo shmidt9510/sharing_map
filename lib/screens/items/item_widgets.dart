@@ -32,10 +32,10 @@ class _ItemsListViewState extends State<ItemsListView> {
 
   @override
   void initState() {
+    super.initState();
     _pagingController.addPageRequestListener((pageKey) {
       _fetchPage(pageKey, widget.itemFilter ?? 0);
     });
-    super.initState();
   }
 
   Future<void> _fetchPage(int pageKey, int itemFilter) async {
@@ -51,7 +51,6 @@ class _ItemsListViewState extends State<ItemsListView> {
         _pagingController.appendLastPage(newItems);
       } else {
         final nextPageKey = pageKey + 1;
-        //newItems.length;
         _pagingController.appendPage(newItems, nextPageKey);
       }
     } catch (error) {
@@ -60,68 +59,63 @@ class _ItemsListViewState extends State<ItemsListView> {
   }
 
   @override
-  Widget build(BuildContext context) => RefreshIndicator(
-        onRefresh: () => Future.sync(
-          () => _pagingController.refresh(),
+  Widget build(BuildContext context) => PagedListView<int, Item>.separated(
+        physics: NeverScrollableScrollPhysics(),
+        scrollDirection: Axis.vertical,
+        shrinkWrap: true,
+        pagingController: _pagingController,
+        builderDelegate: PagedChildBuilderDelegate<Item>(
+          firstPageErrorIndicatorBuilder: (_) => Center(
+            child: Column(children: [
+              Image.asset('assets/images/no_data_placeholder.png'),
+            ]),
+          ),
+          newPageErrorIndicatorBuilder: (_) => Center(
+            child: Column(children: [
+              Image.asset('assets/images/no_data_placeholder.png'),
+              Text("Здесь пока ничего нет")
+            ]),
+          ),
+          noItemsFoundIndicatorBuilder: (_) => Center(
+            child: Column(children: [
+              Image.asset('assets/images/no_data_placeholder.png'),
+              Text("Здесь пока ничего нет")
+            ]),
+          ),
+          animateTransitions: true,
+          itemBuilder: (context, item, index) => InkWell(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ItemDetailPage(item)));
+              },
+              child: Stack(
+                children: [
+                  ItemBlock(item),
+                  widget.addDeleteButton
+                      ? Positioned(
+                          top: 3,
+                          right: 3,
+                          child: IconButton(
+                              onPressed: () async {
+                                await _deleteItemDialogBuilder(
+                                    context, item.id ?? "");
+                                setState(() {
+                                  _pagingController.refresh();
+                                });
+                              },
+                              icon: Icon(
+                                Icons.delete,
+                                color: Colors.red,
+                              )),
+                        )
+                      : Container(),
+                ],
+              )),
         ),
-        child: PagedListView<int, Item>.separated(
-          physics: NeverScrollableScrollPhysics(),
-          scrollDirection: Axis.vertical,
-          shrinkWrap: true,
-          pagingController: _pagingController,
-          builderDelegate: PagedChildBuilderDelegate<Item>(
-            firstPageErrorIndicatorBuilder: (_) => Center(
-              child: Column(children: [
-                Image.asset('assets/images/no_data_placeholder.png'),
-              ]),
-            ),
-            newPageErrorIndicatorBuilder: (_) => Center(
-              child: Column(children: [
-                Image.asset('assets/images/no_data_placeholder.png'),
-                Text("Здесь пока ничего нет")
-              ]),
-            ),
-            noItemsFoundIndicatorBuilder: (_) => Center(
-              child: Column(children: [
-                Image.asset('assets/images/no_data_placeholder.png'),
-                Text("Здесь пока ничего нет")
-              ]),
-            ),
-            animateTransitions: true,
-            itemBuilder: (context, item, index) => InkWell(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ItemDetailPage(item)));
-                },
-                child: Stack(
-                  children: [
-                    ItemBlock(item),
-                    widget.addDeleteButton
-                        ? Positioned(
-                            top: 3,
-                            right: 3,
-                            child: IconButton(
-                                onPressed: () async {
-                                  await _deleteItemDialogBuilder(
-                                      context, item.id ?? "");
-                                  setState(() {
-                                    _pagingController.refresh();
-                                  });
-                                },
-                                icon: Icon(
-                                  Icons.delete,
-                                  color: Colors.red,
-                                )),
-                          )
-                        : Container(),
-                  ],
-                )),
-          ),
-          separatorBuilder: (context, index) => Container(
-            height: 10,
-          ),
+        separatorBuilder: (context, index) => Container(
+          height: 10,
         ),
       );
 

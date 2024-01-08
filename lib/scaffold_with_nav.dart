@@ -20,23 +20,26 @@ class ScaffoldWithNavBar extends StatelessWidget {
     var _index = navigationShell.currentIndex;
     return Scaffold(
       body: navigationShell,
-      bottomNavigationBar: BottomNavigationBar(
-        unselectedIconTheme: IconThemeData(color: _color),
-        selectedItemColor: _color,
-        items: [
-          BottomNavigationBarItem(
-              activeIcon: Icon(Icons.home),
-              icon: Icon(Icons.home, color: _color),
-              label: 'Главная'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.add_circle_outlined, color: _color),
-              label: 'Добавить'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.supervised_user_circle_rounded),
-              label: 'Профиль'),
-        ],
-        currentIndex: navigationShell.currentIndex,
-        onTap: (int index) => _onTap(context, index),
+      bottomNavigationBar: SizedBox(
+        height: context.height * 0.09,
+        child: BottomNavigationBar(
+          unselectedIconTheme: IconThemeData(color: _color),
+          selectedItemColor: _color,
+          items: [
+            BottomNavigationBarItem(
+                activeIcon: Icon(Icons.home),
+                icon: Icon(Icons.home, color: _color),
+                label: 'Главная'),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.add_circle_outlined, color: _color),
+                label: 'Добавить'),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.supervised_user_circle_rounded),
+                label: 'Профиль'),
+          ],
+          currentIndex: navigationShell.currentIndex,
+          onTap: (int index) => _onTap(context, index),
+        ),
       ),
     );
   }

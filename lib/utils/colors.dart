@@ -5,6 +5,7 @@ class MColors {
   static const Color primaryGreen = const Color.fromARGB(255, 54, 106, 83);
   static const Color secondaryGreen = const Color.fromARGB(255, 153, 202, 87);
   static const Color white = const Color.fromARGB(255, 255, 255, 255);
+  static const Color transparent = const Color.fromARGB(0, 255, 255, 255);
   static const Color black = const Color.fromARGB(255, 60, 60, 60);
   static const Color overlay = Color.fromARGB(138, 60, 60, 60);
   static const Color darkGrey = const Color.fromARGB(204, 60, 60, 60);

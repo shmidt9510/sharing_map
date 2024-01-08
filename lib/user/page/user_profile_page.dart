@@ -40,7 +40,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
             }
             var _user = snapshot.data as User;
             return SingleChildScrollView(
-              physics: NeverScrollableScrollPhysics(),
+              physics: AlwaysScrollableScrollPhysics(),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(

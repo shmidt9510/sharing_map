@@ -56,15 +56,14 @@ class RefreshTokenInterceptor implements InterceptorContract {
   @override
   Future<RequestData> interceptRequest({required RequestData data}) async {
     try {
-      debugPrint("onInit");
-      debugPrint(SharedPrefs().authToken);
-      debugPrint(SharedPrefs().refreshToken);
-      debugPrint(SharedPrefs().userId);
-      debugPrint(SharedPrefs().logged.toString());
-      if (SharedPrefs().authToken.isNotEmpty) {
-        debugPrint("have token");
-        if (JwtDecoder.isExpired(SharedPrefs().authToken)) {
-          debugPrint("isexpired");
+      // debugPrint("onInit");
+      // debugPrint(SharedPrefs().authToken);
+      // debugPrint(SharedPrefs().refreshToken);
+      // debugPrint(SharedPrefs().userId);
+      // debugPrint(SharedPrefs().logged.toString());
+      if (SharedPrefs().refreshToken.isNotEmpty) {
+        if (SharedPrefs().authToken.isEmpty ||
+            JwtDecoder.isExpired(SharedPrefs().authToken)) {
           var response = await client.post(
               Uri.parse(Constants.BACK_URL + "/refreshToken"),
               headers: {

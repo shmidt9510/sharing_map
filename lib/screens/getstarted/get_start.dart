@@ -20,16 +20,6 @@ class OnBoardingPageState extends State<OnBoardingPage> {
     GoRouter.of(context).go(SMPath.start);
   }
 
-  Widget _buildFullscreenImage() {
-    return Image.asset(
-      'assets/images/intro/intro_0.png',
-      fit: BoxFit.cover,
-      height: double.infinity,
-      width: double.infinity,
-      alignment: Alignment.center,
-    );
-  }
-
   Widget _buildImage(String assetName, [double width = 350]) {
     return Image.asset('assets/images/intro/$assetName', width: width);
   }
@@ -56,20 +46,19 @@ class OnBoardingPageState extends State<OnBoardingPage> {
       pages: [
         PageViewModel(
           title: "Поделись",
-          body:
-              "Не храни ненужные вещи - поделись ими с тем, кто в них нуждается",
+          body: "Не выбрасывайте ненужные вещи, отдайте их тем, кому они нужны",
           image: _buildImage('intro_1.png'),
           decoration: pageDecoration,
         ),
         PageViewModel(
           title: "Найди вещи",
-          body: "Новые старые вещи можно найти в Sharing Map",
+          body: "Не покупайте новые вещи - найдите их на SharingMap",
           image: _buildImage('intro_2.png'),
           decoration: pageDecoration,
         ),
         PageViewModel(
           title: "Отдавать вещи легко",
-          body: "Отдавать вещи в шэринг мап легко",
+          body: "Отдавать и находить вещи на SharingMap - легко и просто",
           image: _buildImage('intro_3.png'),
           decoration: pageDecoration,
         ),

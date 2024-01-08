@@ -71,7 +71,7 @@ class ItemWebService {
   }
 
   static Future<bool> deleteItem(String itemId) async {
-    var uri = "/items/$itemId/delete";
+    var uri = "/items/delete/$itemId";
     var response = await client.delete(
       Uri.parse(Constants.BACK_URL + uri),
       params: {"id": SharedPrefs().userId},

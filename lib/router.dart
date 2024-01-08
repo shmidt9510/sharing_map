@@ -47,9 +47,8 @@ class _RouterStartState extends State<RouterStart> {
           routes: <RouteBase>[
             ShellRoute(
                 builder: (context, state, child) {
-                  return Scaffold(
-                    // appBar: AppBar(),
-                    body: Center(child: child),
+                  return SafeArea(
+                    child: Center(child: child),
                   );
                 },
                 routes: [
