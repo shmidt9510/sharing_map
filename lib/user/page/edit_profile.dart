@@ -204,11 +204,9 @@ class _ProfilePageState extends State<EditProfilePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Center(
-              child: Text(
-                'О себе',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              ),
+            Text(
+              'О себе',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
             Text(

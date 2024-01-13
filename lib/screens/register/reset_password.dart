@@ -9,16 +9,16 @@ import 'package:sharing_map/utils/shared.dart';
 // import 'package:sharing_map/widgets/textInputWidget.dart';
 import 'package:email_validator/email_validator.dart';
 
-class RegistrationCodeScreen extends StatefulWidget {
-  const RegistrationCodeScreen({
+class ResetPasswordScreen extends StatefulWidget {
+  const ResetPasswordScreen({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<RegistrationCodeScreen> createState() => _RegistrationCodeScreenState();
+  State<ResetPasswordScreen> createState() => _ResetPasswordScreenState();
 }
 
-class _RegistrationCodeScreenState extends State<RegistrationCodeScreen> {
+class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   UserController _userController = Get.find<UserController>();
 
   @override
@@ -85,6 +85,7 @@ class _RegistrationCodeScreenState extends State<RegistrationCodeScreen> {
           },
         ),
       );
+      debugPrint(SharedPrefs().userId);
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
       return false;
     }

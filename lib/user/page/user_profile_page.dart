@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:go_router/go_router.dart';
 import 'package:sharing_map/controllers/user_controller.dart';
 import 'package:sharing_map/models/user.dart';
 import 'package:sharing_map/path.dart';
-import 'package:sharing_map/user/widgets/numbers.dart';
 import 'package:sharing_map/utils/shared.dart';
 import 'package:sharing_map/screens/items/item_widgets.dart';
 
@@ -57,7 +55,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                               child: Center(
                                 child: Column(
                                   children: [
-                                    buildName(_user!),
+                                    buildName(_user),
                                     // NumbersWidget(_user!),
                                   ],
                                 ),
@@ -98,11 +96,9 @@ class _UserProfilePageState extends State<UserProfilePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Center(
-              child: Text(
-                'О себе',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              ),
+            Text(
+              'О себе',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
             Text(

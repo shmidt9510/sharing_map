@@ -31,10 +31,11 @@ class User {
   Map<String, dynamic> toJson() =>
       {"id": id, "username": username, "bio": bio, "email": email};
 
-  Widget buildImage() {
+  Widget buildImage({BoxFit fit = BoxFit.contain}) {
     if (hasProfileImage != null && hasProfileImage!) {
       return CachedImage.Get(
-          SMImage(id: id, itemId: id, updatedAt: DateTime.now()));
+          SMImage(id: id, itemId: id, updatedAt: DateTime.now()),
+          fit: fit);
     }
     return Image.asset('assets/images/categories/pet.png');
   }

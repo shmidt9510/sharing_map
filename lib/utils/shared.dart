@@ -53,6 +53,13 @@ class SharedPrefs {
   set isFirstRun(bool value) {
     _sharedPrefs.setBool(keyIsFirst, value);
   }
+
+  String get resetPasswordToken =>
+      _sharedPrefs.getString(keyResetPasswordToken) ?? "";
+
+  set resetPasswordToken(String value) {
+    _sharedPrefs.setString(keyResetPasswordToken, value);
+  }
 }
 // String get isLogged => _sharedPrefs!.getString(keyUsername) ?? "";
 
@@ -68,3 +75,4 @@ const String keyIsFirst = "first_start";
 const String keyAuthToken = "key_auth_token";
 const String keyRefreshToken = "refresh_token";
 const String keyConfirmationToken = "confirmation_token";
+const String keyResetPasswordToken = "reset_password_token";

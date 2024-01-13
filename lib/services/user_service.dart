@@ -147,13 +147,8 @@ class UserWebService {
     }
   }
 
-  static Future<bool> updateUser(User user, XFile? file) async {
+  static Future<bool> updateUser(User user) async {
     var uri = "/users/update";
-    if (file != null) {
-      PhotoWebService service = PhotoWebService();
-      await service.addPhotos([file], "user"); //TBD
-    }
-
     var response = await client.put(Uri.parse(Constants.BACK_URL + uri),
         headers: {
           "content-type": "application/json",
@@ -167,6 +162,11 @@ class UserWebService {
       return Future.error("failed_create_item");
     }
     return true;
+  }
+
+  static Future<bool> updateUserPhoto(XFile file) async {
+    PhotoWebService service = PhotoWebService();
+    return await service.addPhotos([file], "user");
   }
 
   static Future<User> getUser(String id) async {
@@ -244,4 +244,50 @@ class UserWebService {
         UserContact.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
     return newContact;
   }
+
+  // static Future<String> resetPassword(
+  //     String email, String username, String password) async {
+  //   var response = await client.post(Uri.parse(Constants.BACK_URL + "/resetPassword"),
+  //       headers: {
+  //         "content-type": "application/json",
+  //         "accept": "application/json",
+  //       },
+  //       body:
+  //           jsonEncode(UserPass(email, password, username: username).toJson()));
+
+  //   if (response.statusCode == 200) {
+  //     // SharedPrefs().userId = response["user_id"].toString();
+  //     var jsonData = jsonDecode(utf8.decode(response.bodyBytes));
+  //     if (jsonData["confirmationTokenId"].toString().isEmpty) {
+  //       return Future.error("failed_get_confirmation_token");
+  //     }
+  //     return jsonData["confirmationTokenId"].toString();
+  //   } else {
+  //     return Future.error(
+  //         "failed_with_status_code_" + response.statusCode.toString());
+  //   }
+  // }
+
+  // static Future<bool> resetPasswordConfirm(String token, String tokenId) async {
+  //   var response =
+  //       await client.post(Uri.parse(Constants.BACK_URL + "/resetPassword/change"),
+  //           headers: {
+  //             "content-type": "application/json",
+  //             "accept": "application/json",
+  //           },
+  //           body: jsonEncode(ConfirmDTO(tokenId, token).toJson()));
+  //   var bodyDecoded = jsonDecode(response.body);
+  //   if (response.statusCode != 200) {
+  //     return Future.error(
+  //         "failed_with_status_code_" + response.statusCode.toString());
+  //   }
+  //   SharedPrefs().logged = true;
+  //   SharedPrefs().authToken = bodyDecoded["accessToken"].toString();
+  //   SharedPrefs().refreshToken = bodyDecoded["refreshToken"].toString();
+
+  //   Map<String, dynamic> decodedToken =
+  //       JwtDecoder.decode(SharedPrefs().authToken);
+  //   SharedPrefs().userId = decodedToken["user_id"] as String;
+  //   return true;
+  // }
 }

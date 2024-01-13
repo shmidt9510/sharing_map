@@ -10,6 +10,7 @@ import 'package:sharing_map/screens/register/registration_screen.dart';
 import 'package:sharing_map/path.dart';
 
 import 'package:sharing_map/screens/register/login_screen.dart';
+import 'package:sharing_map/screens/register/reset_password.dart';
 import 'package:sharing_map/theme.dart';
 import 'package:sharing_map/user/page/edit_profile.dart';
 import 'package:sharing_map/user/page/profile_page.dart';
@@ -75,11 +76,11 @@ class _RouterStartState extends State<RouterStart> {
                           ),
                         ],
                       ),
-                      // GoRoute(
-                      //   path: SMPath.forgetPassword,
-                      //   builder: (BuildContext context, GoRouterState state) =>
-                      //       RegistrationCodeScreen(),
-                      // ),
+                      GoRoute(
+                        path: SMPath.forgetPassword,
+                        builder: (BuildContext context, GoRouterState state) =>
+                            ResetPasswordScreen(),
+                      ),
                     ],
                   ),
                   GoRoute(

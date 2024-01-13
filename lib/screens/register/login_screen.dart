@@ -108,12 +108,49 @@ class _LoginState extends State<LoginScreen> {
                 },
               ),
               const SizedBox(height: 60),
+              TextButton(
+                onPressed: () async {
+                  var result = false;
+                  // var result = await _userController.ResetPassword(
+                  //           _controllerUsername.text);
+                  if (result) {
+                    var snackBar = SnackBar(
+                      content: const Text('Отправили вам код в письме)'),
+                      action: SnackBarAction(
+                        label: 'Закрыть',
+                        onPressed: () {},
+                      ),
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    GoRouter.of(context)
+                        .go(SMPath.start + "/" + SMPath.forgetPassword);
+                  } else {
+                    var snackBar = SnackBar(
+                      content: const Text('Не получилось :('),
+                      action: SnackBarAction(
+                        label: 'Закрыть',
+                        onPressed: () {},
+                      ),
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  }
+                },
+                child: const Text(
+                  "Забыли пароль?",
+                  style: TextStyle(
+                      decorationColor: MColors.white,
+                      color: MColors.white,
+                      decoration: TextDecoration.underline),
+                ),
+              ),
+              const SizedBox(height: 10),
               Column(
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text("Нету аккаунта?"),
+                      const Text("Нету аккаунта?",
+                          style: TextStyle(color: MColors.grey1)),
                       TextButton(
                         onPressed: () {
                           _formKey.currentState?.reset();
@@ -122,7 +159,10 @@ class _LoginState extends State<LoginScreen> {
                         },
                         child: const Text(
                           "Зарегестрируйтесь",
-                          style: TextStyle(color: MColors.orange),
+                          style: TextStyle(
+                              decorationColor: MColors.grey1,
+                              color: MColors.grey1,
+                              decoration: TextDecoration.underline),
                         ),
                       ),
                     ],

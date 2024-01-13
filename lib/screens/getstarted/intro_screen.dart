@@ -37,13 +37,6 @@ class _IntroScreenState extends State<IntroScreen> {
                   ),
                 ),
                 SizedBox(height: 30.0),
-                Container(
-                  child: Text(
-                    "Привет",
-                    style: boldFont(MColors.white, 30.0),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
               ],
             ),
           ),
@@ -54,11 +47,11 @@ class _IntroScreenState extends State<IntroScreen> {
           padding: const EdgeInsets.all(20.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
+            children: [
               secondaryButtonGreen(
                 Text(
                   "Войти",
-                  style: boldFont(MColors.black, 16.0),
+                  // style: TextStyle(fontSize: 30.0),
                 ),
                 () {
                   GoRouter.of(context).go(SMPath.start + "/" + SMPath.login);
@@ -70,7 +63,7 @@ class _IntroScreenState extends State<IntroScreen> {
               secondaryButtonGreenSmoke(
                 Text(
                   "Зарегистрироваться",
-                  style: boldFont(MColors.black, 16.0),
+                  // style: TextStyle(fontSize: 30.0),
                 ),
                 () {
                   GoRouter.of(context)
@@ -90,8 +83,7 @@ class _IntroScreenState extends State<IntroScreen> {
         builder: (BuildContext context) {
           return AlertDialog(
             content: Text(
-              "Are you sure you want to leave?",
-              style: normalFont(MColors.grey1, 14.0),
+              "Вы точно уверены, что хотите выйти?",
             ),
             actions: <Widget>[
               ElevatedButton(
@@ -99,8 +91,7 @@ class _IntroScreenState extends State<IntroScreen> {
                   GoRouter.of(context).pop();
                 },
                 child: Text(
-                  "Cancel",
-                  style: normalFont(MColors.grey1, 14.0),
+                  "Нет",
                 ),
               ),
               ElevatedButton(
@@ -108,8 +99,7 @@ class _IntroScreenState extends State<IntroScreen> {
                   SystemNavigator.pop();
                 },
                 child: Text(
-                  "Leave",
-                  style: normalFont(Colors.redAccent, 14.0),
+                  "Да",
                 ),
               ),
             ],

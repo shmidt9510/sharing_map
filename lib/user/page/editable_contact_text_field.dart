@@ -74,7 +74,6 @@ class _EditableContactTextFieldState extends State<EditableContactTextField> {
   }
 
   Future<void> _function(UserContact contact) async {
-    debugPrint(contact.toJson().toString());
     UserController _userController = Get.find<UserController>();
     widget.userContact = await _userController.saveContact(contact);
     setState(() {});

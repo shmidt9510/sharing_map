@@ -122,7 +122,6 @@ Widget GetLocationsWidget(
       locations.add(locationsMap[locId]!);
     }
   });
-  debugPrint("has length " + locations.length.toString());
   return Container(
     padding: EdgeInsets.only(left: 23),
     height: 25.0 * locations.length,

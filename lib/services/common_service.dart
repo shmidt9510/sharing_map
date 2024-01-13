@@ -15,7 +15,7 @@ class CommonWebService {
   static var client = InterceptedClient.build(
     interceptors: [
       RefreshTokenInterceptor(),
-      LoggerInterceptor(),
+      // LoggerInterceptor(),
       AuthorizationInterceptor()
     ],
   );

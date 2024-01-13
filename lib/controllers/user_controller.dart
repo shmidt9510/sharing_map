@@ -60,22 +60,27 @@ class UserController extends GetxController {
       bool result = await UserWebService.login(email, password);
       return result;
     } catch (e) {
-      debugPrint(e.toString());
       return false;
     }
   }
 
   Future<bool> UpdateUser(User user, XFile? xfile) async {
     try {
-      bool result = await UserWebService.updateUser(user, xfile);
+      bool result = await UserWebService.updateUser(user);
       if (result && myself != null) {
         myself?.bio = user.bio;
         myself?.username = user.username;
       }
       return result;
     } catch (e) {
-      debugPrint(e.toString());
-      debugPrint("why here");
+      return false;
+    }
+  }
+
+  Future<bool> UpdateUserPhoto(XFile xfile) async {
+    try {
+      return await UserWebService.updateUserPhoto(xfile);
+    } catch (e) {
       return false;
     }
   }
@@ -115,41 +120,29 @@ class UserController extends GetxController {
     return true;
     // return await UserWebService.getUser(SharedPrefs().userId);
   }
-  // Future
-  // Future<RxList<Item>> waitItem() async {
-  //   await fetchItems();
-  //   return items;
-  // }
 
-  // void onRefresh() async {
-  //   CheckAuthorization();
-  // }
-
-  // // void fetchQuery(String query) async {
-  // //   isLoading(true);
-
-  // //   try {
-  // //     isLoading(true);
-  // //     var articleTemp = await ItemWebService.fetchItemsQuery(query);
-  // //     if (articleTemp != null) {
-  // //       articles(articleTemp);
-  // //     }
-  // //   } finally {
-  // //     isLoading(false);
-  // //   }
-  // // }
-
-  // void addItem(Item item) async {
-  //   isLoading(true);
-
+  // Future<bool> ResetPassword(String email) async {
   //   try {
-  //     isLoading(true);
-  //     var response = await ItemWebService.addItem(item);
-  //     if (response.isEmpty) {
-  //       isLoading(false);
+  //     String result = await UserWebService.resetPassword(email);
+  //     if (result.isEmpty) {
+  //       return false;
   //     }
-  //   } finally {
-  //     isLoading(false);
+  //     SharedPrefs().confirmationToken = result;
+  //     return true;
+  //   } catch (e) {
+  //     return false;
+  //   }
+  // }
+
+  // Future<bool> ResetPasswordConfirm(String token) async {
+  //   if (SharedPrefs().confirmationToken.isEmpty) {
+  //     return false;
+  //   }
+  //   try {
+  //     return await UserWebService.signupConfirm(
+  //         SharedPrefs().confirmationToken, token);
+  //   } catch (e) {
+  //     return false;
   //   }
   // }
 

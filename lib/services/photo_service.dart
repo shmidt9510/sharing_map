@@ -20,7 +20,7 @@ class PhotoWebService {
     ],
   );
 
-  Future addPhotos(List<XFile> files, String itemId) async {
+  Future<bool> addPhotos(List<XFile> files, String itemId) async {
     var uri = "/" + itemId + "/image/urls";
     var imageCount = files.length;
     var response =

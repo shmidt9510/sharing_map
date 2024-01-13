@@ -12,6 +12,7 @@ class CachedImage {
     }
     final String imageUrl = "https://" + S3Client.GetHost() + "/" + uri;
     return CachedNetworkImage(
+        cacheKey: imageUrl.hashCode.toUnsigned(20).toRadixString(16),
         fit: fit,
         imageUrl: imageUrl,
         progressIndicatorBuilder: (context, url, progress) => const Center(
@@ -28,5 +29,13 @@ class CachedImage {
                 color: Colors.red,
               ),
             ));
+  }
+
+  static Future<bool> EvictUserProfileImage(String id) async {
+    final String imageUrl =
+        "https://" + S3Client.GetHost() + "/" + id + "/" + id;
+    var result = await CachedNetworkImage.evictFromCache(imageUrl,
+        cacheKey: imageUrl.hashCode.toUnsigned(20).toRadixString(16));
+    return result;
   }
 }

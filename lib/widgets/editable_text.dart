@@ -26,7 +26,6 @@ class _EditableTextFieldState extends State<EditableTextField> {
     });
 
     if (!_isEditing) {
-      debugPrint(widget.controller.text);
       widget.onPressed.call();
     }
   }
@@ -38,17 +37,18 @@ class _EditableTextFieldState extends State<EditableTextField> {
       child: Row(
         children: [
           Expanded(
-            child: SizedBox(
-              height: 40,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 2.0),
-                child: TextFormField(
-                  controller: widget.controller,
-                  enabled: _isEditing,
-                  decoration: InputDecoration(
-                    hintText: widget.hint,
-                    border: OutlineInputBorder(),
-                  ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 2.0),
+              child: TextFormField(
+                maxLines: null,
+                // expands: true,
+                keyboardType: TextInputType.multiline,
+                controller: widget.controller,
+                enabled: _isEditing,
+                decoration: InputDecoration(
+                  hintMaxLines: 5,
+                  hintText: widget.hint,
+                  border: OutlineInputBorder(),
                 ),
               ),
             ),
