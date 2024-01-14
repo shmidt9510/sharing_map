@@ -65,7 +65,7 @@ class RefreshTokenInterceptor implements InterceptorContract {
         if (SharedPrefs().authToken.isEmpty ||
             JwtDecoder.isExpired(SharedPrefs().authToken)) {
           var response = await client.post(
-              Uri.parse(Constants.BACK_URL + "/refreshToken"),
+              Uri.https(Constants.BACK_URL, "/refreshToken"),
               headers: {
                 "content-type": "application/json",
                 "accept": "application/json",

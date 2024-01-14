@@ -28,7 +28,7 @@ class ItemWebService {
     if (userId != null) {
       uri = "/users/$userId/items";
     }
-    var response = await client.get(Uri.parse(Constants.BACK_URL + uri),
+    var response = await client.get(Uri.https(Constants.BACK_URL, uri),
         params: {
           "size": pageSize,
           "page": page,
@@ -51,7 +51,7 @@ class ItemWebService {
   static Future<String> addItem(Item item) async {
     var uri = "/items/create";
     debugPrint(item.toJson().toString());
-    var response = await client.post(Uri.parse(Constants.BACK_URL + uri),
+    var response = await client.post(Uri.https(Constants.BACK_URL, uri),
         params: {"id": SharedPrefs().userId},
         headers: {
           "content-type": "application/json",
@@ -73,7 +73,7 @@ class ItemWebService {
   static Future<bool> deleteItem(String itemId) async {
     var uri = "/items/delete/$itemId";
     var response = await client.delete(
-      Uri.parse(Constants.BACK_URL + uri),
+      Uri.https(Constants.BACK_URL, uri),
       params: {"id": SharedPrefs().userId},
     );
 

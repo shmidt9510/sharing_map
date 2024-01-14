@@ -15,14 +15,14 @@ class CommonWebService {
   static var client = InterceptedClient.build(
     interceptors: [
       RefreshTokenInterceptor(),
-      // LoggerInterceptor(),
+      LoggerInterceptor(),
       AuthorizationInterceptor()
     ],
   );
 
   static Future<List<ItemCategory>?> fetchCategories() async {
     var response =
-        await client.get(Uri.parse(Constants.BACK_URL + "/categories/all"));
+        await client.get(Uri.https(Constants.BACK_URL, "/categories/all"));
 
     if (response.statusCode == 200) {
       var jsonData = jsonDecode(utf8.decode(response.bodyBytes));
@@ -37,7 +37,7 @@ class CommonWebService {
     final dio = Dio();
 
     var response =
-        await client.get(Uri.parse(Constants.BACK_URL + "/subcategories/all"));
+        await client.get(Uri.https(Constants.BACK_URL, "/subcategories/all"));
     if (response.statusCode == 200) {
       var jsonData = json.decode(utf8.decode(response.bodyBytes));
       // debugPrint(utf8.decode(response.bodyBytes));
@@ -49,7 +49,7 @@ class CommonWebService {
 
   static Future<List<City>?> fetchCities() async {
     var response =
-        await client.get(Uri.parse(Constants.BACK_URL + "/cities/all"));
+        await client.get(Uri.https(Constants.BACK_URL, "/cities/all"));
 
     if (response.statusCode == 200) {
       var jsonData = jsonDecode(utf8.decode(response.bodyBytes));
@@ -61,7 +61,7 @@ class CommonWebService {
 
   static Future<List<SMLocation>?> fetchLocations(int cityId) async {
     var response = await client
-        .get(Uri.parse(Constants.BACK_URL + "/locations/$cityId/all"));
+        .get(Uri.https(Constants.BACK_URL, "/locations/$cityId/all"));
 
     if (response.statusCode == 200) {
       var jsonData = jsonDecode(utf8.decode(response.bodyBytes));

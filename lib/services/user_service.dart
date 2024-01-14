@@ -50,7 +50,7 @@ class UserWebService {
   static Future<bool> login(String email, String password) async {
     // var body = {'email': '$email', 'password': '$password'};
     try {
-      var response = await client.post(Uri.parse(Constants.BACK_URL + "/login"),
+      var response = await client.post(Uri.https(Constants.BACK_URL, "/login"),
           headers: {
             "content-type": "application/json",
             "accept": "application/json",
@@ -76,7 +76,7 @@ class UserWebService {
   }
 
   static Future<String> refresh() async {
-    var response = await client.get(Uri.parse(Constants.BACK_URL + "/signup"));
+    var response = await client.get(Uri.https(Constants.BACK_URL + "/signup"));
 
     if (response.statusCode == 200) {
       var jsonData = jsonDecode(response.body);
@@ -88,7 +88,7 @@ class UserWebService {
 
   static Future<String> signup(
       String email, String username, String password) async {
-    var response = await client.post(Uri.parse(Constants.BACK_URL + "/signup"),
+    var response = await client.post(Uri.https(Constants.BACK_URL + "/signup"),
         headers: {
           "content-type": "application/json",
           "accept": "application/json",
@@ -111,7 +111,7 @@ class UserWebService {
 
   static Future<bool> signupConfirm(String token, String tokenId) async {
     var response =
-        await client.post(Uri.parse(Constants.BACK_URL + "/signup/confirm"),
+        await client.post(Uri.https(Constants.BACK_URL, "/signup/confirm"),
             headers: {
               "content-type": "application/json",
               "accept": "application/json",
@@ -135,7 +135,7 @@ class UserWebService {
   static Future<bool> isAuth() async {
     try {
       var response =
-          await client.get(Uri.parse(Constants.BACK_URL + "/is_auth"));
+          await client.get(Uri.https(Constants.BACK_URL, "/is_auth"));
       debugPrint(response.body.toString());
       if (response.statusCode == 200) {
         return true;
@@ -149,7 +149,7 @@ class UserWebService {
 
   static Future<bool> updateUser(User user) async {
     var uri = "/users/update";
-    var response = await client.put(Uri.parse(Constants.BACK_URL + uri),
+    var response = await client.put(Uri.https(Constants.BACK_URL, uri),
         headers: {
           "content-type": "application/json",
           "accept": "application/json",
@@ -175,7 +175,7 @@ class UserWebService {
     }
     var uri = "/users/$id";
     var response =
-        await client.get(Uri.parse(Constants.BACK_URL + uri), headers: {
+        await client.get(Uri.https(Constants.BACK_URL, uri), headers: {
       "content-type": "application/json",
       "accept": "application/json",
     });
@@ -194,7 +194,7 @@ class UserWebService {
     }
     var uri = "/users/$id/contacts";
     var response =
-        await client.get(Uri.parse(Constants.BACK_URL + uri), headers: {
+        await client.get(Uri.https(Constants.BACK_URL, uri), headers: {
       "content-type": "application/json",
       "accept": "application/json",
     }).timeout(Duration(seconds: 3));
@@ -210,7 +210,7 @@ class UserWebService {
 
   static Future<UserContact> saveContact(UserContact contact) async {
     var uri = "/contacts/create";
-    var response = await client.post(Uri.parse(Constants.BACK_URL + uri),
+    var response = await client.post(Uri.https(Constants.BACK_URL, uri),
         headers: {
           "content-type": "application/json",
           "accept": "application/json",
@@ -228,7 +228,7 @@ class UserWebService {
 
   static Future<UserContact> updateContact(UserContact contact) async {
     var uri = "/contacts/update";
-    var response = await client.put(Uri.parse(Constants.BACK_URL + uri),
+    var response = await client.put(Uri.https(Constants.BACK_URL, uri),
         headers: {
           "content-type": "application/json",
           "accept": "application/json",
@@ -247,7 +247,7 @@ class UserWebService {
 
   // static Future<String> resetPassword(
   //     String email, String username, String password) async {
-  //   var response = await client.post(Uri.parse(Constants.BACK_URL + "/resetPassword"),
+  //   var response = await client.post(Uri.https(Constants.BACK_URL, "/resetPassword"),
   //       headers: {
   //         "content-type": "application/json",
   //         "accept": "application/json",
@@ -270,7 +270,7 @@ class UserWebService {
 
   // static Future<bool> resetPasswordConfirm(String token, String tokenId) async {
   //   var response =
-  //       await client.post(Uri.parse(Constants.BACK_URL + "/resetPassword/change"),
+  //       await client.post(Uri.https(Constants.BACK_URL, "/resetPassword/change"),
   //           headers: {
   //             "content-type": "application/json",
   //             "accept": "application/json",
