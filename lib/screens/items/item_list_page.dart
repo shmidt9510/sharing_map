@@ -83,44 +83,10 @@ class _ItemListPageState extends State<ItemListPage> {
                   )
                 ]),
             body: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
               child: ItemsListView(
                   itemFilter: _chosenFilter, key: ValueKey(_chosenFilter)),
             ),
-
-            // body: Container(
-            //   height: context.height * 0.8,
-            //   child: Padding(
-            //       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-            //       child: ItemsListView(
-            //           itemFilter: _chosenFilter, key: ValueKey(_chosenFilter))),
-            // ),
-            // child: ListView(
-            //     scrollDirection: Axis.vertical,
-            //     physics: ScrollPhysics(),
-            //     children: [
-            //       SizedBox(
-            //         height: height,
-            //         child: ListView.builder(
-            //           physics: AlwaysScrollableScrollPhysics(),
-            //           shrinkWrap: true,
-            //           scrollDirection: Axis.horizontal,
-            //           itemCount: _commonController.categories.length,
-            //           itemBuilder: (BuildContext context, int index) => Card(
-            //             child: _buildButton(
-            //                 context, _commonController.categories[index], height),
-            //           ),
-            //         ),
-            //       ),
-            //       Padding(
-            //           padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-            //           child: SizedBox(
-            //             height: context.height * 0.74,
-            //             child: ItemsListView(
-            //                 itemFilter: _chosenFilter,
-            //                 key: ValueKey(_chosenFilter)),
-            //           ))
-            //     ]),
           ),
         ),
       ),
@@ -158,6 +124,7 @@ class _ItemListPageState extends State<ItemListPage> {
 
     return ElevatedButton(
         style: ElevatedButton.styleFrom(
+            backgroundColor: MColors.transparent,
             padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(25),
@@ -180,11 +147,10 @@ class _ItemListPageState extends State<ItemListPage> {
           height: size,
           // padding: const EdgeInsets.only(bottom: 8),
           decoration: ShapeDecoration(
-            color: isChosen
-                ? Color.fromARGB(255, 223, 255, 181)
-                : Color.fromARGB(255, 242, 242, 242),
+            shadows: null,
+            color: isChosen ? MColors.lightGreen : MColors.inputField,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15),
+              borderRadius: BorderRadius.circular(25),
             ),
           ),
           child: Column(

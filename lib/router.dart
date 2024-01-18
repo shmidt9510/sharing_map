@@ -10,13 +10,13 @@ import 'package:sharing_map/screens/register/registration_screen.dart';
 import 'package:sharing_map/path.dart';
 
 import 'package:sharing_map/screens/register/login_screen.dart';
-import 'package:sharing_map/screens/register/reset_password.dart';
+import 'package:sharing_map/screens/register/reset_password_code.dart';
+import 'package:sharing_map/screens/register/reset_password_mail.dart';
+import 'package:sharing_map/screens/register/reset_password_set.dart';
 import 'package:sharing_map/theme.dart';
 import 'package:sharing_map/user/page/edit_profile.dart';
 import 'package:sharing_map/user/page/profile_page.dart';
 import 'package:sharing_map/user/page/user_profile_page.dart';
-import 'package:sharing_map/utils/colors.dart';
-import 'package:sharing_map/utils/shared.dart';
 
 class RouterStart extends StatefulWidget {
   RouterStart({super.key, required this.initLocation});
@@ -54,6 +54,10 @@ class _RouterStartState extends State<RouterStart> {
                 },
                 routes: [
                   GoRoute(
+                      path: "/",
+                      builder: (BuildContext context, GoRouterState state) =>
+                          ItemListPage()),
+                  GoRoute(
                     path: SMPath.start,
                     builder: (BuildContext context, GoRouterState state) =>
                         IntroScreen(),
@@ -77,9 +81,19 @@ class _RouterStartState extends State<RouterStart> {
                         ],
                       ),
                       GoRoute(
-                        path: SMPath.forgetPassword,
+                        path: SMPath.forgetPasswordCode,
                         builder: (BuildContext context, GoRouterState state) =>
-                            ResetPasswordScreen(),
+                            ResetPasswordCodeScreen(),
+                      ),
+                      GoRoute(
+                        path: SMPath.forgetPasswordSet,
+                        builder: (BuildContext context, GoRouterState state) =>
+                            ResetPasswordSetScreen(),
+                      ),
+                      GoRoute(
+                        path: SMPath.forgetPasswordMail,
+                        builder: (BuildContext context, GoRouterState state) =>
+                            ResetPasswordMailScreen(),
                       ),
                     ],
                   ),
@@ -138,31 +152,6 @@ class _RouterStartState extends State<RouterStart> {
                         ]),
                   ],
                 ),
-                // The route branch for the third tab of the bottom navigation bar.
-                // StatefulShellBranch(
-                //   routes: <RouteBase>[
-                //     GoRoute(
-                //       // The screen to display as the root in the third tab of the
-                //       // bottom navigation bar.
-                //       path: '/c',
-                //       builder: (BuildContext context, GoRouterState state) =>
-                //           const RootScreen(
-                //         label: 'C',
-                //         detailsPath: '/c/details',
-                //       ),
-                //       routes: <RouteBase>[
-                //         GoRoute(
-                //           path: 'details',
-                //           builder: (BuildContext context, GoRouterState state) =>
-                //               DetailsScreen(
-                //             label: 'C',
-                //             extra: state.extra,
-                //           ),
-                //         ),
-                //       ],
-                //     ),
-                //   ],
-                // ),
               ],
             ),
           ],

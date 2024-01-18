@@ -2,7 +2,9 @@ class SMPath {
   static const String start = "/start";
   static const String registration = "registration";
   static const String registrationCode = "registration_code";
-  static const String forgetPassword = "forgetPassword";
+  static const String forgetPasswordCode = "forgetPasswordCode";
+  static const String forgetPasswordSet = "forgetPasswordSet";
+  static const String forgetPasswordMail = "forgetPasswordMail";
   static const String onboard = "/onboard";
   static const String login = "login";
 

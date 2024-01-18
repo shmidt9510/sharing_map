@@ -9,6 +9,16 @@ import 'package:sharing_map/utils/shared.dart';
 class UserController extends GetxController {
   var isLoading = true.obs;
   User? myself = null;
+  var token = ''.obs;
+
+  void setToken(String _token) {
+    token.value = _token;
+  }
+
+  String getToken() {
+    return token.value;
+  }
+
   @override
   void onInit() {
     super.onInit();
@@ -121,30 +131,47 @@ class UserController extends GetxController {
     // return await UserWebService.getUser(SharedPrefs().userId);
   }
 
-  // Future<bool> ResetPassword(String email) async {
-  //   try {
-  //     String result = await UserWebService.resetPassword(email);
-  //     if (result.isEmpty) {
-  //       return false;
-  //     }
-  //     SharedPrefs().confirmationToken = result;
-  //     return true;
-  //   } catch (e) {
-  //     return false;
-  //   }
-  // }
+  Future<bool> ResetPasswordStart(String email) async {
+    try {
+      var result = await UserWebService.resetPasswordStart(email);
+      if (result.tokenId.isEmpty || result.userId.isEmpty) {
+        return false;
+      }
+      SharedPrefs().confirmationToken = result.tokenId;
+      SharedPrefs().userId = result.userId;
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
 
-  // Future<bool> ResetPasswordConfirm(String token) async {
-  //   if (SharedPrefs().confirmationToken.isEmpty) {
-  //     return false;
-  //   }
-  //   try {
-  //     return await UserWebService.signupConfirm(
-  //         SharedPrefs().confirmationToken, token);
-  //   } catch (e) {
-  //     return false;
-  //   }
-  // }
+  Future<bool> ResetPasswordConfirm(String token) async {
+    if (SharedPrefs().confirmationToken.isEmpty) {
+      return false;
+    }
+    try {
+      return await UserWebService.resetPasswordConfirm(
+          token, SharedPrefs().confirmationToken);
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<bool> ResetPassword(String password) async {
+    if (getToken().isEmpty) {
+      return false;
+    }
+    if (SharedPrefs().confirmationToken.isEmpty ||
+        SharedPrefs().userId.isEmpty) {
+      return false;
+    }
+    try {
+      return await UserWebService.resetPassword(getToken(),
+          SharedPrefs().confirmationToken, password, SharedPrefs().userId);
+    } catch (e) {
+      return false;
+    }
+  }
 
   Future<List<UserContact>> getUserContact(String userId) async {
     try {

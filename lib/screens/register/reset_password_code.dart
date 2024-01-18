@@ -9,21 +9,22 @@ import 'package:sharing_map/utils/shared.dart';
 // import 'package:sharing_map/widgets/textInputWidget.dart';
 import 'package:email_validator/email_validator.dart';
 
-class ResetPasswordScreen extends StatefulWidget {
-  const ResetPasswordScreen({
+class ResetPasswordCodeScreen extends StatefulWidget {
+  const ResetPasswordCodeScreen({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<ResetPasswordScreen> createState() => _ResetPasswordScreenState();
+  State<ResetPasswordCodeScreen> createState() => _ResetPasswordScreenState();
 }
 
-class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
-  UserController _userController = Get.find<UserController>();
+class _ResetPasswordScreenState extends State<ResetPasswordCodeScreen> {
+  late UserController _userController;
 
   @override
   void initState() {
     super.initState();
+    _userController = Get.find<UserController>();
   }
 
   bool _onEditing = true;
@@ -74,7 +75,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   }
 
   Future<bool> _waitSignupResult(String code, BuildContext context) async {
-    bool result = await _userController.SignupConfirm(code);
+    bool result = await _userController.ResetPasswordConfirm(code);
     if (!result) {
       var snackBar = SnackBar(
         content: const Text('Что-то пошло не так'),
@@ -85,11 +86,11 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
           },
         ),
       );
-      debugPrint(SharedPrefs().userId);
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
       return false;
     }
-    GoRouter.of(context).go(SMPath.home);
+    _userController.setToken(code);
+    GoRouter.of(context).go(SMPath.start + "/" + SMPath.forgetPasswordSet);
     return true;
   }
 

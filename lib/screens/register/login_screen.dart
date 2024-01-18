@@ -63,7 +63,7 @@ class _LoginState extends State<LoginScreen> {
                 // onEditingComplete: () => _focusNodePassword.requestFocus(),
                 validator: (String? value) {
                   if (!EmailValidator.validate(value ?? "")) {
-                    return "Пожалуйста введите валидный пароль";
+                    return "Пожалуйста введите валидную почту";
                   }
                   return null;
                 },
@@ -110,30 +110,8 @@ class _LoginState extends State<LoginScreen> {
               const SizedBox(height: 60),
               TextButton(
                 onPressed: () async {
-                  var result = false;
-                  // var result = await _userController.ResetPassword(
-                  //           _controllerUsername.text);
-                  if (result) {
-                    var snackBar = SnackBar(
-                      content: const Text('Отправили вам код в письме)'),
-                      action: SnackBarAction(
-                        label: 'Закрыть',
-                        onPressed: () {},
-                      ),
-                    );
-                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                    GoRouter.of(context)
-                        .go(SMPath.start + "/" + SMPath.forgetPassword);
-                  } else {
-                    var snackBar = SnackBar(
-                      content: const Text('Не получилось :('),
-                      action: SnackBarAction(
-                        label: 'Закрыть',
-                        onPressed: () {},
-                      ),
-                    );
-                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                  }
+                  GoRouter.of(context)
+                      .go(SMPath.start + "/" + SMPath.forgetPasswordMail);
                 },
                 child: const Text(
                   "Забыли пароль?",

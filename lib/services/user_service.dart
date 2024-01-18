@@ -38,6 +38,12 @@ class ConfirmDTO {
       };
 }
 
+class ResetPasswordStartData {
+  final String tokenId;
+  final String userId;
+  ResetPasswordStartData(this.tokenId, this.userId);
+}
+
 class UserWebService {
   static var client = InterceptedClient.build(
     interceptors: [
@@ -76,7 +82,7 @@ class UserWebService {
   }
 
   static Future<String> refresh() async {
-    var response = await client.get(Uri.https(Constants.BACK_URL + "/signup"));
+    var response = await client.get(Uri.https(Constants.BACK_URL, "/signup"));
 
     if (response.statusCode == 200) {
       var jsonData = jsonDecode(response.body);
@@ -88,7 +94,7 @@ class UserWebService {
 
   static Future<String> signup(
       String email, String username, String password) async {
-    var response = await client.post(Uri.https(Constants.BACK_URL + "/signup"),
+    var response = await client.post(Uri.https(Constants.BACK_URL, "/signup"),
         headers: {
           "content-type": "application/json",
           "accept": "application/json",
@@ -136,7 +142,6 @@ class UserWebService {
     try {
       var response =
           await client.get(Uri.https(Constants.BACK_URL, "/is_auth"));
-      debugPrint(response.body.toString());
       if (response.statusCode == 200) {
         return true;
       } else {
@@ -239,55 +244,70 @@ class UserWebService {
       return Future.error(
           "failed_with_status_code_" + response.statusCode.toString());
     }
-    debugPrint(response.body);
     UserContact newContact =
         UserContact.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
     return newContact;
   }
 
-  // static Future<String> resetPassword(
-  //     String email, String username, String password) async {
-  //   var response = await client.post(Uri.https(Constants.BACK_URL, "/resetPassword"),
-  //       headers: {
-  //         "content-type": "application/json",
-  //         "accept": "application/json",
-  //       },
-  //       body:
-  //           jsonEncode(UserPass(email, password, username: username).toJson()));
+  static Future<ResetPasswordStartData> resetPasswordStart(String email) async {
+    var data = {
+      'email': email,
+    };
+    var response =
+        await client.post(Uri.https(Constants.BACK_URL, "/resetPassword"),
+            headers: {
+              "content-type": "application/json",
+              "accept": "application/json",
+            },
+            body: jsonEncode(data));
 
-  //   if (response.statusCode == 200) {
-  //     // SharedPrefs().userId = response["user_id"].toString();
-  //     var jsonData = jsonDecode(utf8.decode(response.bodyBytes));
-  //     if (jsonData["confirmationTokenId"].toString().isEmpty) {
-  //       return Future.error("failed_get_confirmation_token");
-  //     }
-  //     return jsonData["confirmationTokenId"].toString();
-  //   } else {
-  //     return Future.error(
-  //         "failed_with_status_code_" + response.statusCode.toString());
-  //   }
-  // }
+    if (response.statusCode != 200) {
+      return Future.error(
+          "failed_with_status_code_" + response.statusCode.toString());
+    }
+    var jsonData = jsonDecode(utf8.decode(response.bodyBytes));
+    if (jsonData["resetPasswordTokenId"].toString().isEmpty) {
+      return Future.error("failed_get_confirmation_token");
+    }
+    return ResetPasswordStartData(jsonData["resetPasswordTokenId"].toString(),
+        jsonData["userId"].toString());
+  }
 
-  // static Future<bool> resetPasswordConfirm(String token, String tokenId) async {
-  //   var response =
-  //       await client.post(Uri.https(Constants.BACK_URL, "/resetPassword/change"),
-  //           headers: {
-  //             "content-type": "application/json",
-  //             "accept": "application/json",
-  //           },
-  //           body: jsonEncode(ConfirmDTO(tokenId, token).toJson()));
-  //   var bodyDecoded = jsonDecode(response.body);
-  //   if (response.statusCode != 200) {
-  //     return Future.error(
-  //         "failed_with_status_code_" + response.statusCode.toString());
-  //   }
-  //   SharedPrefs().logged = true;
-  //   SharedPrefs().authToken = bodyDecoded["accessToken"].toString();
-  //   SharedPrefs().refreshToken = bodyDecoded["refreshToken"].toString();
+  static Future<bool> resetPasswordConfirm(String token, String tokenId) async {
+    var data = {'token': token, 'tokenId': tokenId};
+    var response = await client.post(
+        Uri.https(Constants.BACK_URL, "/resetPassword/confirm"),
+        headers: {
+          "content-type": "application/json",
+          "accept": "application/json",
+        },
+        body: jsonEncode(data));
+    if (response.statusCode != 200) {
+      return Future.error(
+          "failed_with_status_code_" + response.statusCode.toString());
+    }
+    return true;
+  }
 
-  //   Map<String, dynamic> decodedToken =
-  //       JwtDecoder.decode(SharedPrefs().authToken);
-  //   SharedPrefs().userId = decodedToken["user_id"] as String;
-  //   return true;
-  // }
+  static Future<bool> resetPassword(
+      String token, String tokenId, String password, String userId) async {
+    var data = {
+      'token': token,
+      'tokenId': tokenId,
+      'userId': userId,
+      'password': password
+    };
+    var response = await client.post(
+        Uri.https(Constants.BACK_URL, "/resetPassword/change"),
+        headers: {
+          "content-type": "application/json",
+          "accept": "application/json",
+        },
+        body: jsonEncode(data));
+    if (response.statusCode != 200) {
+      return Future.error(
+          "failed_with_status_code_" + response.statusCode.toString());
+    }
+    return true;
+  }
 }
