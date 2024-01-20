@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:path/path.dart';
 import 'package:sharing_map/controllers/common_controller.dart';
 import 'package:sharing_map/controllers/item_controller.dart';
 import 'package:sharing_map/models/item.dart';
@@ -22,65 +25,74 @@ class TextDescriptionBlock extends StatelessWidget {
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.start,
+      // crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         Expanded(
-          flex: 2,
+          flex: 3,
           child: Container(
+            alignment: Alignment.topLeft,
             constraints: BoxConstraints(maxWidth: context.width * 3 / 5),
             child: Text(
               _item.name ?? "",
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
-                fontSize: 13.0,
+                color: MColors.black,
+                fontSize: 18,
                 fontFamily: 'Roboto',
-                color: Color(0xFF212121),
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w400,
+                letterSpacing: -0.41,
               ),
+              // style: TextStyle(
+              //   fontSize: context.width / 18,
+              //   fontFamily: 'Roboto',
+              //   color: MColors.black,
+              //   fontWeight: FontWeight.w600,
+              // ),
             ),
           ),
         ),
         Expanded(
-            child: Text(
-          overflow: TextOverflow.ellipsis,
-          _item.desc ?? "",
-          maxLines: 1,
-          textAlign: TextAlign.start,
-        )),
-        Expanded(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Flexible(
-                flex: 1,
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.subway_outlined,
-                      size: 12,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 2.0),
-                      child: Text(
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        _location,
-                        textAlign: TextAlign.start,
-                        style: TextStyle(fontSize: 12),
-                      ),
-                    ),
-                  ],
+          flex: 1,
+          child: Container(
+            alignment: Alignment.centerLeft,
+            child: Row(
+              // "D:\sharingMap\sharing_map\shaaring_map\assets\icons\moscowmetro.svg"
+              children: [
+                Center(
+                    child: SvgPicture.asset(
+                  'assets/icons/subway_moscow.svg',
+                  height: 18,
+                  width: 18,
+                )),
+                Center(
+                  child: Text(
+                    textAlign: TextAlign.center,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    _location,
+                    style: TextStyle(color: MColors.darkGrey, fontSize: 14),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
-        // Text(_item.name,
-        //               style: Theme.of(context)
-        //                   .textTheme
-        //                   .headlineMedium
-        //                   ?.copyWith(color: Colors.black))
+        SizedBox(
+          height: 4,
+        ),
+        Expanded(
+            flex: 1,
+            child: Container(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                DateFormat('dd.MM.yy')
+                    .format(_item.creationDate ?? DateTime.now()),
+                style: TextStyle(color: MColors.darkGrey, fontSize: 14),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+              ),
+            )),
       ],
     );
   }
@@ -94,7 +106,7 @@ class ItemBlock extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 100,
+      height: context.height / 5,
       decoration: BoxDecoration(
         boxShadow: [
           BoxShadow(
@@ -113,7 +125,7 @@ class ItemBlock extends StatelessWidget {
           Flexible(
               flex: 2,
               child: Container(
-                width: 100,
+                width: context.height / 6,
                 child: ClipRRect(
                     borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(10.0),
@@ -129,9 +141,9 @@ class ItemBlock extends StatelessWidget {
                               ))),
               )),
           Flexible(
-            flex: 2,
+            flex: 3,
             child: Padding(
-              padding: const EdgeInsets.only(left: 8.0, right: 8),
+              padding: const EdgeInsets.all(10),
               child: TextDescriptionBlock(_item),
             ),
           )

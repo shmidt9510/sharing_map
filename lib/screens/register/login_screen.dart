@@ -39,73 +39,79 @@ class _LoginState extends State<LoginScreen> {
           child: Column(
             children: [
               const SizedBox(height: 30),
-              TextFormField(
-                focusNode: null,
-                controller: _controllerUsername,
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
-                  floatingLabelBehavior: FloatingLabelBehavior.never,
-                  fillColor: Colors.white,
-                  filled: true,
-                  labelText: "Введите свой email",
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white),
-                    borderRadius: BorderRadius.circular(10),
+              SizedBox(
+                height: 44,
+                child: TextFormField(
+                  focusNode: null,
+                  controller: _controllerUsername,
+                  keyboardType: TextInputType.emailAddress,
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.only(left: 10),
+                    floatingLabelBehavior: FloatingLabelBehavior.never,
+                    fillColor: Colors.white,
+                    filled: true,
+                    labelText: "Введите свой email",
+                    labelStyle: TextStyle(fontWeight: FontWeight.w400),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: MColors.secondaryGreen),
+                        borderRadius: BorderRadius.circular(10)),
                   ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: MColors.secondaryGreen),
-                      borderRadius: BorderRadius.circular(10)),
+                  // onEditingComplete: () => _focusNodePassword.requestFocus(),
+                  validator: (String? value) {
+                    if (!EmailValidator.validate(value ?? "")) {
+                      return "Пожалуйста введите валидную почту";
+                    }
+                    return null;
+                  },
                 ),
-                // onEditingComplete: () => _focusNodePassword.requestFocus(),
-                validator: (String? value) {
-                  if (!EmailValidator.validate(value ?? "")) {
-                    return "Пожалуйста введите валидную почту";
-                  }
-                  return null;
-                },
               ),
               const SizedBox(height: 10),
-              TextFormField(
-                controller: _controllerPassword,
-                focusNode: _focusNodePassword,
-                obscureText: _obscurePassword,
-                keyboardType: TextInputType.visiblePassword,
-                decoration: InputDecoration(
-                  floatingLabelBehavior: FloatingLabelBehavior.never,
-                  filled: true,
-                  fillColor: Colors.white,
-                  labelText: "Пароль",
-                  suffixIcon: IconButton(
-                      onPressed: () {
-                        setState(() {
-                          _obscurePassword = !_obscurePassword;
-                        });
-                      },
-                      icon: _obscurePassword
-                          ? const Icon(Icons.visibility_outlined)
-                          : const Icon(Icons.visibility_off_outlined)),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
+              SizedBox(
+                height: 44,
+                child: TextFormField(
+                  controller: _controllerPassword,
+                  focusNode: _focusNodePassword,
+                  obscureText: _obscurePassword,
+                  keyboardType: TextInputType.visiblePassword,
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.only(left: 10),
+                    floatingLabelBehavior: FloatingLabelBehavior.never,
+                    filled: true,
+                    fillColor: Colors.white,
+                    labelText: "Пароль",
+                    labelStyle: TextStyle(fontWeight: FontWeight.w400),
+                    suffixIcon: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            _obscurePassword = !_obscurePassword;
+                          });
+                        },
+                        icon: _obscurePassword
+                            ? const Icon(Icons.visibility_outlined)
+                            : const Icon(Icons.visibility_off_outlined)),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: MColors.secondaryGreen),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                   ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: MColors.secondaryGreen),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
+                  validator: (String? value) {
+                    if (value == null || value.isEmpty) {
+                      return "Введите пароль";
+                    }
+                    return null;
+                  },
                 ),
-                validator: (String? value) {
-                  if (value == null || value.isEmpty) {
-                    return "Введите пароль";
-                  }
-                  //  else if (value != _boxAccounts.get(_controllerUsername.text)) {
-                  //   return "Wrong password.";
-                  // }
-
-                  return null;
-                },
               ),
               const SizedBox(height: 60),
               TextButton(
@@ -118,7 +124,8 @@ class _LoginState extends State<LoginScreen> {
                   style: TextStyle(
                       decorationColor: MColors.white,
                       color: MColors.white,
-                      decoration: TextDecoration.underline),
+                      decoration: TextDecoration.underline,
+                      fontWeight: FontWeight.w400),
                 ),
               ),
               const SizedBox(height: 10),
@@ -127,8 +134,10 @@ class _LoginState extends State<LoginScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text("Нету аккаунта?",
-                          style: TextStyle(color: MColors.grey1)),
+                      const Text("Нет аккаунта?",
+                          style: TextStyle(
+                              color: MColors.white,
+                              fontWeight: FontWeight.w400)),
                       TextButton(
                         onPressed: () {
                           _formKey.currentState?.reset();
@@ -136,23 +145,34 @@ class _LoginState extends State<LoginScreen> {
                               .go(SMPath.start + "/" + SMPath.registration);
                         },
                         child: const Text(
-                          "Зарегестрируйтесь",
+                          "Зарегистрируйтесь",
                           style: TextStyle(
-                              decorationColor: MColors.grey1,
-                              color: MColors.grey1,
-                              decoration: TextDecoration.underline),
+                              decorationColor: MColors.white,
+                              color: MColors.white,
+                              decoration: TextDecoration.underline,
+                              fontWeight: FontWeight.w400),
                         ),
                       ),
                     ],
                   ),
+                  SizedBox(
+                    height: 5,
+                  ),
                   ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: MColors.secondaryGreen,
-                      minimumSize: const Size.fromHeight(50),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                    ),
+                    style:
+                        Theme.of(context).elevatedButtonTheme.style!.copyWith(
+                              minimumSize: MaterialStateProperty.all<Size>(
+                                  Size.fromHeight(46)),
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                  MColors.secondaryGreen),
+                            ),
+                    // ElevatedButton.styleFrom(
+                    //   backgroundColor: MColors.secondaryGreen,
+                    //   minimumSize: const Size.fromHeight(50),
+                    //   shape: RoundedRectangleBorder(
+                    //     borderRadius: BorderRadius.circular(10),
+                    //   ),
+                    // ),
                     onPressed: () async {
                       var result = await _userController.Login(
                           _controllerUsername.text, _controllerPassword.text);
@@ -163,9 +183,7 @@ class _LoginState extends State<LoginScreen> {
                           content: const Text('Не получилось :('),
                           action: SnackBarAction(
                             label: 'Закрыть',
-                            onPressed: () {
-                              // Some code to undo the change.
-                            },
+                            onPressed: () {},
                           ),
                         );
                         ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -173,24 +191,24 @@ class _LoginState extends State<LoginScreen> {
                     },
                     child: Text(
                       "Войти",
-                      style: TextStyle(color: MColors.black),
+                      style: Theme.of(context).textTheme.labelMedium,
                     ),
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 20),
                   ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: MColors.lightGrey,
-                      minimumSize: const Size.fromHeight(50),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                    ),
+                    style:
+                        Theme.of(context).elevatedButtonTheme.style!.copyWith(
+                              minimumSize: MaterialStateProperty.all<Size>(
+                                  Size.fromHeight(46)),
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                  MColors.lightGrey),
+                            ),
                     onPressed: () {
                       GoRouter.of(context).go(SMPath.home);
                     },
-                    child: const Text(
+                    child: Text(
                       "Продолжить без регистрации",
-                      style: TextStyle(color: MColors.black),
+                      style: Theme.of(context).textTheme.labelMedium,
                     ),
                   ),
                 ],

@@ -48,27 +48,39 @@ class _IntroScreenState extends State<IntroScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              secondaryButtonGreen(
-                Text(
-                  "Войти",
-                  // style: TextStyle(fontSize: 30.0),
-                ),
-                () {
+              ElevatedButton(
+                style: Theme.of(context).elevatedButtonTheme.style!.copyWith(
+                      minimumSize:
+                          MaterialStateProperty.all<Size>(Size.fromHeight(50)),
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                          MColors.secondaryGreen),
+                    ),
+                onPressed: () async {
                   GoRouter.of(context).go(SMPath.start + "/" + SMPath.login);
                 },
+                child: Text(
+                  "Войти",
+                  style: Theme.of(context).textTheme.labelMedium,
+                ),
               ),
               SizedBox(
                 height: 10.0,
               ),
-              secondaryButtonGreenSmoke(
-                Text(
-                  "Зарегистрироваться",
-                  // style: TextStyle(fontSize: 30.0),
-                ),
-                () {
+              ElevatedButton(
+                style: Theme.of(context).elevatedButtonTheme.style!.copyWith(
+                      minimumSize:
+                          MaterialStateProperty.all<Size>(Size.fromHeight(50)),
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(MColors.white),
+                    ),
+                onPressed: () async {
                   GoRouter.of(context)
                       .go(SMPath.start + "/" + SMPath.registration);
                 },
+                child: Text(
+                  "Зарегистрироваться",
+                  style: Theme.of(context).textTheme.labelMedium,
+                ),
               ),
             ],
           ),

@@ -22,6 +22,69 @@ ThemeData GetAppTheme() {
       splashColor: MColors.lightGreen,
       scaffoldBackgroundColor: Colors.white,
       secondaryHeaderColor: MColors.primaryGreen.withOpacity(1),
-      textTheme: TextTheme(headlineLarge: TextStyle(color: Colors.blue)),
-      primaryColor: MColors.secondaryGreen);
+      textTheme: TextTheme(
+          displayLarge: TextStyle(
+              color: Colors.black, fontFamily: 'Roboto', letterSpacing: -0.41),
+          displayMedium: TextStyle(
+              color: Colors.black, fontFamily: 'Roboto', letterSpacing: -0.41),
+          displaySmall: TextStyle(
+              color: Colors.black, fontFamily: 'Roboto', letterSpacing: -0.41),
+          headlineMedium: TextStyle(
+              color: Colors.black, fontFamily: 'Roboto', letterSpacing: -0.41),
+          headlineSmall: TextStyle(
+              color: Colors.black, fontFamily: 'Roboto', letterSpacing: -0.41),
+          titleLarge: TextStyle(
+              color: Colors.black, fontFamily: 'Roboto', letterSpacing: -0.41),
+          titleMedium: TextStyle(
+              height: 0.07,
+              color: Colors.black,
+              fontFamily: 'Roboto',
+              letterSpacing: -0.41,
+              fontSize: 18,
+              fontWeight: FontWeight.w400),
+          titleSmall: TextStyle(
+              color: Colors.black, fontFamily: 'Roboto', letterSpacing: -0.41),
+          bodyLarge: TextStyle(
+              height: 1.2,
+              color: Colors.black,
+              fontFamily: 'Roboto',
+              letterSpacing: -0.41,
+              fontWeight: FontWeight.w600,
+              fontSize: 20),
+          bodyMedium: TextStyle(
+            // regular text
+            color: Colors.black,
+            fontFamily: 'Roboto',
+            letterSpacing: -0.41,
+          ),
+          bodySmall: TextStyle(
+              color: Colors.black, fontFamily: 'Roboto', letterSpacing: -0.41),
+          labelLarge: TextStyle(
+              color: Colors.black,
+              fontFamily: 'Roboto',
+              letterSpacing: -0.41,
+              fontWeight: FontWeight.w600),
+          labelMedium: TextStyle(
+              // button text theme
+              fontSize: 14,
+              color: Colors.black,
+              fontFamily: 'Roboto',
+              letterSpacing: -0.41,
+              fontWeight: FontWeight.w400),
+          labelSmall: TextStyle(
+              color: Colors.black, fontFamily: 'Roboto', letterSpacing: -0.41),
+          headlineLarge: TextStyle(
+            color: Colors.black,
+            fontFamily: 'Roboto',
+            letterSpacing: -0.41,
+          )),
+      primaryColor: MColors.secondaryGreen,
+      elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+        textStyle: TextStyle(color: Colors.black),
+        backgroundColor: MColors.secondaryGreen,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+      )));
 }

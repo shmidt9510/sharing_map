@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart';
@@ -56,52 +58,34 @@ class ItemDetailPage extends StatelessWidget {
               child: GetSlider(item.images, context),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 23.0),
-              child: Row(
-                children: [
-                  Container(
-                      child: Text("",
-                          style: TextStyle(
-                              fontWeight: FontWeight.normal,
-                              fontStyle: FontStyle.italic))),
-                  Spacer(),
-                  Container(
-                      height: 50,
-                      child: Text(
-                          DateFormat('dd.MM.yyyy')
-                              .format(item.creationDate ?? DateTime.now()),
-                          style: TextStyle(
-                              fontWeight: FontWeight.normal,
-                              fontStyle: FontStyle.italic))),
-                ],
-              ),
-            ),
+                padding: const EdgeInsets.only(
+                    left: 23.0, top: 20, bottom: 0, right: 23),
+                child: GetUserWidget(context, item)),
             Container(
-                padding: EdgeInsets.symmetric(horizontal: 23),
+                padding: EdgeInsets.symmetric(horizontal: 23, vertical: 10),
                 child: Text(
                     maxLines: 3,
                     overflow: TextOverflow.ellipsis,
                     item.name ?? "",
-                    style:
-                        TextStyle(fontSize: 30, fontWeight: FontWeight.bold))),
+                    style: Theme.of(context).textTheme.bodyLarge)),
             Container(
                 padding: EdgeInsets.symmetric(horizontal: 23),
-                child: Text(item.desc ?? "",
-                    style: TextStyle(fontWeight: FontWeight.normal))),
-            Container(
-              height: 20,
+                child: Text(
+                  item.desc ?? "",
+                  style: Theme.of(context).textTheme.labelMedium,
+                )),
+            SizedBox(
+              height: 10,
             ),
-            Container(
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                child: Text(item.adress ?? "",
-                    style: TextStyle(
-                        fontWeight: FontWeight.normal,
-                        fontStyle: FontStyle.normal))),
             GetLocationsWidget(context, item, _commonController),
-            Container(
-              height: 20,
-            ),
-            GetUserWidget(context, item),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 23),
+              child: Text(
+                DateFormat('dd.MM.yyyy')
+                    .format(item.creationDate ?? DateTime.now()),
+                style: TextStyle(color: MColors.darkGrey, fontSize: 14),
+              ),
+            )
           ],
         ));
   }
@@ -130,28 +114,27 @@ Widget GetLocationsWidget(
       itemCount: locations.length,
       itemBuilder: (BuildContext context, int index) {
         return Container(
-            height: 25,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 2.0),
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.subway_outlined,
-                    size: 14,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 2.0),
-                    child: Text(
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      locations[index].name,
-                      textAlign: TextAlign.start,
-                      style: TextStyle(fontSize: 14),
-                    ),
-                  ),
-                ],
+          alignment: Alignment.centerLeft,
+          child: Row(
+            children: [
+              Center(
+                  child: SvgPicture.asset(
+                'assets/icons/subway_moscow.svg',
+                height: 18,
+                width: 18,
+              )),
+              Center(
+                child: Text(
+                  textAlign: TextAlign.center,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  locations[index].name,
+                  style: TextStyle(color: MColors.darkGrey, fontSize: 14),
+                ),
               ),
-            ));
+            ],
+          ),
+        );
       },
     ),
   );
@@ -165,8 +148,8 @@ Widget GetSlider(images, context) {
   }
   return CarouselSlider(
     options: CarouselOptions(
-      height: MediaQuery.of(context).size.height / 3,
-      // height: 300.0,
+      height: MediaQuery.of(context).size.height / 2.5,
+      // height: cona,
       viewportFraction: 1.0,
       enlargeCenterPage: false,
       enableInfiniteScroll: false,
@@ -219,134 +202,131 @@ Widget GetFullscreenSlider(image, context, count) {
 Widget GetUserWidget(BuildContext context, Item item) {
   final UserController _userController = Get.find<UserController>();
   bool _isLogged = SharedPrefs().logged;
-  return SizedBox(
-    height: 100,
-    child: Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 23),
-      child: Container(
-        decoration: BoxDecoration(
-          border: Border.all(color: MColors.darkGreen, width: 1),
-          borderRadius: BorderRadius.all(Radius.circular(20)),
-        ),
-        child: Column(
-          children: [
-            Expanded(
-              child: FutureBuilder(
-                future: _userController.GetUser(item.userId ?? ""),
-                builder: (context, snapshot) {
-                  if (snapshot.hasError) {
-                    return Container();
-                  }
+  return Container(
+    child: Row(
+      children: [
+        FutureBuilder(
+          future: _userController.GetUser(item.userId ?? ""),
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return Container();
+            }
 
-                  if (!snapshot.hasData) {
-                    return Center(child: CircularProgressIndicator.adaptive());
-                  }
-                  var _user = snapshot.data as User;
-                  return Row(children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                      child: InkWell(
-                        onTap: () {
-                          // GoRouter.of(context).goNamed("/user",
-                          //     pathParameters: {'userId': _user.id});
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      UserProfilePage(userId: _user.id)));
-                        },
-                        child: ClipOval(
-                          child: Container(
-                            width: 45,
-                            height: 45,
-                            child: _user.buildImage(),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                      child: Text(
-                        _user.username,
-                        maxLines: 2,
-                      ),
-                    ),
-                  ]);
+            if (!snapshot.hasData) {
+              return Center(child: CircularProgressIndicator.adaptive());
+            }
+            var _user = snapshot.data as User;
+            return Row(children: [
+              InkWell(
+                onTap: () {
+                  // GoRouter.of(context).goNamed("/user",
+                  //     pathParameters: {'userId': _user.id});
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              UserProfilePage(userId: _user.id)));
                 },
+                child: ClipOval(
+                  child: Container(
+                    width: 45,
+                    height: 45,
+                    child: _user.buildImage(fit: BoxFit.cover),
+                  ),
+                ),
               ),
-            ),
-            Expanded(
-              child: _isLogged
-                  ? FutureBuilder(
-                      future: _userController.getUserContact(item.userId ?? ""),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasError) {
-                          return Container();
-                        }
-                        if (!snapshot.hasData) {
-                          return Center(
-                              child: CircularProgressIndicator.adaptive());
-                        }
-                        return GetUserContactWidget(
-                            snapshot.data as List<UserContact>);
-                      })
-                  : Container(),
-            )
-          ],
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                child: Text(
+                  _user.username,
+                  maxLines: 2,
+                ),
+              ),
+            ]);
+          },
         ),
-      ),
+        Spacer(),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Icon(FontAwesomeIcons.phone),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Icon(FontAwesomeIcons.telegram),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Icon(FontAwesomeIcons.whatsapp),
+        ),
+        // _isLogged
+        //     ? FutureBuilder(
+        //         future: _userController.getUserContact(item.userId ?? ""),
+        //         builder: (context, snapshot) {
+        //           if (snapshot.hasError) {
+        //             return Container();
+        //           }
+        //           if (!snapshot.hasData) {
+        //             return Center(
+        //                 child: CircularProgressIndicator.adaptive());
+        //           }
+        //           return GetUserContactWidget(
+        //               snapshot.data as List<UserContact>);
+        //         })
+        //     : Container()
+      ],
     ),
   );
 }
 
 Widget GetUserContactWidget(List<UserContact> contacts) {
-  String _contactText = "";
-  int _priority = 0;
-  for (final contact in contacts) {
-    if (contact.type == UserContactType.TELEGRAM && _priority >= 0) {
-      _contactText = contact.contact;
-      _priority = 2;
-    }
-    if (contact.type == UserContactType.WHATSAPP && _priority < 2) {
-      _contactText = contact.contact;
-      _priority = 1;
-    }
-    if (contact.type == UserContactType.PHONE && _priority < 1) {
-      _contactText = contact.contact;
-    }
-  }
+  return ListView.builder(
+      shrinkWrap: true,
+      scrollDirection: Axis.vertical,
+      itemCount: contacts.length,
+      itemBuilder: (BuildContext context, int index) {
+        return contacts[index].contact.isNotEmpty
+            ? Row(children: [
+                GetContactTypeWidget(contacts[index]),
+                Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                    child: SelectableText(contacts[index]
+                        .contact) //Text(contacts[index].contact),
+                    )
+              ])
+            : Container();
+      });
 
-  return Row(
-    children: [
-      ListView.builder(
-        shrinkWrap: true,
-        scrollDirection: Axis.horizontal,
-        itemCount: contacts.length,
-        itemBuilder: (BuildContext context, int index) => GetContactTypeWidget(
-          contacts[index],
-        ),
-      ),
-      SelectableText(
-        _contactText,
-        style: TextStyle(fontStyle: FontStyle.normal),
-      ),
-    ],
-  );
+  // SizedBox(
+  //   height: 50.0 * contacts.length,
+  //   child: Column(
+  //     children: [
+  //       ListView.builder(
+  //         scrollDirection: Axis.vertical,
+  //         itemCount: contacts.length,
+  //         itemBuilder: (BuildContext context, int index) =>
+  // GetContactTypeWidget(
+  //           contacts[index],
+  //         ),
+  //       ),
+  //       // SelectableText(
+  //       //   _contactText,
+  //       //   style: TextStyle(fontStyle: FontStyle.normal),
+  //       // ),
+  //     ],
+  //   ),
+  // );
 }
 
 Widget GetContactTypeWidget(UserContact contact) {
-  return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 2),
-    child: IconButton(
-      icon: Icon(contact.contactIcon),
-      onPressed: () async {
-        final url = Uri.parse(contact.getUri + contact.contact);
-        if (await canLaunchUrl(url)) {
-          await launchUrl(url);
-        } else {
-          print('Unable to launch $url');
-        }
-      },
-    ),
+  return IconButton(
+    icon: Icon(contact.contactIcon),
+    onPressed: () async {
+      final url = Uri.parse(contact.getUri + contact.contact);
+      if (await canLaunchUrl(url)) {
+        await launchUrl(url);
+      } else {
+        print('Unable to launch $url');
+      }
+    },
   );
 }

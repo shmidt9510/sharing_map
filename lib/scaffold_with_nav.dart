@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
+import 'package:sharing_map/utils/colors.dart';
 import 'package:sharing_map/utils/shared.dart';
 
 /// Builds the "shell" for the app by building a Scaffold with a
@@ -16,23 +17,26 @@ class ScaffoldWithNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var _color = context.theme.iconTheme.color;
+    var _color = MColors.primaryGreen;
     var _index = navigationShell.currentIndex;
     return Scaffold(
       body: navigationShell,
       bottomNavigationBar: SizedBox(
-        height: context.height * 0.09,
+        height: context.height * 0.12,
         child: BottomNavigationBar(
-          unselectedIconTheme: IconThemeData(color: _color),
-          selectedItemColor: _color,
+          unselectedIconTheme: IconThemeData(color: MColors.grey2),
+          selectedIconTheme: IconThemeData(color: MColors.secondaryGreen),
+          unselectedItemColor: MColors.black,
+          selectedItemColor: MColors.black,
+          selectedFontSize: 14,
+          unselectedFontSize: 14,
           items: [
             BottomNavigationBarItem(
                 activeIcon: Icon(Icons.home),
-                icon: Icon(Icons.home, color: _color),
+                icon: Icon(Icons.home),
                 label: 'Главная'),
             BottomNavigationBarItem(
-                icon: Icon(Icons.add_circle_outlined, color: _color),
-                label: 'Добавить'),
+                icon: Icon(Icons.add_circle_outlined), label: 'Добавить'),
             BottomNavigationBarItem(
                 icon: Icon(Icons.supervised_user_circle_rounded),
                 label: 'Профиль'),
@@ -44,38 +48,10 @@ class ScaffoldWithNavBar extends StatelessWidget {
     );
   }
 
-  /// Navigate to the current location of the branch at the provided index when
-  /// tapping an item in the BottomNavigationBar.
   void _onTap(BuildContext context, int index) {
     navigationShell.goBranch(
       index,
       initialLocation: index == navigationShell.currentIndex,
     );
   }
-
-  // Widget getFavoriteIcon(context, selected) {
-  //   Icon()
-  //   if (selected) {
-  //     return Icon(Icons.home);
-  //   } else {
-  //     return Icon(Icons.home_work_outlined);
-  //   }
-  // }
-
-  // Widget getHomeIcon(context, selected) {;
-  //   return ImageIcon(SvgPicture.asset('', color:MColors.dashAmber, semanticsLabel: 'label'));
-  //   // if (selected) {
-  //   //   return Icon(Icons.search.);
-  //   // } else {
-  //   //   return Icon(Icons.home_work_outlined);
-  //   // }
-  // }
-
-  // Widget getMessages(context, selected) {
-  //   if (selected) {
-  //     return Icon(Icons.home);
-  //   } else {
-  //     return Icon(Icons.home_work_outlined);
-  //   }
-  // }
 }

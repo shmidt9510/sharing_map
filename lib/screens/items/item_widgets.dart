@@ -90,28 +90,31 @@ class _ItemsListViewState extends State<ItemsListView> {
                     MaterialPageRoute(
                         builder: (context) => ItemDetailPage(item)));
               },
-              child: Stack(
-                children: [
-                  ItemBlock(item),
-                  widget.addDeleteButton
-                      ? Positioned(
-                          top: 3,
-                          right: 3,
-                          child: IconButton(
-                              onPressed: () async {
-                                await _deleteItemDialogBuilder(
-                                    context, item.id ?? "");
-                                setState(() {
-                                  _pagingController.refresh();
-                                });
-                              },
-                              icon: Icon(
-                                Icons.delete,
-                                color: Colors.red,
-                              )),
-                        )
-                      : Container(),
-                ],
+              child: Padding(
+                padding: const EdgeInsets.only(left: 10, right: 10, top: 5),
+                child: Stack(
+                  children: [
+                    ItemBlock(item),
+                    widget.addDeleteButton
+                        ? Positioned(
+                            top: 3,
+                            right: 3,
+                            child: IconButton(
+                                onPressed: () async {
+                                  await _deleteItemDialogBuilder(
+                                      context, item.id ?? "");
+                                  setState(() {
+                                    _pagingController.refresh();
+                                  });
+                                },
+                                icon: Icon(
+                                  Icons.delete,
+                                  color: Colors.red,
+                                )),
+                          )
+                        : Container(),
+                  ],
+                ),
               )),
         ),
         separatorBuilder: (context, index) => Container(

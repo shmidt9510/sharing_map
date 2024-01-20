@@ -49,7 +49,14 @@ class _UserProfilePageState extends State<UserProfilePage> {
                         padding: EdgeInsetsDirectional.only(start: 20, end: 20),
                         child: Row(
                           children: [
-                            Flexible(flex: 1, child: _user.buildImage()),
+                            Flexible(
+                                flex: 1,
+                                child: ClipOval(
+                                    child: Container(
+                                        width: 200,
+                                        height: 200,
+                                        child: _user.buildImage(
+                                            fit: BoxFit.cover)))),
                             Flexible(
                               flex: 2,
                               child: Center(
@@ -85,7 +92,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
           ),
           const SizedBox(height: 4),
           Text(
-            user.email ?? "no email",
+            user.email ?? "",
             style: TextStyle(color: Colors.grey),
           )
         ],

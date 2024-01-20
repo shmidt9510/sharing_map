@@ -35,9 +35,11 @@ class _ItemListPageState extends State<ItemListPage> {
 
   @override
   Widget build(BuildContext context) {
-    double height = context.height * 0.14;
+    double height = context.height * 0.30;
+    double padding = 10.0;
     return SafeArea(
       child: Scaffold(
+        backgroundColor: MColors.white,
         body: RefreshIndicator(
           onRefresh: () {
             return _updateOnFetch();
@@ -50,43 +52,30 @@ class _ItemListPageState extends State<ItemListPage> {
                     toolbarHeight: height,
                     title: SizedBox(
                       height: height,
-                      child: ListView.builder(
-                        physics: AlwaysScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        scrollDirection: Axis.horizontal,
-                        itemCount: _commonController.categories.length,
-                        itemBuilder: (BuildContext context, int index) => Card(
-                          child: _buildButton(context,
-                              _commonController.categories[index], height),
+                      child: Padding(
+                        padding: EdgeInsets.only(top: padding, bottom: padding),
+                        child: ListView.builder(
+                          physics: AlwaysScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: _commonController.categories.length,
+                          itemBuilder: (BuildContext context, int index) =>
+                              Card(
+                            child: _buildButton(
+                                context,
+                                _commonController.categories[index],
+                                height - padding * 2),
+                          ),
                         ),
                       ),
                     ),
                     primary: false,
                     floating: true,
                     titleSpacing: 0,
-                    // bottom: PreferredSize(
-                    //   preferredSize: Size.fromHeight(height),
-                    //   child: SizedBox(
-                    //     height: height,
-                    //     child: ListView.builder(
-                    //       physics: AlwaysScrollableScrollPhysics(),
-                    //       shrinkWrap: true,
-                    //       scrollDirection: Axis.horizontal,
-                    //       itemCount: _commonController.categories.length,
-                    //       itemBuilder: (BuildContext context, int index) => Card(
-                    //         child: _buildButton(context,
-                    //             _commonController.categories[index], height),
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
                   )
                 ]),
-            body: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-              child: ItemsListView(
-                  itemFilter: _chosenFilter, key: ValueKey(_chosenFilter)),
-            ),
+            body: ItemsListView(
+                itemFilter: _chosenFilter, key: ValueKey(_chosenFilter)),
           ),
         ),
       ),
@@ -122,37 +111,22 @@ class _ItemListPageState extends State<ItemListPage> {
       assetName = categoriesAssetsName[category.id]!;
     }
 
-    return ElevatedButton(
-        style: ElevatedButton.styleFrom(
-            backgroundColor: MColors.transparent,
+    return AspectRatio(
+      aspectRatio: 0.65,
+      child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            // minimumSize: Size(10, 10),
+            backgroundColor: isChosen ? MColors.lightGreen : MColors.inputField,
             padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(25),
-            ),
-            textStyle: TextStyle(
-              color: Colors.black,
-              fontSize: size * 0.12,
-              fontFamily: 'Roboto',
-              fontWeight: FontWeight.w400,
-              height: 0.07,
-              letterSpacing: -0.41,
-            )),
-        onPressed: () async {
-          setState(() {
-            _chosenFilter = category.id ?? 1;
-          });
-        },
-        child: Container(
-          width: size,
-          height: size,
-          // padding: const EdgeInsets.only(bottom: 8),
-          decoration: ShapeDecoration(
-            shadows: null,
-            color: isChosen ? MColors.lightGreen : MColors.inputField,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(25),
+              borderRadius: BorderRadius.circular(10),
             ),
           ),
+          onPressed: () async {
+            setState(() {
+              _chosenFilter = category.id ?? 1;
+            });
+          },
           child: Column(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -179,9 +153,10 @@ class _ItemListPageState extends State<ItemListPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
+                      // style: Theme.of(context).textTheme.titleMedium,
                       style: TextStyle(
-                        color: MColors.grey1,
-                        fontSize: size * 0.12,
+                        color: MColors.black,
+                        fontSize: 18,
                         fontFamily: 'Roboto',
                         fontWeight: FontWeight.w400,
                         height: 0.07,
@@ -194,7 +169,7 @@ class _ItemListPageState extends State<ItemListPage> {
                 ),
               ),
             ],
-          ),
-        ));
+          )),
+    );
   }
 }

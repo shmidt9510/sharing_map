@@ -110,9 +110,11 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/
+    - assets/icons/
     - assets/images/icons/
     - assets/images/intro/
     - assets/images/categories/
+    - assets/fonts/
     - .env
     - .aws/credentials
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -127,9 +129,21 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family: Poppins
-      fonts:
-        - asset: assets/fonts/Poppins-Regular.ttf
+    # - family: Poppins
+    #   fonts:
+    #     - asset: assets/fonts/Poppins-Regular.ttf
+   - family: Roboto
+     fonts:
+       - asset: assets/fonts/Roboto-Black.ttf
+         weight: 900
+       - asset: assets/fonts/Roboto-BlackItalic.ttf
+         weight: 900
+         style: italic
+       - asset: assets/fonts/Roboto-Medium.ttf
+         weight: 600
+       - asset: assets/fonts/Roboto-MediumItalic.ttf
+         weight: 600
+         style: italic
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro
