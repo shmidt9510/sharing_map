@@ -37,6 +37,19 @@ class _IntroScreenState extends State<IntroScreen> {
                     height: 200,
                   ),
                 ),
+                SizedBox(
+                  height: 100.0,
+                ),
+                getButton(context, "Войти", () {
+                  GoRouter.of(context).go(SMPath.start + "/" + SMPath.login);
+                }, color: MColors.secondaryGreen, height: 50),
+                SizedBox(
+                  height: 20.0,
+                ),
+                getButton(context, "Зарегестрироваться", () {
+                  GoRouter.of(context)
+                      .go(SMPath.start + "/" + SMPath.registration);
+                }, color: MColors.white, height: 50),
                 SizedBox(height: 30.0),
                 // Text(SharedPrefs().refreshToken),
                 // Text(SharedPrefs().initPath.toString()),
@@ -47,50 +60,26 @@ class _IntroScreenState extends State<IntroScreen> {
             ),
           ),
         ),
-        bottomNavigationBar: Container(
-          height: 150.0,
-          color: MColors.primaryGreen,
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ElevatedButton(
-                style: Theme.of(context).elevatedButtonTheme.style!.copyWith(
-                      minimumSize:
-                          MaterialStateProperty.all<Size>(Size.fromHeight(50)),
-                      backgroundColor: MaterialStateProperty.all<Color>(
-                          MColors.secondaryGreen),
-                    ),
-                onPressed: () async {
-                  GoRouter.of(context).go(SMPath.start + "/" + SMPath.login);
-                },
-                child: Text(
-                  "Войти",
-                  style: Theme.of(context).textTheme.labelMedium,
-                ),
-              ),
-              SizedBox(
-                height: 10.0,
-              ),
-              ElevatedButton(
-                style: Theme.of(context).elevatedButtonTheme.style!.copyWith(
-                      minimumSize:
-                          MaterialStateProperty.all<Size>(Size.fromHeight(50)),
-                      backgroundColor:
-                          MaterialStateProperty.all<Color>(MColors.white),
-                    ),
-                onPressed: () async {
-                  GoRouter.of(context)
-                      .go(SMPath.start + "/" + SMPath.registration);
-                },
-                child: Text(
-                  "Зарегистрироваться",
-                  style: Theme.of(context).textTheme.labelMedium,
-                ),
-              ),
-            ],
-          ),
-        ),
+        // bottomNavigationBar: Container(
+        //   height: 150.0,
+        //   color: MColors.primaryGreen,
+        //   padding: const EdgeInsets.all(20.0),
+        //   child: Column(
+        //     mainAxisAlignment: MainAxisAlignment.center,
+        //     children: [
+        //       getButton(context, "Войти", () {
+        //         GoRouter.of(context).go(SMPath.start + "/" + SMPath.login);
+        //       }, color: MColors.secondaryGreen, height: 50),
+        //       SizedBox(
+        //         height: 10.0,
+        //       ),
+        //       getButton(context, "Зарегестрироваться", () {
+        //         GoRouter.of(context)
+        //             .go(SMPath.start + "/" + SMPath.registration);
+        //       }, color: MColors.white, height: 50),
+        //     ],
+        //   ),
+        // ),
       ),
     );
   }

@@ -7,6 +7,7 @@ import 'package:sharing_map/controllers/common_controller.dart';
 import 'package:sharing_map/controllers/item_controller.dart';
 import 'package:sharing_map/models/item.dart';
 import 'package:sharing_map/models/location.dart';
+import 'package:sharing_map/theme.dart';
 import 'package:sharing_map/utils/colors.dart';
 import 'package:sharing_map/widgets/image.dart';
 
@@ -36,19 +37,7 @@ class TextDescriptionBlock extends StatelessWidget {
               _item.name ?? "",
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                color: MColors.black,
-                fontSize: 18,
-                fontFamily: 'Roboto',
-                fontWeight: FontWeight.w400,
-                letterSpacing: -0.41,
-              ),
-              // style: TextStyle(
-              //   fontSize: context.width / 18,
-              //   fontFamily: 'Roboto',
-              //   color: MColors.black,
-              //   fontWeight: FontWeight.w600,
-              // ),
+              style: getBigTextStyle(),
             ),
           ),
         ),
@@ -56,25 +45,26 @@ class TextDescriptionBlock extends StatelessWidget {
           flex: 1,
           child: Container(
             alignment: Alignment.centerLeft,
-            child: Row(
-              // "D:\sharingMap\sharing_map\shaaring_map\assets\icons\moscowmetro.svg"
-              children: [
-                Center(
-                    child: SvgPicture.asset(
-                  'assets/icons/subway_moscow.svg',
-                  height: 18,
-                  width: 18,
-                )),
-                Center(
-                  child: Text(
-                    textAlign: TextAlign.center,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    _location,
-                    style: TextStyle(color: MColors.darkGrey, fontSize: 14),
+            child: Container(
+              child: Row(
+                children: [
+                  Center(
+                      child: SvgPicture.asset(
+                    'assets/icons/subway_moscow.svg',
+                    height: 18,
+                    width: 18,
+                  )),
+                  Center(
+                    child: Text(
+                      textAlign: TextAlign.center,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      _location,
+                      style: getHintTextStyle(),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
@@ -88,7 +78,7 @@ class TextDescriptionBlock extends StatelessWidget {
               child: Text(
                 DateFormat('dd.MM.yy')
                     .format(_item.creationDate ?? DateTime.now()),
-                style: TextStyle(color: MColors.darkGrey, fontSize: 14),
+                style: getHintTextStyle(),
                 overflow: TextOverflow.ellipsis,
                 maxLines: 1,
               ),

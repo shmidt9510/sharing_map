@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:path/path.dart';
 import 'package:sharing_map/controllers/common_controller.dart';
 import 'package:sharing_map/controllers/user_controller.dart';
 import 'package:sharing_map/models/contact.dart';
@@ -12,8 +10,8 @@ import 'package:sharing_map/models/contact.dart';
 import 'package:sharing_map/models/item.dart';
 import 'package:sharing_map/models/location.dart';
 import 'package:sharing_map/models/user.dart';
+import 'package:sharing_map/theme.dart';
 import 'package:sharing_map/user/page/user_profile_page.dart';
-import 'package:sharing_map/utils/colors.dart';
 import 'package:sharing_map/utils/shared.dart';
 import 'package:sharing_map/widgets/image.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -54,12 +52,12 @@ class ItemDetailPage extends StatelessWidget {
                     maxLines: 3,
                     overflow: TextOverflow.ellipsis,
                     item.name ?? "",
-                    style: Theme.of(context).textTheme.bodyLarge)),
+                    style: getBigTextStyle())),
             Container(
                 padding: EdgeInsets.symmetric(horizontal: 23),
                 child: Text(
                   item.desc ?? "",
-                  style: Theme.of(context).textTheme.labelMedium,
+                  style: getMediumTextStyle(),
                 )),
             SizedBox(
               height: 10,
@@ -70,7 +68,7 @@ class ItemDetailPage extends StatelessWidget {
               child: Text(
                 DateFormat('dd.MM.yyyy')
                     .format(item.creationDate ?? DateTime.now()),
-                style: TextStyle(color: MColors.darkGrey, fontSize: 14),
+                style: getHintTextStyle(),
               ),
             )
           ],
@@ -116,7 +114,7 @@ Widget GetLocationsWidget(
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   locations[index].name,
-                  style: TextStyle(color: MColors.darkGrey, fontSize: 14),
+                  style: getHintTextStyle(),
                 ),
               ),
             ],
@@ -226,7 +224,8 @@ Widget GetUserWidget(BuildContext context, Item item) {
                 padding: const EdgeInsets.symmetric(horizontal: 10.0),
                 child: Text(
                   _user.username,
-                  maxLines: 2,
+                  style: getHintTextStyle(),
+                  // maxLines: 2,
                 ),
               ),
             ]);
@@ -266,26 +265,6 @@ Widget GetUserContactWidget(List<UserContact> contacts) {
             ? GetContactTypeWidget(contacts[index])
             : Container();
       });
-
-  // SizedBox(
-  //   height: 50.0 * contacts.length,
-  //   child: Column(
-  //     children: [
-  //       ListView.builder(
-  //         scrollDirection: Axis.vertical,
-  //         itemCount: contacts.length,
-  //         itemBuilder: (BuildContext context, int index) =>
-  // GetContactTypeWidget(
-  //           contacts[index],
-  //         ),
-  //       ),
-  //       // SelectableText(
-  //       //   _contactText,
-  //       //   style: TextStyle(fontStyle: FontStyle.normal),
-  //       // ),
-  //     ],
-  //   ),
-  // );
 }
 
 Widget GetContactTypeWidget(UserContact contact) {

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:sharing_map/theme.dart';
 // import 'package:sharing_map/model/data/Products.dart';
 // import 'package:sharing_map/model/notifiers/cart_notifier.dart';
 // import 'package:sharing_map/model/services/Product_service.dart';
@@ -48,4 +49,108 @@ Widget secondaryButtonGreenSmoke(
       ),
     ),
   );
+}
+
+Widget getButton(
+    BuildContext context, String labelText, void Function() onPressed,
+    {Color color = MColors.secondaryGreen,
+    double height = 50,
+    TextStyle? textStyle}) {
+  if (textStyle == null) {
+    textStyle = getMediumTextStyle();
+  }
+  return ElevatedButton(
+    style: ElevatedButton.styleFrom(
+      textStyle: textStyle,
+      backgroundColor: color,
+      minimumSize: Size.fromHeight(height),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+    ),
+    onPressed: onPressed,
+    child: Text(
+      labelText,
+      style: textStyle,
+    ),
+  );
+}
+
+Widget getTextField(TextEditingController controller, String label,
+    String? Function(String? value) validator,
+    {TextInputType? keyboardType, int minLines = 1, int maxLines = 1}) {
+  return TextFormField(
+    minLines: minLines,
+    maxLines: maxLines,
+    controller: controller,
+    keyboardType: keyboardType,
+    style: getMediumTextStyle(),
+    decoration: InputDecoration(
+      hintStyle: getMediumTextStyle(),
+      labelStyle: getMediumTextStyle(),
+      // contentPadding: EdgeInsets.only(left: 10),
+      floatingLabelBehavior: FloatingLabelBehavior.never,
+      filled: true,
+      fillColor: Colors.white,
+      labelText: label,
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: MColors.secondaryGreen),
+        borderRadius: BorderRadius.circular(10),
+      ),
+    ),
+    validator: validator,
+  );
+}
+
+Widget getPasswordTextField(
+    TextEditingController controller,
+    String labelText,
+    bool obscurePassword,
+    void Function() onIconPressed,
+    String? Function(String? value) validator) {
+  return TextFormField(
+    controller: controller,
+    obscureText: obscurePassword,
+    keyboardType: TextInputType.visiblePassword,
+    decoration: InputDecoration(
+      contentPadding: EdgeInsets.only(left: 10),
+      floatingLabelBehavior: FloatingLabelBehavior.never,
+      filled: true,
+      fillColor: Colors.white,
+      labelText: "Пароль",
+      labelStyle: TextStyle(fontWeight: FontWeight.w400),
+      suffixIcon: IconButton(
+          onPressed: onIconPressed,
+          icon: obscurePassword
+              ? const Icon(Icons.visibility_outlined)
+              : const Icon(Icons.visibility_off_outlined)),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: MColors.secondaryGreen),
+        borderRadius: BorderRadius.circular(10),
+      ),
+    ),
+    validator: (String? value) {
+      if (value == null || value.isEmpty) {
+        return "Введите пароль";
+      }
+      return null;
+    },
+  );
+}
+
+void showErrorScaffold(BuildContext context, String errorMessage) {
+  SnackBar snackBar = SnackBar(
+    content: Text(errorMessage),
+    action: SnackBarAction(
+      label: 'Закрыть',
+      onPressed: () {},
+    ),
+  );
+  ScaffoldMessenger.of(context).showSnackBar(snackBar);
 }

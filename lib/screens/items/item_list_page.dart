@@ -1,5 +1,6 @@
 import 'package:sharing_map/controllers/common_controller.dart';
 import 'package:sharing_map/models/category.dart';
+import 'package:sharing_map/theme.dart';
 import 'package:sharing_map/utils/colors.dart';
 
 import 'item_widgets.dart';
@@ -143,9 +144,9 @@ class _ItemListPageState extends State<ItemListPage> {
                   ),
                 ),
               ),
-              SizedBox(
-                height: size * 0.05,
-              ),
+              // SizedBox(
+              //   height: size * 0.05,
+              // ),
               Container(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -153,15 +154,8 @@ class _ItemListPageState extends State<ItemListPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      // style: Theme.of(context).textTheme.titleMedium,
-                      style: TextStyle(
-                        color: MColors.black,
-                        fontSize: 18,
-                        fontFamily: 'Roboto',
-                        fontWeight: FontWeight.w400,
-                        height: 0.07,
-                        letterSpacing: -0.41,
-                      ),
+                      maxLines: 2,
+                      style: getSmallTextStyle(),
                       category.description ?? "_",
                       textAlign: TextAlign.center,
                     ),

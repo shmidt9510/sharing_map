@@ -70,7 +70,7 @@ class _AppState extends State<App> {
 }
 
 Future<String> _getInitPath(UserController _usersController) async {
-  // return SMPath.home;
+  // return SMPath.addItem;
   if (SharedPrefs().isFirstRun) {
     SharedPrefs().isFirstRun = false;
     return SMPath.onboard;

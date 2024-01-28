@@ -43,7 +43,10 @@ ThemeData GetAppTheme() {
               fontSize: 18,
               fontWeight: FontWeight.w400),
           titleSmall: TextStyle(
-              color: Colors.black, fontFamily: 'Roboto', letterSpacing: -0.41),
+              fontSize: 14,
+              color: Colors.black,
+              fontFamily: 'Roboto',
+              fontWeight: FontWeight.w200),
           bodyLarge: TextStyle(
               height: 1.2,
               color: Colors.black,
@@ -55,7 +58,9 @@ ThemeData GetAppTheme() {
             // regular text
             color: Colors.black,
             fontFamily: 'Roboto',
-            letterSpacing: -0.41,
+            // letterSpacing: -0.41,
+            fontWeight: FontWeight.w200,
+            fontSize: 17,
           ),
           bodySmall: TextStyle(
               color: Colors.black, fontFamily: 'Roboto', letterSpacing: -0.41),
@@ -74,7 +79,7 @@ ThemeData GetAppTheme() {
           labelSmall: TextStyle(
               color: Colors.black, fontFamily: 'Roboto', letterSpacing: -0.41),
           headlineLarge: TextStyle(
-            color: Colors.black,
+            color: Colors.brown,
             fontFamily: 'Roboto',
             letterSpacing: -0.41,
           )),
@@ -87,4 +92,48 @@ ThemeData GetAppTheme() {
           borderRadius: BorderRadius.circular(10),
         ),
       )));
+}
+
+TextStyle getBigTextStyle(
+    {FontWeight weight = FontWeight.w600,
+    Color color = MColors.black,
+    double fontSize = 16}) {
+  return TextStyle(
+      fontSize: fontSize,
+      color: color,
+      fontFamily: 'Roboto',
+      fontWeight: weight);
+}
+
+TextStyle getMediumTextStyle(
+    {FontWeight weight = FontWeight.w400,
+    Color color = MColors.black,
+    double fontSize = 16}) {
+  return TextStyle(
+      fontSize: fontSize,
+      color: color,
+      fontFamily: 'Roboto',
+      fontWeight: weight);
+}
+
+TextStyle getSmallTextStyle(
+    {FontWeight weight = FontWeight.w200,
+    Color color = MColors.black,
+    double fontSize = 14}) {
+  return TextStyle(
+      fontSize: fontSize,
+      color: color,
+      fontFamily: 'Roboto',
+      fontWeight: weight);
+}
+
+TextStyle getHintTextStyle(
+    {FontWeight weight = FontWeight.w200,
+    Color color = MColors.darkGrey,
+    double fontSize = 14}) {
+  return TextStyle(
+      fontSize: fontSize,
+      color: color,
+      fontFamily: 'Roboto',
+      fontWeight: weight);
 }
