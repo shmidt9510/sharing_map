@@ -3,10 +3,12 @@ import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sharing_map/controllers/user_controller.dart';
 import 'package:sharing_map/path.dart';
+import 'package:sharing_map/theme.dart';
 import 'package:sharing_map/utils/colors.dart';
 import 'package:sharing_map/utils/shared.dart';
 // import 'package:sharing_map/widgets/textInputWidget.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:sharing_map/widgets/allWidgets.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class RegistrationScreen extends StatefulWidget {
@@ -46,131 +48,34 @@ class _LoginState extends State<RegistrationScreen> {
           padding: const EdgeInsets.all(30.0),
           child: Column(
             children: [
-              const SizedBox(height: 12),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  "Ваш электронный адрес",
-                  textAlign: TextAlign.left,
-                  style: TextStyle(color: Colors.white, fontSize: 16),
-                ),
-              ),
-              const SizedBox(height: 12),
-              TextFormField(
-                focusNode: null,
-                controller: _controllerMail,
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
-                  floatingLabelBehavior: FloatingLabelBehavior.never,
-                  fillColor: Colors.white,
-                  filled: true,
-                  labelText: "Введите свой email",
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: MColors.secondaryGreen),
-                      borderRadius: BorderRadius.circular(10)),
-                ),
-                // onEditingComplete: () => _focusNodePassword.requestFocus(),
-                validator: (String? value) {
-                  if (!EmailValidator.validate(value ?? "")) {
-                    return "Пожалуйста введите почту";
-                  }
-                  return null;
-                },
-              ),
+              const SizedBox(height: 24),
+              getTextField(_controllerMail, "Введите свой email",
+                  (String? value) {
+                if (!EmailValidator.validate(value ?? "")) {
+                  return "Пожалуйста введите почту";
+                }
+                return null;
+              }, keyboardType: TextInputType.emailAddress),
               const SizedBox(height: 10),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  "Ваш пароль",
-                  textAlign: TextAlign.left,
-                  style: TextStyle(color: Colors.white, fontSize: 16),
-                ),
-              ),
+              getPasswordTextField(
+                  _controllerPassword,
+                  "Пароль",
+                  _obscurePassword,
+                  () => setState(() {
+                        _obscurePassword = !_obscurePassword;
+                      }), (String? value) {
+                if (value == null || value.isEmpty || value.length < 8) {
+                  return "Введите пароль (минимум 8 символов)";
+                }
+                return null;
+              }),
               const SizedBox(height: 10),
-              TextFormField(
-                controller: _controllerPassword,
-                // focusNode: _focusNodePassword,
-                obscureText: _obscurePassword,
-                keyboardType: TextInputType.visiblePassword,
-                decoration: InputDecoration(
-                  floatingLabelBehavior: FloatingLabelBehavior.never,
-                  filled: true,
-                  fillColor: Colors.white,
-                  labelText: "Пароль",
-                  suffixIcon: IconButton(
-                      onPressed: () {
-                        setState(() {
-                          _obscurePassword = !_obscurePassword;
-                        });
-                      },
-                      icon: _obscurePassword
-                          ? const Icon(Icons.visibility_outlined)
-                          : const Icon(Icons.visibility_off_outlined)),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: MColors.secondaryGreen),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: MColors.secondaryGreen),
-                      borderRadius: BorderRadius.circular(10)),
-                ),
-                validator: (String? value) {
-                  if (value == null || value.isEmpty || value.length < 8) {
-                    return "Введите пароль (минимум 8 символов)";
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  "Как вас зовут?",
-                  textAlign: TextAlign.left,
-                  style: TextStyle(color: Colors.white, fontSize: 16),
-                ),
-              ),
-              const SizedBox(height: 12),
-              TextFormField(
-                focusNode: null,
-                controller: _controllerUsername,
-                keyboardType: TextInputType.name,
-                decoration: InputDecoration(
-                  floatingLabelBehavior: FloatingLabelBehavior.never,
-                  fillColor: Colors.white,
-                  filled: true,
-                  labelText: "Ваше имя",
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: MColors.secondaryGreen),
-                      borderRadius: BorderRadius.circular(10)),
-                ),
-                // onEditingComplete: () => _focusNodePassword.requestFocus(),
-                validator: (String? value) {
-                  if (value?.isEmpty ?? false) {
-                    return "Пожалуйста напишите что-нибудь)";
-                  }
-                  return null;
-                },
-              ),
+              getTextField(_controllerUsername, "Ваше имя", (String? value) {
+                if (value?.isEmpty ?? false) {
+                  return "Пожалуйста напишите что-нибудь)";
+                }
+                return null;
+              }, keyboardType: TextInputType.name),
               const SizedBox(height: 60),
               Row(
                 children: [
@@ -205,91 +110,43 @@ class _LoginState extends State<RegistrationScreen> {
               const SizedBox(height: 20),
               InkWell(
                   child: Text('Посмотреть условия пользовательского соглашения',
-                      style: TextStyle(color: MColors.white)),
+                      style: getMediumTextStyle(color: MColors.white).copyWith(
+                          decoration: TextDecoration.underline,
+                          decorationColor: MColors.white)),
                   onTap: () => launchUrl(Uri.parse(
                       'https://docs.google.com/document/d/1dVBC3nqMVMLXrZ6H6h3d340dCDHdBPxivykTD_Vfa_E/edit'))),
               const SizedBox(height: 20),
               Column(
                 children: [
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: MColors.secondaryGreen,
-                      minimumSize: const Size.fromHeight(50),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                    ),
-                    onPressed: () async {
-                      if (!_isChecked) {
-                        var snackBar = SnackBar(
-                          content: const Text(
-                              'Нужно подтвердить условия пользовательского соглашения'),
-                          action: SnackBarAction(
-                            label: 'Закрыть',
-                            onPressed: () {},
-                          ),
-                        );
-                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                        return;
-                      }
-                      if (_formKey.currentState?.validate() ?? false) {
-                        var result = await _userController.Signup(
-                            _controllerMail.text,
-                            _controllerUsername.text,
-                            _controllerPassword.text);
-                        if (result) {
-                          var snackBar = SnackBar(
-                            content: const Text('Отправили вам код в письме)'),
-                            action: SnackBarAction(
-                              label: 'Закрыть',
-                              onPressed: () {},
-                            ),
-                          );
-                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                          GoRouter.of(context).go(
-                            SMPath.start +
-                                "/" +
-                                SMPath.registration +
-                                "/" +
-                                SMPath.registrationCode,
-                            // queryParameters: {
-                            //   "mail": _controllerUsername.text
-                            // }
-                          );
-                        } else {
-                          var snackBar = SnackBar(
-                            content: const Text('Не получилось :('),
-                            action: SnackBarAction(
-                              label: 'Закрыть',
-                              onPressed: () {},
-                            ),
-                          );
-                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                        }
-                      }
-                    },
-                    child: const Text(
-                      "Зарегистрироваться",
-                      style: TextStyle(color: MColors.black),
-                    ),
-                  ),
+                  getButton(context, "Зарегистрироваться", () async {
+                    if (!_isChecked) {
+                      showErrorScaffold(context,
+                          'Нужно подтвердить условия пользовательского соглашения');
+                      return;
+                    }
+                    if (!(_formKey.currentState?.validate() ?? false)) {
+                      showErrorScaffold(context, "Не получилось :(");
+                      return;
+                    }
+                    var result = await _userController.Signup(
+                        _controllerMail.text,
+                        _controllerUsername.text,
+                        _controllerPassword.text);
+                    if (result) {
+                      showErrorScaffold(context, 'Отправили вам код в письме');
+                      GoRouter.of(context).go(
+                        SMPath.start +
+                            "/" +
+                            SMPath.registration +
+                            "/" +
+                            SMPath.registrationCode,
+                      );
+                    }
+                  }),
                   const SizedBox(height: 10),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: MColors.lightGrey,
-                      minimumSize: const Size.fromHeight(50),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                    ),
-                    onPressed: () {
-                      GoRouter.of(context).go(SMPath.home);
-                    },
-                    child: const Text(
-                      "Продолжить без регистрации",
-                      style: TextStyle(color: MColors.black),
-                    ),
-                  ),
+                  getButton(context, "Продолжить без регистрации", () {
+                    GoRouter.of(context).go(SMPath.home);
+                  }, color: MColors.lightGrey),
                 ],
               ),
             ],

@@ -88,7 +88,7 @@ Widget getTextField(TextEditingController controller, String label,
     decoration: InputDecoration(
       hintStyle: getMediumTextStyle(),
       labelStyle: getMediumTextStyle(),
-      // contentPadding: EdgeInsets.only(left: 10),
+      contentPadding: EdgeInsets.all(10),
       floatingLabelBehavior: FloatingLabelBehavior.never,
       filled: true,
       fillColor: Colors.white,
@@ -112,16 +112,18 @@ Widget getPasswordTextField(
     void Function() onIconPressed,
     String? Function(String? value) validator) {
   return TextFormField(
+    style: getMediumTextStyle(),
     controller: controller,
     obscureText: obscurePassword,
     keyboardType: TextInputType.visiblePassword,
     decoration: InputDecoration(
-      contentPadding: EdgeInsets.only(left: 10),
+      contentPadding: EdgeInsets.all(10),
       floatingLabelBehavior: FloatingLabelBehavior.never,
       filled: true,
       fillColor: Colors.white,
       labelText: "Пароль",
-      labelStyle: TextStyle(fontWeight: FontWeight.w400),
+      hintStyle: getMediumTextStyle(),
+      labelStyle: getMediumTextStyle(),
       suffixIcon: IconButton(
           onPressed: onIconPressed,
           icon: obscurePassword

@@ -32,6 +32,7 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
   List<XFile>? imageFileList = [];
   ItemController _itemsController = Get.find<ItemController>();
   CommonController _commonController = Get.find<CommonController>();
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   void selectImages() async {
     final List<XFile>? selectedImages = await imagePicker.pickMultiImage();
@@ -41,7 +42,7 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
     setState(() {});
   }
 
-  final FocusNode _focusNodeText = FocusNode();
+  // final FocusNode _focusNodeText = FocusNode();
   List<SMLocation> _chosenLocations = [];
   List<ItemCategory> _chosenCategories = [];
   TextEditingController titleController = TextEditingController();
@@ -49,191 +50,227 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
   String dropdownValue = itemType.first;
 
   @override
-  Widget build(BuildContext context) {
-    bool hasImages = imageFileList!.length > 0;
-    return Scaffold(
-        appBar: AppBar(title: Text("Создать объявление")),
-        body: Container(
-          padding: const EdgeInsets.all(20),
-          child: SingleChildScrollView(
-            child: Column(children: [
-              const SizedBox(
-                height: 10,
-              ),
-              getTextField(titleController, 'Что вы хотите отдать',
-                  (String? value) {
-                return (value?.length ?? 0) > 2
-                    ? null
-                    : "Пожалуйста введите название";
-              }),
-              const SizedBox(
-                height: 10,
-              ),
-              getTextField(descriptionController, 'Описание', (String? value) {
-                return (value?.length ?? 0) > 16
-                    ? null
-                    : "Пожалуйста сделайте описание чуть подробнее";
-              }, maxLines: 5, minLines: 3),
-              SizedBox(
-                height: 20,
-              ),
-              DropdownSearch<ItemCategory>.multiSelection(
-                onChanged: (List<ItemCategory>? data) {
-                  setState(() {
-                    _chosenCategories = data ?? [];
-                  });
-                },
-                itemAsString: (ItemCategory u) => u.description ?? "",
-                filterFn: ((item, filter) {
-                  return item.id != 0;
-                }),
-                items: _commonController.categories,
-                dropdownDecoratorProps: DropDownDecoratorProps(
-                  baseStyle: getMediumTextStyle(),
-                  dropdownSearchDecoration: InputDecoration(
-                    labelText: _chosenCategories.length == 0
-                        ? " Выберите категорию"
-                        : "",
-                    hintStyle: getMediumTextStyle(),
-                    labelStyle: getMediumTextStyle(),
-                    filled: false,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: MColors.secondaryGreen),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                ),
-                popupProps: PopupPropsMultiSelection.menu(
-                  showSearchBox: false,
-                ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              DropdownSearch<SMLocation>.multiSelection(
-                onChanged: (List<SMLocation>? data) {
-                  setState(() {
-                    _chosenLocations = data ?? [];
-                  });
-                },
-                dropdownDecoratorProps: DropDownDecoratorProps(
-                  baseStyle: getMediumTextStyle(),
-                  dropdownSearchDecoration: InputDecoration(
-                    labelText:
-                        _chosenLocations.length == 0 ? " Выберите метро" : "",
-                    hintStyle: getMediumTextStyle(),
-                    labelStyle: getMediumTextStyle(),
-                    filled: false,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: MColors.secondaryGreen),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                ),
-                items: _commonController.locations,
-                popupProps: PopupPropsMultiSelection.menu(
-                  showSearchBox: true,
-                ),
-              ),
-              Container(
-                  padding: EdgeInsets.only(top: 20, left: 20, right: 20),
-                  alignment: Alignment.topCenter,
-                  child: Column(
-                    children: [
-                      getButton(context, "Добавьте до 5 фото", () {
-                        selectImages();
-                      }, textStyle: getBigTextStyle()),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          height: (imageFileList!.length / 3 + 1) * 85,
-                          child: hasImages
-                              ? GridView.builder(
-                                  physics: ScrollPhysics(),
-                                  itemCount: imageFileList!.length,
-                                  gridDelegate:
-                                      SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount: 3),
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    return Stack(
-                                        fit: StackFit.expand,
-                                        children: [
-                                          Container(
-                                            decoration: BoxDecoration(
-                                                color: Colors.orange,
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(20))),
-                                            child: Image.file(
-                                                File(
-                                                    imageFileList![index].path),
-                                                fit: BoxFit.cover),
-                                          ),
-                                          Positioned(
-                                            top: 3,
-                                            right: 3,
-                                            child: InkWell(
-                                              onTap: () {
-                                                setState(() {
-                                                  imageFileList!
-                                                      .removeAt(index);
-                                                });
-                                              },
-                                              child: Icon(
-                                                Icons.delete,
-                                                color: Colors.red,
-                                              ),
-                                            ),
-                                          ),
-                                        ]);
-                                  })
-                              : Container(),
-                        ),
-                      )
-                    ],
-                  )),
-              Padding(
-                padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
-                child: getButton(context, "Опубликовать", () async {
-                  var item = Item(
-                      userId: SharedPrefs().userId,
-                      name: titleController.text,
-                      desc: descriptionController.text,
-                      locationIds:
-                          _chosenLocations.map((e) => e.id ?? 0).toList(),
-                      cityId: 1,
-                      categoryIds:
-                          _chosenCategories.map((e) => e.id ?? 0).toList(),
-                      subcategoryId: 1,
-                      downloadableImages: imageFileList);
-                  if (await _itemsController.addItem(item)) {
-                    await _itemsController.fetchItems();
-                    GoRouter.of(context).go(SMPath.home);
-                  } else {
-                    showErrorScaffold(context, "Не получилось :(");
-                  }
-                },
-                    color: MColors.darkGreen,
-                    textStyle:
-                        getBigTextStyle().copyWith(color: MColors.white)),
-              ),
-            ]),
-          ),
-        ));
+  void dispose() {
+    titleController.dispose();
+    descriptionController.dispose();
+    super.dispose();
   }
 
   @override
-  void dispose() {
-    _focusNodeText.dispose();
-    super.dispose();
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(title: Text("Создать объявление")),
+        body: SharedPrefs().logged
+            ? Form(
+                key: _formKey,
+                child: Container(
+                  padding: const EdgeInsets.all(20),
+                  child: SingleChildScrollView(
+                    child: Column(children: [
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      getTextField(titleController, 'Что вы хотите отдать',
+                          (String? value) {
+                        return (value?.length ?? 0) > 2
+                            ? null
+                            : "Пожалуйста введите название";
+                      }),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      getTextField(descriptionController, 'Описание',
+                          (String? value) {
+                        return (value?.length ?? 0) > 16
+                            ? null
+                            : "Пожалуйста сделайте описание чуть подробнее";
+                      }, maxLines: 5, minLines: 3),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      DropdownSearch<ItemCategory>.multiSelection(
+                        validator: (value) =>
+                            value == null ? 'field required' : null,
+                        onChanged: (List<ItemCategory>? data) {
+                          setState(() {
+                            _chosenCategories = data ?? [];
+                          });
+                        },
+                        itemAsString: (ItemCategory u) => u.description ?? "",
+                        filterFn: ((item, filter) {
+                          return item.id != 0;
+                        }),
+                        items: _commonController.categories,
+                        dropdownDecoratorProps: DropDownDecoratorProps(
+                          baseStyle: getMediumTextStyle(),
+                          dropdownSearchDecoration: InputDecoration(
+                            labelText: _chosenCategories.length == 0
+                                ? " Выберите категорию"
+                                : "",
+                            hintStyle: getMediumTextStyle(),
+                            labelStyle: getMediumTextStyle(),
+                            filled: false,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: MColors.secondaryGreen),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                        ),
+                        popupProps: PopupPropsMultiSelection.menu(
+                          showSearchBox: false,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      DropdownSearch<SMLocation>.multiSelection(
+                        validator: (value) =>
+                            value == null ? 'field required' : null,
+                        onChanged: (List<SMLocation>? data) {
+                          setState(() {
+                            _chosenLocations = data ?? [];
+                          });
+                        },
+                        dropdownDecoratorProps: DropDownDecoratorProps(
+                          baseStyle: getMediumTextStyle(),
+                          dropdownSearchDecoration: InputDecoration(
+                            labelText: _chosenLocations.length == 0
+                                ? " Выберите метро"
+                                : "",
+                            hintStyle: getMediumTextStyle(),
+                            labelStyle: getMediumTextStyle(),
+                            filled: false,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: MColors.secondaryGreen),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                        ),
+                        items: _commonController.locations,
+                        popupProps: PopupPropsMultiSelection.menu(
+                          showSearchBox: true,
+                        ),
+                      ),
+                      _getImageChoiceWidget(),
+                      Padding(
+                        padding:
+                            const EdgeInsets.only(top: 10, left: 20, right: 20),
+                        child: getButton(context, "Опубликовать", () async {
+                          if (!(_formKey.currentState?.validate() ?? false)) {
+                            showErrorScaffold(context, "Не получилось :(");
+                            return;
+                          }
+                          var item = Item(
+                              userId: SharedPrefs().userId,
+                              name: titleController.text,
+                              desc: descriptionController.text,
+                              locationIds:
+                                  _chosenLocations.map((e) => e.id).toList(),
+                              cityId: 1,
+                              categoryIds: _chosenCategories
+                                  .map((e) => e.id ?? 0)
+                                  .toList(),
+                              subcategoryId: 1,
+                              downloadableImages: imageFileList);
+
+                          if (await _itemsController.addItem(item)) {
+                            Future.delayed(Duration(milliseconds: 100));
+                            _itemsController.dropItems();
+                            await _itemsController.fetchItems();
+                            GoRouter.of(context).go(SMPath.home);
+                          } else {
+                            showErrorScaffold(context, "Не получилось :(");
+                          }
+                        },
+                            color: MColors.darkGreen,
+                            textStyle: getBigTextStyle()
+                                .copyWith(color: MColors.white)),
+                      ),
+                    ]),
+                  ),
+                ))
+            : Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: Column(children: [
+                  Text("Чтобы редактировать профиль надо зарегестрироваться"),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  getButton(context, "Регистрируемся?", () {
+                    GoRouter.of(context)
+                        .go(SMPath.start + "/" + SMPath.registration);
+                  })
+                ]),
+              ));
+  }
+
+  Widget _getImageChoiceWidget() {
+    return Container(
+        padding: EdgeInsets.only(top: 20, left: 20, right: 20),
+        alignment: Alignment.topCenter,
+        child: Column(
+          children: [
+            getButton(context, "Добавьте до 5 фото", () {
+              selectImages();
+            }, textStyle: getBigTextStyle()),
+            SizedBox(
+              height: 10,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                height: ((imageFileList!.length) ~/ 4 +
+                        (imageFileList!.isEmpty ? 0 : 1)) *
+                    (context.width / 3 - 20),
+                child: imageFileList!.length > 0
+                    ? GridView.builder(
+                        shrinkWrap: false,
+                        physics: ScrollPhysics(),
+                        itemCount: imageFileList!.length,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3),
+                        itemBuilder: (BuildContext context, int index) {
+                          return SizedBox(
+                            width: (context.width / 3 - 20),
+                            child: Stack(fit: StackFit.expand, children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(20))),
+                                child: Image.file(
+                                    File(imageFileList![index].path),
+                                    fit: BoxFit.cover),
+                              ),
+                              Positioned(
+                                top: 3,
+                                right: 3,
+                                child: InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      imageFileList!.removeAt(index);
+                                    });
+                                  },
+                                  child: Icon(
+                                    Icons.delete,
+                                    color: Colors.red,
+                                  ),
+                                ),
+                              ),
+                            ]),
+                          );
+                        })
+                    : Container(),
+              ),
+            )
+          ],
+        ));
   }
 }

@@ -5,6 +5,10 @@ import 'package:get/get.dart';
 class ItemController extends GetxController {
   var items = <Item>[].obs;
 
+  void dropItems() {
+    items.clear();
+  }
+
   Future<List<Item>> fetchItems(
       {int pageSize = 10,
       int page = 0,

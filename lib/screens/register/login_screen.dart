@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sharing_map/controllers/user_controller.dart';
 import 'package:sharing_map/path.dart';
+import 'package:sharing_map/theme.dart';
 import 'package:sharing_map/utils/colors.dart';
 // import 'package:sharing_map/widgets/textInputWidget.dart';
 import 'package:email_validator/email_validator.dart';
@@ -40,42 +41,35 @@ class _LoginState extends State<LoginScreen> {
           child: Column(
             children: [
               const SizedBox(height: 30),
-              SizedBox(
-                height: 44,
-                child: getTextField(_controllerUsername, "Введите свой email",
-                    (String? value) {
-                  return EmailValidator.validate(value ?? "")
-                      ? null
-                      : "Пожалуйста введите валидную почту";
-                }, keyboardType: TextInputType.emailAddress),
-              ),
+              getTextField(_controllerUsername, "Введите свой email",
+                  (String? value) {
+                return EmailValidator.validate(value ?? "")
+                    ? null
+                    : "Пожалуйста введите валидную почту";
+              }, keyboardType: TextInputType.emailAddress),
               const SizedBox(height: 10),
-              SizedBox(
-                  height: 44,
-                  child: getPasswordTextField(
-                      _controllerPassword, "Пароль", _obscurePassword, () {
-                    setState(() {
-                      _obscurePassword = !_obscurePassword;
-                    });
-                  }, (String? value) {
-                    if (value == null || value.isEmpty) {
-                      return "Введите пароль";
-                    }
-                    return null;
-                  })),
+              getPasswordTextField(
+                  _controllerPassword, "пароль", _obscurePassword, () {
+                setState(() {
+                  _obscurePassword = !_obscurePassword;
+                });
+              }, (String? value) {
+                if (value == null || value.isEmpty) {
+                  return "Введите пароль";
+                }
+                return null;
+              }),
               const SizedBox(height: 60),
               TextButton(
                 onPressed: () async {
                   GoRouter.of(context)
                       .go(SMPath.start + "/" + SMPath.forgetPasswordMail);
                 },
-                child: const Text(
+                child: Text(
                   "Забыли пароль?",
-                  style: TextStyle(
-                      decorationColor: MColors.white,
-                      color: MColors.white,
+                  style: getMediumTextStyle(color: MColors.white).copyWith(
                       decoration: TextDecoration.underline,
-                      fontWeight: FontWeight.w400),
+                      decorationColor: MColors.white),
                 ),
               ),
               const SizedBox(height: 10),
@@ -84,23 +78,22 @@ class _LoginState extends State<LoginScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text("Нет аккаунта?",
-                          style: TextStyle(
-                              color: MColors.white,
-                              fontWeight: FontWeight.w400)),
+                      Text(
+                        "Нет аккаунта?",
+                        style: getMediumTextStyle(color: MColors.white),
+                      ),
                       TextButton(
                         onPressed: () {
                           _formKey.currentState?.reset();
                           GoRouter.of(context)
                               .go(SMPath.start + "/" + SMPath.registration);
                         },
-                        child: const Text(
+                        child: Text(
                           "Зарегистрируйтесь",
-                          style: TextStyle(
-                              decorationColor: MColors.white,
-                              color: MColors.white,
-                              decoration: TextDecoration.underline,
-                              fontWeight: FontWeight.w400),
+                          style: getMediumTextStyle(color: MColors.white)
+                              .copyWith(
+                                  decoration: TextDecoration.underline,
+                                  decorationColor: MColors.white),
                         ),
                       ),
                     ],
@@ -115,11 +108,11 @@ class _LoginState extends State<LoginScreen> {
                     } else {
                       showErrorScaffold(context, 'Не получилось :(');
                     }
-                  }, color: MColors.secondaryGreen, height: 46),
+                  }, color: MColors.secondaryGreen),
                   const SizedBox(height: 20),
                   getButton(context, "Продолжить без регистрации", () {
                     GoRouter.of(context).go(SMPath.home);
-                  }, color: MColors.lightGrey, height: 46),
+                  }, color: MColors.lightGrey),
                 ],
               ),
             ],

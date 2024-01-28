@@ -11,6 +11,7 @@ import 'package:sharing_map/user/page/editable_contact_text_field.dart';
 import 'package:sharing_map/utils/colors.dart';
 import 'package:sharing_map/utils/shared.dart';
 import 'package:sharing_map/screens/items/item_widgets.dart';
+import 'package:sharing_map/widgets/allWidgets.dart';
 import 'package:sharing_map/widgets/image.dart';
 import 'package:sharing_map/widgets/editable_text.dart';
 
@@ -47,6 +48,21 @@ class _ProfilePageState extends State<ProfilePage> {
       body: FutureBuilder(
           future: _userController.GetMyself(),
           builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: Column(children: [
+                  Text("Чтобы редактировать профиль надо зарегестрироваться"),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  getButton(context, "Регистрируемся?", () {
+                    GoRouter.of(context)
+                        .go(SMPath.start + "/" + SMPath.registration);
+                  })
+                ]),
+              );
+            }
             if (!snapshot.hasData) {
               return Center(child: CircularProgressIndicator());
             }
@@ -264,9 +280,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 textStyle: Theme.of(context).textTheme.labelLarge,
               ),
               child: const Text('Нет'),
-              onPressed: () {
-                GoRouter.of(context).go(SMPath.start);
-              },
+              onPressed: () {},
             ),
           ],
         );

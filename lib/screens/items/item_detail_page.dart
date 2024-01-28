@@ -133,8 +133,8 @@ Widget GetSlider(images, context) {
   }
   return CarouselSlider(
     options: CarouselOptions(
+      autoPlay: true,
       height: MediaQuery.of(context).size.height / 2.5,
-      // height: cona,
       viewportFraction: 1.0,
       enlargeCenterPage: false,
       enableInfiniteScroll: false,
