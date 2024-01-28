@@ -64,20 +64,11 @@ class _ProfilePageState extends State<ProfilePage> {
                       child: Padding(
                         padding: EdgeInsetsDirectional.only(start: 20, end: 20),
                         child: Row(
-                          //                         ClipOval(
-                          // child: SizedBox.fromSize(
-                          //   size: Size.fromRadius(48)
                           children: [
                             Flexible(
                                 flex: 2,
                                 child: Stack(children: [
                                   ClipOval(
-
-                                      // width: 120.0,
-                                      // height: 120.0,
-                                      // decoration: BoxDecoration(
-                                      //   shape: BoxShape.circle,
-                                      // ),
                                       child: SizedBox.fromSize(
                                           size: Size.fromRadius(48),
                                           child: _user.buildImage(

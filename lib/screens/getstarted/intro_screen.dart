@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:sharing_map/path.dart';
 // import 'package:sharing_map/screens/register_screens/registration_screen.dart';
 import 'package:sharing_map/utils/colors.dart';
+import 'package:sharing_map/utils/shared.dart';
 import 'package:sharing_map/widgets/allWidgets.dart';
 
 class IntroScreen extends StatefulWidget {
@@ -37,6 +38,11 @@ class _IntroScreenState extends State<IntroScreen> {
                   ),
                 ),
                 SizedBox(height: 30.0),
+                // Text(SharedPrefs().refreshToken),
+                // Text(SharedPrefs().initPath.toString()),
+                // Text(SharedPrefs().isFirstRun.toString()),
+                // Text(SharedPrefs().logged.toString()),
+                // Text(SharedPrefs().authToken),
               ],
             ),
           ),

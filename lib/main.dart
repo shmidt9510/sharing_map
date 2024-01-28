@@ -25,6 +25,7 @@ void main() async {
   final UserController _usersController = Get.put(UserController());
   String _initPath = await _getInitPath(_usersController);
   debugPrint("MY PATH IS $_initPath");
+  SharedPrefs().initPath = _initPath;
   WidgetsFlutterBinding.ensureInitialized();
   await _itemsController.fetchItems();
   await _usersController.CheckAuthorization();
@@ -69,7 +70,7 @@ class _AppState extends State<App> {
 }
 
 Future<String> _getInitPath(UserController _usersController) async {
-  return SMPath.home;
+  // return SMPath.home;
   if (SharedPrefs().isFirstRun) {
     SharedPrefs().isFirstRun = false;
     return SMPath.onboard;

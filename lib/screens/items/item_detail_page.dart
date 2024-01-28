@@ -29,20 +29,7 @@ class ItemDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(),
-        // floatingActionButton: Padding(
-        //   padding: const EdgeInsets.only(bottom: 10.0),
-        //   child: FloatingActionButton.extended(
-        //     onPressed: () {
-        //       // Add your onPressed code here!
-        //     },
-        //     label: const Text('Связаться'),
-        //     icon: const Icon(Icons.messenger_outline_outlined),
-        //     backgroundColor: Colors.green,
-        //   ),
-        // ),
-        // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         body: ListView(
-          // padding: const EdgeInsets.all(8),
           children: [
             Container(
               decoration: BoxDecoration(
@@ -246,33 +233,24 @@ Widget GetUserWidget(BuildContext context, Item item) {
           },
         ),
         Spacer(),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Icon(FontAwesomeIcons.phone),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Icon(FontAwesomeIcons.telegram),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Icon(FontAwesomeIcons.whatsapp),
-        ),
-        // _isLogged
-        //     ? FutureBuilder(
-        //         future: _userController.getUserContact(item.userId ?? ""),
-        //         builder: (context, snapshot) {
-        //           if (snapshot.hasError) {
-        //             return Container();
-        //           }
-        //           if (!snapshot.hasData) {
-        //             return Center(
-        //                 child: CircularProgressIndicator.adaptive());
-        //           }
-        //           return GetUserContactWidget(
-        //               snapshot.data as List<UserContact>);
-        //         })
-        //     : Container()
+        SizedBox(
+          height: 50,
+          child: _isLogged
+              ? FutureBuilder(
+                  future: _userController.getUserContact(item.userId ?? ""),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return Container();
+                    }
+                    if (!snapshot.hasData) {
+                      return Center(
+                          child: CircularProgressIndicator.adaptive());
+                    }
+                    return GetUserContactWidget(
+                        snapshot.data as List<UserContact>);
+                  })
+              : Container(),
+        )
       ],
     ),
   );
@@ -281,18 +259,11 @@ Widget GetUserWidget(BuildContext context, Item item) {
 Widget GetUserContactWidget(List<UserContact> contacts) {
   return ListView.builder(
       shrinkWrap: true,
-      scrollDirection: Axis.vertical,
+      scrollDirection: Axis.horizontal,
       itemCount: contacts.length,
       itemBuilder: (BuildContext context, int index) {
         return contacts[index].contact.isNotEmpty
-            ? Row(children: [
-                GetContactTypeWidget(contacts[index]),
-                Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                    child: SelectableText(contacts[index]
-                        .contact) //Text(contacts[index].contact),
-                    )
-              ])
+            ? GetContactTypeWidget(contacts[index])
             : Container();
       });
 
@@ -318,15 +289,18 @@ Widget GetUserContactWidget(List<UserContact> contacts) {
 }
 
 Widget GetContactTypeWidget(UserContact contact) {
-  return IconButton(
-    icon: Icon(contact.contactIcon),
-    onPressed: () async {
-      final url = Uri.parse(contact.getUri + contact.contact);
-      if (await canLaunchUrl(url)) {
-        await launchUrl(url);
-      } else {
-        print('Unable to launch $url');
-      }
-    },
-  );
+  bool showContact = contact.contact.isNotEmpty;
+  return showContact
+      ? IconButton(
+          icon: Icon(contact.contactIcon),
+          onPressed: () async {
+            final url = Uri.parse(contact.getUri + contact.contact);
+            if (await canLaunchUrl(url)) {
+              await launchUrl(url);
+            } else {
+              print('Unable to launch $url');
+            }
+          },
+        )
+      : Container();
 }

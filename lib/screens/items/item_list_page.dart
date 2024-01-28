@@ -35,7 +35,7 @@ class _ItemListPageState extends State<ItemListPage> {
 
   @override
   Widget build(BuildContext context) {
-    double height = context.height * 0.30;
+    double height = context.height * 0.22;
     double padding = 10.0;
     return SafeArea(
       child: Scaffold(

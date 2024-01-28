@@ -52,9 +52,9 @@ class _UserProfilePageState extends State<UserProfilePage> {
                             Flexible(
                                 flex: 1,
                                 child: ClipOval(
-                                    child: Container(
-                                        width: 200,
-                                        height: 200,
+                                    child: SizedBox.fromSize(
+                                        size: Size.fromRadius(
+                                            context.width * 0.15),
                                         child: _user.buildImage(
                                             fit: BoxFit.cover)))),
                             Flexible(

@@ -60,6 +60,12 @@ class SharedPrefs {
   set resetPasswordToken(String value) {
     _sharedPrefs.setString(keyResetPasswordToken, value);
   }
+
+  String get initPath => _sharedPrefs.getString("init_pathp") ?? "";
+
+  set initPath(String value) {
+    _sharedPrefs.setString("init_path", value);
+  }
 }
 // String get isLogged => _sharedPrefs!.getString(keyUsername) ?? "";
 
