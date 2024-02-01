@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sharing_map/controllers/user_controller.dart';
 import 'package:sharing_map/models/contact.dart';
+import 'package:sharing_map/theme.dart';
+import 'package:sharing_map/utils/colors.dart';
 
 class EditableContactTextField extends StatefulWidget {
   UserContact userContact;
@@ -53,10 +55,16 @@ class _EditableContactTextFieldState extends State<EditableContactTextField> {
                 child: TextFormField(
                   controller: _controller,
                   enabled: _isEditing,
+                  style: getMediumTextStyle(),
                   decoration: InputDecoration(
-                    hintText: widget.userContact.getHintString,
-                    border: OutlineInputBorder(),
-                  ),
+                      hintText: widget.userContact.getHintString,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: MColors.secondaryGreen),
+                        borderRadius: BorderRadius.circular(10),
+                      )),
                 ),
               ),
             ),
@@ -64,7 +72,7 @@ class _EditableContactTextFieldState extends State<EditableContactTextField> {
           IconButton(
             icon: Icon(
               _isEditing ? Icons.save : Icons.edit,
-              size: 12.0,
+              size: 16.0,
             ),
             onPressed: _toggleEditing,
           ),

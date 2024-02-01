@@ -113,7 +113,6 @@ class _ItemsListViewSelfProfileState extends State<ItemsListViewSelfProfile> {
 
   @override
   void dispose() {
-    _pagingController.dispose();
     super.dispose();
   }
 

@@ -98,7 +98,6 @@ class _ItemsListViewOtherProfileState extends State<ItemsListViewOtherProfile> {
 
   @override
   void dispose() {
-    _pagingController.dispose();
     super.dispose();
   }
 

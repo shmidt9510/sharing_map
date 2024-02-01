@@ -94,7 +94,6 @@ class _ItemsListViewState extends State<ItemsListView> {
 
   @override
   void dispose() {
-    _itemsController.pagingController.dispose();
     super.dispose();
   }
 }

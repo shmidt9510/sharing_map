@@ -124,6 +124,7 @@ class _ItemListPageState extends State<ItemListPage> {
             ),
           ),
           onPressed: () async {
+            _itemsController.pagingController.refresh();
             setState(() {
               _chosenFilter = category.id ?? 1;
             });

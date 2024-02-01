@@ -13,6 +13,12 @@ class ItemController extends GetxController {
     items.clear();
   }
 
+  @override
+  void dispose() {
+    pagingController.dispose();
+    super.dispose();
+  }
+
   Future<List<Item>> fetchItems(
       {int pageSize = 10,
       int page = 0,

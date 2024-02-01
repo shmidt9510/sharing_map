@@ -8,6 +8,7 @@ import 'package:sharing_map/models/contact.dart';
 import 'package:sharing_map/models/user.dart';
 import 'package:sharing_map/path.dart';
 import 'package:sharing_map/screens/items/item_widgets_self_profile.dart';
+import 'package:sharing_map/theme.dart';
 import 'package:sharing_map/user/page/editable_contact_text_field.dart';
 import 'package:sharing_map/utils/colors.dart';
 import 'package:sharing_map/utils/shared.dart';
@@ -39,7 +40,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
       appBar: AppBar(
         leading: BackButton(
-          color: Colors.green,
+          color: MColors.secondaryGreen,
           onPressed: () => GoRouter.of(context).go(SMPath.home),
         ),
         backgroundColor: Colors.transparent,
@@ -72,62 +73,59 @@ class _ProfilePageState extends State<ProfilePage> {
             _userNameController.text = _user.username;
             return SingleChildScrollView(
               physics: AlwaysScrollableScrollPhysics(),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: context.height / 5,
-                      child: Padding(
-                        padding: EdgeInsetsDirectional.only(start: 20, end: 20),
-                        child: Row(
-                          children: [
-                            Flexible(
-                                flex: 2,
-                                child: Stack(children: [
-                                  ClipOval(
-                                      child: SizedBox.fromSize(
-                                          size: Size.fromRadius(48),
-                                          child: _user.buildImage(
-                                              fit: BoxFit.cover))),
-                                  Positioned(
-                                    top: -5,
-                                    right: -5,
-                                    child: IconButton(
-                                        onPressed: () async {
-                                          selectImage();
-                                        },
-                                        icon: Icon(
-                                          Icons.edit,
-                                          color: MColors.green,
-                                        )),
-                                  )
-                                ])),
-                            Spacer(flex: 1),
-                            Flexible(
-                              flex: 4,
-                              child: Center(
-                                child: Column(
-                                  children: [
-                                    buildName(_user),
-                                    // NumbersWidget(_user!),
-                                  ],
-                                ),
-                              ),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsetsDirectional.only(start: 20, end: 20),
+                    child: Row(
+                      children: [
+                        Flexible(
+                            flex: 2,
+                            child: Stack(children: [
+                              ClipOval(
+                                  child: SizedBox.fromSize(
+                                      size: Size.fromRadius(48),
+                                      child:
+                                          _user.buildImage(fit: BoxFit.cover))),
+                              Positioned(
+                                top: -5,
+                                right: -5,
+                                child: IconButton(
+                                    onPressed: () async {
+                                      selectImage();
+                                    },
+                                    icon: Icon(
+                                      Icons.edit,
+                                      color: MColors.green,
+                                    )),
+                              )
+                            ])),
+                        Spacer(flex: 1),
+                        Flexible(
+                          flex: 4,
+                          child: Center(
+                            child: Column(
+                              children: [
+                                buildName(_user),
+                                // NumbersWidget(_user!),
+                              ],
                             ),
-                          ],
+                          ),
                         ),
-                      ),
+                      ],
                     ),
-                    const SizedBox(height: 10),
-                    buildAbout(_user),
-                    buildContacts(context, _userController),
-                    const SizedBox(height: 48),
-                    ItemsListViewSelfProfile(
-                      _user.id,
-                    )
-                  ],
-                ),
+                  ),
+                  const SizedBox(height: 10),
+                  buildAbout(_user),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20.0),
+                    child: buildContacts(context, _userController),
+                  ),
+                  const SizedBox(height: 48),
+                  ItemsListViewSelfProfile(
+                    _user.id,
+                  )
+                ],
               ),
             );
           }),
@@ -214,7 +212,7 @@ class _ProfilePageState extends State<ProfilePage> {
           children: [
             Text(
               'О себе',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              style: getBigTextStyle(),
             ),
             const SizedBox(height: 8),
             EditableTextField(

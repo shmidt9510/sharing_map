@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sharing_map/theme.dart';
+import 'package:sharing_map/utils/colors.dart';
 
 class EditableTextField extends StatefulWidget {
   final String hint;
@@ -43,19 +45,25 @@ class _EditableTextFieldState extends State<EditableTextField> {
                 // expands: true,
                 keyboardType: TextInputType.multiline,
                 controller: widget.controller,
+                style: getMediumTextStyle(),
                 enabled: _isEditing,
                 decoration: InputDecoration(
-                  hintMaxLines: 5,
-                  hintText: widget.hint,
-                  border: OutlineInputBorder(),
-                ),
+                    hintMaxLines: 5,
+                    hintText: widget.hint,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: MColors.secondaryGreen),
+                      borderRadius: BorderRadius.circular(10),
+                    )),
               ),
             ),
           ),
           IconButton(
             icon: Icon(
               _isEditing ? Icons.save : Icons.edit,
-              size: 12.0,
+              size: 16.0,
             ),
             onPressed: _toggleEditing,
           ),
