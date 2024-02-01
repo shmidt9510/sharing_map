@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sharing_map/controllers/user_controller.dart';
 import 'package:sharing_map/models/user.dart';
-import 'package:sharing_map/path.dart';
-import 'package:sharing_map/utils/shared.dart';
-import 'package:sharing_map/screens/items/item_widgets.dart';
+import 'package:sharing_map/screens/items/item_widgets_other_profile.dart';
 
 class UserProfilePage extends StatefulWidget {
   final String userId;
@@ -75,7 +73,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                     const SizedBox(height: 10),
                     buildAbout(_user),
                     const SizedBox(height: 48),
-                    ItemsListView(userId: _user.id)
+                    ItemsListViewOtherProfile(_user.id)
                   ],
                 ),
               ),

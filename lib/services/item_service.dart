@@ -65,7 +65,8 @@ class ItemWebService {
     }
     if (item.downloadableImages != null) {
       PhotoWebService service = PhotoWebService();
-      service.addPhotos(item.downloadableImages!, response.body.toString());
+      await service.addPhotos(
+          item.downloadableImages!, response.body.toString());
     }
     return response.body.toString();
   }

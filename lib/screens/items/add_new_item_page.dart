@@ -191,9 +191,7 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
                               downloadableImages: imageFileList);
 
                           if (await _itemsController.addItem(item)) {
-                            Future.delayed(Duration(milliseconds: 100));
                             clearData();
-                            _itemsController.dropItems();
                             await _itemsController.fetchItems();
                             setState(() {});
                             GoRouter.of(context).go(SMPath.home);

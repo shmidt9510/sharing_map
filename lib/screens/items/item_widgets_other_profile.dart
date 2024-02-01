@@ -9,44 +9,48 @@ import 'package:sharing_map/widgets/item_block.dart';
 import 'package:sharing_map/controllers/item_controller.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
-class ItemsListView extends StatefulWidget {
-  final int? itemFilter;
-  const ItemsListView({
+class ItemsListViewOtherProfile extends StatefulWidget {
+  final String userId;
+  const ItemsListViewOtherProfile(
+    this.userId, {
     Key? key,
-    this.itemFilter = null,
   }) : super(key: key);
 
   @override
-  _ItemsListViewState createState() => _ItemsListViewState();
+  _ItemsListViewOtherProfileState createState() =>
+      _ItemsListViewOtherProfileState();
 }
 
-class _ItemsListViewState extends State<ItemsListView> {
+class _ItemsListViewOtherProfileState extends State<ItemsListViewOtherProfile> {
   static const _pageSize = 20;
 
   ItemController _itemsController = Get.find<ItemController>();
 
+  final PagingController<int, Item> _pagingController =
+      PagingController(firstPageKey: 0);
+
   @override
   void initState() {
     super.initState();
-    _itemsController.pagingController.addPageRequestListener((pageKey) {
-      _fetchPage(pageKey, widget.itemFilter ?? 0);
+    _pagingController.addPageRequestListener((pageKey) {
+      _fetchPage(pageKey);
     });
   }
 
-  Future<void> _fetchPage(int pageKey, int itemFilter) async {
+  Future<void> _fetchPage(int pageKey) async {
     try {
       final newItems = await _itemsController.fetchItems(
-          page: pageKey, pageSize: _pageSize, itemFilter: itemFilter);
+          page: pageKey, pageSize: _pageSize, userId: widget.userId);
 
       final isLastPage = newItems.length < _pageSize;
       if (isLastPage) {
-        _itemsController.pagingController.appendLastPage(newItems);
+        _pagingController.appendLastPage(newItems);
       } else {
         final nextPageKey = pageKey + 1;
-        _itemsController.pagingController.appendPage(newItems, nextPageKey);
+        _pagingController.appendPage(newItems, nextPageKey);
       }
     } catch (error) {
-      _itemsController.pagingController.error = error;
+      _pagingController.error = error;
     }
   }
 
@@ -55,7 +59,7 @@ class _ItemsListViewState extends State<ItemsListView> {
         physics: NeverScrollableScrollPhysics(),
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
-        pagingController: _itemsController.pagingController,
+        pagingController: _pagingController,
         builderDelegate: PagedChildBuilderDelegate<Item>(
           firstPageErrorIndicatorBuilder: (_) => Center(
             child: Column(children: [
@@ -94,7 +98,44 @@ class _ItemsListViewState extends State<ItemsListView> {
 
   @override
   void dispose() {
-    _itemsController.pagingController.dispose();
+    _pagingController.dispose();
     super.dispose();
+  }
+
+  Future<bool> _deleteItemDialogBuilder(
+      BuildContext context, String itemId) async {
+    final ItemController _itemsController = Get.find<ItemController>();
+    bool _result = false;
+    await showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Вы точно хотите удалить объявление?'),
+          actions: [
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: Theme.of(context).textTheme.labelLarge,
+              ),
+              child: const Text('Да'),
+              onPressed: () {
+                _itemsController.deleteItem(itemId);
+                _result = true;
+                Navigator.of(context).maybePop();
+              },
+            ),
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: Theme.of(context).textTheme.labelLarge,
+              ),
+              child: const Text('Нет'),
+              onPressed: () {
+                Navigator.of(context).maybePop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+    return _result;
   }
 }

@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:jwt_decoder/jwt_decoder.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sharing_map/controllers/user_controller.dart';
 import 'package:sharing_map/router.dart';
 import 'package:sharing_map/controllers/item_controller.dart';
 import 'package:sharing_map/utils/shared.dart';
-// import 'screens/getstarted_screens/intro_screen.dart';
-// import 'screens/home_screens/home_test.dart';
 import 'package:sharing_map/controllers/common_controller.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 

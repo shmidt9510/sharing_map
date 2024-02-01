@@ -1,9 +1,13 @@
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:sharing_map/models/item.dart';
 import 'package:sharing_map/services/item_service.dart';
 import 'package:get/get.dart';
 
 class ItemController extends GetxController {
   var items = <Item>[].obs;
+
+  final PagingController<int, Item> pagingController =
+      PagingController(firstPageKey: 0);
 
   void dropItems() {
     items.clear();
@@ -42,6 +46,7 @@ class ItemController extends GetxController {
       if (response.isEmpty) {
         return false;
       }
+      pagingController.refresh();
       return true;
     } catch (e) {
       return false;
@@ -50,7 +55,9 @@ class ItemController extends GetxController {
 
   Future<bool> deleteItem(String itemId) async {
     try {
-      return await ItemWebService.deleteItem(itemId);
+      var result = await ItemWebService.deleteItem(itemId);
+      pagingController.refresh();
+      return result;
     } catch (e) {
       return false;
     }

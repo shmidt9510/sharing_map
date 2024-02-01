@@ -7,6 +7,7 @@ import 'package:sharing_map/controllers/user_controller.dart';
 import 'package:sharing_map/models/contact.dart';
 import 'package:sharing_map/models/user.dart';
 import 'package:sharing_map/path.dart';
+import 'package:sharing_map/screens/items/item_widgets_self_profile.dart';
 import 'package:sharing_map/user/page/editable_contact_text_field.dart';
 import 'package:sharing_map/utils/colors.dart';
 import 'package:sharing_map/utils/shared.dart';
@@ -122,9 +123,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     buildAbout(_user),
                     buildContacts(context, _userController),
                     const SizedBox(height: 48),
-                    ItemsListView(
-                      userId: _user.id,
-                      addDeleteButton: true,
+                    ItemsListViewSelfProfile(
+                      _user.id,
                     )
                   ],
                 ),

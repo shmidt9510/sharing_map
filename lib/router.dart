@@ -4,6 +4,7 @@ import 'package:sharing_map/scaffold_with_nav.dart';
 import 'package:sharing_map/screens/getstarted/get_start.dart';
 import 'package:sharing_map/screens/items/add_new_item_page.dart';
 import 'package:sharing_map/screens/getstarted/intro_screen.dart';
+import 'package:sharing_map/screens/items/item_detail_page.dart';
 import 'package:sharing_map/screens/items/item_list_page.dart';
 import 'package:sharing_map/screens/register/registration_code.dart';
 import 'package:sharing_map/screens/register/registration_screen.dart';
