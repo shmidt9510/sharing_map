@@ -10,10 +10,10 @@ import 'package:sharing_map/controllers/item_controller.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class ItemsListView extends StatefulWidget {
-  final int? itemFilter;
+  final int itemFilter;
   const ItemsListView({
     Key? key,
-    this.itemFilter = null,
+    this.itemFilter = 0,
   }) : super(key: key);
 
   @override
@@ -28,8 +28,9 @@ class _ItemsListViewState extends State<ItemsListView> {
   @override
   void initState() {
     super.initState();
-    _itemsController.pagingController.addPageRequestListener((pageKey) {
-      _fetchPage(pageKey, widget.itemFilter ?? 0);
+    _itemsController.pagingControllers[widget.itemFilter]
+        ?.addPageRequestListener((pageKey) {
+      _fetchPage(pageKey, widget.itemFilter);
     });
   }
 
@@ -40,13 +41,15 @@ class _ItemsListViewState extends State<ItemsListView> {
 
       final isLastPage = newItems.length < _pageSize;
       if (isLastPage) {
-        _itemsController.pagingController.appendLastPage(newItems);
+        _itemsController.pagingControllers[widget.itemFilter]
+            ?.appendLastPage(newItems);
       } else {
         final nextPageKey = pageKey + 1;
-        _itemsController.pagingController.appendPage(newItems, nextPageKey);
+        _itemsController.pagingControllers[widget.itemFilter]
+            ?.appendPage(newItems, nextPageKey);
       }
     } catch (error) {
-      _itemsController.pagingController.error = error;
+      _itemsController.pagingControllers[widget.itemFilter]?.error = error;
     }
   }
 
@@ -55,7 +58,9 @@ class _ItemsListViewState extends State<ItemsListView> {
         physics: NeverScrollableScrollPhysics(),
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
-        pagingController: _itemsController.pagingController,
+        pagingController:
+            _itemsController.pagingControllers[widget.itemFilter] ??
+                PagingController(firstPageKey: 0),
         builderDelegate: PagedChildBuilderDelegate<Item>(
           firstPageErrorIndicatorBuilder: (_) => Center(
             child: Column(children: [
@@ -91,9 +96,4 @@ class _ItemsListViewState extends State<ItemsListView> {
           height: 10,
         ),
       );
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
 }

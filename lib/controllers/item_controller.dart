@@ -1,4 +1,5 @@
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:sharing_map/controllers/common_controller.dart';
 import 'package:sharing_map/models/item.dart';
 import 'package:sharing_map/services/item_service.dart';
 import 'package:get/get.dart';
@@ -6,16 +7,20 @@ import 'package:get/get.dart';
 class ItemController extends GetxController {
   var items = <Item>[].obs;
 
-  final PagingController<int, Item> pagingController =
-      PagingController(firstPageKey: 0);
+  final Map<int, PagingController<int, Item>> pagingControllers = {};
 
-  void dropItems() {
-    items.clear();
+  @override
+  void onInit() async {
+    super.onInit();
+    final categories = Get.find<CommonController>().categories;
+    for (int i = 0; i < categories.length; i++) {
+      pagingControllers[categories[i].id] = PagingController(firstPageKey: 0);
+    }
   }
 
   @override
   void dispose() {
-    pagingController.dispose();
+    pagingControllers.forEach((k, v) => v.dispose());
     super.dispose();
   }
 
@@ -52,7 +57,7 @@ class ItemController extends GetxController {
       if (response.isEmpty) {
         return false;
       }
-      pagingController.refresh();
+      pagingControllers.forEach((key, value) => value.refresh());
       return true;
     } catch (e) {
       return false;
@@ -62,7 +67,7 @@ class ItemController extends GetxController {
   Future<bool> deleteItem(String itemId) async {
     try {
       var result = await ItemWebService.deleteItem(itemId);
-      pagingController.refresh();
+      pagingControllers.forEach((key, value) => value.refresh());
       return result;
     } catch (e) {
       return false;

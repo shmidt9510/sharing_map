@@ -1,3 +1,4 @@
 {
-    "cmake.sourceDirectory": "D:/sharingMap/sharing_map/shaaring_map/windows"
+    "cmake.sourceDirectory": "D:/sharingMap/sharing_map/shaaring_map/windows",
+    "java.configuration.updateBuildConfiguration": "interactive"
 }

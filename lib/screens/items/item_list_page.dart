@@ -124,9 +124,8 @@ class _ItemListPageState extends State<ItemListPage> {
             ),
           ),
           onPressed: () async {
-            _itemsController.pagingController.refresh();
             setState(() {
-              _chosenFilter = category.id ?? 1;
+              _chosenFilter = category.id;
             });
           },
           child: Column(
@@ -157,7 +156,7 @@ class _ItemListPageState extends State<ItemListPage> {
                     Text(
                       maxLines: 2,
                       style: getSmallTextStyle(),
-                      category.description ?? "_",
+                      category.description,
                       textAlign: TextAlign.center,
                     ),
                   ],

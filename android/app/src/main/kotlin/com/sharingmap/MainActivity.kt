@@ -1,4 +1,4 @@
-package com.example.shaaring_map
+package com.sharingmap
 
 import io.flutter.embedding.android.FlutterActivity
 

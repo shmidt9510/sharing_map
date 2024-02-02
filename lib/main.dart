@@ -44,11 +44,10 @@ class _AppState extends State<App> {
 
   @override
   void initState() {
+    super.initState();
     _itemsController.onInit();
     _usersController.onInit();
     _commonController.onInit();
-    _commonController.getLocations(1);
-    super.initState();
   }
 
   @override
