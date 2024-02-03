@@ -1,6 +1,6 @@
 {
-    "name": "shaaring_map",
-    "short_name": "shaaring_map",
+    "name": "sharing_map",
+    "short_name": "sharing_map",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#hexcode",

@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "shaaring_map" "\0"
+            VALUE "FileDescription", "sharing_map" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "shaaring_map" "\0"
+            VALUE "InternalName", "sharing_map" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2023 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "shaaring_map.exe" "\0"
-            VALUE "ProductName", "shaaring_map" "\0"
+            VALUE "OriginalFilename", "sharing_map.exe" "\0"
+            VALUE "ProductName", "sharing_map" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

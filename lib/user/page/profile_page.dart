@@ -15,7 +15,6 @@ import 'package:sharing_map/widgets/allWidgets.dart';
 import 'package:sharing_map/widgets/image.dart';
 import 'package:sharing_map/widgets/editable_text.dart';
 
-// D:\sharingMap\sharing_map\shaaring_map\lib\widgets\editable_text.dart
 class ProfilePage extends StatefulWidget {
   @override
   _ProfilePageState createState() => _ProfilePageState();

@@ -1,4 +1,4 @@
-# shaaring_map
+# sharing_map
 
 A new Flutter project.
 
