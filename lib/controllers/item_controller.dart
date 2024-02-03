@@ -42,6 +42,14 @@ class ItemController extends GetxController {
     }
   }
 
+  Future<Item> GetItem(String itemId) async {
+    try {
+      return await ItemWebService.getItem(itemId);
+    } catch (e) {
+      return Future.error("no_data");
+    }
+  }
+
   Future<RxList<Item>> waitItem() async {
     await fetchItems();
     return items;

@@ -81,9 +81,13 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
                       ),
                       getTextField(titleController, 'Что вы хотите отдать',
                           (String? value) {
-                        return (value?.length ?? 0) > 2
-                            ? null
-                            : "Пожалуйста введите название";
+                        if ((value?.length ?? 0) < 2) {
+                          return "Пожалуйста введите больше символов";
+                        }
+                        if ((value?.startsWith(" ") ?? false)) {
+                          return "Название не должно начинаться с пробела";
+                        }
+                        return null;
                       }),
                       const SizedBox(
                         height: 10,
@@ -99,13 +103,13 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
                       ),
                       DropdownSearch<ItemCategory>.multiSelection(
                         validator: (value) =>
-                            value == null ? 'field required' : null,
+                            value == null ? 'Выберите категорию' : null,
                         onChanged: (List<ItemCategory>? data) {
                           setState(() {
                             _chosenCategories = data ?? [];
                           });
                         },
-                        itemAsString: (ItemCategory u) => u.description ?? "",
+                        itemAsString: (ItemCategory u) => u.description,
                         filterFn: ((item, filter) {
                           return item.id != 0;
                         }),
@@ -175,6 +179,16 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
                         child: getButton(context, "Опубликовать", () async {
                           if (!(_formKey.currentState?.validate() ?? false)) {
                             showErrorScaffold(context, "Не получилось :(");
+                            return;
+                          }
+                          if (imageFileList?.isEmpty ?? false) {
+                            showErrorScaffold(
+                                context, "Добавьте пожалуйста фото");
+                            return;
+                          }
+                          if ((imageFileList?.length ?? 0) > 5) {
+                            showErrorScaffold(
+                                context, "Очень много фотографий");
                             return;
                           }
                           var item = Item(
@@ -270,7 +284,7 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
                                   },
                                   child: Icon(
                                     Icons.delete,
-                                    color: Colors.red,
+                                    color: MColors.red1,
                                   ),
                                 ),
                               ),

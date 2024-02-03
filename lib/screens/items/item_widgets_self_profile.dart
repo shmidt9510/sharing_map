@@ -91,8 +91,7 @@ class _ItemsListViewSelfProfileState extends State<ItemsListViewSelfProfile> {
                       right: 3,
                       child: IconButton(
                           onPressed: () async {
-                            await _deleteItemDialogBuilder(
-                                context, item.id ?? "");
+                            await _deleteItemDialogBuilder(context, item.id);
                             setState(() {
                               _pagingController.refresh();
                             });

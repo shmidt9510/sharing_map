@@ -156,3 +156,14 @@ void showErrorScaffold(BuildContext context, String errorMessage) {
   );
   ScaffoldMessenger.of(context).showSnackBar(snackBar);
 }
+
+void showSnackBar(BuildContext context, String message) {
+  SnackBar snackBar = SnackBar(
+    content: Text(message),
+    action: SnackBarAction(
+      label: 'Закрыть',
+      onPressed: () {},
+    ),
+  );
+  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+}

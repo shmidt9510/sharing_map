@@ -35,6 +35,10 @@ class _RouterStartState extends State<RouterStart> {
       GlobalKey<NavigatorState>(debugLabel: 'other');
   GlobalKey<NavigatorState> _thirdKey =
       GlobalKey<NavigatorState>(debugLabel: 'other_other');
+  GlobalKey<NavigatorState> _userDetailsPage =
+      GlobalKey<NavigatorState>(debugLabel: 'user_details_page');
+  GlobalKey<NavigatorState> _itemDetailsPage =
+      GlobalKey<NavigatorState>(debugLabel: 'item_details_page');
 
   @override
   Widget build(BuildContext context) {
@@ -125,7 +129,7 @@ class _RouterStartState extends State<RouterStart> {
                               return UserProfilePage(userId: userId ?? "");
                             }),
                         GoRoute(
-                            path: 'item/:userId',
+                            path: 'item/:itemId',
                             builder:
                                 (BuildContext context, GoRouterState state) {
                               final itemId = state.pathParameters['itemId'];

@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:sharing_map/controllers/user_controller.dart';
 import 'package:sharing_map/path.dart';
 import 'package:sharing_map/utils/colors.dart';
+import 'package:sharing_map/widgets/allWidgets.dart';
 // import 'package:sharing_map/widgets/textInputWidget.dart';
 
 class ResetPasswordMailScreen extends StatefulWidget {
@@ -44,75 +45,25 @@ class _ResetPasswordMailState extends State<ResetPasswordMailScreen> {
           child: Column(
             children: [
               const SizedBox(height: 50),
-              TextFormField(
-                focusNode: null,
-                controller: _controllerUsername,
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
-                  floatingLabelBehavior: FloatingLabelBehavior.never,
-                  fillColor: Colors.white,
-                  filled: true,
-                  labelText: "Введите свой email",
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: MColors.secondaryGreen),
-                      borderRadius: BorderRadius.circular(10)),
-                ),
-                // onEditingComplete: () => _focusNodePassword.requestFocus(),
-                validator: (String? value) {
-                  if (!EmailValidator.validate(value ?? "")) {
-                    return "Пожалуйста введите валидную почту";
-                  }
-                  return null;
-                },
-              ),
+              getTextField(_controllerUsername, "Введите свой email", (value) {
+                if (!EmailValidator.validate(value ?? "")) {
+                  return "Пожалуйста введите валидную почту";
+                }
+                return null;
+              }, keyboardType: TextInputType.emailAddress),
               const SizedBox(height: 20),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: MColors.secondaryGreen,
-                  minimumSize: const Size.fromHeight(50),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                ),
-                onPressed: () async {
-                  if (_formKey.currentState?.validate() ?? false) {
-                    if (await _userController.ResetPasswordStart(
-                        _controllerUsername.text)) {
-                      var snackBar = SnackBar(
-                        content: const Text('Отправили вам код в письме)'),
-                        action: SnackBarAction(
-                          label: 'Закрыть',
-                          onPressed: () {},
-                        ),
-                      );
-                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                      GoRouter.of(context)
-                          .go(SMPath.start + "/" + SMPath.forgetPasswordCode);
-                    } else {
-                      var snackBar = SnackBar(
-                        content: const Text('Не получилось :('),
-                        action: SnackBarAction(
-                          label: 'Закрыть',
-                          onPressed: () {},
-                        ),
-                      );
-                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                    }
+              getButton(context, 'Поменять', () async {
+                if (_formKey.currentState?.validate() ?? false) {
+                  if (await _userController.ResetPasswordStart(
+                      _controllerUsername.text)) {
+                    showSnackBar(context, 'Отправили вам код в письме');
+                    GoRouter.of(context)
+                        .go(SMPath.start + "/" + SMPath.forgetPasswordCode);
+                  } else {
+                    showSnackBar(context, 'Не получилось :(');
                   }
-                },
-                child: Text(
-                  "Поменять",
-                  style: TextStyle(color: MColors.black),
-                ),
-              ),
+                }
+              })
             ],
           ),
         ),

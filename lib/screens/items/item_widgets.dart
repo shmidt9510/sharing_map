@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
@@ -82,10 +81,9 @@ class _ItemsListViewState extends State<ItemsListView> {
           animateTransitions: true,
           itemBuilder: (context, item, index) => InkWell(
               onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ItemDetailPage(item.id)));
+                GoRouter.of(context).go(
+                  SMPath.home + "/item/${item.id}",
+                );
               },
               child: Padding(
                 padding: const EdgeInsets.only(left: 10, right: 10, top: 5),

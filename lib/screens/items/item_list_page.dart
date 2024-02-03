@@ -22,7 +22,7 @@ class _ItemListPageState extends State<ItemListPage> {
   bool isLoading = false;
   CommonController _commonController = Get.find<CommonController>();
   ItemController _itemsController = Get.find<ItemController>();
-  ScrollController _scrollController = ScrollController();
+
   int _chosenFilter = 0;
   @override
   void initState() {

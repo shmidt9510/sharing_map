@@ -48,6 +48,21 @@ class ItemWebService {
     }
   }
 
+  static Future<Item> getItem(String itemId) async {
+    String uri = "/items/$itemId";
+    var response = await client.get(Uri.https(Constants.BACK_URL, uri));
+
+    if (response.statusCode != 200) {
+      return Future.error("failed_get_data");
+    }
+    var jsonData = jsonDecode(utf8.decode(response.bodyBytes));
+    try {
+      return Item.fromJson(jsonData);
+    } catch (e) {
+      return Future.error("failed_parse_content");
+    }
+  }
+
   static Future<String> addItem(Item item) async {
     var uri = "/items/create";
     debugPrint(item.toJson().toString());

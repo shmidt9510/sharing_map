@@ -310,4 +310,17 @@ class UserWebService {
     }
     return true;
   }
+
+  static Future<bool> deleteMyself() async {
+    try {
+      var response =
+          await client.delete(Uri.https(Constants.BACK_URL, "/users/delete"));
+      if (response.statusCode != 200) {
+        return false;
+      }
+      return true;
+    } catch (e) {
+      return Future.error(e.toString());
+    }
+  }
 }

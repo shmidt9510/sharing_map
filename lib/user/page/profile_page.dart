@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
@@ -12,7 +11,6 @@ import 'package:sharing_map/theme.dart';
 import 'package:sharing_map/user/page/editable_contact_text_field.dart';
 import 'package:sharing_map/utils/colors.dart';
 import 'package:sharing_map/utils/shared.dart';
-import 'package:sharing_map/screens/items/item_widgets.dart';
 import 'package:sharing_map/widgets/allWidgets.dart';
 import 'package:sharing_map/widgets/image.dart';
 import 'package:sharing_map/widgets/editable_text.dart';

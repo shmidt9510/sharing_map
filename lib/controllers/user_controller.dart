@@ -125,10 +125,13 @@ class UserController extends GetxController {
   }
 
   Future<bool> DeleteMyself() async {
+    bool result = await UserWebService.deleteMyself();
+    if (!result) {
+      return Future.error("failed_deleting_user");
+    }
     await SharedPrefs().clear();
     SharedPrefs().isFirstRun = false;
     return true;
-    // return await UserWebService.getUser(SharedPrefs().userId);
   }
 
   Future<bool> ResetPasswordStart(String email) async {

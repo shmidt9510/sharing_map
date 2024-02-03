@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:sharing_map/controllers/common_controller.dart';
 import 'package:sharing_map/controllers/item_controller.dart';
@@ -11,15 +12,17 @@ import 'package:sharing_map/models/contact.dart';
 import 'package:sharing_map/models/item.dart';
 import 'package:sharing_map/models/location.dart';
 import 'package:sharing_map/models/user.dart';
+import 'package:sharing_map/path.dart';
 import 'package:sharing_map/theme.dart';
 import 'package:sharing_map/user/page/user_profile_page.dart';
+import 'package:sharing_map/utils/colors.dart';
 import 'package:sharing_map/utils/shared.dart';
+import 'package:sharing_map/widgets/allWidgets.dart';
 import 'package:sharing_map/widgets/image.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ItemDetailPage extends StatelessWidget {
   final String itemId;
-  late Item item;
   final ItemController _itemController = Get.find<ItemController>();
   final CommonController _commonController = Get.find<CommonController>();
 
@@ -29,52 +32,61 @@ class ItemDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(),
-        body: ListView(
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 5,
-                    blurRadius: 7,
-                    offset: Offset(0, 3), // changes position of shadow
+        body: FutureBuilder(
+            future: _itemController.GetItem(itemId),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return Center(child: CircularProgressIndicator.adaptive());
+              }
+              Item item = snapshot.data as Item;
+              return ListView(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 5,
+                          blurRadius: 7,
+                          offset: Offset(0, 3), // changes position of shadow
+                        ),
+                      ],
+                    ),
+                    child: GetSlider(item.images, context),
                   ),
+                  Padding(
+                      padding: const EdgeInsets.only(
+                          left: 23.0, top: 20, bottom: 0, right: 23),
+                      child: GetUserWidget(context, item)),
+                  Container(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 23, vertical: 10),
+                      child: Text(
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
+                          item.name,
+                          style: getBigTextStyle())),
+                  Container(
+                      padding: EdgeInsets.symmetric(horizontal: 23),
+                      child: Text(
+                        item.desc,
+                        style: getMediumTextStyle(),
+                      )),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  GetLocationsWidget(context, item, _commonController),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 23),
+                    child: Text(
+                      DateFormat('dd.MM.yyyy')
+                          .format(item.creationDate ?? DateTime.now()),
+                      style: getHintTextStyle(),
+                    ),
+                  )
                 ],
-              ),
-              child: GetSlider(item.images, context),
-            ),
-            Padding(
-                padding: const EdgeInsets.only(
-                    left: 23.0, top: 20, bottom: 0, right: 23),
-                child: GetUserWidget(context, item)),
-            Container(
-                padding: EdgeInsets.symmetric(horizontal: 23, vertical: 10),
-                child: Text(
-                    maxLines: 3,
-                    overflow: TextOverflow.ellipsis,
-                    item.name ?? "",
-                    style: getBigTextStyle())),
-            Container(
-                padding: EdgeInsets.symmetric(horizontal: 23),
-                child: Text(
-                  item.desc ?? "",
-                  style: getMediumTextStyle(),
-                )),
-            SizedBox(
-              height: 10,
-            ),
-            GetLocationsWidget(context, item, _commonController),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 23),
-              child: Text(
-                DateFormat('dd.MM.yyyy')
-                    .format(item.creationDate ?? DateTime.now()),
-                style: getHintTextStyle(),
-              ),
-            )
-          ],
-        ));
+              );
+            }));
   }
 }
 
@@ -188,12 +200,12 @@ Widget GetFullscreenSlider(image, context, count) {
 
 Widget GetUserWidget(BuildContext context, Item item) {
   final UserController _userController = Get.find<UserController>();
-  bool _isLogged = SharedPrefs().logged;
+
   return Container(
     child: Row(
       children: [
         FutureBuilder(
-          future: _userController.GetUser(item.userId ?? ""),
+          future: _userController.GetUser(item.userId),
           builder: (context, snapshot) {
             if (snapshot.hasError) {
               return Container();
@@ -206,13 +218,12 @@ Widget GetUserWidget(BuildContext context, Item item) {
             return Row(children: [
               InkWell(
                 onTap: () {
-                  // GoRouter.of(context).goNamed("/user",
-                  //     pathParameters: {'userId': _user.id});
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              UserProfilePage(userId: _user.id)));
+                  GoRouter.of(context).go(SMPath.home + "/user/${_user.id}");
+                  // Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //         builder: (context) =>
+                  //             UserProfilePage(userId: _user.id)));
                 },
                 child: ClipOval(
                   child: Container(
@@ -234,42 +245,39 @@ Widget GetUserWidget(BuildContext context, Item item) {
           },
         ),
         Spacer(),
-        SizedBox(
-          height: 50,
-          child: _isLogged
-              ? FutureBuilder(
-                  future: _userController.getUserContact(item.userId ?? ""),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) {
-                      return Container();
-                    }
-                    if (!snapshot.hasData) {
-                      return Center(
-                          child: CircularProgressIndicator.adaptive());
-                    }
-                    return GetUserContactWidget(
-                        snapshot.data as List<UserContact>);
-                  })
-              : Container(),
-        )
+        SizedBox(height: 50, child: GetUserContactWidget(context, item.userId))
       ],
     ),
   );
 }
 
-Widget GetUserContactWidget(List<UserContact> contacts) {
-  return ListView.builder(
-      shrinkWrap: true,
-      scrollDirection: Axis.horizontal,
-      itemCount: contacts.length,
-      itemBuilder: (BuildContext context, int index) {
-        return contacts[index].contact.isNotEmpty
-            ? GetContactTypeWidget(contacts[index])
-            : Container();
-      });
+Widget GetUserContactWidget(BuildContext context, String userId) {
+  final UserController _userController = Get.find<UserController>();
+  return SharedPrefs().logged
+      ? FutureBuilder(
+          future: _userController.getUserContact(userId),
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return Container();
+            }
+            if (!snapshot.hasData) {
+              return Center(child: CircularProgressIndicator.adaptive());
+            }
+            var contacts = snapshot.data as List<UserContact>;
+            return ListView.builder(
+                shrinkWrap: true,
+                scrollDirection: Axis.horizontal,
+                itemCount: contacts.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return contacts[index].contact.isNotEmpty
+                      ? GetContactTypeWidget(context, contacts[index])
+                      : Container();
+                });
+          })
+      : GetGoRegisterButton(context);
 }
 
-Widget GetContactTypeWidget(UserContact contact) {
+Widget GetContactTypeWidget(BuildContext context, UserContact contact) {
   bool showContact = contact.contact.isNotEmpty;
   return showContact
       ? IconButton(
@@ -277,11 +285,46 @@ Widget GetContactTypeWidget(UserContact contact) {
           onPressed: () async {
             final url = Uri.parse(contact.getUri + contact.contact);
             if (await canLaunchUrl(url)) {
-              await launchUrl(url);
+              SnackBar snackBar = SnackBar(
+                content: SelectableText("${url.toString()}"),
+                action: SnackBarAction(
+                  label: 'Перейти',
+                  onPressed: () async {
+                    await launchUrl(url);
+                  },
+                ),
+              );
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
             } else {
               print('Unable to launch $url');
             }
           },
         )
       : Container();
+}
+
+Widget GetGoRegisterButton(BuildContext context) {
+  return ElevatedButton(
+    style: ElevatedButton.styleFrom(
+      textStyle: getSmallTextStyle(),
+      backgroundColor: MColors.secondaryGreen,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+    ),
+    onPressed: () {
+      SnackBar snackBar = SnackBar(
+        content: Text("Нужно зарегестрироваться для просморта контактов"),
+        action: SnackBarAction(
+          label: 'Перейти',
+          onPressed: () async {
+            GoRouter.of(context).go(SMPath.start + "/" + SMPath.registration);
+            ;
+          },
+        ),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    },
+    child: Icon(Icons.phone),
+  );
 }
