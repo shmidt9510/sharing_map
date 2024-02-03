@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:sharing_map/controllers/common_controller.dart';
+import 'package:sharing_map/controllers/item_controller.dart';
 import 'package:sharing_map/controllers/user_controller.dart';
 import 'package:sharing_map/models/contact.dart';
 
@@ -17,11 +18,12 @@ import 'package:sharing_map/widgets/image.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ItemDetailPage extends StatelessWidget {
-  final Item item;
-  final UserController _userController = Get.find<UserController>();
+  final String itemId;
+  late Item item;
+  final ItemController _itemController = Get.find<ItemController>();
   final CommonController _commonController = Get.find<CommonController>();
 
-  ItemDetailPage(this.item);
+  ItemDetailPage(this.itemId);
 
   @override
   Widget build(BuildContext context) {

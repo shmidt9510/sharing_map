@@ -23,9 +23,9 @@ void main() async {
   debugPrint("MY PATH IS $_initPath");
   SharedPrefs().initPath = _initPath;
   WidgetsFlutterBinding.ensureInitialized();
+  await _commonController.fetchItems();
   await _itemsController.fetchItems();
   await _usersController.CheckAuthorization();
-  await _commonController.fetchItems();
   WidgetsFlutterBinding.ensureInitialized();
   runApp(App(_initPath));
 }
@@ -48,6 +48,7 @@ class _AppState extends State<App> {
     _itemsController.onInit();
     _usersController.onInit();
     _commonController.onInit();
+    _commonController.getLocations(1);
   }
 
   @override

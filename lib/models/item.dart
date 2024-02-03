@@ -3,13 +3,13 @@ import 'package:uuid/uuid.dart';
 import 'photo.dart';
 
 class Item {
-  final String? id;
-  final String? name;
-  final String? desc;
-  final String? userId;
+  final String id;
+  final String name;
+  final String desc;
+  final String userId;
   final List<int>? categoryIds;
   final int? subcategoryId;
-  final int? cityId;
+  final int cityId;
   final List<int>? locationIds;
   final DateTime? creationDate;
   final List<SMImage>? images;
@@ -20,28 +20,23 @@ class Item {
 
   // Item(this.id, this.name, this.desc, this.picture, this.creationDate);
 
-  Item(
-      {this.id = null,
-      this.name,
-      this.desc,
-      this.creationDate,
+  Item(this.id, this.name, this.desc, this.cityId, this.userId,
+      {this.creationDate,
       this.categoryIds,
-      this.cityId,
       this.subcategoryId,
       this.locationIds,
-      this.userId,
       this.images = null,
       this.downloadableImages = null,
       this.adress = null});
 
   factory Item.fromJson(Map<String, dynamic> json) => Item(
-      id: json["id"].toString(),
-      name: json["name"],
-      desc: json["text"],
+      json["id"].toString(),
+      json["name"],
+      json["text"],
+      json["cityId"],
+      json["userId"],
       creationDate:
           json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
-      userId: json["userId"],
-      cityId: json["cityId"],
       locationIds: List<int>.from(json["locationsId"]),
       categoryIds: List<int>.from(json["categoriesId"]),
       subcategoryId: json["subcategoryId"],
@@ -51,7 +46,7 @@ class Item {
   // (json["images"].map((x) => SMImage.fromJson(x))).toList<SMImage>());
 
   Map<String, dynamic> toJson() => {
-        "id": id,
+        // "id": id,
         "name": name,
         "text": desc,
         // "user": {"id": userId},

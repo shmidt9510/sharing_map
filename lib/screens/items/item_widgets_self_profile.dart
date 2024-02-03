@@ -79,7 +79,7 @@ class _ItemsListViewSelfProfileState extends State<ItemsListViewSelfProfile> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => ItemDetailPage(item)));
+                        builder: (context) => ItemDetailPage(item.id)));
               },
               child: Padding(
                 padding: const EdgeInsets.only(left: 10, right: 10, top: 5),

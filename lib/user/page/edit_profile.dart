@@ -48,7 +48,7 @@ class _ProfilePageState extends State<EditProfilePage> {
             future: _userController.GetMyself(),
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
-                return Center(child: CircularProgressIndicator());
+                return Center(child: CircularProgressIndicator.adaptive());
               }
               User user = snapshot.data as User;
               _userNameController.text = user.username;

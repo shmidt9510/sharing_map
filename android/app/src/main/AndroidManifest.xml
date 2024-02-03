@@ -25,7 +25,7 @@
    <application
         android:label="Sharing Map"
         android:name="${applicationName}"
-        android:icon="@mipmap/sn_launch"
+        android:icon="@mipmap/ic_launcher"
         android:requestLegacyExternalStorage="true">
         <activity
             android:name=".MainActivity"

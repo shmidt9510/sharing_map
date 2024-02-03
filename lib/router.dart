@@ -124,6 +124,13 @@ class _RouterStartState extends State<RouterStart> {
                               final userId = state.pathParameters['userId'];
                               return UserProfilePage(userId: userId ?? "");
                             }),
+                        GoRoute(
+                            path: 'item/:userId',
+                            builder:
+                                (BuildContext context, GoRouterState state) {
+                              final itemId = state.pathParameters['itemId'];
+                              return ItemDetailPage(itemId ?? "");
+                            }),
                       ],
                     ),
                   ],

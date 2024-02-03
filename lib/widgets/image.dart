@@ -19,7 +19,7 @@ class CachedImage {
               child: Padding(
                 padding: const EdgeInsets.all(12.0),
                 child: Row(children: [
-                  CircularProgressIndicator(),
+                  CircularProgressIndicator.adaptive(),
                 ]),
               ),
             ),

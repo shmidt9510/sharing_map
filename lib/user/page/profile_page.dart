@@ -66,7 +66,7 @@ class _ProfilePageState extends State<ProfilePage> {
               );
             }
             if (!snapshot.hasData) {
-              return Center(child: CircularProgressIndicator());
+              return Center(child: CircularProgressIndicator.adaptive());
             }
             var _user = snapshot.data as User;
             _bioController.text = _user.bio;

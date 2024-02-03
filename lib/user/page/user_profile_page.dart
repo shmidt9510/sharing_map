@@ -32,7 +32,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
               );
             }
             if (!snapshot.hasData) {
-              return Center(child: CircularProgressIndicator());
+              return Center(child: CircularProgressIndicator.adaptive());
             }
             var _user = snapshot.data as User;
             return SingleChildScrollView(

@@ -178,12 +178,13 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
                             return;
                           }
                           var item = Item(
-                              userId: SharedPrefs().userId,
-                              name: titleController.text,
-                              desc: descriptionController.text,
+                              "SOME_ID",
+                              titleController.text,
+                              descriptionController.text,
+                              1,
+                              SharedPrefs().userId,
                               locationIds:
                                   _chosenLocations.map((e) => e.id).toList(),
-                              cityId: 1,
                               categoryIds: _chosenCategories
                                   .map((e) => e.id ?? 0)
                                   .toList(),
