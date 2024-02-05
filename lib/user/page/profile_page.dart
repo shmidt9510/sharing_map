@@ -51,7 +51,7 @@ class _ProfilePageState extends State<ProfilePage> {
               return Padding(
                 padding: const EdgeInsets.all(24.0),
                 child: Column(children: [
-                  Text("Чтобы редактировать профиль надо зарегестрироваться"),
+                  Text("Чтобы редактировать профиль надо зарегистрироваться"),
                   SizedBox(
                     height: 10,
                   ),

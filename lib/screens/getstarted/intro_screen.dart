@@ -46,7 +46,7 @@ class _IntroScreenState extends State<IntroScreen> {
                 SizedBox(
                   height: 20.0,
                 ),
-                getButton(context, "Зарегестрироваться", () {
+                getButton(context, "Зарегистрироваться", () {
                   GoRouter.of(context)
                       .go(SMPath.start + "/" + SMPath.registration);
                 }, color: MColors.white, height: 50),
@@ -73,7 +73,7 @@ class _IntroScreenState extends State<IntroScreen> {
         //       SizedBox(
         //         height: 10.0,
         //       ),
-        //       getButton(context, "Зарегестрироваться", () {
+        //       getButton(context, "Зарегистрироваться", () {
         //         GoRouter.of(context)
         //             .go(SMPath.start + "/" + SMPath.registration);
         //       }, color: MColors.white, height: 50),

@@ -314,7 +314,7 @@ Widget GetGoRegisterButton(BuildContext context) {
     ),
     onPressed: () {
       SnackBar snackBar = SnackBar(
-        content: Text("Нужно зарегестрироваться для просморта контактов"),
+        content: Text("Нужно зарегистрироваться для просморта контактов"),
         action: SnackBarAction(
           label: 'Перейти',
           onPressed: () async {

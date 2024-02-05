@@ -1,17 +1,7 @@
 name: sharing_map
-description: Pet Shop is an e-commerce application for Android built with Flutter (iOS to come soon).
+description: Sharing map application
 
-# The following defines the version and build number for your application.
-# A version number is three numbers separated by dots, like 1.2.43
-# followed by an optional build number separated by a +.
-# Both the version and the builder number may be overridden in flutter
-# build by specifying --build-name and --build-number, respectively.
-# In Android, build-name is used as versionName while build-number used as versionCode.
-# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
-# In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
-# Read more about iOS versioning at
-# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.0+3
+version: 0.1.3+3
 
 environment:
   sdk: ">2.17.0 <4.0.0"
@@ -33,28 +23,18 @@ dependencies:
 
   #google and other stuff
   flutter_launcher_icons: ^0.13.1
-  google_fonts:
-  wc_flutter_share: ^0.4.0
   provider: ^6.0.5
 
-  #image processing magic
   carousel_slider: ^4.2.1
-  image_cropper: ^3.0.3
   flutter_spinkit: "^5.2.0"
   image_picker: ^1.0.1
   photo_view: ^0.14.0
   shared_preferences: ^2.2.1
   path: ^1.6.4
   aws_signature_v4: ^0.5.0
-  #location and permission handling stuff
   permission_handler: ^10.2.0
-  # geolocator: ^9.0.2
-  # geolocation: ^1.1.2
-  # geocoder: ^0.2.1
-  location: ^4.4.0
   get: ^4.6.5
   http: ^0.13.6
-  #unique thingies
   mask_text_input_formatter: ^2.4.0
   uuid: ^3.0.7
   flutter_dotenv: ^5.1.0
