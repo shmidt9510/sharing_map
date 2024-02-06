@@ -96,10 +96,10 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
                                     ? getButton(context,
                                         'Пожалуйста, проверьте, чтобы в профиле был заполнен хотя бы один контакт',
                                         () {
-                                        GoRouter.of(context).go(SMPath.profile);
                                         setState(
                                           () => {},
                                         );
+                                        GoRouter.of(context).go(SMPath.profile);
                                       }, color: MColors.red2)
                                     : Container();
                               })
@@ -303,11 +303,11 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
       showErrorScaffold(context, "Очень много фотографий");
       return;
     }
-    if (_chosenLocations.isEmpty) {
+    if (_chosenCategories.isEmpty) {
       showErrorScaffold(context, "Пожалуйста, укажите хотя бы одну категорию");
       return;
     }
-    if (_chosenLocations.length > 2) {
+    if (_chosenCategories.length > 2) {
       showErrorScaffold(context, "Категорий не может быть больше двух");
       return;
     }
