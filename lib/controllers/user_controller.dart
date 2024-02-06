@@ -26,18 +26,15 @@ class UserController extends GetxController {
   }
 
   Future<bool> CheckAuthorization() async {
-    if (!SharedPrefs().logged) {
+    if (SharedPrefs().userId.isEmpty) {
       return false;
     }
-
-    if (SharedPrefs().userId.isNotEmpty) {
-      // myself = await GetUser(SharedPrefs().userId);
-      if (!await UserWebService.isAuth()) {
-        return false;
-      }
-      return true;
+    if (!await UserWebService.isAuth()) {
+      return false;
     }
-    return false;
+    SharedPrefs().isFirstRun = false;
+    SharedPrefs().logged = true;
+    return true;
   }
 
   Future<bool> Signup(String email, String username, String password) async {

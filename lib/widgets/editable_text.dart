@@ -48,6 +48,7 @@ class _EditableTextFieldState extends State<EditableTextField> {
                 style: getMediumTextStyle(),
                 enabled: _isEditing,
                 decoration: InputDecoration(
+                    contentPadding: EdgeInsets.all(10),
                     hintMaxLines: 5,
                     hintText: widget.hint,
                     border: OutlineInputBorder(

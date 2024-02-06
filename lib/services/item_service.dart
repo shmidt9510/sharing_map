@@ -65,7 +65,6 @@ class ItemWebService {
 
   static Future<String> addItem(Item item) async {
     var uri = "/items/create";
-    debugPrint(item.toJson().toString());
     var response = await client.post(Uri.https(Constants.BACK_URL, uri),
         params: {"id": SharedPrefs().userId},
         headers: {

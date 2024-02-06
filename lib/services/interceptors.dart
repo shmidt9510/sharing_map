@@ -76,6 +76,7 @@ class RefreshTokenInterceptor implements InterceptorContract {
             var jsonData = jsonDecode(response.body);
             SharedPrefs().authToken = jsonData["accessToken"].toString();
             SharedPrefs().refreshToken = jsonData["refreshToken"].toString();
+            SharedPrefs().logged = true;
           } else {
             SharedPrefs().authToken = "";
             SharedPrefs().logged = false;

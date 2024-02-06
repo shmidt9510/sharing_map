@@ -9,7 +9,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:sharing_map/controllers/common_controller.dart';
 
 import 'package:sharing_map/controllers/item_controller.dart';
+import 'package:sharing_map/controllers/user_controller.dart';
 import 'package:sharing_map/models/category.dart';
+import 'package:sharing_map/models/contact.dart';
 import 'package:sharing_map/models/item.dart';
 import 'package:sharing_map/models/location.dart';
 import 'package:sharing_map/path.dart';
@@ -32,7 +34,9 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
   List<XFile>? imageFileList = [];
   ItemController _itemsController = Get.find<ItemController>();
   CommonController _commonController = Get.find<CommonController>();
+  UserController _userController = Get.find<UserController>();
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  List<UserContact> _userContacts = [];
 
   void selectImages() async {
     final List<XFile>? selectedImages = await imagePicker.pickMultiImage();
@@ -76,6 +80,30 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
                   padding: const EdgeInsets.all(20),
                   child: SingleChildScrollView(
                     child: Column(children: [
+                      _userContacts.isEmpty
+                          ? FutureBuilder(
+                              future: _userController
+                                  .getUserContact(SharedPrefs().userId),
+                              builder: (context, snapshot) {
+                                if (!snapshot.hasData) {
+                                  return Center(
+                                      child:
+                                          CircularProgressIndicator.adaptive());
+                                }
+                                _userContacts =
+                                    snapshot.data as List<UserContact>;
+                                return _userContacts.isEmpty
+                                    ? getButton(context,
+                                        'Пожалуйста, проверьте, чтобы в профиле был заполнен хотя бы один контакт',
+                                        () {
+                                        GoRouter.of(context).go(SMPath.profile);
+                                        setState(
+                                          () => {},
+                                        );
+                                      }, color: MColors.red2)
+                                    : Container();
+                              })
+                          : Container(),
                       const SizedBox(
                         height: 10,
                       ),
@@ -176,44 +204,8 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
                       Padding(
                         padding:
                             const EdgeInsets.only(top: 10, left: 20, right: 20),
-                        child: getButton(context, "Опубликовать", () async {
-                          if (!(_formKey.currentState?.validate() ?? false)) {
-                            showErrorScaffold(context, "Не получилось :(");
-                            return;
-                          }
-                          if (imageFileList?.isEmpty ?? false) {
-                            showErrorScaffold(
-                                context, "Добавьте пожалуйста фото");
-                            return;
-                          }
-                          if ((imageFileList?.length ?? 0) > 5) {
-                            showErrorScaffold(
-                                context, "Очень много фотографий");
-                            return;
-                          }
-                          var item = Item(
-                              "SOME_ID",
-                              titleController.text,
-                              descriptionController.text,
-                              1,
-                              SharedPrefs().userId,
-                              locationIds:
-                                  _chosenLocations.map((e) => e.id).toList(),
-                              categoryIds: _chosenCategories
-                                  .map((e) => e.id ?? 0)
-                                  .toList(),
-                              subcategoryId: 1,
-                              downloadableImages: imageFileList);
-
-                          if (await _itemsController.addItem(item)) {
-                            clearData();
-                            await _itemsController.fetchItems();
-                            setState(() {});
-                            GoRouter.of(context).go(SMPath.home);
-                          } else {
-                            showErrorScaffold(context, "Не получилось :(");
-                          }
-                        },
+                        child: getButton(
+                            context, "Опубликовать", () => checkItem(),
                             color: MColors.darkGreen,
                             textStyle: getBigTextStyle()
                                 .copyWith(color: MColors.white)),
@@ -296,5 +288,58 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
             )
           ],
         ));
+  }
+
+  Future<void> checkItem() async {
+    if (!(_formKey.currentState?.validate() ?? false)) {
+      showErrorScaffold(context, "Не получилось :(");
+      return;
+    }
+    if (imageFileList?.isEmpty ?? false) {
+      showErrorScaffold(context, "Добавьте пожалуйста фото");
+      return;
+    }
+    if ((imageFileList?.length ?? 0) > 5) {
+      showErrorScaffold(context, "Очень много фотографий");
+      return;
+    }
+    if (_chosenLocations.isEmpty) {
+      showErrorScaffold(context, "Пожалуйста, укажите хотя бы одну категорию");
+      return;
+    }
+    if (_chosenLocations.length > 2) {
+      showErrorScaffold(context, "Категорий не может быть больше двух");
+      return;
+    }
+    if (_chosenLocations.isEmpty) {
+      showErrorScaffold(
+          context, "Пожалуйста, укажите хотя бы одну станцию метро");
+      return;
+    }
+    if (_chosenLocations.length > 3) {
+      showErrorScaffold(
+          context, "Пожалуйтса, выставите меньше четырёх станций метро");
+      return;
+    }
+    if (_userContacts.isEmpty) {
+      showErrorScaffold(
+          context, "Пожалуйста, укажите хотя бы один контакт в профиле");
+      return;
+    }
+    var item = Item("SOME_ID", titleController.text, descriptionController.text,
+        1, SharedPrefs().userId,
+        locationIds: _chosenLocations.map((e) => e.id).toList(),
+        categoryIds: _chosenCategories.map((e) => e.id).toList(),
+        subcategoryId: 1,
+        downloadableImages: imageFileList);
+
+    if (await _itemsController.addItem(item)) {
+      clearData();
+      await _itemsController.fetchItems();
+      setState(() {});
+      GoRouter.of(context).go(SMPath.home);
+    } else {
+      showErrorScaffold(context, "Не получилось :(");
+    }
   }
 }

@@ -20,7 +20,6 @@ void main() async {
   final ItemController _itemsController = Get.put(ItemController());
   final UserController _usersController = Get.put(UserController());
   String _initPath = await _getInitPath(_usersController);
-  debugPrint("MY PATH IS $_initPath");
   SharedPrefs().initPath = _initPath;
   WidgetsFlutterBinding.ensureInitialized();
   await _commonController.fetchItems();
@@ -71,6 +70,7 @@ Future<String> _getInitPath(UserController _usersController) async {
     return SMPath.onboard;
   }
   var isAuhtorized = await _usersController.CheckAuthorization();
+  isAuhtorized |= (await _usersController.CheckAuthorization());
   if (!isAuhtorized) {
     return SMPath.start;
   }

@@ -50,36 +50,23 @@ class _IntroScreenState extends State<IntroScreen> {
                   GoRouter.of(context)
                       .go(SMPath.start + "/" + SMPath.registration);
                 }, color: MColors.white, height: 50),
-                SizedBox(height: 30.0),
-                // Text(SharedPrefs().refreshToken),
-                // Text(SharedPrefs().initPath.toString()),
-                // Text(SharedPrefs().isFirstRun.toString()),
-                // Text(SharedPrefs().logged.toString()),
-                // Text(SharedPrefs().authToken),
+                const SizedBox(height: 20),
+                getButton(context, "Продолжить без регистрации", () {
+                  GoRouter.of(context).go(SMPath.home);
+                }, color: MColors.lightGrey),
+                // Text(SharedPrefs().refreshToken +
+                //     "_" +
+                //     SharedPrefs().initPath.toString() +
+                //     "_" +
+                //     SharedPrefs().isFirstRun.toString() +
+                //     "_" +
+                //     SharedPrefs().logged.toString() +
+                //     "_" +
+                //     SharedPrefs().authToken),
               ],
             ),
           ),
         ),
-        // bottomNavigationBar: Container(
-        //   height: 150.0,
-        //   color: MColors.primaryGreen,
-        //   padding: const EdgeInsets.all(20.0),
-        //   child: Column(
-        //     mainAxisAlignment: MainAxisAlignment.center,
-        //     children: [
-        //       getButton(context, "Войти", () {
-        //         GoRouter.of(context).go(SMPath.start + "/" + SMPath.login);
-        //       }, color: MColors.secondaryGreen, height: 50),
-        //       SizedBox(
-        //         height: 10.0,
-        //       ),
-        //       getButton(context, "Зарегистрироваться", () {
-        //         GoRouter.of(context)
-        //             .go(SMPath.start + "/" + SMPath.registration);
-        //       }, color: MColors.white, height: 50),
-        //     ],
-        //   ),
-        // ),
       ),
     );
   }

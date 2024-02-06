@@ -22,7 +22,7 @@ class ScaffoldWithNavBar extends StatelessWidget {
     return Scaffold(
       body: navigationShell,
       bottomNavigationBar: SizedBox(
-        height: context.height * 0.08,
+        height: context.height * 0.10,
         child: BottomNavigationBar(
           unselectedIconTheme: IconThemeData(color: MColors.grey2),
           selectedIconTheme: IconThemeData(color: MColors.secondaryGreen),
