@@ -94,7 +94,7 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
                                     snapshot.data as List<UserContact>;
                                 return _userContacts.isEmpty
                                     ? getButton(context,
-                                        'Пожалуйста, проверьте, чтобы в профиле был заполнен хотя бы один контакт',
+                                        'Пожалуйста, проверьте, чтобы в профиле был заполнен хотя бы один контакт. Перейти в профиль',
                                         () {
                                         setState(
                                           () => {},

@@ -25,9 +25,9 @@ class Item {
       this.categoryIds,
       this.subcategoryId,
       this.locationIds,
-      this.images = null,
       this.downloadableImages = null,
-      this.adress = null});
+      this.adress = null,
+      this.images});
 
   factory Item.fromJson(Map<String, dynamic> json) => Item(
       json["id"].toString(),

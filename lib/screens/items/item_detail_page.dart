@@ -67,6 +67,25 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
                       });
                     }),
                   ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: item.images!.asMap().entries.map((entry) {
+                      return Container(
+                        width: 8.0,
+                        height: 8.0,
+                        margin: EdgeInsets.symmetric(
+                            vertical: 8.0, horizontal: 4.0),
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: (Theme.of(context).brightness ==
+                                        Brightness.dark
+                                    ? MColors.grey1
+                                    : MColors.darkGreen)
+                                .withOpacity(
+                                    _currentPicture == entry.key ? 0.9 : 0.4)),
+                      );
+                    }).toList(),
+                  ),
                   Padding(
                       padding: const EdgeInsets.only(
                           left: 23.0, top: 20, bottom: 0, right: 23),
@@ -108,68 +127,44 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
     for (var i = 0; i < images.length; i++) {
       list.add(CachedImage.Get(images[i]));
     }
-    return SizedBox(
-      height: MediaQuery.of(context).size.height / 2.5,
-      child: Column(
-        children: [
-          Expanded(
-            child: CarouselSlider(
-              options: CarouselOptions(
-                viewportFraction: 1.0,
-                enlargeCenterPage: false,
-                enableInfiniteScroll: false,
-                onPageChanged: (index, reason) {
-                  callback(index);
-                },
-              ),
-              items: list.map<Widget>((image) {
-                var result = Builder(
-                  builder: (BuildContext context) {
-                    return GestureDetector(
-                      child: Hero(
-                        tag: 'carusel_image_list$_count',
-                        child: Container(
-                            child: image,
-                            width: MediaQuery.of(context).size.width,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(
-                                bottomRight: Radius.circular(20.0),
-                                bottomLeft: Radius.circular(20.0),
-                              ),
-                              color: Colors.white,
-                            )),
-                      ),
-                      onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (_) {
-                          return GetFullscreenSlider(image, context, _count);
-                        }));
-                      },
-                    );
-                  },
-                );
-                _count++;
-                return result;
-              }).toList(),
-            ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: list.asMap().entries.map((entry) {
-              return Container(
-                width: 12.0,
-                height: 12.0,
-                margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
-                decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: (Theme.of(context).brightness == Brightness.dark
-                            ? MColors.grey1
-                            : MColors.darkGreen)
-                        .withOpacity(_currentPicture == entry.key ? 0.9 : 0.4)),
-              );
-            }).toList(),
-          ),
-        ],
+    return CarouselSlider(
+      options: CarouselOptions(
+        height: MediaQuery.of(context).size.height / 2.5,
+        viewportFraction: 1.0,
+        enlargeCenterPage: false,
+        enableInfiniteScroll: false,
+        onPageChanged: (index, reason) {
+          callback(index);
+        },
       ),
+      items: list.map<Widget>((image) {
+        var result = Builder(
+          builder: (BuildContext context) {
+            return GestureDetector(
+              child: Hero(
+                tag: 'carusel_image_list$_count',
+                child: Container(
+                    child: image,
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                        bottomRight: Radius.circular(20.0),
+                        bottomLeft: Radius.circular(20.0),
+                      ),
+                      color: Colors.white,
+                    )),
+              ),
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (_) {
+                  return GetFullscreenSlider(image, context, _count);
+                }));
+              },
+            );
+          },
+        );
+        _count++;
+        return result;
+      }).toList(),
     );
   }
 }
