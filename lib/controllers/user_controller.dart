@@ -29,7 +29,7 @@ class UserController extends GetxController {
     if (SharedPrefs().userId.isEmpty) {
       return false;
     }
-    if (!await UserWebService.isAuth()) {
+    if (!(await UserWebService.isAuth())) {
       return false;
     }
     SharedPrefs().isFirstRun = false;

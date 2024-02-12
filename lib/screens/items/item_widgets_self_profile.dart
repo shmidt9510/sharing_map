@@ -21,13 +21,10 @@ class _ItemsListViewSelfProfileState extends State<ItemsListViewSelfProfile> {
 
   ItemController _itemsController = Get.find<ItemController>();
 
-  final PagingController<int, Item> _pagingController =
-      PagingController(firstPageKey: 0);
-
   @override
   void initState() {
     super.initState();
-    _pagingController.addPageRequestListener((pageKey) {
+    _itemsController.userPagingController.addPageRequestListener((pageKey) {
       _fetchPage(pageKey);
     });
   }
@@ -39,13 +36,13 @@ class _ItemsListViewSelfProfileState extends State<ItemsListViewSelfProfile> {
 
       final isLastPage = newItems.length < _pageSize;
       if (isLastPage) {
-        _pagingController.appendLastPage(newItems);
+        _itemsController.userPagingController.appendLastPage(newItems);
       } else {
         final nextPageKey = pageKey + 1;
-        _pagingController.appendPage(newItems, nextPageKey);
+        _itemsController.userPagingController.appendPage(newItems, nextPageKey);
       }
     } catch (error) {
-      _pagingController.error = error;
+      _itemsController.userPagingController.error = error;
     }
   }
 
@@ -54,7 +51,7 @@ class _ItemsListViewSelfProfileState extends State<ItemsListViewSelfProfile> {
         physics: NeverScrollableScrollPhysics(),
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
-        pagingController: _pagingController,
+        pagingController: _itemsController.userPagingController,
         builderDelegate: PagedChildBuilderDelegate<Item>(
           firstPageErrorIndicatorBuilder: (_) => Center(
             child: Column(children: [
@@ -93,7 +90,7 @@ class _ItemsListViewSelfProfileState extends State<ItemsListViewSelfProfile> {
                           onPressed: () async {
                             await _deleteItemDialogBuilder(context, item.id);
                             setState(() {
-                              _pagingController.refresh();
+                              _itemsController.userPagingController.refresh();
                             });
                           },
                           icon: Icon(

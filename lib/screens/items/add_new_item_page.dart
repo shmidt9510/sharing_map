@@ -19,6 +19,7 @@ import 'package:sharing_map/theme.dart';
 import 'package:sharing_map/utils/colors.dart';
 import 'package:sharing_map/utils/shared.dart';
 import 'package:sharing_map/widgets/allWidgets.dart';
+import 'package:sharing_map/widgets/loading_button.dart';
 
 enum PhotoSource { FILE, NETWORK }
 
@@ -39,7 +40,8 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
   List<UserContact> _userContacts = [];
 
   void selectImages() async {
-    final List<XFile>? selectedImages = await imagePicker.pickMultiImage();
+    final List<XFile>? selectedImages =
+        await imagePicker.pickMultiImage(imageQuality: 50);
     if (selectedImages!.isNotEmpty) {
       imageFileList!.addAll(selectedImages);
     }
@@ -204,8 +206,9 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
                       Padding(
                         padding:
                             const EdgeInsets.only(top: 10, left: 20, right: 20),
-                        child: getButton(
-                            context, "Опубликовать", () => checkItem(),
+                        child: LoadingButton("Опубликовать", () async {
+                          await checkItem();
+                        },
                             color: MColors.darkGreen,
                             textStyle: getBigTextStyle()
                                 .copyWith(color: MColors.white)),
@@ -333,13 +336,12 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
         subcategoryId: 1,
         downloadableImages: imageFileList);
 
-    if (await _itemsController.addItem(item)) {
-      clearData();
-      await _itemsController.fetchItems();
-      setState(() {});
-      GoRouter.of(context).go(SMPath.home);
-    } else {
+    if (!await _itemsController.addItem(item)) {
       showErrorScaffold(context, "Не получилось :(");
     }
+    clearData();
+    await _itemsController.fetchItems();
+    setState(() {});
+    GoRouter.of(context).go(SMPath.home);
   }
 }

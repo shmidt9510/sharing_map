@@ -1,8 +1,9 @@
+import 'package:secure_shared_preferences/secure_shared_preferences.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPrefs {
   static late SharedPreferences _sharedPrefs;
-
+  static late SecureSharedPref _secureSharedPref;
   static final SharedPrefs _instance = SharedPrefs._internal();
 
   factory SharedPrefs() => _instance;
@@ -11,6 +12,7 @@ class SharedPrefs {
 
   Future<void> init() async {
     _sharedPrefs = await SharedPreferences.getInstance();
+    _secureSharedPref = await SecureSharedPref.getInstance();
   }
 
   String get userId => _sharedPrefs.getString(keyUserId) ?? "";
@@ -25,16 +27,19 @@ class SharedPrefs {
     _sharedPrefs.setBool(keyIsLogged, value);
   }
 
-  String get authToken => _sharedPrefs.getString(keyAuthToken) ?? "";
+  Future<String> getAuthToken() async =>
+      await _secureSharedPref.getString(keyAuthToken, isEncrypted: true) ?? "";
 
   set authToken(String value) {
-    _sharedPrefs.setString(keyAuthToken, value);
+    _secureSharedPref.putString(keyAuthToken, value, isEncrypted: true);
   }
 
-  String get refreshToken => _sharedPrefs.getString(keyRefreshToken) ?? "";
+  Future<String> getRefreshToken() async =>
+      await _secureSharedPref.getString(keyRefreshToken, isEncrypted: true) ??
+      "";
 
   set refreshToken(String value) {
-    _sharedPrefs.setString(keyRefreshToken, value);
+    _secureSharedPref.putString(keyRefreshToken, value, isEncrypted: true);
   }
 
   String get confirmationToken =>
@@ -65,6 +70,11 @@ class SharedPrefs {
 
   set initPath(String value) {
     _sharedPrefs.setString("init_path", value);
+  }
+
+  int get counter => _sharedPrefs.getInt("counter") ?? 0;
+  set counter(int value) {
+    _sharedPrefs.setInt("counter", value);
   }
 }
 // String get isLogged => _sharedPrefs!.getString(keyUsername) ?? "";

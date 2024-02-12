@@ -67,9 +67,8 @@ class UserWebService {
         SharedPrefs().logged = true;
         SharedPrefs().authToken = bodyDecoded["accessToken"].toString();
         SharedPrefs().refreshToken = bodyDecoded["refreshToken"].toString();
-
-        Map<String, dynamic> decodedToken =
-            JwtDecoder.decode(SharedPrefs().authToken);
+        String authToken = await SharedPrefs().getAuthToken();
+        Map<String, dynamic> decodedToken = JwtDecoder.decode(authToken);
         print(decodedToken["user_id"] as String);
         SharedPrefs().userId = decodedToken["user_id"] as String;
       } else {
@@ -133,7 +132,7 @@ class UserWebService {
     SharedPrefs().refreshToken = bodyDecoded["refreshToken"].toString();
 
     Map<String, dynamic> decodedToken =
-        JwtDecoder.decode(SharedPrefs().authToken);
+        JwtDecoder.decode(bodyDecoded["accessToken"].toString());
     SharedPrefs().userId = decodedToken["user_id"] as String;
     return true;
   }

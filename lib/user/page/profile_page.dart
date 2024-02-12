@@ -89,7 +89,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 right: -5,
                                 child: IconButton(
                                     onPressed: () async {
-                                      selectImage();
+                                      selectImage(_user);
                                     },
                                     icon: Icon(
                                       Icons.edit,
@@ -325,9 +325,10 @@ class _ProfilePageState extends State<ProfilePage> {
     ];
   }
 
-  void selectImage() async {
+  void selectImage(User user) async {
     var source = await _dialogBuilder(context);
-    profileImage = await imagePicker.pickImage(source: source);
+    profileImage =
+        await imagePicker.pickImage(source: source, imageQuality: 15);
     if (profileImage == null) {
       return;
     }
@@ -345,7 +346,9 @@ class _ProfilePageState extends State<ProfilePage> {
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
-    setState(() {});
+    setState(() {
+      user.hasProfileImage = true;
+    });
   }
 
   Future<bool> saveUser(BuildContext context) async {

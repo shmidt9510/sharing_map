@@ -54,15 +54,11 @@ class _IntroScreenState extends State<IntroScreen> {
                 getButton(context, "Продолжить без регистрации", () {
                   GoRouter.of(context).go(SMPath.home);
                 }, color: MColors.lightGrey),
-                // Text(SharedPrefs().refreshToken +
-                //     "_" +
-                //     SharedPrefs().initPath.toString() +
+                // Text(SharedPrefs().initPath.toString() +
                 //     "_" +
                 //     SharedPrefs().isFirstRun.toString() +
                 //     "_" +
-                //     SharedPrefs().logged.toString() +
-                //     "_" +
-                //     SharedPrefs().authToken),
+                //     SharedPrefs().logged.toString()),
               ],
             ),
           ),

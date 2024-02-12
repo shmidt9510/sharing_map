@@ -15,7 +15,6 @@ import 'package:sharing_map/screens/register/reset_password_code.dart';
 import 'package:sharing_map/screens/register/reset_password_mail.dart';
 import 'package:sharing_map/screens/register/reset_password_set.dart';
 import 'package:sharing_map/theme.dart';
-import 'package:sharing_map/user/page/edit_profile.dart';
 import 'package:sharing_map/user/page/profile_page.dart';
 import 'package:sharing_map/user/page/user_profile_page.dart';
 
@@ -151,17 +150,10 @@ class _RouterStartState extends State<RouterStart> {
                 StatefulShellBranch(
                   routes: <RouteBase>[
                     GoRoute(
-                        path: SMPath.profile,
-                        builder: (BuildContext context, GoRouterState state) =>
-                            ProfilePage(),
-                        routes: [
-                          GoRoute(
-                            path: SMPath.profileEdit,
-                            builder:
-                                (BuildContext context, GoRouterState state) =>
-                                    EditProfilePage(),
-                          ),
-                        ]),
+                      path: SMPath.profile,
+                      builder: (BuildContext context, GoRouterState state) =>
+                          ProfilePage(),
+                    ),
                   ],
                 ),
               ],

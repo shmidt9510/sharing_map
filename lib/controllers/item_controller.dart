@@ -8,7 +8,8 @@ class ItemController extends GetxController {
   var items = <Item>[].obs;
 
   final Map<int, PagingController<int, Item>> pagingControllers = {};
-
+  final PagingController<int, Item> userPagingController =
+      PagingController(firstPageKey: 0);
   @override
   void onInit() async {
     super.onInit();
@@ -66,6 +67,7 @@ class ItemController extends GetxController {
         return false;
       }
       pagingControllers.forEach((key, value) => value.refresh());
+      userPagingController.refresh();
       return true;
     } catch (e) {
       return false;
