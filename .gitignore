@@ -1,5 +1,8 @@
 # Miscellaneous
 # *.env
+*.cc
+*.swift
+*.cmake
 *.class
 *.log
 *.pyc
