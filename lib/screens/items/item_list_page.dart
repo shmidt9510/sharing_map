@@ -91,25 +91,25 @@ class _ItemListPageState extends State<ItemListPage> {
   }
 
   var categoriesAssetsName = {
-    0: 'all',
-    1: 'home',
-    2: 'books',
-    3: 'clothes',
-    4: 'child',
-    5: 'pet',
-    6: 'sport',
-    7: 'appliance',
-    8: 'food',
-    9: 'auto',
-    10: 'other',
+    'all': true,
+    'home': true,
+    'clothes': true,
+    'food': true,
+    'books': true,
+    'child': true,
+    'pets': true,
+    'sport': true,
+    'appliance': true,
+    'auto': true,
+    'other': true,
   };
 
   Widget _buildButton(
       BuildContext context, ItemCategory category, double size) {
     bool isChosen = category.id == _chosenFilter;
     String assetName = "other";
-    if (categoriesAssetsName.containsKey(category.id)) {
-      assetName = categoriesAssetsName[category.id]!;
+    if (categoriesAssetsName.containsKey(category.name)) {
+      assetName = category.name;
     }
 
     return AspectRatio(

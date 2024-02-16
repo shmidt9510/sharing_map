@@ -6,6 +6,7 @@ import 'package:sharing_map/screens/items/add_new_item_page.dart';
 import 'package:sharing_map/screens/getstarted/intro_screen.dart';
 import 'package:sharing_map/screens/items/item_detail_page.dart';
 import 'package:sharing_map/screens/items/item_list_page.dart';
+import 'package:sharing_map/screens/other/no_internet.dart';
 import 'package:sharing_map/screens/register/registration_code.dart';
 import 'package:sharing_map/screens/register/registration_screen.dart';
 import 'package:sharing_map/path.dart';
@@ -105,6 +106,10 @@ class _RouterStartState extends State<RouterStart> {
                       path: SMPath.onboard,
                       builder: (BuildContext context, GoRouterState state) =>
                           OnBoardingPage()),
+                  GoRoute(
+                      path: SMPath.noNetwork,
+                      builder: (BuildContext context, GoRouterState state) =>
+                          NoInternetScreen())
                 ]),
             StatefulShellRoute.indexedStack(
               builder: (BuildContext context, GoRouterState state,

@@ -54,4 +54,8 @@ class CommonController extends GetxController {
       return Future.error("error_getting_locations");
     }
   }
+
+  Future<bool> checkInternet() async {
+    return await CommonWebService.checkInternetConnectivity();
+  }
 }

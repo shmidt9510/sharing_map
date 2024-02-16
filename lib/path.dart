@@ -7,7 +7,7 @@ class SMPath {
   static const String forgetPasswordMail = "forgetPasswordMail";
   static const String onboard = "/onboard";
   static const String login = "login";
-
+  static const String noNetwork = "/noNetwork";
   static const String home = "/home";
   static const String addItem = "/addItem";
   static const String profile = "/profile";

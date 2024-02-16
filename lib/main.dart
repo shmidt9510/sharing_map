@@ -4,7 +4,6 @@ import 'package:sharing_map/controllers/user_controller.dart';
 import 'package:sharing_map/router.dart';
 import 'package:sharing_map/controllers/item_controller.dart';
 import 'package:sharing_map/utils/init_path.dart';
-import 'package:sharing_map/utils/server_connection.dart';
 import 'package:sharing_map/utils/shared.dart';
 import 'package:sharing_map/controllers/common_controller.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -19,13 +18,7 @@ void main() async {
   final ItemController _itemsController = Get.put(ItemController());
   final UserController _usersController = Get.put(UserController());
 
-  String _initPath = await checkInitPath(_usersController);
-  WidgetsFlutterBinding.ensureInitialized();
-  if (await checkInternetConnectivity()) {
-    await _commonController.fetchItems();
-    await _itemsController.fetchItems();
-    await _usersController.CheckAuthorization();
-  }
+  String _initPath = await checkInitPath(_usersController, _commonController);
   WidgetsFlutterBinding.ensureInitialized();
   runApp(App(_initPath));
 }

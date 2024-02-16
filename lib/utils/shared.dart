@@ -66,12 +66,6 @@ class SharedPrefs {
     _sharedPrefs.setString(keyResetPasswordToken, value);
   }
 
-  String get initPath => _sharedPrefs.getString("init_pathp") ?? "";
-
-  set initPath(String value) {
-    _sharedPrefs.setString("init_path", value);
-  }
-
   int get counter => _sharedPrefs.getInt("counter") ?? 0;
   set counter(int value) {
     _sharedPrefs.setInt("counter", value);

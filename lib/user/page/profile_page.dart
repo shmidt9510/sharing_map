@@ -137,7 +137,8 @@ class _ProfilePageState extends State<ProfilePage> {
             return Container();
           }
           if (!snapshot.hasData) {
-            return Center(child: CircularProgressIndicator.adaptive());
+            return SizedBox(
+                height: 40, child: CircularProgressIndicator.adaptive());
           }
           var contacts = snapshot.data as List<UserContact>;
           return GetUserContactWidget(PrepareContacts(contacts), context);

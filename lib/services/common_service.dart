@@ -70,4 +70,14 @@ class CommonWebService {
       return null;
     }
   }
+
+  static Future<bool> checkInternetConnectivity() async {
+    try {
+      var response = await client.get(Uri.https(Constants.BACK_URL, "/ping"));
+      return response.statusCode == 200;
+    } catch (e) {
+      debugPrint(e.toString());
+      return false;
+    }
+  }
 }
