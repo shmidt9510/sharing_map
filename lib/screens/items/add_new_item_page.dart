@@ -43,16 +43,9 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
   void selectImages() async {
     List<XFile> selectedImages = [];
     selectedImages = await imagePicker.pickMultiImage(imageQuality: 90);
-    debugPrint("having ${selectedImages.length} size");
     for (int i = 0; i < selectedImages.length; i++) {
       selectedImages[i] = await compressImage(selectedImages[i], 1024 * 1024);
     }
-    // List<Future<XFile>> futures = selectedImages.map((image) => getImageAndCompress(image, 1000)).toList();
-    // List<XFile> compressedImages = await Future.wait(futures);
-    // selectedImages.forEach((element) async {
-    //   debugPrint("AAABBBSSS");
-    //   element = await getImageAndCompress(element, 1000);
-    // });
     if (selectedImages.isNotEmpty) {
       imageFileList!.addAll(selectedImages);
     }

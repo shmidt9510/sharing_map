@@ -10,6 +10,7 @@ import 'package:sharing_map/screens/items/item_widgets_self_profile.dart';
 import 'package:sharing_map/theme.dart';
 import 'package:sharing_map/user/page/editable_contact_text_field.dart';
 import 'package:sharing_map/utils/colors.dart';
+import 'package:sharing_map/utils/compress_image.dart';
 import 'package:sharing_map/utils/shared.dart';
 import 'package:sharing_map/widgets/allWidgets.dart';
 import 'package:sharing_map/widgets/image.dart';
@@ -328,11 +329,11 @@ class _ProfilePageState extends State<ProfilePage> {
 
   void selectImage(User user) async {
     var source = await _dialogBuilder(context);
-    profileImage =
-        await imagePicker.pickImage(source: source, imageQuality: 15);
+    profileImage = await imagePicker.pickImage(source: source);
     if (profileImage == null) {
       return;
     }
+    profileImage = await compressImage(profileImage!, 256 * 1024);
     if (!await _userController.UpdateUserPhoto(profileImage!) ||
         !await CachedImage.EvictUserProfileImage(SharedPrefs().userId)) {
       var snackBar = SnackBar(
