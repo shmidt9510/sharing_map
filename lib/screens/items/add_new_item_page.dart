@@ -20,6 +20,7 @@ import 'package:sharing_map/utils/colors.dart';
 import 'package:sharing_map/utils/shared.dart';
 import 'package:sharing_map/widgets/allWidgets.dart';
 import 'package:sharing_map/widgets/loading_button.dart';
+import 'package:sharing_map/utils/compress_image.dart';
 
 enum PhotoSource { FILE, NETWORK }
 
@@ -40,9 +41,19 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
   List<UserContact> _userContacts = [];
 
   void selectImages() async {
-    final List<XFile>? selectedImages =
-        await imagePicker.pickMultiImage(imageQuality: 50);
-    if (selectedImages!.isNotEmpty) {
+    List<XFile> selectedImages = [];
+    selectedImages = await imagePicker.pickMultiImage(imageQuality: 90);
+    debugPrint("having ${selectedImages.length} size");
+    for (int i = 0; i < selectedImages.length; i++) {
+      selectedImages[i] = await compressImage(selectedImages[i], 1024 * 1024);
+    }
+    // List<Future<XFile>> futures = selectedImages.map((image) => getImageAndCompress(image, 1000)).toList();
+    // List<XFile> compressedImages = await Future.wait(futures);
+    // selectedImages.forEach((element) async {
+    //   debugPrint("AAABBBSSS");
+    //   element = await getImageAndCompress(element, 1000);
+    // });
+    if (selectedImages.isNotEmpty) {
       imageFileList!.addAll(selectedImages);
     }
     setState(() {});
@@ -112,7 +123,7 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
                       getTextField(titleController, 'Что вы хотите отдать',
                           (String? value) {
                         if ((value?.length ?? 0) < 2) {
-                          return "Пожалуйста введите больше символов";
+                          return "Пожалуйста, введите больше символов";
                         }
                         if ((value?.startsWith(" ") ?? false)) {
                           return "Название не должно начинаться с пробела";
@@ -126,7 +137,7 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
                           (String? value) {
                         return (value?.length ?? 0) > 16
                             ? null
-                            : "Пожалуйста сделайте описание чуть подробнее";
+                            : "Пожалуйста, сделайте описание чуть подробнее";
                       }, maxLines: 5, minLines: 3),
                       SizedBox(
                         height: 20,

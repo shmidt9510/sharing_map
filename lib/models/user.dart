@@ -37,7 +37,7 @@ class User {
           SMImage(id: id, itemId: id, updatedAt: DateTime.now()),
           fit: fit);
     }
-    return Image.asset('assets/images/categories/pet.png');
+    return Image.asset('assets/images/categories/pets.png');
   }
 
   SMImage getSMImage() {

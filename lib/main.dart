@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sharing_map/controllers/user_controller.dart';
+import 'package:sharing_map/path.dart';
 import 'package:sharing_map/router.dart';
 import 'package:sharing_map/controllers/item_controller.dart';
 import 'package:sharing_map/utils/init_path.dart';
@@ -16,9 +17,16 @@ void main() async {
 
   final CommonController _commonController = Get.put(CommonController());
   final ItemController _itemsController = Get.put(ItemController());
+  _itemsController.onInit();
   final UserController _usersController = Get.put(UserController());
 
   String _initPath = await checkInitPath(_usersController, _commonController);
+  if (_initPath != SMPath.noNetwork) {
+    _itemsController.onInit();
+    _usersController.onInit();
+    await _commonController.fetchItems();
+    await _commonController.getLocations(1);
+  }
   WidgetsFlutterBinding.ensureInitialized();
   runApp(App(_initPath));
 }
@@ -41,7 +49,6 @@ class _AppState extends State<App> {
     _itemsController.onInit();
     _usersController.onInit();
     _commonController.onInit();
-    _commonController.getLocations(1);
   }
 
   @override

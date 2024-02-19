@@ -295,7 +295,7 @@ Widget GetUserContactWidget(BuildContext context, String userId) {
               return Container();
             }
             if (!snapshot.hasData) {
-              return Center(child: CircularProgressIndicator.adaptive());
+              return Container();
             }
             var contacts = snapshot.data as List<UserContact>;
             return ListView.builder(
@@ -318,20 +318,21 @@ Widget GetContactTypeWidget(BuildContext context, UserContact contact) {
           icon: Icon(contact.contactIcon),
           onPressed: () async {
             final url = Uri.parse(contact.getUri + contact.contact);
-            if (await canLaunchUrl(url)) {
-              SnackBar snackBar = SnackBar(
-                content: SelectableText("${url.toString()}"),
-                action: SnackBarAction(
-                  label: 'Перейти',
-                  onPressed: () async {
+            SnackBar snackBar = SnackBar(
+              content: SelectableText("${contact.contact}"),
+              action: SnackBarAction(
+                label: 'Перейти',
+                onPressed: () async {
+                  if (await canLaunchUrl(url)) {
                     await launchUrl(url);
-                  },
-                ),
-              );
-              ScaffoldMessenger.of(context).showSnackBar(snackBar);
-            } else {
-              print('Unable to launch $url');
-            }
+                  } else {
+                    showErrorScaffold(
+                        context, "Не могу перенаправить в приложение");
+                  }
+                },
+              ),
+            );
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
           },
         )
       : Container();

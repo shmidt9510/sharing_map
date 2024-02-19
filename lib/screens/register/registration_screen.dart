@@ -52,7 +52,7 @@ class _LoginState extends State<RegistrationScreen> {
               getTextField(_controllerMail, "Введите свой email",
                   (String? value) {
                 if (!EmailValidator.validate(value ?? "")) {
-                  return "Пожалуйста введите почту";
+                  return "Пожалуйста, введите почту";
                 }
                 return null;
               }, keyboardType: TextInputType.emailAddress),
@@ -72,7 +72,7 @@ class _LoginState extends State<RegistrationScreen> {
               const SizedBox(height: 10),
               getTextField(_controllerUsername, "Ваше имя", (String? value) {
                 if (value?.isEmpty ?? false) {
-                  return "Пожалуйста напишите что-нибудь)";
+                  return "Пожалуйста, напишите что-нибудь)";
                 }
                 return null;
               }, keyboardType: TextInputType.name),

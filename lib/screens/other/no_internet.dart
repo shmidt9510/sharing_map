@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sharing_map/controllers/common_controller.dart';
+import 'package:sharing_map/controllers/item_controller.dart';
 import 'package:sharing_map/controllers/user_controller.dart';
 import 'package:sharing_map/path.dart';
 import 'package:sharing_map/theme.dart';
@@ -18,9 +19,9 @@ class NoInternetScreen extends StatefulWidget {
 }
 
 class _NoInternetScreenState extends State<NoInternetScreen> {
-  UserController _userController = Get.find<UserController>();
+  final UserController _usersController = Get.find<UserController>();
   final CommonController _commonController = Get.put(CommonController());
-
+  final ItemController _itemsController = Get.put(ItemController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,16 +42,21 @@ class _NoInternetScreenState extends State<NoInternetScreen> {
               SizedBox(
                 height: 100.0,
               ),
-              Text('Пожалуйста проверьте подключение к интернету',
+              Text('Пожалуйста, проверьте подключение к интернету',
+                  textAlign: TextAlign.center,
                   style: getBigTextStyle(color: MColors.white)),
               SizedBox(
                 height: 20.0,
               ),
               LoadingButton("Проверить", () async {
                 var _initPath =
-                    await checkInitPath(_userController, _commonController);
+                    await checkInitPath(_usersController, _commonController);
                 if (_initPath != SMPath.noNetwork) {
+                  _itemsController.onInit();
+                  _usersController.onInit();
                   await _commonController.fetchItems();
+                  await _commonController.getLocations(1);
+                  await _itemsController.fetchItems();
                 }
                 if (_initPath.startsWith("/")) {
                   GoRouter.of(context).go(_initPath);

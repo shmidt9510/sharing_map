@@ -45,7 +45,7 @@ class _LoginState extends State<LoginScreen> {
                   (String? value) {
                 return EmailValidator.validate(value ?? "")
                     ? null
-                    : "Пожалуйста введите валидную почту";
+                    : "Пожалуйста, введите валидную почту";
               }, keyboardType: TextInputType.emailAddress),
               const SizedBox(height: 10),
               getPasswordTextField(

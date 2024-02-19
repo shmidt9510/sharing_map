@@ -22,7 +22,6 @@ class UserController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    CheckAuthorization();
   }
 
   Future<bool> CheckAuthorization() async {

@@ -47,7 +47,7 @@ class _ResetPasswordMailState extends State<ResetPasswordMailScreen> {
               const SizedBox(height: 50),
               getTextField(_controllerUsername, "Введите свой email", (value) {
                 if (!EmailValidator.validate(value ?? "")) {
-                  return "Пожалуйста введите валидную почту";
+                  return "Пожалуйста, введите валидную почту";
                 }
                 return null;
               }, keyboardType: TextInputType.emailAddress),

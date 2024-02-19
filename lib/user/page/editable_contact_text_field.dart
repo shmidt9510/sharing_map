@@ -4,6 +4,7 @@ import 'package:sharing_map/controllers/user_controller.dart';
 import 'package:sharing_map/models/contact.dart';
 import 'package:sharing_map/theme.dart';
 import 'package:sharing_map/utils/colors.dart';
+import 'package:sharing_map/widgets/allWidgets.dart';
 
 class EditableContactTextField extends StatefulWidget {
   UserContact userContact;
@@ -30,11 +31,16 @@ class _EditableContactTextFieldState extends State<EditableContactTextField> {
     });
 
     if (!_isEditing) {
-      await _function(UserContact(
-          id: widget.userContact.id,
-          contact: _controller.text,
-          type: widget.userContact.type));
-      widget.callback();
+      String? errorMessage = widget.userContact.checkFunction(_controller.text);
+      if (errorMessage == null) {
+        await _function(UserContact(
+            id: widget.userContact.id,
+            contact: _controller.text,
+            type: widget.userContact.type));
+        widget.callback();
+      } else {
+        showErrorScaffold(context, errorMessage);
+      }
     }
   }
 

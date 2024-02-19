@@ -15,7 +15,6 @@ class CommonController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    fetchItems();
   }
 
   Future<void> fetchItems() async {
