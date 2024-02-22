@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sharing_map/controllers/user_controller.dart';
@@ -9,11 +10,25 @@ import 'package:sharing_map/utils/shared.dart';
 import 'package:sharing_map/controllers/common_controller.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
+// class CustomImageCache extends WidgetsFlutterBinding {
+//   @override
+//   ImageCache createImageCache() {
+//     ImageCache imageCache = super.createImageCache();
+//     // Set your image cache size
+//     imageCache.maximumSizeBytes = 1024 * 1024 * 100; // 100 MB
+//     return imageCache;
+//   }
+// }
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SharedPrefs().init();
   await dotenv.load(fileName: ".env");
   WidgetsFlutterBinding.ensureInitialized();
+  // if (kReleaseMode) {
+  //   CustomImageCache();
+  // }
+  // WidgetsFlutterBinding.ensureInitialized();
 
   final CommonController _commonController = Get.put(CommonController());
   final ItemController _itemsController = Get.put(ItemController());

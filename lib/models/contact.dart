@@ -89,7 +89,7 @@ extension ValidationCallback on UserContact {
       case UserContactType.TELEGRAM:
         return (str) {
           if (!RegExp(r'^[a-z][a-z0-9_]{4,31}$').hasMatch(str)) {
-            return "Не валидный логин телеграма (не должно начинатся с @)";
+            return "Невалидный логин телеграма (не должно начинатся с @)";
           }
           return null;
         };

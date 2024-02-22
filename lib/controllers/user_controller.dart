@@ -6,6 +6,25 @@ import 'package:sharing_map/services/user_service.dart';
 import 'package:get/get.dart';
 import 'package:sharing_map/utils/shared.dart';
 
+enum SignupResult { ok, noEmail, emailTaken, Failed }
+
+extension SignupExtension on SignupResult {
+  String get statusMessage {
+    switch (this) {
+      case SignupResult.ok:
+        return "ok";
+      case SignupResult.Failed:
+        return "Что-то пошло не так";
+      case SignupResult.emailTaken:
+        return "Пользователь с таким email уже существует. Попробуйте сбросить пароль";
+      case SignupResult.noEmail:
+        return "Неверный формат почты";
+      default:
+        return "";
+    }
+  }
+}
+
 class UserController extends GetxController {
   var isLoading = true.obs;
   User? myself = null;
@@ -36,16 +55,24 @@ class UserController extends GetxController {
     return true;
   }
 
-  Future<bool> Signup(String email, String username, String password) async {
+  Future<SignupResult> Signup(
+      String email, String username, String password) async {
     try {
       String result = await UserWebService.signup(email, username, password);
       if (result.isEmpty) {
-        return false;
+        return SignupResult.Failed;
+      }
+      if (result == "email_taken") {
+        return SignupResult.emailTaken;
+      }
+
+      if (result == "invalid_email") {
+        return SignupResult.noEmail;
       }
       SharedPrefs().confirmationToken = result;
-      return true;
+      return SignupResult.ok;
     } catch (e) {
-      return false;
+      return SignupResult.Failed;
     }
   }
 

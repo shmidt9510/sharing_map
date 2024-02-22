@@ -108,6 +108,12 @@ class UserWebService {
         return Future.error("failed_get_confirmation_token");
       }
       return jsonData["confirmationTokenId"].toString();
+    } else if (response.statusCode == 400) {
+      if (utf8.decode(response.bodyBytes) ==
+          "Registration failed. Email already taken.") {
+        return "email_taken";
+      }
+      return "invalid_email";
     } else {
       return Future.error(
           "failed_with_status_code_" + response.statusCode.toString());

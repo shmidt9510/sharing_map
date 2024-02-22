@@ -35,6 +35,7 @@ class _ResetPasswordMailState extends State<ResetPasswordMailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: Text("Сбросить пароль")),
       floatingActionButton: BackButton(color: MColors.white),
       floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
       backgroundColor: MColors.primaryGreen,

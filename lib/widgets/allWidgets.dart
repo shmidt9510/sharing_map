@@ -69,9 +69,11 @@ Widget getButton(
       ),
     ),
     onPressed: onPressed,
-    child: Text(
-      labelText,
-      style: textStyle,
+    child: Center(
+      child: Text(
+        labelText,
+        style: textStyle,
+      ),
     ),
   );
 }
@@ -146,12 +148,13 @@ Widget getPasswordTextField(
   );
 }
 
-void showErrorScaffold(BuildContext context, String errorMessage) {
+void showErrorScaffold(BuildContext context, String errorMessage,
+    {String label = "Закрыть", void Function()? onPressed = null}) {
   SnackBar snackBar = SnackBar(
     content: Text(errorMessage),
     action: SnackBarAction(
-      label: 'Закрыть',
-      onPressed: () {},
+      label: label,
+      onPressed: onPressed ?? () {},
     ),
   );
   ScaffoldMessenger.of(context).showSnackBar(snackBar);

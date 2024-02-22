@@ -43,7 +43,6 @@ class LoadingButtonState extends State<LoadingButton> {
                 _isLoading = true;
               });
               try {
-                await Future.delayed(Duration(seconds: 3));
                 await widget.onPressed.call();
               } catch (e) {
                 debugPrint("catch " + e.toString());

@@ -10,15 +10,15 @@ import 'package:sharing_map/utils/shared.dart';
 class LoggerInterceptor implements InterceptorContract {
   @override
   Future<RequestData> interceptRequest({required RequestData data}) async {
-    print("----- Request -----");
-    print(data.toString());
+    debugPrint("----- Request -----");
+    debugPrint(data.toString());
     return data;
   }
 
   @override
   Future<ResponseData> interceptResponse({required ResponseData data}) async {
-    print("----- Response -----");
-    print(data.toString());
+    debugPrint("----- Response -----");
+    debugPrint(data.toString());
     return data;
   }
 }
@@ -32,7 +32,7 @@ class AuthorizationInterceptor implements InterceptorContract {
         data.headers["Authorization"] = "Bearer " + authToken;
       }
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
     return data;
   }

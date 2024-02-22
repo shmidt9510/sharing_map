@@ -132,7 +132,7 @@ class _LoginState extends State<RegistrationScreen> {
                         _controllerMail.text,
                         _controllerUsername.text,
                         _controllerPassword.text);
-                    if (result) {
+                    if (result == SignupResult.ok) {
                       showErrorScaffold(context, 'Отправили вам код в письме');
                       GoRouter.of(context).go(
                         SMPath.start +
@@ -141,6 +141,15 @@ class _LoginState extends State<RegistrationScreen> {
                             "/" +
                             SMPath.registrationCode,
                       );
+                    } else if (result == SignupResult.emailTaken) {
+                      showErrorScaffold(context, result.statusMessage,
+                          label: "Сбросить пароль", onPressed: () {
+                        GoRouter.of(context).go(
+                          SMPath.start + "/" + SMPath.forgetPasswordMail,
+                        );
+                      });
+                    } else {
+                      showErrorScaffold(context, result.statusMessage);
                     }
                   }),
                   const SizedBox(height: 10),

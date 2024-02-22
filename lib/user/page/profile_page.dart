@@ -52,13 +52,19 @@ class _ProfilePageState extends State<ProfilePage> {
               return Padding(
                 padding: const EdgeInsets.all(24.0),
                 child: Column(children: [
-                  Text("Чтобы редактировать профиль надо зарегистрироваться"),
+                  Text("Чтобы редактировать профиль, надо зарегистрироваться"),
                   SizedBox(
                     height: 10,
                   ),
-                  getButton(context, "Регистрируемся?", () {
+                  getButton(context, "Регистрация", () {
                     GoRouter.of(context)
                         .go(SMPath.start + "/" + SMPath.registration);
+                  }, color: MColors.grey1),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  getButton(context, "Войти", () {
+                    GoRouter.of(context).go(SMPath.start + "/" + SMPath.login);
                   })
                 ]),
               );

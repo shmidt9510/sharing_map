@@ -37,7 +37,7 @@ class OnBoardingPageState extends State<OnBoardingPage> {
         imagePadding: EdgeInsets.zero,
         bodyFlex: 1,
         imageFlex: 2,
-        safeArea: 1);
+        safeArea: 50);
     return IntroductionScreen(
       key: introKey,
       globalBackgroundColor: MColors.primaryGreen,

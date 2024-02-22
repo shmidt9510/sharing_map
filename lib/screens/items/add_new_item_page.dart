@@ -58,8 +58,12 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   String dropdownValue = itemType.first;
+  final dropDownKeyLocation = GlobalKey<DropdownSearchState<SMLocation>>();
+  final dropDownKeyCategory = GlobalKey<DropdownSearchState<ItemCategory>>();
 
   void clearData() {
+    dropDownKeyLocation.currentState?.clear();
+    dropDownKeyCategory.currentState?.clear();
     _chosenLocations.clear();
     _chosenCategories.clear();
     titleController.clear();
@@ -92,21 +96,45 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
                                   .getUserContact(SharedPrefs().userId),
                               builder: (context, snapshot) {
                                 if (!snapshot.hasData) {
-                                  return Center(
-                                      child:
-                                          CircularProgressIndicator.adaptive());
+                                  return Container();
                                 }
                                 _userContacts =
                                     snapshot.data as List<UserContact>;
                                 return _userContacts.isEmpty
-                                    ? getButton(context,
-                                        'Пожалуйста, проверьте, чтобы в профиле был заполнен хотя бы один контакт. Перейти в профиль',
-                                        () {
-                                        setState(
-                                          () => {},
-                                        );
-                                        GoRouter.of(context).go(SMPath.profile);
-                                      }, color: MColors.red2)
+                                    ? ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          textStyle: getMediumTextStyle(),
+                                          backgroundColor: MColors.red2,
+                                          minimumSize: Size.fromHeight(50),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                          ),
+                                        ),
+                                        onPressed: () {
+                                          setState(
+                                            () => {},
+                                          );
+                                          GoRouter.of(context)
+                                              .go(SMPath.profile);
+                                        },
+                                        child: Center(
+                                          child: Text.rich(TextSpan(
+                                            text:
+                                                'Пожалуйста, проверьте, чтобы в профиле был заполнен хотя бы один контакт ',
+                                            style: getMediumTextStyle(),
+                                            children: <TextSpan>[
+                                              TextSpan(
+                                                  text: 'Перейти в профиль',
+                                                  style: TextStyle(
+                                                    decoration: TextDecoration
+                                                        .underline,
+                                                  )),
+                                              // can add more TextSpans here...
+                                            ],
+                                          )),
+                                        ),
+                                      )
                                     : Container();
                               })
                           : Container(),
@@ -136,8 +164,21 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
                         height: 20,
                       ),
                       DropdownSearch<ItemCategory>.multiSelection(
-                        validator: (value) =>
-                            value == null ? 'Выберите категорию' : null,
+                        key: dropDownKeyCategory,
+                        autoValidateMode: AutovalidateMode.disabled,
+                        validator: (value) {
+                          if (value == null) {
+                            return "Пожалуйста, выберите категорию";
+                          }
+                          var chosen = value as List<ItemCategory>;
+                          if (chosen.isEmpty) {
+                            return "Пожалуйста, выберите категорию";
+                          }
+                          if (chosen.length > 2) {
+                            return "Пожалуйста, выберите не больше двух категорий";
+                          }
+                          return null;
+                        },
                         onChanged: (List<ItemCategory>? data) {
                           setState(() {
                             _chosenCategories = data ?? [];
@@ -175,8 +216,21 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
                         height: 10,
                       ),
                       DropdownSearch<SMLocation>.multiSelection(
-                        validator: (value) =>
-                            value == null ? 'field required' : null,
+                        key: dropDownKeyLocation,
+                        autoValidateMode: AutovalidateMode.disabled,
+                        validator: (value) {
+                          if (value == null) {
+                            return "Пожалуйста, выберите станцию метро";
+                          }
+                          var chosen = value as List<SMLocation>;
+                          if (chosen.isEmpty) {
+                            return "Пожалуйста, выберите станцию метро";
+                          }
+                          if (chosen.length > 3) {
+                            return "Пожалуйста, выберите меньше трёх станций метро";
+                          }
+                          return null;
+                        },
                         onChanged: (List<SMLocation>? data) {
                           setState(() {
                             _chosenLocations = data ?? [];
@@ -223,13 +277,19 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
             : Padding(
                 padding: const EdgeInsets.all(24.0),
                 child: Column(children: [
-                  Text("Чтобы редактировать профиль надо зарегистрироваться"),
+                  Text("Чтобы добавлять объявления, надо зарегистрироваться"),
                   SizedBox(
                     height: 10,
                   ),
-                  getButton(context, "Регистрируемся?", () {
+                  getButton(context, "Регистрация", () {
                     GoRouter.of(context)
                         .go(SMPath.start + "/" + SMPath.registration);
+                  }),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  getButton(context, "Войти", () {
+                    GoRouter.of(context).go(SMPath.start + "/" + SMPath.login);
                   })
                 ]),
               ));
@@ -308,24 +368,6 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
     }
     if ((imageFileList?.length ?? 0) > 5) {
       showErrorScaffold(context, "Очень много фотографий");
-      return;
-    }
-    if (_chosenCategories.isEmpty) {
-      showErrorScaffold(context, "Пожалуйста, укажите хотя бы одну категорию");
-      return;
-    }
-    if (_chosenCategories.length > 2) {
-      showErrorScaffold(context, "Категорий не может быть больше двух");
-      return;
-    }
-    if (_chosenLocations.isEmpty) {
-      showErrorScaffold(
-          context, "Пожалуйста, укажите хотя бы одну станцию метро");
-      return;
-    }
-    if (_chosenLocations.length > 3) {
-      showErrorScaffold(
-          context, "Пожалуйтса, выставите меньше четырёх станций метро");
       return;
     }
     if (_userContacts.isEmpty) {
