@@ -28,7 +28,7 @@ extension SignupExtension on SignupResult {
 class UserController extends GetxController {
   var isLoading = true.obs;
   User? myself = null;
-  List<UserContact> myContacts = [];
+  var myContacts = <UserContact>[].obs;
   var token = ''.obs;
 
   void setToken(String _token) {
@@ -146,7 +146,7 @@ class UserController extends GetxController {
       UserWebService.getUserContact(SharedPrefs().userId)
     ).wait;
     myself = user;
-    myContacts = contacts;
+    myContacts(contacts);
     return myself!;
   }
 
@@ -154,7 +154,7 @@ class UserController extends GetxController {
     await SharedPrefs().clear();
     SharedPrefs().isFirstRun = false;
     myself = null;
-    myContacts = [];
+    myContacts([]);
     return true;
   }
 
@@ -166,7 +166,7 @@ class UserController extends GetxController {
     await SharedPrefs().clear();
     SharedPrefs().isFirstRun = false;
     myself = null;
-    myContacts = [];
+    myContacts([]);
     return true;
   }
 
@@ -222,9 +222,18 @@ class UserController extends GetxController {
 
   Future<UserContact> saveContact(UserContact contact) async {
     try {
-      return contact.id == null
-          ? UserWebService.saveContact(contact)
-          : UserWebService.updateContact(contact);
+      if (contact.id == null) {
+        var newContact = await UserWebService.saveContact(contact);
+        myContacts.add(newContact);
+        return newContact;
+      }
+      var updatedContact = await UserWebService.updateContact(contact);
+      for (int i = 0; i < myContacts.length; i++) {
+        if (myContacts[i].id == updatedContact) {
+          myContacts[i] = updatedContact;
+        }
+      }
+      return updatedContact;
     } catch (e) {
       return Future.error(e.toString());
     }
@@ -232,7 +241,15 @@ class UserController extends GetxController {
 
   Future<bool> deleteContact(String contactId) async {
     try {
-      return UserWebService.deleteContact(contactId);
+      var result = await UserWebService.deleteContact(contactId);
+      if (result) {
+        for (int i = 0; i < myContacts.length; i++) {
+          if (myContacts[i].id == contactId) {
+            myContacts.remove(i);
+          }
+        }
+      }
+      return result;
     } catch (e) {
       return Future.error(e.toString());
     }

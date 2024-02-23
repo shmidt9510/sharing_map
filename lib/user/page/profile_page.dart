@@ -342,7 +342,7 @@ class _ProfilePageState extends State<ProfilePage> {
     if (profileImage == null) {
       return;
     }
-    profileImage = await compressImage(profileImage!, 256 * 1024);
+    profileImage = await compressImage(profileImage!, 128 * 1024);
     if (!await _userController.UpdateUserPhoto(profileImage!) ||
         !await CachedImage.EvictUserProfileImage(SharedPrefs().userId)) {
       var snackBar = SnackBar(

@@ -45,12 +45,19 @@ class _EditableContactTextFieldState extends State<EditableContactTextField> {
       }
       String? errorMessage = widget.userContact.checkFunction(_controller.text);
       if (errorMessage == null) {
+        if (_controller.text.isEmpty) {
+          showErrorScaffold(context, "Попытка сохранить пустой текст");
+          return;
+        }
         await _saveContact(UserContact(
             id: widget.userContact.id,
             contact: _controller.text,
             type: widget.userContact.type));
         widget.callback();
       } else {
+        setState(() {
+          _controller.text = '';
+        });
         showErrorScaffold(context, errorMessage);
       }
     }
@@ -102,7 +109,7 @@ class _EditableContactTextFieldState extends State<EditableContactTextField> {
   Future<void> _saveContact(UserContact contact) async {
     UserController _userController = Get.find<UserController>();
     widget.userContact = await _userController.saveContact(contact);
-
+    _userController.refresh();
     setState(() {
       for (var i = 0; i < widget.userController.myContacts.length; i++) {
         if (widget.userController.myContacts[i].id == contact.id) {

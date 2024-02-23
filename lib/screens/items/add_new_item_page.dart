@@ -21,6 +21,7 @@ import 'package:sharing_map/utils/shared.dart';
 import 'package:sharing_map/widgets/allWidgets.dart';
 import 'package:sharing_map/widgets/loading_button.dart';
 import 'package:sharing_map/utils/compress_image.dart';
+import 'package:sharing_map/widgets/no_contacts_button.dart';
 
 enum PhotoSource { FILE, NETWORK }
 
@@ -44,7 +45,7 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
     List<XFile> selectedImages = [];
     selectedImages = await imagePicker.pickMultiImage(imageQuality: 90);
     for (int i = 0; i < selectedImages.length; i++) {
-      selectedImages[i] = await compressImage(selectedImages[i], 1024 * 1024);
+      selectedImages[i] = await compressImage(selectedImages[i], 256 * 1024);
     }
     if (selectedImages.isNotEmpty) {
       imageFileList!.addAll(selectedImages);
@@ -91,57 +92,7 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
                   padding: const EdgeInsets.all(20),
                   child: SingleChildScrollView(
                     child: Column(children: [
-                      _userContacts.isEmpty
-                          ? FutureBuilder(
-                              future: _userController
-                                  .getUserContact(SharedPrefs().userId),
-                              builder: (context, snapshot) {
-                                if (!snapshot.hasData) {
-                                  return Container();
-                                }
-                                _userContacts =
-                                    snapshot.data as List<UserContact>;
-                                return _userContacts.isEmpty
-                                    ? ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          textStyle: getMediumTextStyle(),
-                                          backgroundColor: MColors.red2,
-                                          minimumSize: Size.fromHeight(50),
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                          ),
-                                        ),
-                                        onPressed: () {
-                                          setState(
-                                            () => {},
-                                          );
-                                          GoRouter.of(context)
-                                              .go(SMPath.profile);
-                                        },
-                                        child: Center(
-                                          child: Text.rich(TextSpan(
-                                            text:
-                                                'Пожалуйста, проверьте, чтобы в профиле был заполнен хотя бы один контакт ',
-                                            style: getMediumTextStyle(),
-                                            children: <TextSpan>[
-                                              TextSpan(
-                                                  text: 'Перейти в профиль',
-                                                  style: TextStyle(
-                                                    decoration: TextDecoration
-                                                        .underline,
-                                                  )),
-                                              // can add more TextSpans here...
-                                            ],
-                                          )),
-                                        ),
-                                      )
-                                    : Container();
-                              })
-                          : Container(),
-                      const SizedBox(
-                        height: 10,
-                      ),
+                      NoContactButton(),
                       getTextField(titleController, 'Что вы хотите отдать',
                           (String? value) {
                         if ((value?.length ?? 0) < 2) {
@@ -304,7 +255,7 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
           children: [
             getButton(context, "Добавьте до 5 фото", () {
               selectImages();
-            }, textStyle: getBigTextStyle()),
+            }, textStyle: getMediumTextStyle()),
             SizedBox(
               height: 10,
             ),

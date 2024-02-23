@@ -94,7 +94,7 @@ extension ValidationCallback on UserContact {
           if (str.startsWith("@")) {
             return "Пожалуйста, введите логин без @";
           }
-          if (str.length < 4) {
+          if (str.length < 5) {
             return "В логине телеграма должно быть минимум 5 символа";
           }
           if (!RegExp(r'^[a-z][a-z0-9_]{4,31}$').hasMatch(str)) {
