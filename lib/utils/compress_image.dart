@@ -19,7 +19,7 @@ Future<XFile> compressImage(XFile imageFile, int targetSizeInBytes) async {
     if (something == null) {
       return XFile(imgFile.path);
     }
-    imgFile = something;
+    imgFile = something as File;
   }
   return XFile(imgFile.path);
 }

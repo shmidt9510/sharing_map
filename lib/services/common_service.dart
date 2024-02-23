@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:sharing_map/utils/constants.dart';
 
@@ -34,8 +33,6 @@ class CommonWebService {
   }
 
   static Future<List<Subcategory>?> fetchSubcategories() async {
-    final dio = Dio();
-
     var response =
         await client.get(Uri.https(Constants.BACK_URL, "/subcategories/all"));
     if (response.statusCode == 200) {

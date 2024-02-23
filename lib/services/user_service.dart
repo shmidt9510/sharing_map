@@ -8,7 +8,6 @@ import 'package:sharing_map/services/photo_service.dart';
 
 import 'package:sharing_map/utils/constants.dart';
 import 'package:sharing_map/utils/shared.dart';
-import 'package:uuid/uuid_util.dart';
 import 'interceptors.dart';
 
 import 'package:flutter/foundation.dart';

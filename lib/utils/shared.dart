@@ -1,18 +1,20 @@
-import 'package:secure_shared_preferences/secure_shared_preferences.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class SharedPrefs {
   static late SharedPreferences _sharedPrefs;
-  static late SecureSharedPref _secureSharedPref;
+  static late FlutterSecureStorage _secureSharedPref;
   static final SharedPrefs _instance = SharedPrefs._internal();
-
+  static final _androidOptions = AndroidOptions(
+    encryptedSharedPreferences: true,
+  );
   factory SharedPrefs() => _instance;
 
   SharedPrefs._internal();
 
   Future<void> init() async {
     _sharedPrefs = await SharedPreferences.getInstance();
-    _secureSharedPref = await SecureSharedPref.getInstance();
+    _secureSharedPref = FlutterSecureStorage();
   }
 
   String get userId => _sharedPrefs.getString(keyUserId) ?? "";
@@ -28,18 +30,23 @@ class SharedPrefs {
   }
 
   Future<String> getAuthToken() async =>
-      await _secureSharedPref.getString(keyAuthToken, isEncrypted: true) ?? "";
+      await _secureSharedPref.read(
+          key: keyAuthToken, aOptions: _androidOptions) ??
+      "";
 
   set authToken(String value) {
-    _secureSharedPref.putString(keyAuthToken, value, isEncrypted: true);
+    _secureSharedPref.write(
+        key: keyAuthToken, value: value, aOptions: _androidOptions);
   }
 
   Future<String> getRefreshToken() async =>
-      await _secureSharedPref.getString(keyRefreshToken, isEncrypted: true) ??
+      await _secureSharedPref.read(
+          key: keyRefreshToken, aOptions: _androidOptions) ??
       "";
 
   set refreshToken(String value) {
-    _secureSharedPref.putString(keyRefreshToken, value, isEncrypted: true);
+    _secureSharedPref.write(
+        key: keyRefreshToken, value: value, aOptions: _androidOptions);
   }
 
   String get confirmationToken =>

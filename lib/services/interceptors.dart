@@ -9,37 +9,71 @@ import 'package:sharing_map/utils/shared.dart';
 
 class LoggerInterceptor implements InterceptorContract {
   @override
-  Future<RequestData> interceptRequest({required RequestData data}) async {
-    debugPrint("----- Request -----");
-    debugPrint(data.toString());
-    return data;
+  Future<BaseRequest> interceptRequest({required BaseRequest request}) async {
+    // debugPrint("----- Request -----");
+    // request.printInfo();
+    // request.printError();
+    // debugPrint(request.method +
+    //     "_" +
+    //     request.headers.toString() +
+    //     "_" +
+    //     request.url.toString() +
+    //     "_" +
+    //     request.finalize().toString());
+    return request;
   }
 
   @override
-  Future<ResponseData> interceptResponse({required ResponseData data}) async {
-    debugPrint("----- Response -----");
-    debugPrint(data.toString());
-    return data;
+  Future<BaseResponse> interceptResponse(
+      {required BaseResponse response}) async {
+    // debugPrint("----- Response -----");
+    // response.printInfo();
+    // response.printError();
+    // debugPrint(response.request.toString() +
+    //     response.headers.toString() +
+    //     response.statusCode.toString());
+    return response;
+  }
+
+  @override
+  Future<bool> shouldInterceptRequest() async {
+    return true;
+  }
+
+  @override
+  Future<bool> shouldInterceptResponse() async {
+    return true;
   }
 }
 
 class AuthorizationInterceptor implements InterceptorContract {
   @override
-  Future<RequestData> interceptRequest({required RequestData data}) async {
+  Future<BaseRequest> interceptRequest({required BaseRequest request}) async {
     try {
       String authToken = await SharedPrefs().getAuthToken();
       if (authToken.isNotEmpty) {
-        data.headers["Authorization"] = "Bearer " + authToken;
+        request.headers["Authorization"] = "Bearer " + authToken;
       }
     } catch (e) {
       debugPrint(e.toString());
     }
-    return data;
+    return request;
   }
 
   @override
-  Future<ResponseData> interceptResponse({required ResponseData data}) async {
-    return data;
+  Future<BaseResponse> interceptResponse(
+      {required BaseResponse response}) async {
+    return response;
+  }
+
+  @override
+  Future<bool> shouldInterceptRequest() async {
+    return true;
+  }
+
+  @override
+  Future<bool> shouldInterceptResponse() async {
+    return true;
   }
 }
 
@@ -55,7 +89,7 @@ class RefreshTokenInterceptor implements InterceptorContract {
     interceptors: [LoggerInterceptor()],
   );
   @override
-  Future<RequestData> interceptRequest({required RequestData data}) async {
+  Future<BaseRequest> interceptRequest({required BaseRequest request}) async {
     try {
       // debugPrint("onInit");
       // debugPrint(SharedPrefs().authToken);
@@ -79,23 +113,27 @@ class RefreshTokenInterceptor implements InterceptorContract {
             SharedPrefs().refreshToken = jsonData["refreshToken"].toString();
             SharedPrefs().logged = true;
           }
-          //  else {
-          //   SharedPrefs().authToken = "";
-          //   SharedPrefs().logged = false;
-          //   SharedPrefs().refreshToken = "";
-          //   SharedPrefs().userId = "";
-          //   return Future.error("unuathorized");
-          // }
         }
       }
     } catch (e) {
       return Future.error("500");
     }
-    return data;
+    return request;
   }
 
   @override
-  Future<ResponseData> interceptResponse({required ResponseData data}) async {
-    return data;
+  Future<BaseResponse> interceptResponse(
+      {required BaseResponse response}) async {
+    return response;
+  }
+
+  @override
+  Future<bool> shouldInterceptRequest() async {
+    return true;
+  }
+
+  @override
+  Future<bool> shouldInterceptResponse() async {
+    return true;
   }
 }
