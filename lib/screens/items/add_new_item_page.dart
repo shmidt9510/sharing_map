@@ -16,6 +16,7 @@ import 'package:sharing_map/models/item.dart';
 import 'package:sharing_map/models/location.dart';
 import 'package:sharing_map/path.dart';
 import 'package:sharing_map/theme.dart';
+import 'package:sharing_map/utils/chose_image_source.dart';
 import 'package:sharing_map/utils/colors.dart';
 import 'package:sharing_map/utils/shared.dart';
 import 'package:sharing_map/widgets/allWidgets.dart';
@@ -42,8 +43,16 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
   List<UserContact> _userContacts = [];
 
   void selectImages() async {
+    var source = await chooseImageSource(context, "Выберите изображения");
     List<XFile> selectedImages = [];
-    selectedImages = await imagePicker.pickMultiImage(imageQuality: 90);
+    if (source == ImageSource.gallery) {
+      selectedImages = await imagePicker.pickMultiImage(imageQuality: 90);
+    } else {
+      var image = await imagePicker.pickImage(source: ImageSource.camera);
+      if (image != null) {
+        selectedImages.add(image);
+      }
+    }
     for (int i = 0; i < selectedImages.length; i++) {
       selectedImages[i] = await compressImage(selectedImages[i], 256 * 1024);
     }

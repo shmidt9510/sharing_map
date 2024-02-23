@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
@@ -9,6 +11,7 @@ import 'package:sharing_map/path.dart';
 import 'package:sharing_map/screens/items/item_widgets_self_profile.dart';
 import 'package:sharing_map/theme.dart';
 import 'package:sharing_map/user/page/editable_contact_text_field.dart';
+import 'package:sharing_map/utils/chose_image_source.dart';
 import 'package:sharing_map/utils/colors.dart';
 import 'package:sharing_map/utils/compress_image.dart';
 import 'package:sharing_map/utils/shared.dart';
@@ -90,8 +93,12 @@ class _ProfilePageState extends State<ProfilePage> {
                               ClipOval(
                                   child: SizedBox.fromSize(
                                       size: Size.fromRadius(48),
-                                      child:
-                                          _user.buildImage(fit: BoxFit.cover))),
+                                      child: profileImage == null
+                                          ? _user.buildImage(fit: BoxFit.cover)
+                                          : Image.file(
+                                              File(profileImage!.path),
+                                              fit: BoxFit.cover,
+                                            ))),
                               Positioned(
                                 top: -5,
                                 right: -5,
@@ -198,9 +205,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 padding: const EdgeInsets.symmetric(horizontal: 10.0),
                 child: EditableContactTextField(
                     contacts[index], _userController,
-                    callback: () =>
-                        setState(() {})) //Text(contacts[index].contact),
-                )
+                    callback: () => setState(() {})))
           ]);
         });
   }
@@ -336,30 +341,23 @@ class _ProfilePageState extends State<ProfilePage> {
     ];
   }
 
-  void selectImage(User user) async {
-    var source = await _dialogBuilder(context);
-    profileImage = await imagePicker.pickImage(source: source);
-    if (profileImage == null) {
-      return;
+  Future<bool> selectImage(User user) async {
+    var source = await chooseImageSource(
+        context, "Вы можете выбрать изображение профиля");
+    var image = await imagePicker.pickImage(source: source);
+    if (image == null) {
+      return false;
     }
-    profileImage = await compressImage(profileImage!, 128 * 1024);
-    if (!await _userController.UpdateUserPhoto(profileImage!) ||
-        !await CachedImage.EvictUserProfileImage(SharedPrefs().userId)) {
-      var snackBar = SnackBar(
-        content: const Text(
-            'Изображение должно было поменяться, попобуйте перезагрузить приложение. Уже знаем об этом и чиним :('),
-        action: SnackBarAction(
-          label: 'Закрыть',
-          onPressed: () {
-            // Some code to undo the change.
-          },
-        ),
-      );
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    image = await compressImage(image, 128 * 1024);
+    if (!await _userController.UpdateUserPhoto(image)) {
+      showErrorScaffold(context, "Не получилось загрузить изображение");
+      return false;
     }
+    CachedImage.EvictUserProfileImage(SharedPrefs().userId);
     setState(() {
-      user.hasProfileImage = true;
+      profileImage = image;
     });
+    return true;
   }
 
   Future<bool> saveUser(BuildContext context) async {
@@ -380,38 +378,5 @@ class _ProfilePageState extends State<ProfilePage> {
     }
     setState(() {});
     return true;
-  }
-
-  Future<ImageSource> _dialogBuilder(BuildContext context) async {
-    ImageSource _chosenSource = ImageSource.gallery;
-    await showDialog<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Вы можете выбрать одно изображение'),
-          actions: [
-            TextButton(
-              style: TextButton.styleFrom(
-                textStyle: Theme.of(context).textTheme.labelLarge,
-              ),
-              child: const Text('Камера'),
-              onPressed: () {
-                Navigator.of(context).maybePop();
-              },
-            ),
-            TextButton(
-              style: TextButton.styleFrom(
-                textStyle: Theme.of(context).textTheme.labelLarge,
-              ),
-              child: const Text('Галерея'),
-              onPressed: () {
-                Navigator.of(context).maybePop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-    return _chosenSource;
   }
 }

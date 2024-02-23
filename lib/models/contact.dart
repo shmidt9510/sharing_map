@@ -97,8 +97,11 @@ extension ValidationCallback on UserContact {
           if (str.length < 5) {
             return "В логине телеграма должно быть минимум 5 символа";
           }
+          if (str.length > 32) {
+            return "В логине телеграма меньше 33 символов";
+          }
           if (!RegExp(r'^[a-z][a-z0-9_]{4,31}$').hasMatch(str)) {
-            return "Невалидный логин телеграма (не должно начинатся с @)";
+            return "Невалидный логин телеграма";
           }
           return null;
         };

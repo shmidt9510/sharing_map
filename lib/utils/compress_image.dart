@@ -8,18 +8,18 @@ Future<XFile> compressImage(XFile imageFile, int targetSizeInBytes) async {
   if (imageFile.path == null) {
     return Future.error("no_file");
   }
-  var imgFile = File(imageFile.path);
-  while (await imgFile.lengthSync() > targetSizeInBytes && count < 5) {
+  var imgFile = imageFile;
+  while (await imgFile.length() > targetSizeInBytes && count < 5) {
     count++;
     var something = await FlutterImageCompress.compressAndGetFile(
-      imgFile.absolute.path,
-      imgFile.absolute.path + "_compress_{$count}.jpg",
+      imgFile.path,
+      imgFile.path + "_compress_{$count}.jpg",
       quality: 50,
     );
     if (something == null) {
       return XFile(imgFile.path);
     }
-    imgFile = something as File;
+    imgFile = something;
   }
   return XFile(imgFile.path);
 }
