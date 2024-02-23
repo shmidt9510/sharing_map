@@ -81,6 +81,7 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
 
   @override
   Widget build(BuildContext context) {
+    _userContacts = _userController.myContacts;
     return Scaffold(
         appBar: AppBar(title: Text("Создать объявление")),
         body: SharedPrefs().logged
@@ -284,7 +285,7 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
                   getButton(context, "Регистрация", () {
                     GoRouter.of(context)
                         .go(SMPath.start + "/" + SMPath.registration);
-                  }),
+                  }, color: MColors.grey1),
                   SizedBox(
                     height: 10,
                   ),
@@ -363,14 +364,14 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
       return;
     }
     if (imageFileList?.isEmpty ?? false) {
-      showErrorScaffold(context, "Добавьте пожалуйста фото");
+      showErrorScaffold(context, "Добавьте, пожалуйста фото");
       return;
     }
     if ((imageFileList?.length ?? 0) > 5) {
       showErrorScaffold(context, "Очень много фотографий");
       return;
     }
-    if (_userContacts.isEmpty) {
+    if (_userController.myContacts.isEmpty) {
       showErrorScaffold(
           context, "Пожалуйста, укажите хотя бы один контакт в профиле");
       return;

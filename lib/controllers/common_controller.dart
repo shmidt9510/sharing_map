@@ -19,15 +19,17 @@ class CommonController extends GetxController {
 
   Future<void> fetchItems() async {
     try {
-      var categoriesTemp = await CommonWebService.fetchCategories();
+      final (categoriesTemp, subcategoriesTemp, citiesTemp) = await (
+        CommonWebService.fetchCategories(),
+        CommonWebService.fetchSubcategories(),
+        CommonWebService.fetchCities()
+      ).wait;
       if (categoriesTemp != null) {
         categories(categoriesTemp);
       }
-      var subcategoriesTemp = await CommonWebService.fetchSubcategories();
       if (subcategoriesTemp != null) {
         subcategories(subcategoriesTemp);
       }
-      var citiesTemp = await CommonWebService.fetchCities();
       if (citiesTemp != null) {
         cities(citiesTemp);
       }

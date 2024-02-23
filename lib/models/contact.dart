@@ -88,6 +88,15 @@ extension ValidationCallback on UserContact {
     switch (this.type) {
       case UserContactType.TELEGRAM:
         return (str) {
+          if (str.isEmpty) {
+            return null;
+          }
+          if (str.startsWith("@")) {
+            return "Пожалуйста, введите логин без @";
+          }
+          if (str.length < 4) {
+            return "В логине телеграма должно быть минимум 5 символа";
+          }
           if (!RegExp(r'^[a-z][a-z0-9_]{4,31}$').hasMatch(str)) {
             return "Невалидный логин телеграма (не должно начинатся с @)";
           }
@@ -95,6 +104,9 @@ extension ValidationCallback on UserContact {
         };
       case UserContactType.WHATSAPP:
         return (str) {
+          if (str.isEmpty) {
+            return null;
+          }
           if (!RegExp(r'^[0-9]*$').hasMatch(str)) {
             return "Введите номер телефона без плюса и тире";
           }
@@ -102,6 +114,9 @@ extension ValidationCallback on UserContact {
         };
       case UserContactType.PHONE:
         return (str) {
+          if (str.isEmpty) {
+            return null;
+          }
           if (!RegExp(r'^[0-9]{11}$').hasMatch(str)) {
             return "Введите телефон в формате 8XXXXXXXXXX";
           }

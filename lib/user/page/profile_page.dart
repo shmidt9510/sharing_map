@@ -35,6 +35,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    var contacts = _userController.myContacts;
     return Scaffold(
       appBar: AppBar(
         leading: BackButton(
@@ -123,7 +124,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   buildAbout(_user),
                   Padding(
                     padding: const EdgeInsets.only(left: 20.0),
-                    child: buildContacts(context, _userController),
+                    child: GetUserContactWidget(
+                        PrepareContacts(contacts), context),
                   ),
                   const SizedBox(height: 48),
                   ItemsListViewSelfProfile(
@@ -194,7 +196,8 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                child: EditableContactTextField(contacts[index],
+                child: EditableContactTextField(
+                    contacts[index], _userController,
                     callback: () =>
                         setState(() {})) //Text(contacts[index].contact),
                 )

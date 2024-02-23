@@ -8,8 +8,10 @@ import 'package:sharing_map/widgets/allWidgets.dart';
 
 class EditableContactTextField extends StatefulWidget {
   UserContact userContact;
+  UserController userController;
   final Function callback;
-  EditableContactTextField(this.userContact, {required this.callback});
+  EditableContactTextField(this.userContact, this.userController,
+      {required this.callback});
   @override
   _EditableContactTextFieldState createState() =>
       _EditableContactTextFieldState();
@@ -31,9 +33,19 @@ class _EditableContactTextFieldState extends State<EditableContactTextField> {
     });
 
     if (!_isEditing) {
+      var id = widget.userContact.id;
+      bool hasId = id == null ? false : id.isNotEmpty;
+      if (_controller.text.isEmpty && hasId) {
+        await _deleteContact(id);
+        setState(() {
+          _controller.clear();
+        });
+        widget.callback();
+        return;
+      }
       String? errorMessage = widget.userContact.checkFunction(_controller.text);
       if (errorMessage == null) {
-        await _function(UserContact(
+        await _saveContact(UserContact(
             id: widget.userContact.id,
             contact: _controller.text,
             type: widget.userContact.type));
@@ -87,9 +99,32 @@ class _EditableContactTextFieldState extends State<EditableContactTextField> {
     );
   }
 
-  Future<void> _function(UserContact contact) async {
+  Future<void> _saveContact(UserContact contact) async {
     UserController _userController = Get.find<UserController>();
     widget.userContact = await _userController.saveContact(contact);
-    setState(() {});
+
+    setState(() {
+      for (var i = 0; i < widget.userController.myContacts.length; i++) {
+        if (widget.userController.myContacts[i].id == contact.id) {
+          widget.userController.myContacts[i] = contact;
+          break;
+        }
+      }
+    });
+  }
+
+  Future<void> _deleteContact(String contactId) async {
+    UserController _userController = Get.find<UserController>();
+    if (!await _userController.deleteContact(contactId)) {
+      showErrorScaffold(context, "Не получилось удалить контакт");
+    }
+    setState(() {
+      for (var i = 0; i < widget.userController.myContacts.length; i++) {
+        if (widget.userController.myContacts[i].id == (contactId)) {
+          widget.userController.myContacts.removeAt(i);
+          break;
+        }
+      }
+    });
   }
 }

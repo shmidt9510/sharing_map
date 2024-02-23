@@ -28,6 +28,7 @@ extension SignupExtension on SignupResult {
 class UserController extends GetxController {
   var isLoading = true.obs;
   User? myself = null;
+  List<UserContact> myContacts = [];
   var token = ''.obs;
 
   void setToken(String _token) {
@@ -81,8 +82,12 @@ class UserController extends GetxController {
       return false;
     }
     try {
-      return await UserWebService.signupConfirm(
+      var result = await UserWebService.signupConfirm(
           SharedPrefs().confirmationToken, token);
+      if (result) {
+        await GetMyself();
+      }
+      return result;
     } catch (e) {
       return false;
     }
@@ -91,6 +96,9 @@ class UserController extends GetxController {
   Future<bool> Login(String email, String password) async {
     try {
       bool result = await UserWebService.login(email, password);
+      if (result) {
+        await GetMyself();
+      }
       return result;
     } catch (e) {
       return false;
@@ -133,17 +141,20 @@ class UserController extends GetxController {
     if (SharedPrefs().userId.isEmpty) {
       return Future.error("no_data");
     }
-    return await UserWebService.getUser(SharedPrefs().userId);
+    final (user, contacts) = await (
+      UserWebService.getUser(SharedPrefs().userId),
+      UserWebService.getUserContact(SharedPrefs().userId)
+    ).wait;
+    myself = user;
+    myContacts = contacts;
+    return myself!;
   }
 
   Future<bool> Logout() async {
     await SharedPrefs().clear();
     SharedPrefs().isFirstRun = false;
-    // var result = await UserWebService.getUser(id);
-    // if (id == SharedPrefs().userId) {
-    //   myself = result;
-    // }
-    // return result;
+    myself = null;
+    myContacts = [];
     return true;
   }
 
@@ -154,6 +165,8 @@ class UserController extends GetxController {
     }
     await SharedPrefs().clear();
     SharedPrefs().isFirstRun = false;
+    myself = null;
+    myContacts = [];
     return true;
   }
 
@@ -212,6 +225,14 @@ class UserController extends GetxController {
       return contact.id == null
           ? UserWebService.saveContact(contact)
           : UserWebService.updateContact(contact);
+    } catch (e) {
+      return Future.error(e.toString());
+    }
+  }
+
+  Future<bool> deleteContact(String contactId) async {
+    try {
+      return UserWebService.deleteContact(contactId);
     } catch (e) {
       return Future.error(e.toString());
     }

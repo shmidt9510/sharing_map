@@ -207,7 +207,7 @@ class UserWebService {
         await client.get(Uri.https(Constants.BACK_URL, uri), headers: {
       "content-type": "application/json",
       "accept": "application/json",
-    }).timeout(Duration(seconds: 3));
+    }).timeout(Duration(seconds: 5));
 
     if (response.statusCode != HttpStatus.ok) {
       Future.error("error code " + response.statusCode.toString());
@@ -252,6 +252,16 @@ class UserWebService {
     UserContact newContact =
         UserContact.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
     return newContact;
+  }
+
+  static Future<bool> deleteContact(String contactId) async {
+    var uri = "/contacts/delete/$contactId";
+    var response = await client.delete(Uri.https(Constants.BACK_URL, uri));
+    if (response.statusCode / 200 != 1) {
+      return Future.error(
+          "failed_with_status_code_" + response.statusCode.toString());
+    }
+    return true;
   }
 
   static Future<ResetPasswordStartData> resetPasswordStart(String email) async {
