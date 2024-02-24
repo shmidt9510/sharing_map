@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -18,12 +19,15 @@ class TextDescriptionBlock extends StatelessWidget {
   Widget build(BuildContext context) {
     var _commonController = Get.find<CommonController>();
     String _location = "";
+    int _locationCount = 0;
     if (_item.locationIds != null &&
         _item.locationIds!.length > 0 &&
         _commonController.locationsMap.containsKey(_item.locationIds![0])) {
+      _locationCount = _item.locationIds!.length;
       _location = _commonController.locationsMap[_item.locationIds![0]]!.name;
     }
-
+    _locationCount -= 1;
+    String itemName = _item.name.toLowerCase();
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       // crossAxisAlignment: CrossAxisAlignment.end,
@@ -34,7 +38,7 @@ class TextDescriptionBlock extends StatelessWidget {
             alignment: Alignment.topLeft,
             constraints: BoxConstraints(maxWidth: context.width * 3 / 5),
             child: Text(
-              _item.name ?? "",
+              "${itemName[0].toUpperCase()}${itemName.substring(1)}",
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: getBigTextStyle(),
@@ -45,8 +49,10 @@ class TextDescriptionBlock extends StatelessWidget {
           flex: 1,
           child: Container(
             alignment: Alignment.centerLeft,
-            child: Container(
+            child: SizedBox(
+              width: context.width * 0.4,
               child: Row(
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   Center(
                       child: SvgPicture.asset(
@@ -54,15 +60,30 @@ class TextDescriptionBlock extends StatelessWidget {
                     height: 18,
                     width: 18,
                   )),
-                  Center(
+                  Flexible(
                     child: Text(
-                      textAlign: TextAlign.center,
+                      textAlign: TextAlign.right,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       _location,
                       style: getHintTextStyle(),
                     ),
                   ),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  _locationCount > 0
+                      ? CircleAvatar(
+                          maxRadius: 18 * 0.7,
+                          backgroundColor: MColors.green,
+                          foregroundColor: MColors.green,
+                          child: Text(
+                            "+$_locationCount",
+                            style: getHintTextStyle()
+                                .copyWith(color: MColors.black),
+                          ),
+                        )
+                      : Container(),
                 ],
               ),
             ),

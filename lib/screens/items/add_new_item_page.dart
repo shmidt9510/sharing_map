@@ -154,7 +154,7 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
                           baseStyle: getMediumTextStyle(),
                           dropdownSearchDecoration: InputDecoration(
                             labelText: _chosenCategories.length == 0
-                                ? " Выберите категорию"
+                                ? "Выберите до двух категорий"
                                 : "",
                             hintStyle: getMediumTextStyle(),
                             labelStyle: getMediumTextStyle(),
@@ -201,7 +201,7 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
                           baseStyle: getMediumTextStyle(),
                           dropdownSearchDecoration: InputDecoration(
                             labelText: _chosenLocations.length == 0
-                                ? " Выберите метро"
+                                ? "Выберите до четырёх станций метро"
                                 : "",
                             hintStyle: getMediumTextStyle(),
                             labelStyle: getMediumTextStyle(),

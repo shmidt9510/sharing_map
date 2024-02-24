@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:sharing_map/controllers/item_controller.dart';
 import 'package:sharing_map/controllers/user_controller.dart';
 import 'package:sharing_map/models/contact.dart';
 import 'package:sharing_map/models/user.dart';
@@ -315,6 +316,8 @@ class _ProfilePageState extends State<ProfilePage> {
         onPressed: () async {
           if (await _deleteDialogBuilder(context)) {
             if (await _userController.DeleteMyself()) {
+              final ItemController _itemsController = Get.put(ItemController());
+              _itemsController.userPagingController.refresh();
               showSnackBar(context, 'До скорых встреч');
               GoRouter.of(context).go(SMPath.start);
             }
@@ -329,6 +332,8 @@ class _ProfilePageState extends State<ProfilePage> {
         onPressed: () async {
           if (await _logoutDialog(context)) {
             if (await _userController.Logout()) {
+              final ItemController _itemsController = Get.put(ItemController());
+              _itemsController.userPagingController.refresh();
               showSnackBar(context, 'До скорых встреч');
               GoRouter.of(context).go(SMPath.start);
             }

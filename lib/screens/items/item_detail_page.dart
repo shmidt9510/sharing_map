@@ -21,8 +21,6 @@ import 'package:sharing_map/utils/shared.dart';
 import 'package:sharing_map/widgets/allWidgets.dart';
 import 'package:sharing_map/widgets/contact_type_widget.dart';
 import 'package:sharing_map/widgets/image.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:flutter/services.dart';
 
 class ItemDetailPage extends StatefulWidget {
   final String itemId;
@@ -249,7 +247,7 @@ Widget GetUserWidget(BuildContext context, Item item) {
             }
 
             if (!snapshot.hasData) {
-              return Center(child: CircularProgressIndicator.adaptive());
+              return Container(color: MColors.green);
             }
             var _user = snapshot.data as User;
             return Row(children: [

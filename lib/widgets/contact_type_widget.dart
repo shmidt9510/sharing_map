@@ -74,8 +74,8 @@ class ContactTypeButtonDialogState extends State<ContactTypeButtonDialog> {
                         });
                       },
                       icon: _onPressed
-                          ? Icon(FontAwesomeIcons.clipboardCheck)
-                          : Icon(FontAwesomeIcons.clipboard))
+                          ? Icon(FontAwesomeIcons.solidCircleCheck)
+                          : Icon(FontAwesomeIcons.copy))
                 ],
               ),
               const SizedBox(height: 15),

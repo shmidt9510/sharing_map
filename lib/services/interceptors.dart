@@ -11,14 +11,12 @@ class LoggerInterceptor implements InterceptorContract {
   @override
   Future<BaseRequest> interceptRequest({required BaseRequest request}) async {
     // debugPrint("----- Request -----");
-    // request.printInfo();
-    // request.printError();
     // debugPrint(request.method +
-    //     "_" +
+    //     " " +
     //     request.headers.toString() +
-    //     "_" +
+    //     " " +
     //     request.url.toString() +
-    //     "_" +
+    //     " " +
     //     request.finalize().toString());
     return request;
   }
@@ -27,8 +25,6 @@ class LoggerInterceptor implements InterceptorContract {
   Future<BaseResponse> interceptResponse(
       {required BaseResponse response}) async {
     // debugPrint("----- Response -----");
-    // response.printInfo();
-    // response.printError();
     // debugPrint(response.request.toString() +
     //     response.headers.toString() +
     //     response.statusCode.toString());

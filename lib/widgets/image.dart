@@ -15,14 +15,14 @@ class CachedImage {
         cacheKey: imageUrl.hashCode.toUnsigned(20).toRadixString(16),
         fit: fit,
         imageUrl: imageUrl,
-        progressIndicatorBuilder: (context, url, progress) => const Center(
-              child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Row(children: [
-                  CircularProgressIndicator.adaptive(),
-                ]),
-              ),
-            ),
+        // progressIndicatorBuilder: (context, url, progress) => const Center(
+        //       child: Padding(
+        //         padding: const EdgeInsets.all(12.0),
+        //         child: Row(children: [
+        //           CircularProgressIndicator.adaptive(),
+        //         ]),
+        //       ),
+        //     ),
         errorWidget: (context, url, error) => const Center(
               child: Icon(
                 Icons.error,

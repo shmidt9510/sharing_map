@@ -110,13 +110,17 @@ class _EditableContactTextFieldState extends State<EditableContactTextField> {
   Future<void> _saveContact(UserContact contact) async {
     UserController _userController = Get.find<UserController>();
     widget.userContact = await _userController.saveContact(contact);
-    _userController.refresh();
     setState(() {
+      bool wasUpdated = false;
       for (var i = 0; i < widget.userController.myContacts.length; i++) {
         if (widget.userController.myContacts[i].id == contact.id) {
+          wasUpdated = true;
           widget.userController.myContacts[i] = contact;
           break;
         }
+      }
+      if (!wasUpdated) {
+        widget.userController.myContacts.add(contact);
       }
     });
   }
