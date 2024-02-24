@@ -71,6 +71,7 @@ Widget getButton(
     onPressed: onPressed,
     child: Center(
       child: Text(
+        textAlign: TextAlign.center,
         labelText,
         style: textStyle,
       ),

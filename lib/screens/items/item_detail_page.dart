@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -18,8 +19,10 @@ import 'package:sharing_map/user/page/user_profile_page.dart';
 import 'package:sharing_map/utils/colors.dart';
 import 'package:sharing_map/utils/shared.dart';
 import 'package:sharing_map/widgets/allWidgets.dart';
+import 'package:sharing_map/widgets/contact_type_widget.dart';
 import 'package:sharing_map/widgets/image.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter/services.dart';
 
 class ItemDetailPage extends StatefulWidget {
   final String itemId;
@@ -304,38 +307,11 @@ Widget GetUserContactWidget(BuildContext context, String userId) {
                 itemCount: contacts.length,
                 itemBuilder: (BuildContext context, int index) {
                   return contacts[index].contact.isNotEmpty
-                      ? GetContactTypeWidget(context, contacts[index])
+                      ? ContactTypeButton(contacts[index])
                       : Container();
                 });
           })
       : GetGoRegisterButton(context);
-}
-
-Widget GetContactTypeWidget(BuildContext context, UserContact contact) {
-  bool showContact = contact.contact.isNotEmpty;
-  return showContact
-      ? IconButton(
-          icon: Icon(contact.contactIcon),
-          onPressed: () async {
-            final url = Uri.parse(contact.getUri + contact.contact);
-            SnackBar snackBar = SnackBar(
-              content: SelectableText("${contact.contact}"),
-              action: SnackBarAction(
-                label: 'Перейти',
-                onPressed: () async {
-                  if (await canLaunchUrl(url)) {
-                    await launchUrl(url);
-                  } else {
-                    showErrorScaffold(
-                        context, "Не могу перенаправить в приложение");
-                  }
-                },
-              ),
-            );
-            ScaffoldMessenger.of(context).showSnackBar(snackBar);
-          },
-        )
-      : Container();
 }
 
 Widget GetGoRegisterButton(BuildContext context) {

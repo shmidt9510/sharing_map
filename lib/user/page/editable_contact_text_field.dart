@@ -43,7 +43,8 @@ class _EditableContactTextFieldState extends State<EditableContactTextField> {
         widget.callback();
         return;
       }
-      String? errorMessage = widget.userContact.checkFunction(_controller.text);
+      String? errorMessage =
+          widget.userContact.checkFunction(_controller.text.toLowerCase());
       if (errorMessage == null) {
         if (_controller.text.isEmpty) {
           showErrorScaffold(context, "Попытка сохранить пустой текст");
@@ -51,7 +52,7 @@ class _EditableContactTextFieldState extends State<EditableContactTextField> {
         }
         await _saveContact(UserContact(
             id: widget.userContact.id,
-            contact: _controller.text,
+            contact: _controller.text.toLowerCase(),
             type: widget.userContact.type));
         widget.callback();
       } else {
