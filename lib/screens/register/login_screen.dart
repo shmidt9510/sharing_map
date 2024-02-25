@@ -54,8 +54,8 @@ class _LoginState extends State<LoginScreen> {
                   _obscurePassword = !_obscurePassword;
                 });
               }, (String? value) {
-                if (value == null || value.isEmpty) {
-                  return "Введите пароль";
+                if (value == null || value.isEmpty || value.length < 8) {
+                  return "Введите пароль больше 8 символов";
                 }
                 return null;
               }),

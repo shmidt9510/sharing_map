@@ -88,6 +88,7 @@ Widget getTextField(TextEditingController controller, String label,
     controller: controller,
     keyboardType: keyboardType,
     style: getMediumTextStyle(),
+    autovalidateMode: AutovalidateMode.onUserInteraction,
     decoration: InputDecoration(
       hintStyle: getMediumTextStyle(),
       labelStyle: getMediumTextStyle(),

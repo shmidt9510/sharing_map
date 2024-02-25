@@ -95,10 +95,10 @@ extension ValidationCallback on UserContact {
             return "Пожалуйста, введите логин без @";
           }
           if (str.length < 5) {
-            return "В логине телеграма должно быть минимум 5 символа";
+            return "Меньше 5 символов";
           }
           if (str.length > 32) {
-            return "В логине телеграма меньше 33 символов";
+            return "Больше 33 символов";
           }
           if (!RegExp(r'^[a-z][a-z0-9_]{4,31}$').hasMatch(str)) {
             return "Невалидный логин телеграма";
@@ -111,7 +111,7 @@ extension ValidationCallback on UserContact {
             return null;
           }
           if (!RegExp(r'^[0-9]*$').hasMatch(str)) {
-            return "Введите номер телефона без плюса и тире";
+            return "Формат 7XXXXXXXXXX";
           }
           return null;
         };
@@ -121,7 +121,7 @@ extension ValidationCallback on UserContact {
             return null;
           }
           if (!RegExp(r'^[0-9]{11}$').hasMatch(str)) {
-            return "Введите телефон в формате 8XXXXXXXXXX";
+            return "Формат 7XXXXXXXXXX";
           }
           return null;
         };

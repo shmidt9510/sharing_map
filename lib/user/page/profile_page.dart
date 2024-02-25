@@ -317,7 +317,6 @@ class _ProfilePageState extends State<ProfilePage> {
           if (await _deleteDialogBuilder(context)) {
             if (await _userController.DeleteMyself()) {
               final ItemController _itemsController = Get.put(ItemController());
-              _itemsController.userPagingController.refresh();
               showSnackBar(context, 'До скорых встреч');
               GoRouter.of(context).go(SMPath.start);
             }
@@ -333,7 +332,11 @@ class _ProfilePageState extends State<ProfilePage> {
           if (await _logoutDialog(context)) {
             if (await _userController.Logout()) {
               final ItemController _itemsController = Get.put(ItemController());
+
               _itemsController.userPagingController.refresh();
+              _itemsController.userPagingController
+                  .removePageRequestListener((pageKey) {});
+              _itemsController.userPagingController.itemList = [];
               showSnackBar(context, 'До скорых встреч');
               GoRouter.of(context).go(SMPath.start);
             }

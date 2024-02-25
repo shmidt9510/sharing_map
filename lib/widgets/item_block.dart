@@ -75,8 +75,8 @@ class TextDescriptionBlock extends StatelessWidget {
                   _locationCount > 0
                       ? CircleAvatar(
                           maxRadius: 18 * 0.7,
-                          backgroundColor: MColors.green,
-                          foregroundColor: MColors.green,
+                          backgroundColor: MColors.lightGreen,
+                          foregroundColor: MColors.lightGreen,
                           child: Text(
                             "+$_locationCount",
                             style: getHintTextStyle()

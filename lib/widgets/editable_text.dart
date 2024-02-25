@@ -16,6 +16,12 @@ class _EditableTextFieldState extends State<EditableTextField> {
   bool _isEditing = false;
 
   @override
+  void initState() {
+    super.initState();
+    _isEditing = widget.controller.text.isEmpty;
+  }
+
+  @override
   void dispose() {
     widget.controller.dispose();
     super.dispose();

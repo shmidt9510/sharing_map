@@ -119,7 +119,7 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
                           (String? value) {
                         return (value?.length ?? 0) > 16
                             ? null
-                            : "Пожалуйста, сделайте описание чуть подробнее";
+                            : "Пожалуйста, сделайте описание чуть подробнее (> 16 символов)";
                       }, maxLines: 5, minLines: 3),
                       SizedBox(
                         height: 20,

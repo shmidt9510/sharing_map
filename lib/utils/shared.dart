@@ -57,6 +57,7 @@ class SharedPrefs {
   }
 
   Future<void> clear() async {
+    await _secureSharedPref.deleteAll();
     await _sharedPrefs.clear();
   }
 

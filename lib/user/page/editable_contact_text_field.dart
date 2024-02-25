@@ -18,8 +18,17 @@ class EditableContactTextField extends StatefulWidget {
 }
 
 class _EditableContactTextFieldState extends State<EditableContactTextField> {
-  bool _isEditing = false;
   TextEditingController _controller = TextEditingController();
+  bool _isEditing = false;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.userContact.contact.isNotEmpty) {
+      _controller.text = widget.userContact.contact;
+    }
+    _isEditing = _controller.text.isEmpty;
+  }
 
   @override
   void dispose() {
@@ -47,7 +56,6 @@ class _EditableContactTextFieldState extends State<EditableContactTextField> {
           widget.userContact.checkFunction(_controller.text.toLowerCase());
       if (errorMessage == null) {
         if (_controller.text.isEmpty) {
-          showErrorScaffold(context, "Попытка сохранить пустой текст");
           return;
         }
         await _saveContact(UserContact(
@@ -66,24 +74,27 @@ class _EditableContactTextFieldState extends State<EditableContactTextField> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.userContact.contact.isNotEmpty) {
-      _controller.text = widget.userContact.contact;
-    }
     return SizedBox(
       width: context.width * 0.7,
       child: Row(
         children: [
           Expanded(
             child: SizedBox(
-              height: 40,
+              height: 60,
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 2.0),
                 child: TextFormField(
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  validator: (value) =>
+                      widget.userContact.checkFunction(value ?? ""),
                   controller: _controller,
                   enabled: _isEditing,
                   style: getMediumTextStyle(),
                   decoration: InputDecoration(
+                      contentPadding: EdgeInsets.all(10),
+                      floatingLabelBehavior: FloatingLabelBehavior.never,
                       hintText: widget.userContact.getHintString,
+                      hintStyle: getHintTextStyle(),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),

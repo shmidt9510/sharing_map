@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -54,44 +55,53 @@ class ContactTypeButtonDialogState extends State<ContactTypeButtonDialog> {
   Widget build(BuildContext context) {
     return StatefulBuilder(builder: (BuildContext context,
         StateSetter dialogState /*You can rename this!*/) {
-      return Dialog(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
+      return AlertDialog.adaptive(
+          title: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SelectableText("${widget.contact}"),
-                  IconButton(
-                      onPressed: () async {
-                        await Clipboard.setData(
-                            ClipboardData(text: "${widget.contact}"));
-                        dialogState(() {
-                          _onPressed = true;
-                        });
-                      },
-                      icon: _onPressed
-                          ? Icon(FontAwesomeIcons.solidCircleCheck)
-                          : Icon(FontAwesomeIcons.copy))
-                ],
-              ),
-              const SizedBox(height: 15),
-              widget.canShow
-                  ? TextButton(
-                      onPressed: () {
-                        launchUrl(widget.url);
-                        Navigator.pop(context);
-                      },
-                      child: const Text('Перейти'),
-                    )
-                  : Container(),
+              SelectableText("${widget.contact}"),
+              IconButton(
+                  onPressed: () async {
+                    await Clipboard.setData(
+                        ClipboardData(text: "${widget.contact}"));
+                    dialogState(() {
+                      _onPressed = true;
+                    });
+                  },
+                  icon: _onPressed
+                      ? Icon(FontAwesomeIcons.solidCircleCheck)
+                      : Icon(FontAwesomeIcons.copy))
             ],
           ),
-        ),
-      );
+          actions: [
+            widget.canShow
+                ? adaptiveAction(
+                    context: context,
+                    onPressed: () {
+                      launchUrl(widget.url);
+                      Navigator.pop(context);
+                    },
+                    child: const Text('Перейти'),
+                  )
+                : Container(),
+          ]);
     });
+  }
+
+  Widget adaptiveAction(
+      {required BuildContext context,
+      required VoidCallback onPressed,
+      required Widget child}) {
+    final ThemeData theme = Theme.of(context);
+    switch (theme.platform) {
+      case TargetPlatform.android:
+      case TargetPlatform.fuchsia:
+      case TargetPlatform.linux:
+      case TargetPlatform.windows:
+        return TextButton(onPressed: onPressed, child: child);
+      case TargetPlatform.iOS:
+      case TargetPlatform.macOS:
+        return CupertinoDialogAction(onPressed: onPressed, child: child);
+    }
   }
 }
