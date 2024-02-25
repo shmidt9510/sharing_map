@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sharing_map/theme.dart';
 
-Future<ImageSource> chooseImageSource(BuildContext context, String text) async {
-  ImageSource _chosenSource = ImageSource.gallery;
+Future<ImageSource?> chooseImageSource(
+    BuildContext context, String text) async {
+  ImageSource? _chosenSource = null;
   await showDialog<void>(
     context: context,
     builder: (BuildContext context) {
@@ -26,6 +27,7 @@ Future<ImageSource> chooseImageSource(BuildContext context, String text) async {
             ),
             child: const Text('Галерея'),
             onPressed: () {
+              _chosenSource = ImageSource.gallery;
               Navigator.of(context).maybePop();
             },
           ),

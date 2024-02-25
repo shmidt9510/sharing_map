@@ -14,9 +14,15 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Future.wait([
     SharedPrefs().init(),
-    dotenv.load(fileName: "env/prod.env"),
+    // if (kProfileMode ==)
+    dotenv.load(fileName: "env/test.env"),
   ]);
+  debugPrint(dotenv.env.toString());
   WidgetsFlutterBinding.ensureInitialized();
+  // if (kReleaseMode) {
+  //   CustomImageCache();
+  // }
+  // WidgetsFlutterBinding.ensureInitialized();
 
   final CommonController _commonController = Get.put(CommonController());
   final ItemController _itemsController = Get.put(ItemController());

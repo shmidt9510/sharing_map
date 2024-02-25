@@ -82,7 +82,12 @@ Widget getButton(
 Widget getTextField(TextEditingController controller, String label,
     String? Function(String? value) validator,
     {TextInputType? keyboardType, int minLines = 1, int maxLines = 1}) {
+  var focusNode = FocusNode();
   return TextFormField(
+    onTapOutside: (PointerDownEvent e) {
+      focusNode.unfocus();
+    },
+    focusNode: focusNode,
     minLines: minLines,
     maxLines: maxLines,
     controller: controller,
@@ -115,7 +120,12 @@ Widget getPasswordTextField(
     bool obscurePassword,
     void Function() onIconPressed,
     String? Function(String? value) validator) {
+  var focusNode = FocusNode();
   return TextFormField(
+    onTapOutside: (PointerDownEvent e) {
+      focusNode.unfocus();
+    },
+    focusNode: focusNode,
     style: getMediumTextStyle(),
     controller: controller,
     obscureText: obscurePassword,
@@ -144,6 +154,9 @@ Widget getPasswordTextField(
     validator: (String? value) {
       if (value == null || value.isEmpty) {
         return "Введите пароль";
+      }
+      if (value.length < 8) {
+        return "Больше восьми символов";
       }
       return null;
     },

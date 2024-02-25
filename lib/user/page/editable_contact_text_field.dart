@@ -20,6 +20,7 @@ class EditableContactTextField extends StatefulWidget {
 class _EditableContactTextFieldState extends State<EditableContactTextField> {
   TextEditingController _controller = TextEditingController();
   bool _isEditing = false;
+  var focusNode = FocusNode();
 
   @override
   void initState() {
@@ -72,6 +73,10 @@ class _EditableContactTextFieldState extends State<EditableContactTextField> {
     }
   }
 
+  void _handleTapInputOutside(PointerDownEvent e) {
+    focusNode.unfocus();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -84,6 +89,8 @@ class _EditableContactTextFieldState extends State<EditableContactTextField> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 2.0),
                 child: TextFormField(
+                  focusNode: focusNode,
+                  onTapOutside: _handleTapInputOutside,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   validator: (value) =>
                       widget.userContact.checkFunction(value ?? ""),

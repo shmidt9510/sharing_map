@@ -352,6 +352,9 @@ class _ProfilePageState extends State<ProfilePage> {
   Future<bool> selectImage(User user) async {
     var source = await chooseImageSource(
         context, "Вы можете выбрать изображение профиля");
+    if (source == null) {
+      return false;
+    }
     var image = await imagePicker.pickImage(source: source);
     if (image == null) {
       return false;

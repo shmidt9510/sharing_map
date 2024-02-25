@@ -84,6 +84,13 @@ class ContactTypeButtonDialogState extends State<ContactTypeButtonDialog> {
                     child: const Text('Перейти'),
                   )
                 : Container(),
+            adaptiveAction(
+              context: context,
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('Закрыть'),
+            )
           ]);
     });
   }

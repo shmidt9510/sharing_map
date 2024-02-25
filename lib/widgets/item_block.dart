@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:path/path.dart';
 import 'package:sharing_map/controllers/common_controller.dart';
-import 'package:sharing_map/controllers/item_controller.dart';
 import 'package:sharing_map/models/item.dart';
-import 'package:sharing_map/models/location.dart';
 import 'package:sharing_map/theme.dart';
 import 'package:sharing_map/utils/colors.dart';
 import 'package:sharing_map/widgets/image.dart';
@@ -75,8 +71,8 @@ class TextDescriptionBlock extends StatelessWidget {
                   _locationCount > 0
                       ? CircleAvatar(
                           maxRadius: 18 * 0.7,
-                          backgroundColor: MColors.lightGreen,
-                          foregroundColor: MColors.lightGreen,
+                          backgroundColor: MColors.green,
+                          foregroundColor: MColors.green,
                           child: Text(
                             "+$_locationCount",
                             style: getHintTextStyle()

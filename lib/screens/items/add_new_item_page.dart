@@ -44,6 +44,9 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
 
   void selectImages() async {
     var source = await chooseImageSource(context, "Выберите изображения");
+    if (source == null) {
+      return;
+    }
     List<XFile> selectedImages = [];
     if (source == ImageSource.gallery) {
       selectedImages = await imagePicker.pickMultiImage(imageQuality: 90);
