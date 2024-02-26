@@ -135,7 +135,13 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: GetUserContactWidget(
                         PrepareContacts(contacts), context),
                   ),
-                  const SizedBox(height: 48),
+                  const SizedBox(height: 24),
+                  Center(
+                      child: Text(
+                    "Мои объявления",
+                    style: getBigTextStyle(),
+                  )),
+                  const SizedBox(height: 24),
                   ItemsListViewSelfProfile(
                     _user.id,
                   )
