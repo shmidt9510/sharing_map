@@ -41,41 +41,40 @@ class _ItemListPageState extends State<ItemListPage> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: MColors.white,
-        body: RefreshIndicator(
-          onRefresh: () {
-            return _updateOnFetch();
-          },
-          child: NestedScrollView(
-            floatHeaderSlivers: true,
-            headerSliverBuilder: ((context, innerBoxIsScrolled) => [
-                  SliverAppBar(
-                    backgroundColor: MColors.transparent,
-                    toolbarHeight: height,
-                    title: SizedBox(
-                      height: height,
-                      child: Padding(
-                        padding: EdgeInsets.only(top: padding, bottom: padding),
-                        child: ListView.builder(
-                          physics: AlwaysScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          scrollDirection: Axis.horizontal,
-                          itemCount: _commonController.categories.length,
-                          itemBuilder: (BuildContext context, int index) =>
-                              Card(
-                            child: _buildButton(
-                                context,
-                                _commonController.categories[index],
-                                height - padding * 2),
-                          ),
+        body: NestedScrollView(
+          floatHeaderSlivers: true,
+          headerSliverBuilder: ((context, innerBoxIsScrolled) => [
+                SliverAppBar(
+                  backgroundColor: MColors.transparent,
+                  toolbarHeight: height,
+                  title: SizedBox(
+                    height: height,
+                    child: Padding(
+                      padding: EdgeInsets.only(top: padding, bottom: padding),
+                      child: ListView.builder(
+                        physics: AlwaysScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        itemCount: _commonController.categories.length,
+                        itemBuilder: (BuildContext context, int index) => Card(
+                          child: _buildButton(
+                              context,
+                              _commonController.categories[index],
+                              height - padding * 2),
                         ),
                       ),
                     ),
-                    primary: false,
-                    floating: true,
-                    titleSpacing: 0,
-                  )
-                ]),
-            body: ItemsListView(
+                  ),
+                  primary: false,
+                  floating: true,
+                  titleSpacing: 0,
+                )
+              ]),
+          body: RefreshIndicator.adaptive(
+            onRefresh: () {
+              return _updateOnFetch();
+            },
+            child: ItemsListView(
                 itemFilter: _chosenFilter, key: ValueKey(_chosenFilter)),
           ),
         ),
@@ -84,10 +83,9 @@ class _ItemListPageState extends State<ItemListPage> {
   }
 
   Future<void> _updateOnFetch() async {
-    await _itemsController.fetchItems(itemFilter: _chosenFilter);
-    setState(() {
-      _itemsController.fetchItems(itemFilter: _chosenFilter);
-    });
+    if (_itemsController.pagingControllers[_chosenFilter] != null) {
+      _itemsController.pagingControllers[_chosenFilter]!.refresh();
+    }
   }
 
   var categoriesAssetsName = {
