@@ -19,4 +19,5 @@ class MColors {
   static const Color red1 = const Color.fromARGB(255, 238, 52, 26);
   static const Color red2 = const Color.fromARGB(255, 215, 171, 96);
   static const Color orange = const Color.fromARGB(255, 181, 35, 16);
+  static const Color errorLightRed = const Color.fromARGB(255, 255, 235, 204);
 }

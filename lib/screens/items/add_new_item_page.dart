@@ -120,9 +120,9 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
                       ),
                       getTextField(descriptionController, 'Описание',
                           (String? value) {
-                        return (value?.length ?? 0) > 16
-                            ? null
-                            : "Пожалуйста, сделайте описание чуть подробнее (> 16 символов)";
+                        if (value?.length == 0) {
+                          return null;
+                        }
                       }, maxLines: 5, minLines: 3),
                       SizedBox(
                         height: 20,

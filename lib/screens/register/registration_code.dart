@@ -26,7 +26,7 @@ class _RegistrationCodeScreenState extends State<RegistrationCodeScreen> {
     super.initState();
   }
 
-  bool _onEditing = true;
+  bool _onEditing = false;
 
   @override
   build(BuildContext context) {
@@ -46,28 +46,27 @@ class _RegistrationCodeScreenState extends State<RegistrationCodeScreen> {
               ),
             ),
           ),
-          Center(
-            child: VerificationCode(
-              textStyle: Theme.of(context)
-                  .textTheme
-                  .bodyMedium!
-                  .copyWith(color: Theme.of(context).primaryColor),
-              keyboardType: TextInputType.number,
-              length: 4,
-              margin: const EdgeInsets.all(12),
-              onCompleted: (String value) {
-                setState(() {
-                  _waitSignupResult(value, context);
-                });
-              },
-              onEditing: (bool value) {
-                setState(() {
-                  _onEditing = value;
-                });
-                if (!_onEditing) FocusScope.of(context).unfocus();
-              },
-            ),
+          VerificationCode(
+            textStyle: Theme.of(context)
+                .textTheme
+                .bodyMedium!
+                .copyWith(color: Theme.of(context).primaryColor),
+            keyboardType: TextInputType.number,
+            length: 4,
+            margin: const EdgeInsets.all(12),
+            onCompleted: (String value) {
+              setState(() {
+                _waitSignupResult(value, context);
+              });
+            },
+            onEditing: (bool value) {
+              setState(() {
+                _onEditing = value;
+              });
+              if (!_onEditing) FocusScope.of(context).unfocus();
+            },
           ),
+          Spacer(),
         ],
       ),
     );

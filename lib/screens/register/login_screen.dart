@@ -26,6 +26,8 @@ class _LoginState extends State<LoginScreen> {
   final TextEditingController _controllerPassword = TextEditingController();
   UserController _userController = Get.find<UserController>();
 
+  var passwordFocusNode = FocusNode();
+  var mailFocusNode = FocusNode();
   bool _obscurePassword = true;
 
   @override
@@ -43,10 +45,15 @@ class _LoginState extends State<LoginScreen> {
               const SizedBox(height: 30),
               getTextField(_controllerUsername, "Введите свой email",
                   (String? value) {
+                if (value?.length == 0) {
+                  return null;
+                }
                 return EmailValidator.validate(value ?? "")
                     ? null
-                    : "Пожалуйста, введите валидную почту";
-              }, keyboardType: TextInputType.emailAddress),
+                    : "Неверный формат почты";
+              },
+                  keyboardType: TextInputType.emailAddress,
+                  focuseNode: mailFocusNode),
               const SizedBox(height: 10),
               getPasswordTextField(
                   _controllerPassword, "пароль", _obscurePassword, () {
@@ -58,7 +65,7 @@ class _LoginState extends State<LoginScreen> {
                   return "Введите пароль больше 8 символов";
                 }
                 return null;
-              }),
+              }, passwordFocusNode),
               const SizedBox(height: 60),
               TextButton(
                 onPressed: () async {

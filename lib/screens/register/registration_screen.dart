@@ -31,13 +31,11 @@ class _LoginState extends State<RegistrationScreen> {
   bool _isChecked = false;
 
   bool _obscurePassword = true;
-
+  var mailFocusNode = FocusNode();
+  var passwordFocusNode = FocusNode();
+  var nameFocusNode = FocusNode();
   @override
   Widget build(BuildContext context) {
-    // if (SharedPrefs().logged) {
-    //   return HomePage();
-    // }
-
     return Scaffold(
       floatingActionButton: BackButton(color: MColors.white),
       floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
@@ -55,7 +53,9 @@ class _LoginState extends State<RegistrationScreen> {
                   return "Пожалуйста, введите почту";
                 }
                 return null;
-              }, keyboardType: TextInputType.emailAddress),
+              },
+                  keyboardType: TextInputType.emailAddress,
+                  focuseNode: mailFocusNode),
               const SizedBox(height: 10),
               getPasswordTextField(
                   _controllerPassword,
@@ -68,14 +68,14 @@ class _LoginState extends State<RegistrationScreen> {
                   return "Введите пароль (минимум 8 символов)";
                 }
                 return null;
-              }),
+              }, passwordFocusNode),
               const SizedBox(height: 10),
               getTextField(_controllerUsername, "Ваше имя", (String? value) {
                 if (value?.isEmpty ?? false) {
                   return "Пожалуйста, напишите что-нибудь)";
                 }
                 return null;
-              }, keyboardType: TextInputType.name),
+              }, keyboardType: TextInputType.name, focuseNode: nameFocusNode),
               const SizedBox(height: 60),
               Row(
                 children: [
@@ -133,7 +133,6 @@ class _LoginState extends State<RegistrationScreen> {
                         _controllerUsername.text,
                         _controllerPassword.text);
                     if (result == SignupResult.ok) {
-                      showErrorScaffold(context, 'Отправили вам код в письме');
                       GoRouter.of(context).go(
                         SMPath.start +
                             "/" +

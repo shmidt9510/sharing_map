@@ -20,7 +20,7 @@ class _ResetPasswordSetState extends State<ResetPasswordSetScreen> {
   // final prefs = SharedPreferences.getInstance().then((value) => );
   final TextEditingController _controllerPassword = TextEditingController();
   late UserController _userController;
-
+  var focusNode = FocusNode();
   @override
   void initState() {
     super.initState();
@@ -52,7 +52,7 @@ class _ResetPasswordSetState extends State<ResetPasswordSetScreen> {
                   return;
                 }
                 return null;
-              }),
+              }, focusNode),
               const SizedBox(height: 20),
               getButton(context, "Поменять", () async {
                 var result = await _userController.ResetPassword(
