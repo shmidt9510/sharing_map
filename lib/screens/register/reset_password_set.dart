@@ -49,10 +49,13 @@ class _ResetPasswordSetState extends State<ResetPasswordSetScreen> {
                 });
               }, (value) {
                 if (value == null || value.isEmpty) {
-                  return;
+                  return null;
+                }
+                if (value.length < 8) {
+                  return "Пожалуйста введите от 8 символов";
                 }
                 return null;
-              }, focusNode),
+              }, focuseNode: focusNode, hintColor: MColors.errorLightRed),
               const SizedBox(height: 20),
               getButton(context, "Поменять", () async {
                 var result = await _userController.ResetPassword(

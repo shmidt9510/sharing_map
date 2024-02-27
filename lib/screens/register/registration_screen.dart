@@ -55,7 +55,8 @@ class _LoginState extends State<RegistrationScreen> {
                 return null;
               },
                   keyboardType: TextInputType.emailAddress,
-                  focuseNode: mailFocusNode),
+                  focuseNode: mailFocusNode,
+                  hintColor: MColors.errorLightRed),
               const SizedBox(height: 10),
               getPasswordTextField(
                   _controllerPassword,
@@ -64,18 +65,26 @@ class _LoginState extends State<RegistrationScreen> {
                   () => setState(() {
                         _obscurePassword = !_obscurePassword;
                       }), (String? value) {
-                if (value == null || value.isEmpty || value.length < 8) {
-                  return "Введите пароль (минимум 8 символов)";
+                if (value == null || value.isEmpty) {
+                  return null;
+                }
+                if (value.length < 8) {
+                  return "Пожалуйста введите от 8 символов";
                 }
                 return null;
-              }, passwordFocusNode),
+              },
+                  focuseNode: passwordFocusNode,
+                  hintColor: MColors.errorLightRed),
               const SizedBox(height: 10),
               getTextField(_controllerUsername, "Ваше имя", (String? value) {
                 if (value?.isEmpty ?? false) {
                   return "Пожалуйста, напишите что-нибудь)";
                 }
                 return null;
-              }, keyboardType: TextInputType.name, focuseNode: nameFocusNode),
+              },
+                  keyboardType: TextInputType.name,
+                  focuseNode: nameFocusNode,
+                  hintColor: MColors.errorLightRed),
               const SizedBox(height: 60),
               Row(
                 children: [

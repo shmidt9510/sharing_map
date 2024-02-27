@@ -53,7 +53,8 @@ class _LoginState extends State<LoginScreen> {
                     : "Неверный формат почты";
               },
                   keyboardType: TextInputType.emailAddress,
-                  focuseNode: mailFocusNode),
+                  focuseNode: mailFocusNode,
+                  hintColor: MColors.errorLightRed),
               const SizedBox(height: 10),
               getPasswordTextField(
                   _controllerPassword, "пароль", _obscurePassword, () {
@@ -65,7 +66,9 @@ class _LoginState extends State<LoginScreen> {
                   return "Введите пароль больше 8 символов";
                 }
                 return null;
-              }, passwordFocusNode),
+              },
+                  focuseNode: passwordFocusNode,
+                  hintColor: MColors.errorLightRed),
               const SizedBox(height: 60),
               TextButton(
                 onPressed: () async {

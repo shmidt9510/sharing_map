@@ -84,7 +84,8 @@ Widget getTextField(TextEditingController controller, String label,
     {TextInputType? keyboardType,
     int minLines = 1,
     int maxLines = 1,
-    FocusNode? focuseNode}) {
+    FocusNode? focuseNode,
+    Color? hintColor}) {
   var _focusNode = focuseNode ?? FocusNode();
   return TextFormField(
     onTapOutside: (PointerDownEvent e) {
@@ -100,7 +101,9 @@ Widget getTextField(TextEditingController controller, String label,
     decoration: InputDecoration(
       hintStyle: getMediumTextStyle(),
       labelStyle: getMediumTextStyle(),
-      errorStyle: getHintTextStyle().copyWith(color: MColors.errorLightRed),
+      errorStyle: hintColor != null
+          ? getHintTextStyle().copyWith(color: hintColor)
+          : null,
       contentPadding: EdgeInsets.all(10),
       floatingLabelBehavior: FloatingLabelBehavior.never,
       filled: true,
@@ -124,7 +127,8 @@ Widget getPasswordTextField(
     bool obscurePassword,
     void Function() onIconPressed,
     String? Function(String? value) validator,
-    FocusNode? focuseNode) {
+    {FocusNode? focuseNode,
+    Color? hintColor}) {
   var _focusNode = focuseNode ?? FocusNode();
   return TextFormField(
     onTapOutside: (PointerDownEvent e) {
@@ -141,7 +145,9 @@ Widget getPasswordTextField(
       filled: true,
       fillColor: Colors.white,
       labelText: "Пароль",
-      errorStyle: getHintTextStyle().copyWith(color: MColors.errorLightRed),
+      errorStyle: hintColor != null
+          ? getHintTextStyle().copyWith(color: hintColor)
+          : null,
       hintStyle: getMediumTextStyle(),
       labelStyle: getMediumTextStyle(),
       suffixIcon: IconButton(

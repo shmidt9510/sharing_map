@@ -36,17 +36,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordCodeScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Padding(
-              padding: EdgeInsets.only(top: context.height / 3),
-              child: const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Center(
-                  child: Text(
-                    'Мы отправили вам код на почту',
-                    style: TextStyle(fontSize: 20.0),
-                  ),
-                ),
-              ),
+            SizedBox(
+              height: 20,
             ),
             VerificationCode(
               textStyle: Theme.of(context)
@@ -67,6 +58,15 @@ class _ResetPasswordScreenState extends State<ResetPasswordCodeScreen> {
                 });
                 if (!_onEditing) FocusScope.of(context).unfocus();
               },
+            ),
+            const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Center(
+                child: Text(
+                  'Мы отправили вам код на почту',
+                  style: TextStyle(fontSize: 20.0),
+                ),
+              ),
             ),
             Spacer()
           ],

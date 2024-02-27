@@ -34,17 +34,8 @@ class _RegistrationCodeScreenState extends State<RegistrationCodeScreen> {
       appBar: AppBar(),
       body: Column(
         children: [
-          Padding(
-            padding: EdgeInsets.only(top: context.height / 3),
-            child: const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Center(
-                child: Text(
-                  'Мы отправили вам код на почту',
-                  style: TextStyle(fontSize: 20.0),
-                ),
-              ),
-            ),
+          SizedBox(
+            height: 20,
           ),
           VerificationCode(
             textStyle: Theme.of(context)
@@ -65,6 +56,15 @@ class _RegistrationCodeScreenState extends State<RegistrationCodeScreen> {
               });
               if (!_onEditing) FocusScope.of(context).unfocus();
             },
+          ),
+          const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Center(
+              child: Text(
+                'Мы отправили вам код на почту',
+                style: TextStyle(fontSize: 20.0),
+              ),
+            ),
           ),
           Spacer(),
         ],
