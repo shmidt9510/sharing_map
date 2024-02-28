@@ -141,10 +141,10 @@ class UserController extends GetxController {
     if (SharedPrefs().userId.isEmpty) {
       return Future.error("no_data");
     }
-    final (user, contacts) = await (
-      UserWebService.getUser(SharedPrefs().userId),
-      UserWebService.getUserContact(SharedPrefs().userId)
-    ).wait;
+    final user = await 
+      UserWebService.getUser(SharedPrefs().userId);
+      
+    var contacts = await UserWebService.getUserContact(SharedPrefs().userId);
     myself = user;
     myContacts(contacts);
     return myself!;
