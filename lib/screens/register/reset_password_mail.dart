@@ -47,7 +47,13 @@ class _ResetPasswordMailState extends State<ResetPasswordMailScreen> {
             children: [
               const SizedBox(height: 50),
               getTextField(_controllerUsername, "Введите свой email", (value) {
-                if (!EmailValidator.validate(value ?? "")) {
+                if (value == null) {
+                  return null;
+                }
+                if (value.length == 0) {
+                  return null;
+                }
+                if (!EmailValidator.validate(value.replaceAll(' ', ''))) {
                   return "Пожалуйста, введите почту";
                 }
                 return null;
@@ -57,8 +63,8 @@ class _ResetPasswordMailState extends State<ResetPasswordMailScreen> {
               const SizedBox(height: 20),
               getButton(context, 'Поменять', () async {
                 if (_formKey.currentState?.validate() ?? false) {
-                  if (await _userController.ResetPasswordStart(
-                      _controllerUsername.text)) {
+                  var mail = _controllerUsername.text.replaceAll(' ', '');
+                  if (await _userController.ResetPasswordStart(mail)) {
                     GoRouter.of(context)
                         .go(SMPath.start + "/" + SMPath.forgetPasswordCode);
                   } else {

@@ -90,6 +90,8 @@ class _ItemsListViewSelfProfileState extends State<ItemsListViewSelfProfile> {
                           onPressed: () async {
                             await _deleteItemDialogBuilder(context, item.id);
                             setState(() {
+                              _itemsController.userPagingController.itemList =
+                                  [];
                               _itemsController.userPagingController.refresh();
                             });
                           },

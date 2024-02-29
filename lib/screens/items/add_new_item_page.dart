@@ -191,7 +191,7 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
                             return "Пожалуйста, выберите станцию метро";
                           }
                           if (chosen.length > 3) {
-                            return "Пожалуйста, выберите меньше трёх станций метро";
+                            return "Пожалуйста, выберите не больше трёх станций метро";
                           }
                           return null;
                         },
@@ -204,7 +204,7 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
                           baseStyle: getMediumTextStyle(),
                           dropdownSearchDecoration: InputDecoration(
                             labelText: _chosenLocations.length == 0
-                                ? "Выберите до четырёх станций метро"
+                                ? "Выберите до трёх станций метро"
                                 : "",
                             hintStyle: getMediumTextStyle(),
                             labelStyle: getMediumTextStyle(),
@@ -348,10 +348,10 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
 
     if (!await _itemsController.addItem(item)) {
       showErrorScaffold(context, "Не получилось :(");
+    } else {
+      GoRouter.of(context).go(SMPath.home);
+      clearData();
+      setState(() {});
     }
-    clearData();
-    await _itemsController.fetchItems();
-    setState(() {});
-    GoRouter.of(context).go(SMPath.home);
   }
 }

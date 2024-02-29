@@ -66,7 +66,11 @@ class ItemController extends GetxController {
       if (response.isEmpty) {
         return false;
       }
-      pagingControllers.forEach((key, value) => value.refresh());
+      pagingControllers.forEach((key, value) {
+        value.itemList = [];
+        value.refresh();
+      });
+      userPagingController.itemList = [];
       userPagingController.refresh();
       return true;
     } catch (e) {
@@ -77,7 +81,10 @@ class ItemController extends GetxController {
   Future<bool> deleteItem(String itemId) async {
     try {
       var result = await ItemWebService.deleteItem(itemId);
-      pagingControllers.forEach((key, value) => value.refresh());
+      pagingControllers.forEach((key, value) {
+        value.itemList = [];
+        value.refresh();
+      });
       return result;
     } catch (e) {
       return false;

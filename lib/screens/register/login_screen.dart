@@ -45,10 +45,13 @@ class _LoginState extends State<LoginScreen> {
               const SizedBox(height: 30),
               getTextField(_controllerUsername, "Введите свой email",
                   (String? value) {
-                if (value?.length == 0) {
+                if (value == null) {
                   return null;
                 }
-                return EmailValidator.validate(value ?? "")
+                if (value.length == 0) {
+                  return null;
+                }
+                return EmailValidator.validate(value.replaceAll(' ', ''))
                     ? null
                     : "Неверный формат почты";
               },
@@ -112,8 +115,9 @@ class _LoginState extends State<LoginScreen> {
                     height: 5,
                   ),
                   getButton(context, "Войти", () async {
+                    var mail = _controllerUsername.text.replaceAll(' ', '');
                     if (await _userController.Login(
-                        _controllerUsername.text, _controllerPassword.text)) {
+                        mail, _controllerPassword.text)) {
                       GoRouter.of(context).go(SMPath.home);
                     } else {
                       showErrorScaffold(context, 'Не получилось :(');

@@ -84,6 +84,7 @@ class _ItemListPageState extends State<ItemListPage> {
 
   Future<void> _updateOnFetch() async {
     if (_itemsController.pagingControllers[_chosenFilter] != null) {
+      _itemsController.pagingControllers[_chosenFilter]!.itemList = [];
       _itemsController.pagingControllers[_chosenFilter]!.refresh();
     }
   }

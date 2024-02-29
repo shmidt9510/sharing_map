@@ -49,7 +49,13 @@ class _LoginState extends State<RegistrationScreen> {
               const SizedBox(height: 24),
               getTextField(_controllerMail, "Введите свой email",
                   (String? value) {
-                if (!EmailValidator.validate(value ?? "")) {
+                if (value == null) {
+                  return null;
+                }
+                if (value.length == 0) {
+                  return null;
+                }
+                if (!EmailValidator.validate(value.replaceAll(' ', ''))) {
                   return "Пожалуйста, введите почту";
                 }
                 return null;
@@ -137,10 +143,9 @@ class _LoginState extends State<RegistrationScreen> {
                       showErrorScaffold(context, "Не получилось :(");
                       return;
                     }
-                    var result = await _userController.Signup(
-                        _controllerMail.text,
-                        _controllerUsername.text,
-                        _controllerPassword.text);
+                    var mail = _controllerMail.text.replaceAll(' ', '');
+                    var result = await _userController.Signup(mail,
+                        _controllerUsername.text, _controllerPassword.text);
                     if (result == SignupResult.ok) {
                       GoRouter.of(context).go(
                         SMPath.start +
