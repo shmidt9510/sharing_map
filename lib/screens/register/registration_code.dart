@@ -8,6 +8,7 @@ import 'package:sharing_map/utils/colors.dart';
 import 'package:sharing_map/utils/shared.dart';
 // import 'package:sharing_map/widgets/textInputWidget.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:sharing_map/widgets/allWidgets.dart';
 
 class RegistrationCodeScreen extends StatefulWidget {
   const RegistrationCodeScreen({
@@ -45,10 +46,8 @@ class _RegistrationCodeScreenState extends State<RegistrationCodeScreen> {
             keyboardType: TextInputType.number,
             length: 4,
             margin: const EdgeInsets.all(12),
-            onCompleted: (String value) {
-              setState(() {
-                _waitSignupResult(value, context);
-              });
+            onCompleted: (String value) async {
+              await _waitSignupResult(value, context);
             },
             onEditing: (bool value) {
               setState(() {
@@ -73,18 +72,8 @@ class _RegistrationCodeScreenState extends State<RegistrationCodeScreen> {
   }
 
   Future<bool> _waitSignupResult(String code, BuildContext context) async {
-    bool result = await _userController.SignupConfirm(code);
-    if (!result) {
-      var snackBar = SnackBar(
-        content: const Text('Что-то пошло не так'),
-        action: SnackBarAction(
-          label: 'Закрыть',
-          onPressed: () {
-            // Some code to undo the change.
-          },
-        ),
-      );
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    if (!await _userController.SignupConfirm(code)) {
+      showErrorScaffold(context, "Что-то пошло не так");
       return false;
     }
     GoRouter.of(context).go(SMPath.home);
