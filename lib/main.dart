@@ -31,7 +31,7 @@ void main() async {
       _commonController.getLocations(1),
     ]);
   }
-  if (SharedPrefs().logged) {
+  if (SharedPrefs().logged && SharedPrefs().userId.isNotEmpty) {
     await _usersController.GetMyself();
   }
   WidgetsFlutterBinding.ensureInitialized();

@@ -43,7 +43,7 @@ class NeedRegistration extends StatelessWidget {
           if (!snapshot.hasData) {
             return Center(child: CircularProgressIndicator.adaptive());
           }
-          _userController.myself = snapshot.data as User;
+          _userController.myself(snapshot.data as User);
           return child;
         });
   }

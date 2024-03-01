@@ -12,12 +12,12 @@ class LoggerInterceptor implements InterceptorContract {
   Future<BaseRequest> interceptRequest({required BaseRequest request}) async {
     // debugPrint("----- Request -----");
     // debugPrint(request.method +
+    //         " " +
+    //         request.headers.toString() +
+    //         " " +
+    //         request.url.toString() +
     //     " " +
-    //     request.headers.toString() +
-    //     " " +
-    //     request.url.toString() +
-    //     " " +
-    //     request.finalize().toString());
+    //     (request as Request).body.toString());
     return request;
   }
 
@@ -26,8 +26,8 @@ class LoggerInterceptor implements InterceptorContract {
       {required BaseResponse response}) async {
     // debugPrint("----- Response -----");
     // debugPrint(response.request.toString() +
-    //     response.headers.toString() +
-    //     response.statusCode.toString());
+    //         response.headers.toString() +
+    //         response.statusCode.toString());
     return response;
   }
 
@@ -87,14 +87,10 @@ class RefreshTokenInterceptor implements InterceptorContract {
   @override
   Future<BaseRequest> interceptRequest({required BaseRequest request}) async {
     try {
-      // debugPrint("onInit");
-      // debugPrint(SharedPrefs().authToken);
-      // debugPrint(SharedPrefs().refreshToken);
-      // debugPrint(SharedPrefs().userId);
-      // debugPrint(SharedPrefs().logged.toString());
       String authToken = await SharedPrefs().getAuthToken();
       String refreshToken = await SharedPrefs().getRefreshToken();
-      if (refreshToken.isNotEmpty) {
+      await Future.delayed(Duration(milliseconds: 50));
+      if (refreshToken.isNotEmpty && authToken.isNotEmpty && SharedPrefs().userId.isNotEmpty) {
         if (authToken.isEmpty || JwtDecoder.isExpired(authToken)) {
           var response =
               await client.post(Uri.https(Constants.BACK_URL, "/refreshToken"),

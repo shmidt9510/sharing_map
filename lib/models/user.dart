@@ -48,5 +48,10 @@ class User {
 
     return SMImage(id: id, itemId: id, updatedAt: DateTime.now());
   }
-  // profileImage.toJson()
+
+    factory User.getEmptyUser() => User(
+      id: "",
+      username: "",
+      bio: "");
+
 }

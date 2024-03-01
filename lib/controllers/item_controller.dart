@@ -1,21 +1,28 @@
+import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:sharing_map/controllers/common_controller.dart';
 import 'package:sharing_map/models/item.dart';
 import 'package:sharing_map/services/item_service.dart';
 import 'package:get/get.dart';
+import 'package:sharing_map/utils/shared.dart';
 
 class ItemController extends GetxController {
-  var items = <Item>[].obs;
+  static const _pageSize = 20;
 
   final Map<int, PagingController<int, Item>> pagingControllers = {};
-  final PagingController<int, Item> userPagingController =
-      PagingController(firstPageKey: 0);
+  late PagingController<int, Item> userPagingController;
+
   @override
   void onInit() async {
     super.onInit();
+    userPagingController = PagingController(firstPageKey: 0);
+    userPagingController.addPageRequestListener((pageKey) {_fetchUserPage(pageKey);});
     final categories = Get.find<CommonController>().categories;
     for (int i = 0; i < categories.length; i++) {
       pagingControllers[categories[i].id] = PagingController(firstPageKey: 0);
+      pagingControllers[categories[i].id]?.addPageRequestListener((pageKey) {
+        _fetchPage(pageKey, categories[i].id);
+      });
     }
   }
 
@@ -23,6 +30,42 @@ class ItemController extends GetxController {
   void dispose() {
     pagingControllers.forEach((k, v) => v.dispose());
     super.dispose();
+  }
+
+  Future<void> _fetchUserPage(int pageKey) async {
+    try {
+      final newItems = await fetchItems(
+          page: pageKey, pageSize: _pageSize, userId: SharedPrefs().userId);
+
+      final isLastPage = newItems.length < _pageSize;
+      if (isLastPage) {
+        userPagingController.appendLastPage(newItems);
+      } else {
+        final nextPageKey = pageKey + 1;
+        userPagingController.appendPage(newItems, nextPageKey);
+      }
+    } catch (error) {
+      userPagingController.error = error;
+    }
+  }
+
+  Future<void> _fetchPage(int pageKey, int itemFilter) async {
+    try {
+      final newItems = await fetchItems(
+          page: pageKey, pageSize: _pageSize, itemFilter: itemFilter);
+
+      final isLastPage = newItems.length < _pageSize;
+      if (isLastPage) {
+        pagingControllers[itemFilter]
+            ?.appendLastPage(newItems);
+      } else {
+        final nextPageKey = pageKey + 1;
+        pagingControllers[itemFilter]
+            ?.appendPage(newItems, nextPageKey);
+      }
+    } catch (error) {
+      pagingControllers[itemFilter]?.error = error;
+    }
   }
 
   Future<List<Item>> fetchItems(
@@ -36,7 +79,7 @@ class ItemController extends GetxController {
           page: page,
           userId: userId,
           itemFilter: itemFilter);
-      items.addAll(itemTemp);
+      // items.addAll(itemTemp);
       return itemTemp;
     } catch (e) {
       return Future.error("no_data");
@@ -47,18 +90,19 @@ class ItemController extends GetxController {
     try {
       return await ItemWebService.getItem(itemId);
     } catch (e) {
+      
       return Future.error("no_data");
     }
   }
 
-  Future<RxList<Item>> waitItem() async {
-    await fetchItems();
-    return items;
-  }
+  // Future<RxList<Item>> waitItem() async {
+  //   await fetchItems();
+  //   return items;
+  // }
 
-  void onRefresh() async {
-    fetchItems();
-  }
+  // void onRefresh() async {
+  //   fetchItems();
+  // }
 
   Future<bool> addItem(Item item) async {
     try {
@@ -70,7 +114,6 @@ class ItemController extends GetxController {
         value.itemList = [];
         value.refresh();
       });
-      userPagingController.itemList = [];
       userPagingController.refresh();
       return true;
     } catch (e) {

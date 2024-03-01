@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:sharing_map/models/item.dart';
 import 'package:sharing_map/models/user.dart';
 import 'package:sharing_map/models/contact.dart';
 import 'package:sharing_map/services/user_service.dart';
@@ -27,7 +29,8 @@ extension SignupExtension on SignupResult {
 
 class UserController extends GetxController {
   var isLoading = true.obs;
-  User? myself = null;
+  var myself = Rx<User>(User.getEmptyUser());
+
   var myContacts = <UserContact>[].obs;
   var token = ''.obs;
 
@@ -90,7 +93,7 @@ class UserController extends GetxController {
       return result;
     } catch (e) {
       return false;
-    }
+    } 
   }
 
   Future<bool> Login(String email, String password) async {
@@ -108,9 +111,9 @@ class UserController extends GetxController {
   Future<bool> UpdateUser(User user, XFile? xfile) async {
     try {
       bool result = await UserWebService.updateUser(user);
-      if (result && myself != null) {
-        myself?.bio = user.bio;
-        myself?.username = user.username;
+      if (result && myself.value.id != User.getEmptyUser().id) {
+        myself.value.bio = user.bio;
+        myself.value.username = user.username;
       }
       return result;
     } catch (e) {
@@ -129,31 +132,38 @@ class UserController extends GetxController {
   Future<User> GetUser(String id) async {
     var result = await UserWebService.getUser(id);
     if (id == SharedPrefs().userId) {
-      myself = result;
+      myself(result);
     }
     return result;
   }
 
-  Future<User> GetMyself() async {
-    if (myself != null) {
-      return myself!;
+  Future<User?> GetMyself() async {
+    if (myself.value.id != "") {
+      return myself.value;
     }
     if (SharedPrefs().userId.isEmpty) {
       return Future.error("no_data");
     }
-    final user = await 
-      UserWebService.getUser(SharedPrefs().userId);
-      
+    var user = User(bio: "",id: "", username: "");
+    try {
+      user = await UserWebService.getUser(SharedPrefs().userId);
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+    myself(user);
     var contacts = await UserWebService.getUserContact(SharedPrefs().userId);
-    myself = user;
     myContacts(contacts);
-    return myself!;
+    return myself.value;
   }
 
   Future<bool> Logout() async {
     await SharedPrefs().clear();
+    SharedPrefs().authToken = "";
+    SharedPrefs().refreshToken = "";
+    SharedPrefs().userId = "";
+    SharedPrefs().logged = false;
     SharedPrefs().isFirstRun = false;
-    myself = null;
+    myself(User.getEmptyUser());
     myContacts([]);
     return true;
   }
@@ -164,8 +174,12 @@ class UserController extends GetxController {
       return Future.error("failed_deleting_user");
     }
     await SharedPrefs().clear();
+    SharedPrefs().authToken = "";
+    SharedPrefs().refreshToken = "";
+    SharedPrefs().userId = "";
+    SharedPrefs().logged = false;
     SharedPrefs().isFirstRun = false;
-    myself = null;
+    myself(User.getEmptyUser());
     myContacts([]);
     return true;
   }

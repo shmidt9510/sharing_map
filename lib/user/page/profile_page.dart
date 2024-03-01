@@ -39,7 +39,10 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    var _user = _userController.myself;
     var contacts = _userController.myContacts;
+    _bioController.text = _user.value.bio;
+    _userNameController.text = _user.value.username;
     return Scaffold(
       appBar: AppBar(
         leading: BackButton(
@@ -50,11 +53,9 @@ class _ProfilePageState extends State<ProfilePage> {
         elevation: 0,
         actions: SharedPrefs().logged ? _getActions(context) : null,
       ),
-      body: FutureBuilder(
-          future: _userController.GetMyself(),
-          builder: (context, snapshot) {
-            if (snapshot.hasError) {
-              return Padding(
+      body: _userController.myself.value.id == User.getEmptyUser().id
+      ?
+       Padding(
                 padding: const EdgeInsets.all(24.0),
                 child: Column(children: [
                   Text("Чтобы редактировать профиль, надо зарегистрироваться"),
@@ -72,15 +73,9 @@ class _ProfilePageState extends State<ProfilePage> {
                     GoRouter.of(context).go(SMPath.start + "/" + SMPath.login);
                   })
                 ]),
-              );
-            }
-            if (!snapshot.hasData) {
-              return Center(child: CircularProgressIndicator.adaptive());
-            }
-            var _user = snapshot.data as User;
-            _bioController.text = _user.bio;
-            _userNameController.text = _user.username;
-            return SingleChildScrollView(
+              )
+              :
+            SingleChildScrollView(
               physics: AlwaysScrollableScrollPhysics(),
               child: Column(
                 children: [
@@ -95,7 +90,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   child: SizedBox.fromSize(
                                       size: Size.fromRadius(48),
                                       child: profileImage == null
-                                          ? _user.buildImage(fit: BoxFit.cover)
+                                          ? _user.value.buildImage(fit: BoxFit.cover)
                                           : Image.file(
                                               File(profileImage!.path),
                                               fit: BoxFit.cover,
@@ -105,7 +100,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 right: -5,
                                 child: IconButton(
                                     onPressed: () async {
-                                      selectImage(_user);
+                                      selectImage(_user.value);
                                     },
                                     icon: Icon(
                                       Icons.edit,
@@ -119,7 +114,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           child: Center(
                             child: Column(
                               children: [
-                                buildName(_user),
+                                buildName(_user.value),
                                 // NumbersWidget(_user!),
                               ],
                             ),
@@ -129,7 +124,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  buildAbout(_user),
+                  buildAbout(_user.value),
                   Padding(
                     padding: const EdgeInsets.only(left: 20.0),
                     child: GetUserContactWidget(
@@ -142,15 +137,13 @@ class _ProfilePageState extends State<ProfilePage> {
                     style: getBigTextStyle(),
                   )),
                   const SizedBox(height: 24),
-                  ItemsListViewSelfProfile(
-                    _user.id,
-                  )
+                  ItemsListViewSelfProfile()
                 ],
               ),
-            );
-          }),
+            )
     );
-  }
+          }
+
 
   Widget buildContacts(BuildContext context, UserController controller) {
     return FutureBuilder(
@@ -303,7 +296,9 @@ class _ProfilePageState extends State<ProfilePage> {
                 textStyle: Theme.of(context).textTheme.labelLarge,
               ),
               child: const Text('Нет'),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).maybePop();
+              },
             ),
           ],
         );
@@ -338,12 +333,11 @@ class _ProfilePageState extends State<ProfilePage> {
           if (await _logoutDialog(context)) {
             if (await _userController.Logout()) {
               final ItemController _itemsController = Get.put(ItemController());
-
               _itemsController.userPagingController.refresh();
               _itemsController.userPagingController
                   .removePageRequestListener((pageKey) {});
-              _itemsController.userPagingController.itemList = [];
               showSnackBar(context, 'До скорых встреч');
+              setState((){});
               GoRouter.of(context).go(SMPath.start);
             }
           }

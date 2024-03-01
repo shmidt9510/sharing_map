@@ -53,7 +53,6 @@ class UserWebService {
   );
 
   static Future<bool> login(String email, String password) async {
-    // var body = {'email': '$email', 'password': '$password'};
     try {
       var response = await client.post(Uri.https(Constants.BACK_URL, "/login"),
           headers: {
@@ -63,12 +62,11 @@ class UserWebService {
           body: jsonEncode(UserPass(email, password).toJson()));
       var bodyDecoded = jsonDecode(response.body);
       if (response.statusCode == HttpStatus.ok) {
+        var authToken = bodyDecoded["accessToken"].toString();
         SharedPrefs().logged = true;
-        SharedPrefs().authToken = bodyDecoded["accessToken"].toString();
+        SharedPrefs().authToken = authToken;
         SharedPrefs().refreshToken = bodyDecoded["refreshToken"].toString();
-        String authToken = await SharedPrefs().getAuthToken();
         Map<String, dynamic> decodedToken = JwtDecoder.decode(authToken);
-        print(decodedToken["user_id"] as String);
         SharedPrefs().userId = decodedToken["user_id"] as String;
       } else {
         return false;

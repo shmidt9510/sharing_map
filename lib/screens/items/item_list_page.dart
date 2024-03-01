@@ -1,16 +1,13 @@
 import 'package:sharing_map/controllers/common_controller.dart';
 import 'package:sharing_map/models/category.dart';
+import 'package:sharing_map/models/item.dart';
 import 'package:sharing_map/theme.dart';
 import 'package:sharing_map/utils/colors.dart';
 
 import 'item_widgets.dart';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sharing_map/screens/items/item_detail_page.dart';
-import 'package:sharing_map/models/item.dart';
-import 'package:sharing_map/widgets/item_block.dart';
 import 'package:sharing_map/controllers/item_controller.dart';
 
 class ItemListPage extends StatefulWidget {
@@ -83,10 +80,7 @@ class _ItemListPageState extends State<ItemListPage> {
   }
 
   Future<void> _updateOnFetch() async {
-    if (_itemsController.pagingControllers[_chosenFilter] != null) {
-      _itemsController.pagingControllers[_chosenFilter]!.itemList = [];
-      _itemsController.pagingControllers[_chosenFilter]!.refresh();
-    }
+    _itemsController.pagingControllers[_chosenFilter]?.refresh();
   }
 
   var categoriesAssetsName = {

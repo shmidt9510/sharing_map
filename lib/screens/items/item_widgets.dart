@@ -20,36 +20,12 @@ class ItemsListView extends StatefulWidget {
 }
 
 class _ItemsListViewState extends State<ItemsListView> {
-  static const _pageSize = 20;
 
   ItemController _itemsController = Get.find<ItemController>();
 
   @override
   void initState() {
     super.initState();
-    _itemsController.pagingControllers[widget.itemFilter]
-        ?.addPageRequestListener((pageKey) {
-      _fetchPage(pageKey, widget.itemFilter);
-    });
-  }
-
-  Future<void> _fetchPage(int pageKey, int itemFilter) async {
-    try {
-      final newItems = await _itemsController.fetchItems(
-          page: pageKey, pageSize: _pageSize, itemFilter: itemFilter);
-
-      final isLastPage = newItems.length < _pageSize;
-      if (isLastPage) {
-        _itemsController.pagingControllers[widget.itemFilter]
-            ?.appendLastPage(newItems);
-      } else {
-        final nextPageKey = pageKey + 1;
-        _itemsController.pagingControllers[widget.itemFilter]
-            ?.appendPage(newItems, nextPageKey);
-      }
-    } catch (error) {
-      _itemsController.pagingControllers[widget.itemFilter]?.error = error;
-    }
   }
 
   @override

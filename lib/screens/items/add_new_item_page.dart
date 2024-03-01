@@ -107,6 +107,9 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
                       NoContactButton(),
                       getTextField(titleController, 'Что вы хотите отдать',
                           (String? value) {
+                        if (value?.isEmpty ?? true) {
+                          return null;
+                        }
                         if ((value?.length ?? 0) < 2) {
                           return "Пожалуйста, введите больше символов";
                         }

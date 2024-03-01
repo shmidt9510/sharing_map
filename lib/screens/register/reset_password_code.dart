@@ -33,8 +33,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordCodeScreen> {
   build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: SingleChildScrollView(
-        child: Column(
+        body: Column(
           children: [
             SizedBox(
               height: 20,
@@ -71,7 +70,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordCodeScreen> {
             Spacer()
           ],
         ),
-      ),
     );
   }
 

@@ -14,8 +14,8 @@ class CommonWebService {
   static var client = InterceptedClient.build(
     interceptors: [
       RefreshTokenInterceptor(),
+      AuthorizationInterceptor(),
       LoggerInterceptor(),
-      AuthorizationInterceptor()
     ],
   );
 
@@ -37,7 +37,6 @@ class CommonWebService {
         await client.get(Uri.https(Constants.BACK_URL, "/subcategories/all"));
     if (response.statusCode == 200) {
       var jsonData = json.decode(utf8.decode(response.bodyBytes));
-      // debugPrint(utf8.decode(response.bodyBytes));
       return (jsonData as List).map((e) => Subcategory.fromJson(e)).toList();
     } else {
       return null;

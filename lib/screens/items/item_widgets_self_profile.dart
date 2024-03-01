@@ -8,8 +8,7 @@ import 'package:sharing_map/controllers/item_controller.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class ItemsListViewSelfProfile extends StatefulWidget {
-  final String userId;
-  const ItemsListViewSelfProfile(this.userId, {Key? key}) : super(key: key);
+  const ItemsListViewSelfProfile({Key? key}) : super(key: key);
 
   @override
   _ItemsListViewSelfProfileState createState() =>
@@ -17,33 +16,12 @@ class ItemsListViewSelfProfile extends StatefulWidget {
 }
 
 class _ItemsListViewSelfProfileState extends State<ItemsListViewSelfProfile> {
-  static const _pageSize = 20;
 
   ItemController _itemsController = Get.find<ItemController>();
 
   @override
   void initState() {
     super.initState();
-    _itemsController.userPagingController.addPageRequestListener((pageKey) {
-      _fetchPage(pageKey);
-    });
-  }
-
-  Future<void> _fetchPage(int pageKey) async {
-    try {
-      final newItems = await _itemsController.fetchItems(
-          page: pageKey, pageSize: _pageSize, userId: widget.userId);
-
-      final isLastPage = newItems.length < _pageSize;
-      if (isLastPage) {
-        _itemsController.userPagingController.appendLastPage(newItems);
-      } else {
-        final nextPageKey = pageKey + 1;
-        _itemsController.userPagingController.appendPage(newItems, nextPageKey);
-      }
-    } catch (error) {
-      _itemsController.userPagingController.error = error;
-    }
   }
 
   @override
@@ -90,8 +68,6 @@ class _ItemsListViewSelfProfileState extends State<ItemsListViewSelfProfile> {
                           onPressed: () async {
                             await _deleteItemDialogBuilder(context, item.id);
                             setState(() {
-                              _itemsController.userPagingController.itemList =
-                                  [];
                               _itemsController.userPagingController.refresh();
                             });
                           },

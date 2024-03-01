@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -15,10 +14,8 @@ import 'package:sharing_map/models/location.dart';
 import 'package:sharing_map/models/user.dart';
 import 'package:sharing_map/path.dart';
 import 'package:sharing_map/theme.dart';
-import 'package:sharing_map/user/page/user_profile_page.dart';
 import 'package:sharing_map/utils/colors.dart';
 import 'package:sharing_map/utils/shared.dart';
-import 'package:sharing_map/widgets/allWidgets.dart';
 import 'package:sharing_map/widgets/contact_type_widget.dart';
 import 'package:sharing_map/widgets/image.dart';
 
@@ -323,12 +320,11 @@ Widget GetGoRegisterButton(BuildContext context) {
     ),
     onPressed: () {
       SnackBar snackBar = SnackBar(
-        content: Text("Нужно зарегистрироваться для просморта контактов"),
+        content: Text("Нужно зарегистрироваться для просмотра контактов"),
         action: SnackBarAction(
           label: 'Перейти',
           onPressed: () async {
             GoRouter.of(context).go(SMPath.start + "/" + SMPath.registration);
-            ;
           },
         ),
       );
