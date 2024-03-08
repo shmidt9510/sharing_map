@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:sharing_map/models/photo.dart';
 import 'package:sharing_map/utils/s3_client.dart';
 
@@ -12,6 +13,12 @@ class CachedImage {
     }
     final String imageUrl = "https://" + S3Client.GetHost() + "/" + uri;
     return CachedNetworkImage(
+        cacheManager: CacheManager(
+          Config(
+            'images',
+            stalePeriod: Duration(days: 3),
+          ),
+        ),
         cacheKey: imageUrl.hashCode.toUnsigned(20).toRadixString(16),
         fit: fit,
         imageUrl: imageUrl,

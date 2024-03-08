@@ -23,7 +23,7 @@ class TextDescriptionBlock extends StatelessWidget {
       _location = _commonController.locationsMap[_item.locationIds![0]]!.name;
     }
     _locationCount -= 1;
-    String itemName = _item.name.toLowerCase();
+    String itemName = _item.name;
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       // crossAxisAlignment: CrossAxisAlignment.end,

@@ -16,7 +16,9 @@ class ItemController extends GetxController {
   void onInit() async {
     super.onInit();
     userPagingController = PagingController(firstPageKey: 0);
-    userPagingController.addPageRequestListener((pageKey) {_fetchUserPage(pageKey);});
+    userPagingController.addPageRequestListener((pageKey) {
+      _fetchUserPage(pageKey);
+    });
     final categories = Get.find<CommonController>().categories;
     for (int i = 0; i < categories.length; i++) {
       pagingControllers[categories[i].id] = PagingController(firstPageKey: 0);
@@ -56,12 +58,10 @@ class ItemController extends GetxController {
 
       final isLastPage = newItems.length < _pageSize;
       if (isLastPage) {
-        pagingControllers[itemFilter]
-            ?.appendLastPage(newItems);
+        pagingControllers[itemFilter]?.appendLastPage(newItems);
       } else {
         final nextPageKey = pageKey + 1;
-        pagingControllers[itemFilter]
-            ?.appendPage(newItems, nextPageKey);
+        pagingControllers[itemFilter]?.appendPage(newItems, nextPageKey);
       }
     } catch (error) {
       pagingControllers[itemFilter]?.error = error;
@@ -90,19 +90,17 @@ class ItemController extends GetxController {
     try {
       return await ItemWebService.getItem(itemId);
     } catch (e) {
-      
       return Future.error("no_data");
     }
   }
 
-  // Future<RxList<Item>> waitItem() async {
-  //   await fetchItems();
-  //   return items;
-  // }
-
-  // void onRefresh() async {
-  //   fetchItems();
-  // }
+  void refershAll() {
+    pagingControllers.forEach((key, value) {
+      value.itemList = [];
+      value.refresh();
+    });
+    userPagingController.refresh();
+  }
 
   Future<bool> addItem(Item item) async {
     try {
@@ -110,11 +108,7 @@ class ItemController extends GetxController {
       if (response.isEmpty) {
         return false;
       }
-      pagingControllers.forEach((key, value) {
-        value.itemList = [];
-        value.refresh();
-      });
-      userPagingController.refresh();
+      refershAll();
       return true;
     } catch (e) {
       return false;
@@ -124,10 +118,7 @@ class ItemController extends GetxController {
   Future<bool> deleteItem(String itemId) async {
     try {
       var result = await ItemWebService.deleteItem(itemId);
-      pagingControllers.forEach((key, value) {
-        value.itemList = [];
-        value.refresh();
-      });
+      refershAll();
       return result;
     } catch (e) {
       return false;

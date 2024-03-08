@@ -19,6 +19,7 @@ import 'package:sharing_map/utils/shared.dart';
 import 'package:sharing_map/widgets/allWidgets.dart';
 import 'package:sharing_map/widgets/image.dart';
 import 'package:sharing_map/widgets/editable_text.dart';
+import 'package:sharing_map/widgets/need_registration.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -44,106 +45,85 @@ class _ProfilePageState extends State<ProfilePage> {
     _bioController.text = _user.value.bio;
     _userNameController.text = _user.value.username;
     return Scaffold(
-      appBar: AppBar(
-        leading: BackButton(
-          color: MColors.secondaryGreen,
-          onPressed: () => GoRouter.of(context).go(SMPath.home),
+        appBar: AppBar(
+          leading: BackButton(
+            color: MColors.secondaryGreen,
+            onPressed: () => GoRouter.of(context).go(SMPath.home),
+          ),
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          actions: SharedPrefs().logged ? _getActions(context) : null,
         ),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        actions: SharedPrefs().logged ? _getActions(context) : null,
-      ),
-      body: _userController.myself.value.id == User.getEmptyUser().id
-      ?
-       Padding(
-                padding: const EdgeInsets.all(24.0),
-                child: Column(children: [
-                  Text("Чтобы редактировать профиль, надо зарегистрироваться"),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  getButton(context, "Регистрация", () {
-                    GoRouter.of(context)
-                        .go(SMPath.start + "/" + SMPath.registration);
-                  }, color: MColors.grey1),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  getButton(context, "Войти", () {
-                    GoRouter.of(context).go(SMPath.start + "/" + SMPath.login);
-                  })
-                ]),
-              )
-              :
-            SingleChildScrollView(
-              physics: AlwaysScrollableScrollPhysics(),
-              child: Column(
-                children: [
-                  Padding(
-                    padding: EdgeInsetsDirectional.only(start: 20, end: 20),
-                    child: Row(
-                      children: [
-                        Flexible(
-                            flex: 2,
-                            child: Stack(children: [
-                              ClipOval(
-                                  child: SizedBox.fromSize(
-                                      size: Size.fromRadius(48),
-                                      child: profileImage == null
-                                          ? _user.value.buildImage(fit: BoxFit.cover)
-                                          : Image.file(
-                                              File(profileImage!.path),
-                                              fit: BoxFit.cover,
-                                            ))),
-                              Positioned(
-                                top: -5,
-                                right: -5,
-                                child: IconButton(
-                                    onPressed: () async {
-                                      selectImage(_user.value);
-                                    },
-                                    icon: Icon(
-                                      Icons.edit,
-                                      color: MColors.green,
-                                    )),
-                              )
-                            ])),
-                        Spacer(flex: 1),
-                        Flexible(
-                          flex: 4,
-                          child: Center(
-                            child: Column(
-                              children: [
-                                buildName(_user.value),
-                                // NumbersWidget(_user!),
-                              ],
+        body: _userController.myself.value.id == User.getEmptyUser().id
+            ? NeedRegistration()
+            : SingleChildScrollView(
+                physics: AlwaysScrollableScrollPhysics(),
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsetsDirectional.only(start: 20, end: 20),
+                      child: Row(
+                        children: [
+                          Flexible(
+                              flex: 2,
+                              child: Stack(children: [
+                                ClipOval(
+                                    child: SizedBox.fromSize(
+                                        size: Size.fromRadius(48),
+                                        child: profileImage == null
+                                            ? _user.value
+                                                .buildImage(fit: BoxFit.cover)
+                                            : Image.file(
+                                                File(profileImage!.path),
+                                                fit: BoxFit.cover,
+                                              ))),
+                                Positioned(
+                                  top: -5,
+                                  right: -5,
+                                  child: IconButton(
+                                      onPressed: () async {
+                                        selectImage(_user.value);
+                                      },
+                                      icon: Icon(
+                                        Icons.edit,
+                                        color: MColors.green,
+                                      )),
+                                )
+                              ])),
+                          Spacer(flex: 1),
+                          Flexible(
+                            flex: 4,
+                            child: Center(
+                              child: Column(
+                                children: [
+                                  buildName(_user.value),
+                                  // NumbersWidget(_user!),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 10),
-                  buildAbout(_user.value),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20.0),
-                    child: GetUserContactWidget(
-                        PrepareContacts(contacts), context),
-                  ),
-                  const SizedBox(height: 24),
-                  Center(
-                      child: Text(
-                    "Мои объявления",
-                    style: getBigTextStyle(),
-                  )),
-                  const SizedBox(height: 24),
-                  ItemsListViewSelfProfile()
-                ],
-              ),
-            )
-    );
-          }
-
+                    const SizedBox(height: 10),
+                    buildAbout(_user.value),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20.0),
+                      child: GetUserContactWidget(
+                          PrepareContacts(contacts), context),
+                    ),
+                    const SizedBox(height: 24),
+                    Center(
+                        child: Text(
+                      "Мои объявления",
+                      style: getBigTextStyle(),
+                    )),
+                    const SizedBox(height: 24),
+                    ItemsListViewSelfProfile()
+                  ],
+                ),
+              ));
+  }
 
   Widget buildContacts(BuildContext context, UserController controller) {
     return FutureBuilder(
@@ -337,7 +317,7 @@ class _ProfilePageState extends State<ProfilePage> {
               _itemsController.userPagingController
                   .removePageRequestListener((pageKey) {});
               showSnackBar(context, 'До скорых встреч');
-              setState((){});
+              setState(() {});
               GoRouter.of(context).go(SMPath.start);
             }
           }

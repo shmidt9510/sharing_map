@@ -80,7 +80,7 @@ class _ItemListPageState extends State<ItemListPage> {
   }
 
   Future<void> _updateOnFetch() async {
-    _itemsController.pagingControllers[_chosenFilter]?.refresh();
+    _itemsController.refershAll();
   }
 
   var categoriesAssetsName = {

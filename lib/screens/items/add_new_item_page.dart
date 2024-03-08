@@ -22,6 +22,7 @@ import 'package:sharing_map/utils/shared.dart';
 import 'package:sharing_map/widgets/allWidgets.dart';
 import 'package:sharing_map/widgets/loading_button.dart';
 import 'package:sharing_map/utils/compress_image.dart';
+import 'package:sharing_map/widgets/need_registration.dart';
 import 'package:sharing_map/widgets/no_contacts_button.dart';
 
 enum PhotoSource { FILE, NETWORK }
@@ -241,25 +242,7 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
                     ]),
                   ),
                 ))
-            : Padding(
-                padding: const EdgeInsets.all(24.0),
-                child: Column(children: [
-                  Text("Чтобы добавлять объявления, надо зарегистрироваться"),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  getButton(context, "Регистрация", () {
-                    GoRouter.of(context)
-                        .go(SMPath.start + "/" + SMPath.registration);
-                  }, color: MColors.grey1),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  getButton(context, "Войти", () {
-                    GoRouter.of(context).go(SMPath.start + "/" + SMPath.login);
-                  })
-                ]),
-              ));
+            : NeedRegistration());
   }
 
   Widget _getImageChoiceWidget() {
