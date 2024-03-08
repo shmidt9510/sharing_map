@@ -127,6 +127,7 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
                         if (value?.length == 0) {
                           return null;
                         }
+                        return null;
                       }, maxLines: 5, minLines: 3),
                       SizedBox(
                         height: 20,
@@ -138,7 +139,7 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
                           if (value == null) {
                             return "Пожалуйста, выберите категорию";
                           }
-                          var chosen = value as List<ItemCategory>;
+                          var chosen = value;
                           if (chosen.isEmpty) {
                             return "Пожалуйста, выберите категорию";
                           }
@@ -190,7 +191,7 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
                           if (value == null) {
                             return "Пожалуйста, выберите станцию метро";
                           }
-                          var chosen = value as List<SMLocation>;
+                          var chosen = value;
                           if (chosen.isEmpty) {
                             return "Пожалуйста, выберите станцию метро";
                           }
