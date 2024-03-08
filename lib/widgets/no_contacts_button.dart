@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sharing_map/controllers/user_controller.dart';
-import 'package:sharing_map/models/user.dart';
 import 'package:sharing_map/path.dart';
 import 'package:sharing_map/theme.dart';
 import 'package:sharing_map/utils/colors.dart';
-import 'package:sharing_map/widgets/allWidgets.dart';
 
 class NoContactButton extends StatelessWidget {
   UserController _userController = Get.find<UserController>();

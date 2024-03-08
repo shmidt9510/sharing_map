@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:flutter/material.dart';
 import 'package:sharing_map/services/photo_service.dart';
 
 import 'package:sharing_map/utils/constants.dart';

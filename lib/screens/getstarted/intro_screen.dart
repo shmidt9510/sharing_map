@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sharing_map/path.dart';
 // import 'package:sharing_map/screens/register_screens/registration_screen.dart';
 import 'package:sharing_map/utils/colors.dart';
-import 'package:sharing_map/utils/shared.dart';
 import 'package:sharing_map/widgets/allWidgets.dart';
 
 class IntroScreen extends StatefulWidget {

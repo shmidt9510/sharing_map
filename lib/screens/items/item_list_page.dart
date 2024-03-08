@@ -1,6 +1,5 @@
 import 'package:sharing_map/controllers/common_controller.dart';
 import 'package:sharing_map/models/category.dart';
-import 'package:sharing_map/models/item.dart';
 import 'package:sharing_map/theme.dart';
 import 'package:sharing_map/utils/colors.dart';
 

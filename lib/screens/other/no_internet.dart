@@ -10,7 +10,6 @@ import 'package:sharing_map/theme.dart';
 // import 'package:sharing_map/screens/register_screens/registration_screen.dart';
 import 'package:sharing_map/utils/colors.dart';
 import 'package:sharing_map/utils/init_path.dart';
-import 'package:sharing_map/utils/shared.dart';
 import 'package:sharing_map/widgets/loading_button.dart';
 
 class NoInternetScreen extends StatefulWidget {

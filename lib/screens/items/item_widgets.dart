@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sharing_map/path.dart';
-import 'package:sharing_map/screens/items/item_detail_page.dart';
 import 'package:sharing_map/models/item.dart';
 import 'package:sharing_map/widgets/item_block.dart';
 import 'package:sharing_map/controllers/item_controller.dart';

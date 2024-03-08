@@ -10,7 +10,6 @@ import 'package:sharing_map/utils/constants.dart';
 import 'package:sharing_map/utils/shared.dart';
 import 'interceptors.dart';
 
-import 'package:flutter/foundation.dart';
 import 'package:http_interceptor/http_interceptor.dart';
 
 class UserPass {

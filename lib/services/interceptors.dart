@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:http_interceptor/http_interceptor.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:sharing_map/utils/constants.dart';

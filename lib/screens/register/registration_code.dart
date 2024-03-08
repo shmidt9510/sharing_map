@@ -4,10 +4,7 @@ import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sharing_map/controllers/user_controller.dart';
 import 'package:sharing_map/path.dart';
-import 'package:sharing_map/utils/colors.dart';
-import 'package:sharing_map/utils/shared.dart';
 // import 'package:sharing_map/widgets/textInputWidget.dart';
-import 'package:email_validator/email_validator.dart';
 import 'package:sharing_map/widgets/allWidgets.dart';
 
 class RegistrationCodeScreen extends StatefulWidget {

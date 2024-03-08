@@ -2,7 +2,6 @@ import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 import 'package:sharing_map/utils/colors.dart';
-import 'package:sharing_map/utils/shared.dart';
 
 /// Builds the "shell" for the app by building a Scaffold with a
 /// BottomNavigationBar, where [child] is placed in the body of the Scaffold.

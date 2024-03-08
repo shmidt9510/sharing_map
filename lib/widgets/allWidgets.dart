@@ -1,10 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sharing_map/theme.dart';
-// import 'package:sharing_map/model/data/Products.dart';
-// import 'package:sharing_map/model/notifiers/cart_notifier.dart';
-// import 'package:sharing_map/model/services/Product_service.dart';
-// import '../../deprecated/tab_screens/homeScreen_pages/productDetailsScreen.dart';
 import 'package:sharing_map/utils/colors.dart';
 
 Widget secondaryButtonGreen(

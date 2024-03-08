@@ -1,5 +1,4 @@
 import 'package:image_picker/image_picker.dart';
-import 'package:uuid/uuid.dart';
 import 'photo.dart';
 
 class Item {
