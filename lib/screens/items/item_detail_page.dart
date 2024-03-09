@@ -221,7 +221,11 @@ Widget GetFullscreenSlider(image, context, count) {
     appBar: AppBar(),
     body: Center(
       child: GestureDetector(
-        child: Hero(tag: 'carusel_image_list$count', child: image),
+        child: Hero(
+            tag: 'carusel_image_list$count',
+            child: InteractiveViewer(
+              child: image,
+            )),
         onTap: () {
           Navigator.pop(context);
         },

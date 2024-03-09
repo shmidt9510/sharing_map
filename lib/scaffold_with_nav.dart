@@ -1,6 +1,8 @@
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
+import 'package:sharing_map/controllers/user_controller.dart';
 import 'package:sharing_map/utils/colors.dart';
 
 /// Builds the "shell" for the app by building a Scaffold with a
@@ -16,28 +18,74 @@ class ScaffoldWithNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var _color = MColors.primaryGreen;
-    var _index = navigationShell.currentIndex;
+    var _height = context.height * 0.035;
+    var profilePicture =
+        Get.find<UserController>().myself.value.buildImage(fit: BoxFit.cover);
     return Scaffold(
       body: navigationShell,
       bottomNavigationBar: SizedBox(
         height: context.height * 0.10,
         child: BottomNavigationBar(
-          unselectedIconTheme: IconThemeData(color: MColors.grey2),
-          selectedIconTheme: IconThemeData(color: MColors.secondaryGreen),
-          unselectedItemColor: MColors.black,
-          selectedItemColor: MColors.black,
+          unselectedItemColor: MColors.darkGrey,
+          selectedItemColor: MColors.green,
+          useLegacyColorScheme: true,
           selectedFontSize: 14,
           unselectedFontSize: 14,
           items: [
             BottomNavigationBarItem(
-                activeIcon: Icon(Icons.home),
-                icon: Icon(Icons.home),
+                activeIcon: SvgPicture.asset(
+                  'assets/icons/icon_home_pressed.svg',
+                  height: _height,
+                  width: _height,
+                ),
+                icon: SvgPicture.asset(
+                  'assets/icons/icon_home_unpressed.svg',
+                  height: _height,
+                  width: _height,
+                ),
                 label: 'Главная'),
             BottomNavigationBarItem(
-                icon: Icon(Icons.add_circle_outlined), label: 'Добавить'),
+                icon: SvgPicture.asset(
+                  'assets/icons/icon_add_unpressed.svg',
+                  height: _height,
+                  width: _height,
+                ),
+                activeIcon: SvgPicture.asset(
+                  'assets/icons/icon_add.svg',
+                  height: _height,
+                  width: _height,
+                ),
+                label: 'Добавить'),
             BottomNavigationBarItem(
-                icon: Icon(Icons.supervised_user_circle_rounded),
+                icon: SizedBox(
+                    height: _height,
+                    width: _height,
+                    child: Container(
+                        child: ClipOval(
+                          child: profilePicture,
+                          clipBehavior: Clip.hardEdge,
+                        ),
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: MColors.darkGrey,
+                              width: 2.5,
+                            )))),
+                activeIcon: SizedBox(
+                    height: _height,
+                    width: _height,
+                    child: Container(
+                        child: ClipOval(
+                          child: profilePicture,
+                          clipBehavior: Clip.hardEdge,
+                        ),
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: MColors.green,
+                              width: 2.5,
+                            )))),
+                // Icon(Icons.supervised_user_circle_rounded)),
                 label: 'Профиль'),
           ],
           currentIndex: navigationShell.currentIndex,

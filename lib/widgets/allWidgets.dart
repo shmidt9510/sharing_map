@@ -82,6 +82,9 @@ Widget getTextField(TextEditingController controller, String label,
     FocusNode? focuseNode,
     Color? hintColor}) {
   var _focusNode = focuseNode ?? FocusNode();
+  var _capitalization = (keyboardType == TextInputType.emailAddress)
+      ? TextCapitalization.none
+      : TextCapitalization.sentences;
   return TextFormField(
     onTapOutside: (PointerDownEvent e) {
       _focusNode.unfocus();
@@ -91,6 +94,7 @@ Widget getTextField(TextEditingController controller, String label,
     maxLines: maxLines,
     controller: controller,
     keyboardType: keyboardType,
+    textCapitalization: _capitalization,
     style: getMediumTextStyle(),
     autovalidateMode: AutovalidateMode.onUserInteraction,
     decoration: InputDecoration(
@@ -134,6 +138,7 @@ Widget getPasswordTextField(
     controller: controller,
     obscureText: obscurePassword,
     keyboardType: TextInputType.visiblePassword,
+    textCapitalization: TextCapitalization.sentences,
     decoration: InputDecoration(
       contentPadding: EdgeInsets.all(10),
       floatingLabelBehavior: FloatingLabelBehavior.never,

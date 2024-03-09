@@ -11,42 +11,40 @@ class NoContactButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() => _userController.myContacts.isEmpty
-        ? Column(
-            children: [
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  textStyle: getMediumTextStyle(),
-                  backgroundColor: MColors.red2,
-                  minimumSize: Size.fromHeight(50),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                onPressed: () {
-                  GoRouter.of(context).go(SMPath.profile);
-                },
-                child: Center(
-                  child: Text.rich(TextSpan(
-                    text:
-                        'Пожалуйста, проверьте, чтобы в профиле был заполнен хотя бы один контакт ',
-                    style: getMediumTextStyle(),
-                    children: <TextSpan>[
-                      TextSpan(
-                          text: 'Перейти в профиль',
-                          style: TextStyle(
-                            decoration: TextDecoration.underline,
-                          )),
-                      // can add more TextSpans here...
-                    ],
-                  )),
-                ),
-              ),
-              SizedBox(
-                height: 10,
-              )
-            ],
-          )
-        : Container());
+    return Column(
+      children: [
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            textStyle: getMediumTextStyle(),
+            backgroundColor: MColors.red2,
+            minimumSize: Size.fromHeight(100),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+          onPressed: () {
+            GoRouter.of(context).go(SMPath.profile);
+          },
+          child: Center(
+            child: Text.rich(TextSpan(
+              text:
+                  'Пожалуйста, проверьте, чтобы в профиле был заполнен хотя бы один контакт ',
+              style: getMediumTextStyle(),
+              children: <TextSpan>[
+                TextSpan(
+                    text: 'Перейти в профиль',
+                    style: TextStyle(
+                      decoration: TextDecoration.underline,
+                    )),
+                // can add more TextSpans here...
+              ],
+            )),
+          ),
+        ),
+        SizedBox(
+          height: 10,
+        )
+      ],
+    );
   }
 }

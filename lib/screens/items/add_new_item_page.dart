@@ -41,7 +41,6 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
   CommonController _commonController = Get.find<CommonController>();
   UserController _userController = Get.find<UserController>();
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  List<UserContact> _userContacts = [];
 
   void selectImages() async {
     var source = await chooseImageSource(context, "Выберите изображения");
@@ -95,154 +94,156 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
 
   @override
   Widget build(BuildContext context) {
-    _userContacts = _userController.myContacts;
     return Scaffold(
         appBar: AppBar(title: Text("Создать объявление")),
         body: SharedPrefs().logged
-            ? Form(
-                key: _formKey,
-                child: Container(
-                  padding: const EdgeInsets.all(20),
-                  child: SingleChildScrollView(
-                    child: Column(children: [
-                      NoContactButton(),
-                      getTextField(titleController, 'Что вы хотите отдать',
-                          (String? value) {
-                        if (value?.isEmpty ?? true) {
-                          return null;
-                        }
-                        if ((value?.length ?? 0) < 2) {
-                          return "Пожалуйста, введите больше символов";
-                        }
-                        if ((value?.startsWith(" ") ?? false)) {
-                          return "Название не должно начинаться с пробела";
-                        }
-                        return null;
-                      }),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      getTextField(descriptionController, 'Описание',
-                          (String? value) {
-                        if (value?.length == 0) {
-                          return null;
-                        }
-                        return null;
-                      }, maxLines: 5, minLines: 3),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      DropdownSearch<ItemCategory>.multiSelection(
-                        key: dropDownKeyCategory,
-                        autoValidateMode: AutovalidateMode.disabled,
-                        validator: (value) {
-                          if (value == null) {
-                            return "Пожалуйста, выберите категорию";
-                          }
-                          var chosen = value;
-                          if (chosen.isEmpty) {
-                            return "Пожалуйста, выберите категорию";
-                          }
-                          if (chosen.length > 2) {
-                            return "Пожалуйста, выберите не больше двух категорий";
-                          }
-                          return null;
-                        },
-                        onChanged: (List<ItemCategory>? data) {
-                          setState(() {
-                            _chosenCategories = data ?? [];
-                          });
-                        },
-                        itemAsString: (ItemCategory u) => u.description,
-                        filterFn: ((item, filter) {
-                          return item.id != 0;
-                        }),
-                        items: _commonController.categories,
-                        dropdownDecoratorProps: DropDownDecoratorProps(
-                          baseStyle: getMediumTextStyle(),
-                          dropdownSearchDecoration: InputDecoration(
-                            labelText: _chosenCategories.length == 0
-                                ? "Выберите до двух категорий"
-                                : "",
-                            hintStyle: getMediumTextStyle(),
-                            labelStyle: getMediumTextStyle(),
-                            filled: false,
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
+            ? Obx(() => _userController.myContacts.isEmpty
+                ? Padding(
+                    padding: EdgeInsets.all(40.0),
+                    child: Center(child: NoContactButton()))
+                : Form(
+                    key: _formKey,
+                    child: Container(
+                      padding: const EdgeInsets.all(20),
+                      child: SingleChildScrollView(
+                        child: Column(children: [
+                          getTextField(titleController, 'Что вы хотите отдать',
+                              (String? value) {
+                            if (value?.isEmpty ?? true) {
+                              return null;
+                            }
+                            if ((value?.length ?? 0) < 2) {
+                              return "Пожалуйста, введите больше символов";
+                            }
+                            if ((value?.startsWith(" ") ?? false)) {
+                              return "Название не должно начинаться с пробела";
+                            }
+                            return null;
+                          }),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          getTextField(descriptionController, 'Описание',
+                              (String? value) {
+                            if (value?.length == 0) {
+                              return null;
+                            }
+                            return null;
+                          }, maxLines: 5, minLines: 3),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          DropdownSearch<ItemCategory>.multiSelection(
+                            key: dropDownKeyCategory,
+                            autoValidateMode: AutovalidateMode.disabled,
+                            validator: (value) {
+                              if (value == null) {
+                                return "Пожалуйста, выберите категорию";
+                              }
+                              var chosen = value;
+                              if (chosen.isEmpty) {
+                                return "Пожалуйста, выберите категорию";
+                              }
+                              if (chosen.length > 2) {
+                                return "Пожалуйста, выберите не больше двух категорий";
+                              }
+                              return null;
+                            },
+                            onChanged: (List<ItemCategory>? data) {
+                              setState(() {
+                                _chosenCategories = data ?? [];
+                              });
+                            },
+                            itemAsString: (ItemCategory u) => u.description,
+                            filterFn: ((item, filter) {
+                              return item.id != 0;
+                            }),
+                            items: _commonController.categories,
+                            dropdownDecoratorProps: DropDownDecoratorProps(
+                              baseStyle: getMediumTextStyle(),
+                              dropdownSearchDecoration: InputDecoration(
+                                labelText: _chosenCategories.length == 0
+                                    ? "Выберите до двух категорий"
+                                    : "",
+                                hintStyle: getMediumTextStyle(),
+                                labelStyle: getMediumTextStyle(),
+                                filled: false,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: MColors.secondaryGreen),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
                             ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: MColors.secondaryGreen),
-                              borderRadius: BorderRadius.circular(10),
+                            popupProps: PopupPropsMultiSelection.menu(
+                              showSearchBox: false,
                             ),
                           ),
-                        ),
-                        popupProps: PopupPropsMultiSelection.menu(
-                          showSearchBox: false,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      DropdownSearch<SMLocation>.multiSelection(
-                        key: dropDownKeyLocation,
-                        autoValidateMode: AutovalidateMode.disabled,
-                        validator: (value) {
-                          if (value == null) {
-                            return "Пожалуйста, выберите станцию метро";
-                          }
-                          var chosen = value;
-                          if (chosen.isEmpty) {
-                            return "Пожалуйста, выберите станцию метро";
-                          }
-                          if (chosen.length > 3) {
-                            return "Пожалуйста, выберите не больше трёх станций метро";
-                          }
-                          return null;
-                        },
-                        onChanged: (List<SMLocation>? data) {
-                          setState(() {
-                            _chosenLocations = data ?? [];
-                          });
-                        },
-                        dropdownDecoratorProps: DropDownDecoratorProps(
-                          baseStyle: getMediumTextStyle(),
-                          dropdownSearchDecoration: InputDecoration(
-                            labelText: _chosenLocations.length == 0
-                                ? "Выберите до трёх станций метро"
-                                : "",
-                            hintStyle: getMediumTextStyle(),
-                            labelStyle: getMediumTextStyle(),
-                            filled: false,
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          DropdownSearch<SMLocation>.multiSelection(
+                            key: dropDownKeyLocation,
+                            autoValidateMode: AutovalidateMode.disabled,
+                            validator: (value) {
+                              if (value == null) {
+                                return "Пожалуйста, выберите станцию метро";
+                              }
+                              var chosen = value;
+                              if (chosen.isEmpty) {
+                                return "Пожалуйста, выберите станцию метро";
+                              }
+                              if (chosen.length > 3) {
+                                return "Пожалуйста, выберите не больше трёх станций метро";
+                              }
+                              return null;
+                            },
+                            onChanged: (List<SMLocation>? data) {
+                              setState(() {
+                                _chosenLocations = data ?? [];
+                              });
+                            },
+                            dropdownDecoratorProps: DropDownDecoratorProps(
+                              baseStyle: getMediumTextStyle(),
+                              dropdownSearchDecoration: InputDecoration(
+                                labelText: _chosenLocations.length == 0
+                                    ? "Выберите до трёх станций метро"
+                                    : "",
+                                hintStyle: getMediumTextStyle(),
+                                labelStyle: getMediumTextStyle(),
+                                filled: false,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: MColors.secondaryGreen),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
                             ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: MColors.secondaryGreen),
-                              borderRadius: BorderRadius.circular(10),
+                            items: _commonController.locations,
+                            popupProps: PopupPropsMultiSelection.menu(
+                              showSearchBox: true,
                             ),
                           ),
-                        ),
-                        items: _commonController.locations,
-                        popupProps: PopupPropsMultiSelection.menu(
-                          showSearchBox: true,
-                        ),
+                          _getImageChoiceWidget(),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                top: 10, left: 20, right: 20),
+                            child: LoadingButton("Опубликовать", () async {
+                              await checkItem();
+                            },
+                                color: MColors.darkGreen,
+                                textStyle: getBigTextStyle()
+                                    .copyWith(color: MColors.white)),
+                          ),
+                        ]),
                       ),
-                      _getImageChoiceWidget(),
-                      Padding(
-                        padding:
-                            const EdgeInsets.only(top: 10, left: 20, right: 20),
-                        child: LoadingButton("Опубликовать", () async {
-                          await checkItem();
-                        },
-                            color: MColors.darkGreen,
-                            textStyle: getBigTextStyle()
-                                .copyWith(color: MColors.white)),
-                      ),
-                    ]),
-                  ),
-                ))
+                    )))
             : NeedRegistration());
   }
 
