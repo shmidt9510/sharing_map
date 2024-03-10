@@ -53,15 +53,15 @@ class _EditableContactTextFieldState extends State<EditableContactTextField> {
         widget.callback();
         return;
       }
-      String? errorMessage =
-          widget.userContact.checkFunction(_controller.text.toLowerCase());
+      String contact = _controller.text.toLowerCase().replaceAll(' ', '');
+      String? errorMessage = widget.userContact.checkFunction(contact);
       if (errorMessage == null) {
         if (_controller.text.isEmpty) {
           return;
         }
         await _saveContact(UserContact(
             id: widget.userContact.id,
-            contact: _controller.text.toLowerCase(),
+            contact: contact,
             type: widget.userContact.type));
         widget.callback();
       } else {
