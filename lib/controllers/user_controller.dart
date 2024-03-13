@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:sharing_map/controllers/item_controller.dart';
 import 'package:sharing_map/models/user.dart';
 import 'package:sharing_map/models/contact.dart';
 import 'package:sharing_map/services/user_service.dart';
@@ -91,7 +92,7 @@ class UserController extends GetxController {
       return result;
     } catch (e) {
       return false;
-    } 
+    }
   }
 
   Future<bool> Login(String email, String password) async {
@@ -142,7 +143,7 @@ class UserController extends GetxController {
     if (SharedPrefs().userId.isEmpty) {
       return Future.error("no_data");
     }
-    var user = User(bio: "",id: "", username: "");
+    var user = User(bio: "", id: "", username: "");
     try {
       user = await UserWebService.getUser(SharedPrefs().userId);
     } catch (e) {

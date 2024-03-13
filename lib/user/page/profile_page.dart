@@ -298,6 +298,9 @@ class _ProfilePageState extends State<ProfilePage> {
           if (await _deleteDialogBuilder(context)) {
             if (await _userController.DeleteMyself()) {
               final ItemController _itemsController = Get.put(ItemController());
+              _itemsController.userPagingController.refresh();
+              _itemsController.userPagingController
+                  .removePageRequestListener((pageKey) {});
               showSnackBar(context, 'До скорых встреч');
               GoRouter.of(context).go(SMPath.start);
             }
