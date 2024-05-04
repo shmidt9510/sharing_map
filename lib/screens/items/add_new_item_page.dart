@@ -327,8 +327,13 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
           context, "Пожалуйста, укажите хотя бы один контакт в профиле");
       return;
     }
+    if (SharedPrefs().chosenCity == -1) {
+      showErrorScaffold(context,
+          "Не получилось. Кажется нужно обновить приложение или написать нам");
+      return;
+    }
     var item = Item("SOME_ID", titleController.text, descriptionController.text,
-        1, SharedPrefs().userId,
+        SharedPrefs().chosenCity, SharedPrefs().userId,
         locationIds: _chosenLocations.map((e) => e.id).toList(),
         categoryIds: _chosenCategories.map((e) => e.id).toList(),
         subcategoryId: 1,

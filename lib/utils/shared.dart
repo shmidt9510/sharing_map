@@ -74,16 +74,11 @@ class SharedPrefs {
     _sharedPrefs.setString(keyResetPasswordToken, value);
   }
 
-  int get counter => _sharedPrefs.getInt("counter") ?? 0;
-  set counter(int value) {
-    _sharedPrefs.setInt("counter", value);
+  int get chosenCity => _sharedPrefs.getInt(keyChosenCity) ?? -1;
+  set chosenCity(int value) {
+    _sharedPrefs.setInt(keyChosenCity, value);
   }
 }
-// String get isLogged => _sharedPrefs!.getString(keyUsername) ?? "";
-
-//   set username(String value) {
-//     _sharedPrefs!.setString(keyUsername, value);
-//   }
 
 final sharedPrefs = SharedPrefs();
 
@@ -94,3 +89,4 @@ const String keyAuthToken = "key_auth_token";
 const String keyRefreshToken = "refresh_token";
 const String keyConfirmationToken = "confirmation_token";
 const String keyResetPasswordToken = "reset_password_token";
+const String keyChosenCity = "chosen_city";

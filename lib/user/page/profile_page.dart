@@ -12,6 +12,7 @@ import 'package:sharing_map/path.dart';
 import 'package:sharing_map/screens/items/item_widgets_self_profile.dart';
 import 'package:sharing_map/theme.dart';
 import 'package:sharing_map/user/page/editable_contact_text_field.dart';
+import 'package:sharing_map/user/page/user_actions.dart';
 import 'package:sharing_map/utils/chose_image_source.dart';
 import 'package:sharing_map/utils/colors.dart';
 import 'package:sharing_map/utils/compress_image.dart';
@@ -52,7 +53,7 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
           backgroundColor: Colors.transparent,
           elevation: 0,
-          actions: SharedPrefs().logged ? _getActions(context) : null,
+          actions: SharedPrefs().logged ? [UserActionsWidget()] : null,
         ),
         body: _userController.myself.value.id == User.getEmptyUser().id
             ? NeedRegistration()
@@ -218,119 +219,6 @@ class _ProfilePageState extends State<ProfilePage> {
           ],
         ),
       );
-
-  Future<bool> _deleteDialogBuilder(BuildContext context) async {
-    bool _result = false;
-    await showDialog<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Вы точно хотите удалить свой аккаунт?'),
-          actions: [
-            TextButton(
-              style: TextButton.styleFrom(
-                textStyle: Theme.of(context).textTheme.labelLarge,
-              ),
-              child: const Text('Да'),
-              onPressed: () {
-                _result = true;
-                Navigator.of(context).maybePop();
-              },
-            ),
-            TextButton(
-              style: TextButton.styleFrom(
-                textStyle: Theme.of(context).textTheme.labelLarge,
-              ),
-              child: const Text('Нет'),
-              onPressed: () {
-                Navigator.of(context).maybePop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-    return _result;
-  }
-
-  Future<bool> _logoutDialog(BuildContext context) async {
-    bool _result = false;
-    await showDialog<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Разлогиниться'),
-          actions: [
-            TextButton(
-              style: TextButton.styleFrom(
-                textStyle: Theme.of(context).textTheme.labelLarge,
-              ),
-              child: const Text('Да'),
-              onPressed: () {
-                _result = true;
-                Navigator.of(context).maybePop();
-              },
-            ),
-            TextButton(
-              style: TextButton.styleFrom(
-                textStyle: Theme.of(context).textTheme.labelLarge,
-              ),
-              child: const Text('Нет'),
-              onPressed: () {
-                Navigator.of(context).maybePop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-    return _result;
-  }
-
-  List<Widget> _getActions(BuildContext context) {
-    return [
-      IconButton(
-        icon: Icon(
-          Icons.delete_forever,
-          color: context.theme.colorScheme.error,
-        ),
-        onPressed: () async {
-          if (await _deleteDialogBuilder(context)) {
-            if (await _userController.DeleteMyself()) {
-              final ItemController _itemsController = Get.put(ItemController());
-              _itemsController.userPagingController.refresh();
-              _itemsController.userPagingController
-                  .removePageRequestListener((pageKey) {});
-              showSnackBar(context, 'До скорых встреч');
-              GoRouter.of(context).go(SMPath.start);
-            }
-          }
-        },
-      ),
-      IconButton(
-        icon: Icon(
-          Icons.logout_rounded,
-          color: context.theme.colorScheme.error,
-        ),
-        onPressed: () async {
-          if (await _logoutDialog(context)) {
-            if (await _userController.Logout()) {
-              final ItemController _itemsController = Get.put(ItemController());
-              _itemsController.userPagingController.refresh();
-              _itemsController.userPagingController
-                  .removePageRequestListener((pageKey) {});
-              showSnackBar(context, 'До скорых встреч');
-              setState(() {});
-              GoRouter.of(context).go(SMPath.start);
-            }
-          }
-        },
-      ),
-      SizedBox(
-        width: context.width * 0.05,
-      ),
-    ];
-  }
 
   Future<bool> selectImage(User user) async {
     var source = await chooseImageSource(

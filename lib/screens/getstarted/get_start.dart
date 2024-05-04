@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:sharing_map/path.dart';
 
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:sharing_map/theme.dart';
@@ -7,6 +6,7 @@ import 'package:sharing_map/utils/colors.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sharing_map/utils/init_path.dart';
 
 class OnBoardingPage extends StatefulWidget {
   const OnBoardingPage({Key? key}) : super(key: key);
@@ -18,8 +18,8 @@ class OnBoardingPage extends StatefulWidget {
 class OnBoardingPageState extends State<OnBoardingPage> {
   final introKey = GlobalKey<IntroductionScreenState>();
 
-  void _onIntroEnd(context) {
-    GoRouter.of(context).go(SMPath.start);
+  void _onIntroEnd(context) async {
+    GoRouter.of(context).go(await checkInitPath());
   }
 
   Widget _buildImage(String assetName, {double width = 350}) {
@@ -62,8 +62,8 @@ class OnBoardingPageState extends State<OnBoardingPage> {
         _getScreen(context, "Общайтесь на SharingMap с замечательными людьми",
             "intro_4.png"),
       ],
-      onDone: () => _onIntroEnd(context),
-      onSkip: () => _onIntroEnd(context), // You can override onSkip callback
+      onDone: () async => _onIntroEnd(context),
+      onSkip: () async => _onIntroEnd(context),
       showSkipButton: false,
       skipOrBackFlex: 0,
       nextFlex: 0,

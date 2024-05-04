@@ -18,6 +18,7 @@ import 'package:sharing_map/screens/register/reset_password_set.dart';
 import 'package:sharing_map/theme.dart';
 import 'package:sharing_map/user/page/profile_page.dart';
 import 'package:sharing_map/user/page/user_profile_page.dart';
+import 'package:sharing_map/screens/getstarted/choose_city.dart';
 
 class RouterStart extends StatefulWidget {
   RouterStart({super.key, required this.initLocation});
@@ -43,12 +44,10 @@ class _RouterStartState extends State<RouterStart> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-        restorationScopeId: "Test",
         debugShowCheckedModeBanner: false,
         title: "Sharing Map",
         theme: GetAppTheme(),
         routerConfig: GoRouter(
-          // navigatorKey: _rootNavigatorKey,
           initialLocation: widget.initLocation,
           routes: <RouteBase>[
             ShellRoute(
@@ -62,6 +61,10 @@ class _RouterStartState extends State<RouterStart> {
                       path: "/",
                       builder: (BuildContext context, GoRouterState state) =>
                           ItemListPage()),
+                  GoRoute(
+                      path: SMPath.chooseCity,
+                      builder: (BuildContext context, GoRouterState state) =>
+                          ChooseCitySreen()),
                   GoRoute(
                     path: SMPath.start,
                     builder: (BuildContext context, GoRouterState state) =>

@@ -27,12 +27,13 @@ class ItemWebService {
     if (userId != null) {
       uri = "/users/$userId/items";
     }
-    var response = await client.get(Uri.https(Constants.BACK_URL, uri),
-        params: {
-          "size": pageSize,
-          "page": page,
-          "categoryId": itemFilter ?? 0
-        });
+    var response =
+        await client.get(Uri.https(Constants.BACK_URL, uri), params: {
+      "size": pageSize,
+      "page": page,
+      "categoryId": itemFilter ?? 0,
+      "cityId": SharedPrefs().chosenCity
+    });
 
     if (response.statusCode != 200) {
       return Future.error("failed_get_data");

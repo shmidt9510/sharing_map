@@ -12,5 +12,6 @@ class SMPath {
   static const String addItem = "/addItem";
   static const String profile = "/profile";
   static const String profileEdit = "edit";
-  static const String favorite = "/favirote";
+  static const String favorite = "/favorite";
+  static const String chooseCity = "/chooseCity";
 }

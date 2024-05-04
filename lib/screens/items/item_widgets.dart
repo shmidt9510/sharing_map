@@ -19,7 +19,6 @@ class ItemsListView extends StatefulWidget {
 }
 
 class _ItemsListViewState extends State<ItemsListView> {
-
   ItemController _itemsController = Get.find<ItemController>();
 
   @override

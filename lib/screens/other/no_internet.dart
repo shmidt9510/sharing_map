@@ -48,8 +48,7 @@ class _NoInternetScreenState extends State<NoInternetScreen> {
                 height: 20.0,
               ),
               LoadingButton("Проверить", () async {
-                var _initPath =
-                    await checkInitPath(_usersController, _commonController);
+                var _initPath = await checkInitPath();
                 if (_initPath != SMPath.noNetwork) {
                   _itemsController.onInit();
                   _usersController.onInit();

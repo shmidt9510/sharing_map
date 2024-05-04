@@ -165,7 +165,7 @@ class UserWebService {
 
     if (response.statusCode != HttpStatus.ok) {
       Future.error("error code " + response.statusCode.toString());
-      return Future.error("failed_create_item");
+      return Future.error("failed_updating_user");
     }
     return true;
   }
@@ -188,7 +188,7 @@ class UserWebService {
 
     if (response.statusCode != HttpStatus.ok) {
       Future.error("error code " + response.statusCode.toString());
-      return Future.error("failed_create_item");
+      return Future.error("failed_getting_user");
     }
     var jsonData = jsonDecode(utf8.decode(response.bodyBytes));
     return User.fromJson(jsonData);
@@ -207,7 +207,7 @@ class UserWebService {
 
     if (response.statusCode != HttpStatus.ok) {
       Future.error("error code " + response.statusCode.toString());
-      return Future.error("failed_create_item");
+      return Future.error("failed_get_user_contact");
     }
     return (jsonDecode(utf8.decode(response.bodyBytes)) as List)
         .map((e) => UserContact.fromJson(e))

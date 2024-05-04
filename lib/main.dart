@@ -4,6 +4,7 @@ import 'package:sharing_map/controllers/user_controller.dart';
 import 'package:sharing_map/path.dart';
 import 'package:sharing_map/router.dart';
 import 'package:sharing_map/controllers/item_controller.dart';
+import 'package:sharing_map/screens/getstarted/choose_city.dart';
 import 'package:sharing_map/utils/init_path.dart';
 import 'package:sharing_map/utils/shared.dart';
 import 'package:sharing_map/controllers/common_controller.dart';
@@ -13,25 +14,28 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Future.wait([
     SharedPrefs().init(),
-    dotenv.load(fileName: "env/prod.env"),
+    dotenv.load(fileName: "env/test.env"),
   ]);
   WidgetsFlutterBinding.ensureInitialized();
 
   final CommonController _commonController = Get.put(CommonController());
+  _commonController.onInit();
   final ItemController _itemsController = Get.put(ItemController());
   _itemsController.onInit();
   final UserController _usersController = Get.put(UserController());
-  _itemsController.onInit();
   _usersController.onInit();
-  String _initPath = await checkInitPath(_usersController, _commonController);
+  WidgetsFlutterBinding.ensureInitialized();
+  String _initPath = await checkInitPath();
   if (_initPath != SMPath.noNetwork) {
     await Future.wait([
       _commonController.fetchItems(),
-      _commonController.getLocations(1),
     ]);
   }
   if (SharedPrefs().logged && SharedPrefs().userId.isNotEmpty) {
     await _usersController.GetMyself();
+  }
+  if (SharedPrefs().chosenCity != -1) {
+    _commonController.getLocations(SharedPrefs().chosenCity);
   }
   WidgetsFlutterBinding.ensureInitialized();
   runApp(App(_initPath));

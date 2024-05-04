@@ -6,7 +6,6 @@ import 'package:sharing_map/controllers/user_controller.dart';
 import 'package:sharing_map/path.dart';
 import 'package:sharing_map/utils/colors.dart';
 import 'package:sharing_map/widgets/allWidgets.dart';
-// import 'package:sharing_map/widgets/textInputWidget.dart';
 
 class ResetPasswordMailScreen extends StatefulWidget {
   const ResetPasswordMailScreen({
@@ -19,7 +18,6 @@ class ResetPasswordMailScreen extends StatefulWidget {
 
 class _ResetPasswordMailState extends State<ResetPasswordMailScreen> {
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  // final prefs = SharedPreferences.getInstance().then((value) => );
   final TextEditingController _controllerUsername = TextEditingController();
 
   late UserController _userController;
@@ -30,14 +28,10 @@ class _ResetPasswordMailState extends State<ResetPasswordMailScreen> {
     _userController = Get.find<UserController>();
   }
 
-  bool _obscurePassword = true;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Сбросить пароль")),
-      floatingActionButton: BackButton(color: MColors.white),
-      floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
       backgroundColor: MColors.primaryGreen,
       body: Form(
         key: _formKey,

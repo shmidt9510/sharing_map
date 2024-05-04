@@ -16,7 +16,6 @@ void main() async {
     // if (kProfileMode ==)
     dotenv.load(fileName: "env/test.env"),
   ]);
-  debugPrint(dotenv.env.toString());
   WidgetsFlutterBinding.ensureInitialized();
   // if (kReleaseMode) {
   //   CustomImageCache();
@@ -29,7 +28,7 @@ void main() async {
   final UserController _usersController = Get.put(UserController());
   _itemsController.onInit();
   _usersController.onInit();
-  String _initPath = await checkInitPath(_usersController, _commonController);
+  String _initPath = await checkInitPath();
   if (_initPath != SMPath.noNetwork) {
     await Future.wait([
       _commonController.fetchItems(),
