@@ -5,6 +5,7 @@ import 'package:sharing_map/screens/getstarted/get_start.dart';
 import 'package:sharing_map/screens/items/add_new_item_page.dart';
 import 'package:sharing_map/screens/getstarted/intro_screen.dart';
 import 'package:sharing_map/screens/items/item_detail_page.dart';
+import 'package:sharing_map/screens/items/item_edit_page.dart';
 import 'package:sharing_map/screens/items/item_list_page.dart';
 import 'package:sharing_map/screens/other/no_internet.dart';
 import 'package:sharing_map/screens/register/registration_code.dart';
@@ -141,6 +142,13 @@ class _RouterStartState extends State<RouterStart> {
                                 (BuildContext context, GoRouterState state) {
                               final itemId = state.pathParameters['itemId'];
                               return ItemDetailPage(itemId ?? "");
+                            }),
+                        GoRoute(
+                            path: 'itemEdit/:itemId',
+                            builder:
+                                (BuildContext context, GoRouterState state) {
+                              final itemId = state.pathParameters['itemId'];
+                              return EditItemPage(itemId ?? "");
                             }),
                       ],
                     ),

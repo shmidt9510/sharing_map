@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:sharing_map/controllers/common_controller.dart';
 import 'package:sharing_map/models/item.dart';
@@ -105,6 +106,19 @@ class ItemController extends GetxController {
     try {
       var response = await ItemWebService.addItem(item);
       if (response.isEmpty) {
+        return false;
+      }
+      refershAll();
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<bool> updateItem(Item item) async {
+    try {
+      var success = await ItemWebService.updateItem(item);
+      if (!success) {
         return false;
       }
       refershAll();

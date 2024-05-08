@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
+import 'package:sharing_map/controllers/common_controller.dart';
+import 'package:sharing_map/path.dart';
 import 'package:sharing_map/screens/items/item_detail_page.dart';
 import 'package:sharing_map/models/item.dart';
+import 'package:sharing_map/utils/colors.dart';
+import 'package:sharing_map/utils/shared.dart';
+import 'package:sharing_map/widgets/allWidgets.dart';
 import 'package:sharing_map/widgets/item_block.dart';
 import 'package:sharing_map/controllers/item_controller.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -15,8 +21,8 @@ class ItemsListViewSelfProfile extends StatefulWidget {
 }
 
 class _ItemsListViewSelfProfileState extends State<ItemsListViewSelfProfile> {
-
   ItemController _itemsController = Get.find<ItemController>();
+  CommonController _commonController = Get.find<CommonController>();
 
   @override
   void initState() {
@@ -65,6 +71,27 @@ class _ItemsListViewSelfProfileState extends State<ItemsListViewSelfProfile> {
                       right: 3,
                       child: IconButton(
                           onPressed: () async {
+                            if (item.cityId != SharedPrefs().chosenCity) {
+                              var _chosenCity = _commonController.cities
+                                  .firstWhere(
+                                      (element) => element.id == item.cityId);
+                              showErrorScaffold(context,
+                                  "Чтобы менять объявления в городе ${_chosenCity.name}, пожалуйста переключитесь на него");
+                            } else {
+                              GoRouter.of(context)
+                                  .go(SMPath.home + "/itemEdit/${item.id}");
+                            }
+                          },
+                          icon: Icon(
+                            Icons.edit,
+                            color: MColors.darkGreen,
+                          )),
+                    ),
+                    Positioned(
+                      top: 3,
+                      right: 40,
+                      child: IconButton(
+                          onPressed: () async {
                             await _deleteItemDialogBuilder(context, item.id);
                             setState(() {
                               _itemsController.userPagingController.refresh();
@@ -72,7 +99,7 @@ class _ItemsListViewSelfProfileState extends State<ItemsListViewSelfProfile> {
                           },
                           icon: Icon(
                             Icons.delete,
-                            color: Colors.red,
+                            color: MColors.red1,
                           )),
                     ),
                   ],

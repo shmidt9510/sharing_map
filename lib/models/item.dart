@@ -45,7 +45,7 @@ class Item {
   // (json["images"].map((x) => SMImage.fromJson(x))).toList<SMImage>());
 
   Map<String, dynamic> toJson() => {
-        // "id": id,
+        "id": id,
         "name": name,
         "text": desc,
         // "user": {"id": userId},

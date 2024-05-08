@@ -14,4 +14,5 @@ class SMPath {
   static const String profileEdit = "edit";
   static const String favorite = "/favorite";
   static const String chooseCity = "/chooseCity";
+  static const String itemEdit = "/itemEdit";
 }

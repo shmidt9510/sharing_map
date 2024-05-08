@@ -98,4 +98,25 @@ class ItemWebService {
     }
     return true;
   }
+
+  static Future<bool> updateItem(Item item) async {
+    var uri = "/items/update";
+    var response = await client.put(Uri.https(Constants.BACK_URL, uri),
+        headers: {
+          "content-type": "application/json",
+          "accept": "application/json",
+        },
+        body: jsonEncode(item.toJson()));
+    if (response.statusCode != HttpStatus.ok) {
+      Future.error("error code " + response.statusCode.toString());
+      return Future.error("failed_create_item");
+    }
+    // TODO^ edit photos
+    // if (item.downloadableImages != null) {
+    //   PhotoWebService service = PhotoWebService();
+    //   await service.addPhotos(
+    //       item.downloadableImages!, response.body.toString());
+    // }
+    return true;
+  }
 }
