@@ -13,7 +13,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Future.wait([
     SharedPrefs().init(),
-    dotenv.load(fileName: "env/test.env"),
+    dotenv.load(fileName: "env/prod.env"),
   ]);
   WidgetsFlutterBinding.ensureInitialized();
 
