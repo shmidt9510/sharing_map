@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sharing_map/controllers/common_controller.dart';
 import 'package:sharing_map/path.dart';
+import 'package:sharing_map/screens/items/item_actions.dart';
 import 'package:sharing_map/screens/items/item_detail_page.dart';
 import 'package:sharing_map/models/item.dart';
 import 'package:sharing_map/utils/colors.dart';
@@ -69,39 +70,8 @@ class _ItemsListViewSelfProfileState extends State<ItemsListViewSelfProfile> {
                     Positioned(
                       top: 3,
                       right: 3,
-                      child: IconButton(
-                          onPressed: () async {
-                            if (item.cityId != SharedPrefs().chosenCity) {
-                              var _chosenCity = _commonController.cities
-                                  .firstWhere(
-                                      (element) => element.id == item.cityId);
-                              showErrorScaffold(context,
-                                  "Чтобы менять объявления в городе ${_chosenCity.name}, пожалуйста переключитесь на него");
-                            } else {
-                              GoRouter.of(context)
-                                  .go(SMPath.home + "/itemEdit/${item.id}");
-                            }
-                          },
-                          icon: Icon(
-                            Icons.edit,
-                            color: MColors.darkGreen,
-                          )),
-                    ),
-                    Positioned(
-                      top: 3,
-                      right: 40,
-                      child: IconButton(
-                          onPressed: () async {
-                            await _deleteItemDialogBuilder(context, item.id);
-                            setState(() {
-                              _itemsController.userPagingController.refresh();
-                            });
-                          },
-                          icon: Icon(
-                            Icons.delete,
-                            color: MColors.red1,
-                          )),
-                    ),
+                      child: ItemActionsWidget(item),
+                    )
                   ],
                 ),
               )),
@@ -114,42 +84,5 @@ class _ItemsListViewSelfProfileState extends State<ItemsListViewSelfProfile> {
   @override
   void dispose() {
     super.dispose();
-  }
-
-  Future<bool> _deleteItemDialogBuilder(
-      BuildContext context, String itemId) async {
-    final ItemController _itemsController = Get.find<ItemController>();
-    bool _result = false;
-    await showDialog<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Вы точно хотите удалить объявление?'),
-          actions: [
-            TextButton(
-              style: TextButton.styleFrom(
-                textStyle: Theme.of(context).textTheme.labelLarge,
-              ),
-              child: const Text('Да'),
-              onPressed: () {
-                _itemsController.deleteItem(itemId);
-                _result = true;
-                Navigator.of(context).maybePop();
-              },
-            ),
-            TextButton(
-              style: TextButton.styleFrom(
-                textStyle: Theme.of(context).textTheme.labelLarge,
-              ),
-              child: const Text('Нет'),
-              onPressed: () {
-                Navigator.of(context).maybePop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-    return _result;
   }
 }

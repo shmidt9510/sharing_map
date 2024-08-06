@@ -59,7 +59,7 @@ class ChooseCitySreenState extends State<ChooseCitySreen> {
                   child: Center(
                     child: DropdownButton<City>(
                       icon: Icon(
-                        FontAwesomeIcons.turnDown,
+                        FontAwesomeIcons.caretDown,
                         color: MColors.darkGreen,
                       ),
                       underline: Container(),

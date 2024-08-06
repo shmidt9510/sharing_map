@@ -121,7 +121,7 @@ class _EditItemPageState extends State<EditItemPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text("Создать объявление")),
+        appBar: AppBar(title: Text("Редактировать объявление")),
         body: FutureBuilder(
             future: DownloadItem(),
             builder: (context, snapshot) {

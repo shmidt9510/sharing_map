@@ -4,7 +4,6 @@ import 'package:sharing_map/controllers/user_controller.dart';
 import 'package:sharing_map/path.dart';
 import 'package:sharing_map/router.dart';
 import 'package:sharing_map/controllers/item_controller.dart';
-import 'package:sharing_map/screens/getstarted/choose_city.dart';
 import 'package:sharing_map/utils/init_path.dart';
 import 'package:sharing_map/utils/shared.dart';
 import 'package:sharing_map/controllers/common_controller.dart';

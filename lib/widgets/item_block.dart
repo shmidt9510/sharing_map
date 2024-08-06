@@ -153,7 +153,10 @@ class ItemBlock extends StatelessWidget {
               padding: const EdgeInsets.all(10),
               child: TextDescriptionBlock(_item),
             ),
-          )
+          ),
+          SizedBox(
+            width: 15,
+          ),
         ],
       ),
     );

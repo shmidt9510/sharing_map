@@ -1,7 +1,10 @@
+import 'package:go_router/go_router.dart';
 import 'package:sharing_map/controllers/common_controller.dart';
 import 'package:sharing_map/models/category.dart';
+import 'package:sharing_map/path.dart';
 import 'package:sharing_map/theme.dart';
 import 'package:sharing_map/utils/colors.dart';
+import 'package:sharing_map/utils/shared.dart';
 
 import 'item_widgets.dart';
 
@@ -34,6 +37,11 @@ class _ItemListPageState extends State<ItemListPage> {
   Widget build(BuildContext context) {
     double height = context.height * 0.22;
     double padding = 10.0;
+    if (SharedPrefs().chosenCity == -1) {
+      GoRouter.of(context).go(
+        SMPath.chooseCity,
+      );
+    }
     return SafeArea(
       child: Scaffold(
         backgroundColor: MColors.white,

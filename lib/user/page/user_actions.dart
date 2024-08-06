@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sharing_map/controllers/common_controller.dart';
 import 'package:sharing_map/controllers/item_controller.dart';
 import 'package:sharing_map/controllers/user_controller.dart';
 import 'package:sharing_map/models/city.dart';
+import 'package:sharing_map/path.dart';
 import 'package:sharing_map/theme.dart';
 import 'package:sharing_map/utils/colors.dart';
 import 'package:sharing_map/utils/shared.dart';
+import 'package:sharing_map/widgets/allWidgets.dart';
 import 'package:sharing_map/widgets/loading_button.dart';
 
 class UserActionsWidget extends StatefulWidget {
@@ -106,48 +109,6 @@ class _UserActionsWidgetState extends State<UserActionsWidget> {
             )),
       ],
     );
-    // return Row(children: [
-    //   IconButton(
-    //     icon: Icon(
-    //       Icons.delete_forever,
-    //       color: context.theme.colorScheme.error,
-    //     ),
-    //     onPressed: () async {
-    //       if (await _deleteDialogBuilder(context)) {
-    //         if (await _userController.DeleteMyself()) {
-    //           final ItemController _itemsController = Get.put(ItemController());
-    //           _itemsController.userPagingController.refresh();
-    //           _itemsController.userPagingController
-    //               .removePageRequestListener((pageKey) {});
-    //           showSnackBar(context, 'До скорых встреч');
-    //           GoRouter.of(context).go(SMPath.start);
-    //         }
-    //       }
-    //     },
-    //   ),
-    //   IconButton(
-    //     icon: Icon(
-    //       Icons.logout_rounded,
-    //       color: context.theme.colorScheme.error,
-    //     ),
-    //     onPressed: () async {
-    //       if (await _logoutDialog(context)) {
-    //         if (await _userController.Logout()) {
-    //           final ItemController _itemsController = Get.put(ItemController());
-    //           _itemsController.userPagingController.refresh();
-    //           _itemsController.userPagingController
-    //               .removePageRequestListener((pageKey) {});
-    //           showSnackBar(context, 'До скорых встреч');
-    //           setState(() {});
-    //           GoRouter.of(context).go(SMPath.start);
-    //         }
-    //       }
-    //     },
-    //   ),
-    //   SizedBox(
-    //     width: context.width * 0.05,
-    //   ),
-    // ]);
   }
 
   Future<bool> _deleteDialogBuilder(BuildContext context) async {
@@ -181,6 +142,16 @@ class _UserActionsWidgetState extends State<UserActionsWidget> {
         );
       },
     );
+    if (_result) {
+      if (await _userController.DeleteMyself()) {
+        final ItemController _itemsController = Get.put(ItemController());
+        _itemsController.userPagingController.refresh();
+        _itemsController.userPagingController
+            .removePageRequestListener((pageKey) {});
+        showSnackBar(context, 'До скорых встреч');
+        GoRouter.of(context).go(SMPath.start);
+      }
+    }
     return _result;
   }
 
@@ -215,6 +186,17 @@ class _UserActionsWidgetState extends State<UserActionsWidget> {
         );
       },
     );
+    if (_result) {
+      if (await _userController.Logout()) {
+        final ItemController _itemsController = Get.put(ItemController());
+        _itemsController.userPagingController.refresh();
+        _itemsController.userPagingController
+            .removePageRequestListener((pageKey) {});
+        showSnackBar(context, 'До скорых встреч');
+        setState(() {});
+        GoRouter.of(context).go(SMPath.start);
+      }
+    }
     return _result;
   }
 
@@ -243,7 +225,7 @@ class _UserActionsWidgetState extends State<UserActionsWidget> {
                     child: Center(
                       child: DropdownButton<City>(
                         icon: Icon(
-                          FontAwesomeIcons.turnDown,
+                          FontAwesomeIcons.caretDown,
                           color: MColors.darkGreen,
                         ),
                         underline: Container(),

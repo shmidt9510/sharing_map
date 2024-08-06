@@ -77,9 +77,8 @@ class OnBoardingPageState extends State<OnBoardingPage> {
         Icons.arrow_forward,
         color: MColors.secondaryGreen,
       ),
-      done: const Text('Ок',
-          style: TextStyle(
-              fontWeight: FontWeight.w600, color: MColors.secondaryGreen)),
+      done: const Text('Хорошо',
+          style: TextStyle(fontWeight: FontWeight.w600, color: MColors.white)),
       curve: Curves.fastLinearToSlowEaseIn,
       controlsMargin: const EdgeInsets.all(16),
       controlsPadding: kIsWeb

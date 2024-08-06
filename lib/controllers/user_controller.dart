@@ -1,6 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:sharing_map/controllers/item_controller.dart';
 import 'package:sharing_map/models/user.dart';
 import 'package:sharing_map/models/contact.dart';
 import 'package:sharing_map/services/user_service.dart';
@@ -27,8 +28,10 @@ extension SignupExtension on SignupResult {
 }
 
 class UserController extends GetxController {
-  var isLoading = true.obs;
   var myself = Rx<User>(User.getEmptyUser());
+
+  var userProfilePicture =
+      Rx<Widget>(User.getEmptyUser().buildImage(fit: BoxFit.cover));
 
   var myContacts = <UserContact>[].obs;
   var token = ''.obs;
@@ -122,7 +125,15 @@ class UserController extends GetxController {
 
   Future<bool> UpdateUserPhoto(XFile xfile) async {
     try {
-      return await UserWebService.updateUserPhoto(xfile);
+      var result = await UserWebService.updateUserPhoto(xfile);
+      if (!result) {
+        return false;
+      }
+      userProfilePicture(Image.file(
+        File(xfile.path),
+        fit: BoxFit.cover,
+      ));
+      return true;
     } catch (e) {
       return false;
     }
@@ -152,6 +163,7 @@ class UserController extends GetxController {
     myself(user);
     var contacts = await UserWebService.getUserContact(SharedPrefs().userId);
     myContacts(contacts);
+    userProfilePicture(user.buildImage(fit: BoxFit.cover));
     return myself.value;
   }
 

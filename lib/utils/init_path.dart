@@ -17,8 +17,14 @@ Future<String> checkInitPath() async {
   }
   var isAuhtorized = await _usersController.CheckAuthorization();
   isAuhtorized |= (await _usersController.CheckAuthorization());
+  if (SharedPrefs().chosenCity == -1) {
+    return SMPath.chooseCity;
+  }
   if (!isAuhtorized) {
     return SMPath.start;
+  }
+  if (SharedPrefs().chosenCity == -1) {
+    return SMPath.chooseCity;
   }
   return SMPath.home;
 }

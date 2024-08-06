@@ -89,7 +89,9 @@ class RefreshTokenInterceptor implements InterceptorContract {
       String authToken = await SharedPrefs().getAuthToken();
       String refreshToken = await SharedPrefs().getRefreshToken();
       await Future.delayed(Duration(milliseconds: 50));
-      if (refreshToken.isNotEmpty && authToken.isNotEmpty && SharedPrefs().userId.isNotEmpty) {
+      if (refreshToken.isNotEmpty &&
+          authToken.isNotEmpty &&
+          SharedPrefs().userId.isNotEmpty) {
         if (authToken.isEmpty || JwtDecoder.isExpired(authToken)) {
           var response =
               await client.post(Uri.https(Constants.BACK_URL, "/refreshToken"),

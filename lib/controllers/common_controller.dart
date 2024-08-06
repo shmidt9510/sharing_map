@@ -34,7 +34,7 @@ class CommonController extends GetxController {
         cities(citiesTemp);
       }
     } catch (e) {
-      return Future.error("fetch_common_objects_go_wrong_" + e.toString());
+      return Future.error("fetch_common_objects_go_wrong: " + e.toString());
     }
   }
 
