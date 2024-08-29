@@ -100,7 +100,7 @@ extension ValidationCallback on UserContact {
           if (str.length > 32) {
             return "Больше 33 символов";
           }
-          if (!RegExp(r'^[a-z][a-z0-9_]{4,31}$').hasMatch(str)) {
+          if (!RegExp(r'^[A-Za-z][A-Za-z0-9_]{4,31}$').hasMatch(str)) {
             return "Невалидный логин телеграма";
           }
           return null;
