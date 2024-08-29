@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:sharing_map/models/category.dart';
 import 'package:sharing_map/models/subcategory.dart';
 import 'package:sharing_map/models/city.dart';
@@ -58,5 +59,37 @@ class CommonController extends GetxController {
 
   Future<bool> checkInternet() async {
     return await CommonWebService.checkInternetConnectivity();
+  }
+
+  var categoriesAssetsName = {
+    'all': true,
+    'appliance': true,
+    'auto': true,
+    'beauty_bath': true,
+    'beauty_cosmetics': true,
+    'books': true,
+    'child': true,
+    'clothes': true,
+    'dacha': true,
+    'favorite': true,
+    'food': true,
+    'hand': true,
+    'health': true,
+    'hobby': true,
+    'home': true,
+    'other': true,
+    'pets': true,
+    'plants': true,
+    'renovation': true,
+    'sport': true,
+    'tourism': true,
+  };
+
+  AssetImage chooseCategorieImage(ItemCategory category) {
+    String assetName = "other";
+    if (categoriesAssetsName.containsKey(category.name)) {
+      assetName = category.name;
+    }
+    return AssetImage("assets/images/categories/$assetName.png");
   }
 }

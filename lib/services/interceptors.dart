@@ -88,7 +88,7 @@ class RefreshTokenInterceptor implements InterceptorContract {
     try {
       String authToken = await SharedPrefs().getAuthToken();
       String refreshToken = await SharedPrefs().getRefreshToken();
-      await Future.delayed(Duration(milliseconds: 50));
+      await Future.delayed(Duration(milliseconds: 10));
       if (refreshToken.isNotEmpty &&
           authToken.isNotEmpty &&
           SharedPrefs().userId.isNotEmpty) {

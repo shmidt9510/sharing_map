@@ -7,12 +7,14 @@ import 'package:sharing_map/models/item.dart';
 import 'package:sharing_map/theme.dart';
 import 'package:sharing_map/utils/colors.dart';
 import 'package:sharing_map/widgets/image.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 class TextDescriptionBlock extends StatelessWidget {
   Item _item;
   TextDescriptionBlock(this._item);
   @override
   Widget build(BuildContext context) {
+    initializeDateFormatting();
     var _commonController = Get.find<CommonController>();
     String _location = "";
     int _locationCount = 0;
@@ -93,7 +95,7 @@ class TextDescriptionBlock extends StatelessWidget {
             child: Container(
               alignment: Alignment.centerLeft,
               child: Text(
-                DateFormat('dd.MM.yy')
+                DateFormat('d MMMM', 'ru')
                     .format(_item.creationDate ?? DateTime.now()),
                 style: getHintTextStyle(),
                 overflow: TextOverflow.ellipsis,

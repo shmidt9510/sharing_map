@@ -25,8 +25,11 @@ class CommonWebService {
 
     if (response.statusCode == 200) {
       var jsonData = jsonDecode(utf8.decode(response.bodyBytes));
-
-      return (jsonData as List).map((e) => ItemCategory.fromJson(e)).toList();
+      var itemsList =
+          (jsonData as List).map((e) => ItemCategory.fromJson(e)).toList();
+      itemsList.sort(compareByPosition);
+      // itemsList.forEach((category) {category.pictureUrl});
+      return itemsList;
     } else {
       return null;
     }

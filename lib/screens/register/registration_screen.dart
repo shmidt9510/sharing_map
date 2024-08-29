@@ -63,6 +63,19 @@ class _LoginState extends State<RegistrationScreen> {
                   focuseNode: mailFocusNode,
                   hintColor: MColors.errorLightRed),
               const SizedBox(height: 10),
+              getTextField(_controllerUsername, "Ваше имя", (String? value) {
+                if (value?.isEmpty ?? false) {
+                  return "Напишите ваше имя";
+                }
+                if (_controllerPassword.text == value) {
+                  return "Пароль не должен совпадать с вашим именем";
+                }
+                return null;
+              },
+                  keyboardType: TextInputType.name,
+                  focuseNode: nameFocusNode,
+                  hintColor: MColors.errorLightRed),
+              const SizedBox(height: 60),
               getPasswordTextField(
                   _controllerPassword,
                   "Пароль",
@@ -80,16 +93,6 @@ class _LoginState extends State<RegistrationScreen> {
               },
                   focuseNode: passwordFocusNode,
                   hintColor: MColors.errorLightRed),
-              const SizedBox(height: 10),
-              getTextField(_controllerUsername, "Ваше имя", (String? value) {
-                if (value?.isEmpty ?? false) {
-                  return "Пожалуйста, напишите что-нибудь)";
-                }
-                return null;
-              },
-                  keyboardType: TextInputType.name,
-                  focuseNode: nameFocusNode,
-                  hintColor: MColors.errorLightRed),
               const SizedBox(height: 60),
               Row(
                 children: [
@@ -97,8 +100,8 @@ class _LoginState extends State<RegistrationScreen> {
                     checkColor: Colors.black,
                     focusColor: MColors.lightGreen,
                     activeColor: MColors.lightGreen,
-                    fillColor: MaterialStateColor.resolveWith((states) {
-                      if (states.contains(MaterialState.pressed)) {
+                    fillColor: WidgetStateColor.resolveWith((states) {
+                      if (states.contains(WidgetState.pressed)) {
                         return MColors.darkGreen;
                       }
                       return MColors.lightGreen;

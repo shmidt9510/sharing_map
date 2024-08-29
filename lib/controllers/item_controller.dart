@@ -128,9 +128,9 @@ class ItemController extends GetxController {
     }
   }
 
-  Future<bool> deleteItem(String itemId) async {
+  Future<bool> deleteItem(String itemId, bool fromSharingMap) async {
     try {
-      var result = await ItemWebService.deleteItem(itemId);
+      var result = await ItemWebService.deleteItem(itemId, fromSharingMap);
       refershAll();
       return result;
     } catch (e) {

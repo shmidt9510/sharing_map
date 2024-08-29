@@ -5,7 +5,7 @@ import 'package:sharing_map/path.dart';
 import 'package:sharing_map/utils/shared.dart';
 
 Future<String> checkInitPath() async {
-  final CommonController _commonController = Get.find<CommonController>();
+  // final CommonController _commonController = Get.find<CommonController>();
   final UserController _usersController = Get.find<UserController>();
   // var hasInternet = await _commonController.checkInternet();
   // if (!hasInternet) {

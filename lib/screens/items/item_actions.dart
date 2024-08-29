@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sharing_map/controllers/common_controller.dart';
 import 'package:sharing_map/controllers/item_controller.dart';
-import 'package:sharing_map/controllers/user_controller.dart';
-import 'package:sharing_map/models/city.dart';
 import 'package:sharing_map/models/item.dart';
 import 'package:sharing_map/path.dart';
 import 'package:sharing_map/theme.dart';
 import 'package:sharing_map/utils/colors.dart';
 import 'package:sharing_map/utils/shared.dart';
 import 'package:sharing_map/widgets/allWidgets.dart';
-import 'package:sharing_map/widgets/loading_button.dart';
 
 class ItemActionsWidget extends StatefulWidget {
   final Item _item;
@@ -109,6 +105,7 @@ class _ItemActionsWidgetState extends State<ItemActionsWidget> {
       BuildContext context, String itemId) async {
     final ItemController _itemsController = Get.find<ItemController>();
     bool _result = false;
+    bool _fromSM = false;
     await showDialog<void>(
       context: context,
       builder: (BuildContext context) {
@@ -120,9 +117,39 @@ class _ItemActionsWidgetState extends State<ItemActionsWidget> {
                 textStyle: Theme.of(context).textTheme.labelLarge,
               ),
               child: const Text('Да'),
-              onPressed: () {
-                _itemsController.deleteItem(itemId);
-                _result = true;
+              onPressed: () async {
+                await showDialog<void>(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text('Вы отдали вещь через Sharing Map?'),
+                      actions: [
+                        TextButton(
+                          style: TextButton.styleFrom(
+                            textStyle: Theme.of(context).textTheme.labelLarge,
+                          ),
+                          child: const Text('Да'),
+                          onPressed: () {
+                            _result = true;
+                            _fromSM = true;
+                            Navigator.of(context).maybePop();
+                          },
+                        ),
+                        TextButton(
+                          style: TextButton.styleFrom(
+                            textStyle: Theme.of(context).textTheme.labelLarge,
+                          ),
+                          child: const Text('Нет'),
+                          onPressed: () {
+                            _result = true;
+                            _fromSM = false;
+                            Navigator.of(context).maybePop();
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
                 Navigator.of(context).maybePop();
               },
             ),
@@ -139,6 +166,9 @@ class _ItemActionsWidgetState extends State<ItemActionsWidget> {
         );
       },
     );
+    if (_result) {
+      await _itemsController.deleteItem(itemId, _fromSM);
+    }
     return _result;
   }
 }

@@ -85,11 +85,11 @@ class ItemWebService {
     return response.body.toString();
   }
 
-  static Future<bool> deleteItem(String itemId) async {
+  static Future<bool> deleteItem(String itemId, bool fromSharingMap) async {
     var uri = "/items/delete/$itemId";
     var response = await client.delete(
       Uri.https(Constants.BACK_URL, uri),
-      params: {"id": SharedPrefs().userId},
+      params: {"id": SharedPrefs().userId, "from_sm": "$fromSharingMap"},
     );
 
     if (response.statusCode != HttpStatus.ok) {
