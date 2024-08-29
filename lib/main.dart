@@ -15,15 +15,9 @@ void main() async {
     SharedPrefs().init(),
     dotenv.load(fileName: "env/prod.env"),
   ]);
-  WidgetsFlutterBinding.ensureInitialized();
-
   final CommonController _commonController = Get.put(CommonController());
-  _commonController.onInit();
-  final ItemController _itemsController = Get.put(ItemController());
-  _itemsController.onInit();
+  Get.put(ItemController());
   final UserController _usersController = Get.put(UserController());
-  _usersController.onInit();
-  WidgetsFlutterBinding.ensureInitialized();
   String _initPath = await checkInitPath();
   if (_initPath != SMPath.noNetwork) {
     await Future.wait([
@@ -36,7 +30,6 @@ void main() async {
   if (SharedPrefs().chosenCity != -1) {
     _commonController.getLocations(SharedPrefs().chosenCity);
   }
-  WidgetsFlutterBinding.ensureInitialized();
   runApp(App(_initPath));
 }
 
