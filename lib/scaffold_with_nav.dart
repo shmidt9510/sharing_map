@@ -17,79 +17,79 @@ class ScaffoldWithNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var _userController = Get.find<UserController>();
-    var _height = context.height * 0.035;
+    var _height = context.height * 0.03;
     return Scaffold(
       body: navigationShell,
-      bottomNavigationBar: SizedBox(
-          height: context.height * 0.10,
+      bottomNavigationBar: Container(
+          // height: context.height * 0.075,
           child: Obx(
-            () => BottomNavigationBar(
-              unselectedItemColor: MColors.darkGrey,
-              selectedItemColor: MColors.green,
-              useLegacyColorScheme: true,
-              selectedFontSize: 14,
-              unselectedFontSize: 14,
-              items: [
-                BottomNavigationBarItem(
-                    activeIcon: SvgPicture.asset(
-                      'assets/icons/icon_home_pressed.svg',
-                      height: _height,
-                      width: _height,
-                    ),
-                    icon: SvgPicture.asset(
-                      'assets/icons/icon_home_unpressed.svg',
-                      height: _height,
-                      width: _height,
-                    ),
-                    label: 'Главная'),
-                BottomNavigationBarItem(
-                    icon: SvgPicture.asset(
-                      'assets/icons/icon_add_unpressed.svg',
-                      height: _height,
-                      width: _height,
-                    ),
-                    activeIcon: SvgPicture.asset(
-                      'assets/icons/icon_add.svg',
-                      height: _height,
-                      width: _height,
-                    ),
-                    label: 'Добавить'),
-                BottomNavigationBarItem(
-                    icon: SizedBox(
-                        height: _height,
-                        width: _height,
-                        child: Container(
-                            child: ClipOval(
-                              child: _userController.userProfilePicture.value,
-                              clipBehavior: Clip.hardEdge,
-                            ),
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                  color: MColors.darkGrey,
-                                  width: 2.5,
-                                )))),
-                    activeIcon: SizedBox(
-                        height: _height,
-                        width: _height,
-                        child: Container(
-                            child: ClipOval(
-                              child: _userController.userProfilePicture.value,
-                              clipBehavior: Clip.hardEdge,
-                            ),
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                  color: MColors.green,
-                                  width: 2.5,
-                                )))),
-                    // Icon(Icons.supervised_user_circle_rounded)),
-                    label: 'Профиль'),
-              ],
-              currentIndex: navigationShell.currentIndex,
-              onTap: (int index) => _onTap(context, index),
-            ),
-          )),
+        () => BottomNavigationBar(
+          unselectedItemColor: MColors.darkGrey,
+          selectedItemColor: MColors.green,
+          useLegacyColorScheme: true,
+          selectedFontSize: 14,
+          unselectedFontSize: 14,
+          items: [
+            BottomNavigationBarItem(
+                activeIcon: SvgPicture.asset(
+                  'assets/icons/icon_home_pressed.svg',
+                  height: _height,
+                  width: _height,
+                ),
+                icon: SvgPicture.asset(
+                  'assets/icons/icon_home_unpressed.svg',
+                  height: _height,
+                  width: _height,
+                ),
+                label: 'Главная'),
+            BottomNavigationBarItem(
+                icon: SvgPicture.asset(
+                  'assets/icons/icon_add_unpressed.svg',
+                  height: _height,
+                  width: _height,
+                ),
+                activeIcon: SvgPicture.asset(
+                  'assets/icons/icon_add.svg',
+                  height: _height,
+                  width: _height,
+                ),
+                label: 'Добавить'),
+            BottomNavigationBarItem(
+                icon: SizedBox(
+                    height: _height,
+                    width: _height,
+                    child: Container(
+                        child: ClipOval(
+                          child: _userController.userProfilePicture.value,
+                          clipBehavior: Clip.hardEdge,
+                        ),
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: MColors.darkGrey,
+                              width: 2.5,
+                            )))),
+                activeIcon: SizedBox(
+                    height: _height,
+                    width: _height,
+                    child: Container(
+                        child: ClipOval(
+                          child: _userController.userProfilePicture.value,
+                          clipBehavior: Clip.hardEdge,
+                        ),
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: MColors.green,
+                              width: 2.5,
+                            )))),
+                // Icon(Icons.supervised_user_circle_rounded)),
+                label: 'Профиль'),
+          ],
+          currentIndex: navigationShell.currentIndex,
+          onTap: (int index) => _onTap(context, index),
+        ),
+      )),
     );
   }
 
