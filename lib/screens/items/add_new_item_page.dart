@@ -11,7 +11,6 @@ import 'package:sharing_map/controllers/common_controller.dart';
 import 'package:sharing_map/controllers/item_controller.dart';
 import 'package:sharing_map/controllers/user_controller.dart';
 import 'package:sharing_map/models/category.dart';
-import 'package:sharing_map/models/contact.dart';
 import 'package:sharing_map/models/item.dart';
 import 'package:sharing_map/models/location.dart';
 import 'package:sharing_map/path.dart';
@@ -41,6 +40,7 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
   CommonController _commonController = Get.find<CommonController>();
   UserController _userController = Get.find<UserController>();
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final PageController _pageController = PageController();
 
   void selectImages() async {
     var source = await chooseImageSource(context, "Выберите изображения");
@@ -96,217 +96,328 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(title: Text("Создать объявление")),
-        body: SharedPrefs().logged
-            ? Obx(() => _userController.myContacts.isEmpty
-                ? Padding(
-                    padding: EdgeInsets.all(40.0),
-                    child: Center(child: NoContactButton()))
-                : Form(
-                    key: _formKey,
-                    child: Container(
-                      padding: const EdgeInsets.all(20),
-                      child: SingleChildScrollView(
-                        child: Column(children: [
-                          getTextField(titleController, 'Что вы хотите отдать',
-                              (String? value) {
-                            if (value?.isEmpty ?? true) {
-                              return null;
-                            }
-                            if ((value?.length ?? 0) < 2) {
-                              return "Пожалуйста, введите больше символов";
-                            }
-                            if ((value?.startsWith(" ") ?? false)) {
-                              return "Название не должно начинаться с пробела";
-                            }
-                            return null;
-                          }),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          getTextField(descriptionController, 'Описание',
-                              (String? value) {
-                            if (value?.length == 0) {
-                              return null;
-                            }
-                            return null;
-                          }, maxLines: 5, minLines: 3),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          DropdownSearch<ItemCategory>.multiSelection(
-                            key: dropDownKeyCategory,
-                            autoValidateMode: AutovalidateMode.disabled,
-                            validator: (value) {
-                              if (value == null) {
-                                return "Пожалуйста, выберите категорию";
-                              }
-                              var chosen = value;
-                              if (chosen.isEmpty) {
-                                return "Пожалуйста, выберите категорию";
-                              }
-                              if (chosen.length > 2) {
-                                return "Пожалуйста, выберите не больше двух категорий";
-                              }
-                              return null;
-                            },
-                            onChanged: (List<ItemCategory>? data) {
-                              setState(() {
-                                _chosenCategories = data ?? [];
-                              });
-                            },
-                            itemAsString: (ItemCategory u) => u.description,
-                            filterFn: ((item, filter) {
-                              return item.id != 0;
-                            }),
-                            items: _commonController.categories,
-                            dropdownDecoratorProps: DropDownDecoratorProps(
-                              baseStyle: getMediumTextStyle(),
-                              dropdownSearchDecoration: InputDecoration(
-                                labelText: _chosenCategories.length == 0
-                                    ? "Выберите до двух категорий"
-                                    : "",
-                                hintStyle: getMediumTextStyle(),
-                                labelStyle: getMediumTextStyle(),
-                                filled: false,
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: MColors.secondaryGreen),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                              ),
-                            ),
-                            popupProps: PopupPropsMultiSelection.menu(
-                              showSearchBox: false,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          DropdownSearch<SMLocation>.multiSelection(
-                            key: dropDownKeyLocation,
-                            autoValidateMode: AutovalidateMode.disabled,
-                            validator: (value) {
-                              if (value == null) {
-                                return "Пожалуйста, выберите станцию метро";
-                              }
-                              var chosen = value;
-                              if (chosen.isEmpty) {
-                                return "Пожалуйста, выберите станцию метро";
-                              }
-                              if (chosen.length > 3) {
-                                return "Пожалуйста, выберите не больше трёх станций метро";
-                              }
-                              return null;
-                            },
-                            onChanged: (List<SMLocation>? data) {
-                              setState(() {
-                                _chosenLocations = data ?? [];
-                              });
-                            },
-                            dropdownDecoratorProps: DropDownDecoratorProps(
-                              baseStyle: getMediumTextStyle(),
-                              dropdownSearchDecoration: InputDecoration(
-                                labelText: _chosenLocations.length == 0
-                                    ? "Выберите до трёх станций метро"
-                                    : "",
-                                hintStyle: getMediumTextStyle(),
-                                labelStyle: getMediumTextStyle(),
-                                filled: false,
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: MColors.secondaryGreen),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                              ),
-                            ),
-                            items: _commonController.locations,
-                            popupProps: PopupPropsMultiSelection.menu(
-                              showSearchBox: true,
-                            ),
-                          ),
-                          _getImageChoiceWidget(),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                top: 10, left: 20, right: 20),
-                            child: LoadingButton("Опубликовать", () async {
+        bottomNavigationBar: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: SharedPrefs().logged
+              ? Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(
+                      height: 50,
+                      width: 150,
+                      child: getButton(context, "Назад", () {
+                        if (_pageController.page! > 0) {
+                          _pageController.previousPage(
+                            duration: Duration(milliseconds: 300),
+                            curve: Curves.ease,
+                          );
+                        }
+                        setState(() {});
+                      }, color: MColors.secondaryGreen, height: 50),
+                    ),
+                    SizedBox(
+                      height: 50,
+                      width: 150,
+                      child: _pageController.hasClients &&
+                              (_pageController.page ?? 0) == 3
+                          ? LoadingButton("Опубликовать", () async {
                               await checkItem();
+                              _pageController.jumpToPage(0);
                             },
-                                color: MColors.darkGreen,
-                                textStyle: getBigTextStyle()
-                                    .copyWith(color: MColors.white)),
-                          ),
-                        ]),
+                              color: MColors.darkGreen,
+                              textStyle: getBigTextStyle()
+                                  .copyWith(color: MColors.white))
+                          : getButton(context, 'Далее', () {
+                              if (_formKey.currentState!.validate()) {
+                                _formKey.currentState!.save();
+                                _pageController.nextPage(
+                                  duration: Duration(milliseconds: 300),
+                                  curve: Curves.ease,
+                                );
+                              }
+                              setState(() {});
+                            }, color: MColors.secondaryGreen, height: 50),
+                    )
+                  ],
+                )
+              : Container(),
+        ),
+        body: SharedPrefs().logged
+            ? Obx(
+                () => _userController.myContacts.isEmpty
+                    ? Padding(
+                        padding: EdgeInsets.all(40.0),
+                        child: Center(child: NoContactButton()))
+                    : Form(
+                        key: _formKey,
+                        child: PageView(
+                          controller: _pageController,
+                          physics: NeverScrollableScrollPhysics(),
+                          children: <Widget>[
+                            _getNameAndDescription(),
+                            _getCategoryWidget(),
+                            _getImageChoiceWidget(),
+                            _getSubwayWidget(),
+                          ],
+                        ),
                       ),
-                    )))
+              )
             : NeedRegistration());
   }
 
+  Widget _getNameAndDescription() {
+    return Padding(
+      padding: EdgeInsets.all(16.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          getTextField(titleController, 'Что вы хотите отдать',
+              (String? value) {
+            if (value?.isEmpty ?? true) {
+              return "Название не должно быть пустым";
+            }
+            if ((value?.length ?? 0) < 2) {
+              return "Пожалуйста, введите больше символов";
+            }
+            if ((value?.startsWith(" ") ?? false)) {
+              return "Название не должно начинаться с пробела";
+            }
+            return null;
+          }),
+          const SizedBox(
+            height: 10,
+          ),
+          getTextField(descriptionController, 'Описание', (String? value) {
+            if (value?.length == 0) {
+              return null;
+            }
+            return null;
+          }, maxLines: 5, minLines: 3),
+        ],
+      ),
+    );
+  }
+
   Widget _getImageChoiceWidget() {
-    return Container(
-        padding: EdgeInsets.only(top: 20, left: 20, right: 20),
-        alignment: Alignment.topCenter,
-        child: Column(
-          children: [
-            getButton(context, "Добавьте до 5 фото", () {
-              selectImages();
-            }, textStyle: getMediumTextStyle()),
-            SizedBox(
-              height: 10,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                height: ((imageFileList!.length) ~/ 4 +
-                        (imageFileList!.isEmpty ? 0 : 1)) *
-                    (context.width / 3 - 20),
-                child: imageFileList!.length > 0
-                    ? GridView.builder(
-                        shrinkWrap: false,
-                        physics: ScrollPhysics(),
-                        itemCount: imageFileList!.length,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3),
-                        itemBuilder: (BuildContext context, int index) {
-                          return SizedBox(
-                            width: (context.width / 3 - 20),
-                            child: Stack(fit: StackFit.expand, children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(20))),
-                                child: Image.file(
-                                    File(imageFileList![index].path),
-                                    fit: BoxFit.cover),
-                              ),
-                              Positioned(
-                                top: 3,
-                                right: 3,
-                                child: InkWell(
-                                  onTap: () {
-                                    setState(() {
-                                      imageFileList!.removeAt(index);
-                                    });
-                                  },
-                                  child: Icon(
-                                    Icons.delete,
-                                    color: MColors.red1,
+    return FormField<int>(validator: (value) {
+      if (imageFileList?.isEmpty ?? true) {
+        return "Пожалуйста, добавьте хотя бы одно фото";
+      }
+      return null;
+    }, builder: (FormFieldState<int> state) {
+      return Container(
+          padding: EdgeInsets.only(top: 20, left: 20, right: 20),
+          alignment: Alignment.topCenter,
+          child: Column(
+            children: [
+              getButton(context, "Добавьте до 5 фото", () {
+                selectImages();
+              }, textStyle: getMediumTextStyle()),
+              SizedBox(
+                height: 10,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  height: ((imageFileList!.length) ~/ 4 +
+                          (imageFileList!.isEmpty ? 0 : 1)) *
+                      (context.width / 3 - 20),
+                  child: imageFileList!.length > 0
+                      ? GridView.builder(
+                          shrinkWrap: false,
+                          physics: ScrollPhysics(),
+                          itemCount: imageFileList!.length,
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 3),
+                          itemBuilder: (BuildContext context, int index) {
+                            return SizedBox(
+                              width: (context.width / 3 - 20),
+                              child: Stack(fit: StackFit.expand, children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(20))),
+                                  child: Image.file(
+                                      File(imageFileList![index].path),
+                                      fit: BoxFit.cover),
+                                ),
+                                Positioned(
+                                  top: 3,
+                                  right: 3,
+                                  child: InkWell(
+                                    onTap: () {
+                                      setState(() {
+                                        imageFileList!.removeAt(index);
+                                      });
+                                    },
+                                    child: Icon(
+                                      Icons.delete,
+                                      color: MColors.red1,
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ]),
-                          );
-                        })
-                    : Container(),
+                              ]),
+                            );
+                          })
+                      : Container(),
+                ),
               ),
-            )
-          ],
-        ));
+              if (state.hasError)
+                Text(
+                  state.errorText!,
+                  style: TextStyle(color: Theme.of(context).colorScheme.error),
+                )
+            ],
+          ));
+    });
+  }
+
+  Widget _getCategoryWidget() {
+    return FormField<List<ItemCategory>>(validator: (value) {
+      if ((value?.length ?? 0) == 0 && _chosenCategories.isEmpty) {
+        return "Пожалуйста выберите категорию";
+      }
+      return null;
+    }, builder: (FormFieldState<List<ItemCategory>> state) {
+      return Column(children: [
+        SizedBox(
+          height: 10,
+        ),
+        Text(
+          "Выберите до двух категорий",
+          style: getMediumTextStyle(),
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Wrap(
+              spacing: 8.0, // gap between adjacent chips
+              children: _commonController.categories.sublist(1).map((item) {
+                final isSelected = _chosenCategories.contains(item);
+                return ChoiceChip(
+                  selected: isSelected,
+                  label: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                          width: 25,
+                          height: 25,
+                          decoration: BoxDecoration(
+                              color: _chosenCategories.contains(item)
+                                  ? MColors.lightGreen
+                                  : MColors.inputField,
+                              shape: BoxShape.circle,
+                              image: DecorationImage(
+                                image: _commonController
+                                    .chooseCategorieImage(item),
+                                fit: BoxFit.fitHeight,
+                              ),
+                              border: Border.all(
+                                color: _chosenCategories.contains(item)
+                                    ? MColors.green
+                                    : MColors.inputField,
+                                width: 2.0,
+                              )),
+                          child: Container()),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        item.description,
+                        style: getMediumTextStyle(),
+                      ),
+                    ],
+                  ),
+                  selectedColor: MColors.green,
+                  onSelected: (selected) {
+                    setState(() {
+                      if (_chosenCategories.length < 2 ||
+                          _chosenCategories.contains(item)) {
+                        if (selected) {
+                          _chosenCategories.add(item);
+                        } else {
+                          _chosenCategories.remove(item);
+                        }
+                        state.didChange(_chosenCategories);
+                      } else {
+                        null;
+                      }
+                    });
+                  },
+                );
+              }).toList(),
+            )),
+        if (state.hasError)
+          Text(
+            state.errorText!,
+            style: TextStyle(color: Theme.of(context).colorScheme.error),
+          )
+      ]);
+    });
+  }
+
+  Widget _getSubwayWidget() {
+    return Column(
+      children: [
+        SizedBox(
+          height: 10,
+        ),
+        Text("Выберите станции метро"),
+        SizedBox(
+          height: 10,
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 20, right: 20),
+          child: DropdownSearch<SMLocation>.multiSelection(
+            key: dropDownKeyLocation,
+            autoValidateMode: AutovalidateMode.disabled,
+            validator: (value) {
+              if (value == null) {
+                return "Пожалуйста, выберите станцию метро";
+              }
+              var chosen = value;
+              if (chosen.isEmpty) {
+                return "Пожалуйста, выберите станцию метро";
+              }
+              if (chosen.length > 3) {
+                return "Пожалуйста, выберите не больше трёх станций метро";
+              }
+              return null;
+            },
+            onChanged: (List<SMLocation>? data) {
+              setState(() {
+                _chosenLocations = data ?? [];
+              });
+            },
+            dropdownDecoratorProps: DropDownDecoratorProps(
+              baseStyle: getMediumTextStyle(),
+              dropdownSearchDecoration: InputDecoration(
+                labelText: _chosenLocations.length == 0
+                    ? "Выберите до трёх станций метро"
+                    : "",
+                hintStyle: getMediumTextStyle(),
+                labelStyle: getMediumTextStyle(),
+                filled: false,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: MColors.secondaryGreen),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+            ),
+            items: _commonController.locations,
+            popupProps: PopupPropsMultiSelection.menu(
+              showSearchBox: true,
+            ),
+          ),
+        )
+      ],
+    );
   }
 
   Future<void> checkItem() async {
@@ -348,3 +459,52 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
     }
   }
 }
+
+// DropdownSearch<ItemCategory>.multiSelection(
+//   key: dropDownKeyCategory,
+//   autoValidateMode: AutovalidateMode.disabled,
+//   validator: (value) {
+//     if (value == null) {
+//       return "Пожалуйста, выберите категорию";
+//     }
+//     var chosen = value;
+//     if (chosen.isEmpty) {
+//       return "Пожалуйста, выберите категорию";
+//     }
+//     if (chosen.length > 2) {
+//       return "Пожалуйста, выберите не больше двух категорий";
+//     }
+//     return null;
+//   },
+//   onChanged: (List<ItemCategory>? data) {
+//     setState(() {
+//       _chosenCategories = data ?? [];
+//     });
+//   },
+//   itemAsString: (ItemCategory u) => u.description,
+//   filterFn: ((item, filter) {
+//     return item.id != 0;
+//   }),
+//   items: _commonController.categories,
+//   dropdownDecoratorProps: DropDownDecoratorProps(
+//     baseStyle: getMediumTextStyle(),
+//     dropdownSearchDecoration: InputDecoration(
+//       labelText: _chosenCategories.length == 0
+//           ? "Выберите до двух категорий"
+//           : "",
+//       hintStyle: getMediumTextStyle(),
+//       labelStyle: getMediumTextStyle(),
+//       filled: false,
+//       border: OutlineInputBorder(
+//         borderRadius: BorderRadius.circular(10),
+//       ),
+//       enabledBorder: OutlineInputBorder(
+//         borderSide: BorderSide(color: MColors.secondaryGreen),
+//         borderRadius: BorderRadius.circular(10),
+//       ),
+//     ),
+//   ),
+//   popupProps: PopupPropsMultiSelection.menu(
+//     showSearchBox: false,
+//   ),
+// ),

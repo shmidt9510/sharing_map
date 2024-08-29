@@ -114,7 +114,7 @@ class _ItemsListViewOtherProfileState extends State<ItemsListViewOtherProfile> {
               ),
               child: const Text('Да'),
               onPressed: () {
-                _itemsController.deleteItem(itemId);
+                _itemsController.deleteItem(itemId, false);
                 _result = true;
                 Navigator.of(context).maybePop();
               },
