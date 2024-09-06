@@ -10,9 +10,11 @@ class SMPath {
   static const String noNetwork = "/noNetwork";
   static const String home = "/home";
   static const String addItem = "/addItem";
-  static const String profile = "/profile";
-  static const String profileEdit = "edit";
+  static const String profile = "profile";
+  static const String profileEditBio = "edit_bio";
+  static const String profileEditContact = "edit_contact";
   static const String favorite = "/favorite";
   static const String chooseCity = "/chooseCity";
   static const String itemEdit = "/itemEdit";
+  static const String myItems = "/my";
 }

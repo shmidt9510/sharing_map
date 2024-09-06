@@ -36,7 +36,6 @@ class NoContactButton extends StatelessWidget {
                     style: TextStyle(
                       decoration: TextDecoration.underline,
                     )),
-                // can add more TextSpans here...
               ],
             )),
           ),

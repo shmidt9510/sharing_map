@@ -19,7 +19,6 @@ import 'package:sharing_map/utils/chose_image_source.dart';
 import 'package:sharing_map/utils/colors.dart';
 import 'package:sharing_map/utils/shared.dart';
 import 'package:sharing_map/widgets/allWidgets.dart';
-import 'package:sharing_map/widgets/loading_button.dart';
 import 'package:sharing_map/utils/compress_image.dart';
 import 'package:sharing_map/widgets/need_registration.dart';
 import 'package:sharing_map/widgets/no_contacts_button.dart';
@@ -40,7 +39,8 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
   CommonController _commonController = Get.find<CommonController>();
   UserController _userController = Get.find<UserController>();
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final PageController _pageController = PageController();
+  PageController _pageController = PageController();
+  int _selectedIndex = 0;
 
   void selectImages() async {
     var source = await chooseImageSource(context, "Выберите изображения");
@@ -89,59 +89,119 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
   void dispose() {
     titleController.dispose();
     descriptionController.dispose();
+    _pageController.dispose();
     super.dispose();
   }
 
   @override
+  void initState() {
+    super.initState();
+    _pageController = PageController(initialPage: _selectedIndex);
+  }
+
+  @override
   Widget build(BuildContext context) {
+    bool _isLoading = false;
+
     return Scaffold(
         appBar: AppBar(title: Text("Создать объявление")),
         bottomNavigationBar: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: SharedPrefs().logged
-              ? Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SizedBox(
-                      height: 50,
-                      width: 150,
-                      child: getButton(context, "Назад", () {
-                        if (_pageController.page! > 0) {
-                          _pageController.previousPage(
-                            duration: Duration(milliseconds: 300),
-                            curve: Curves.ease,
-                          );
-                        }
-                        setState(() {});
-                      }, color: MColors.secondaryGreen, height: 50),
+            padding: const EdgeInsets.all(8.0),
+            child: SharedPrefs().logged
+                ? Padding(
+                    padding: const EdgeInsets.only(bottom: 20.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Spacer(),
+                        _selectedIndex > 0
+                            ? Container(
+                                decoration: BoxDecoration(
+                                  color: MColors
+                                      .green, // Background color of the button
+                                  shape: BoxShape.circle, // Circular shape
+                                ),
+                                height: 50,
+                                width: 50,
+                                child: IconButton(
+                                  icon: Icon(
+                                    Icons.arrow_back,
+                                    color: MColors.white,
+                                    weight: 1200,
+                                  ),
+                                  onPressed: () {
+                                    if (_selectedIndex > 0) {
+                                      _pageController.previousPage(
+                                        duration: Duration(milliseconds: 300),
+                                        curve: Curves.ease,
+                                      );
+                                    }
+                                    setState(() {});
+                                  },
+                                ))
+                            : Spacer(),
+                        Spacer(flex: 5),
+                        Container(
+                          height: 50,
+                          width: 50,
+                          decoration: BoxDecoration(
+                            color:
+                                MColors.green, // Background color of the button
+                            shape: BoxShape.circle, // Circular shape
+                          ),
+                          child: _pageController.hasClients &&
+                                  (_pageController.page ?? 0) == 3
+                              ? IconButton(
+                                  onPressed: _isLoading
+                                      ? null
+                                      : () async {
+                                          setState(() {
+                                            _isLoading = true;
+                                          });
+                                          try {
+                                            if (_formKey.currentState!
+                                                .validate()) {
+                                              await checkItem();
+                                              _pageController.jumpToPage(0);
+                                            }
+                                          } catch (e) {
+                                            debugPrint("catch " + e.toString());
+                                          }
+                                          setState(() {
+                                            _isLoading = false;
+                                          });
+                                        },
+                                  icon: _isLoading
+                                      ? CircularProgressIndicator.adaptive()
+                                      : Icon(
+                                          Icons.check_rounded,
+                                          color: MColors.white,
+                                          weight: 1200,
+                                        ))
+                              : IconButton(
+                                  icon: Icon(
+                                    Icons.arrow_forward_rounded,
+                                    color: MColors.white,
+                                    weight: 1200,
+                                  ),
+                                  onPressed: () {
+                                    if (_formKey.currentState!.validate()) {
+                                      _formKey.currentState!.save();
+                                      _pageController.nextPage(
+                                        duration: Duration(milliseconds: 300),
+                                        curve: Curves.ease,
+                                      );
+                                    }
+                                    setState(() {});
+                                  }),
+                        ),
+                        Spacer()
+                      ],
                     ),
-                    SizedBox(
-                      height: 50,
-                      width: 150,
-                      child: _pageController.hasClients &&
-                              (_pageController.page ?? 0) == 3
-                          ? LoadingButton("Опубликовать", () async {
-                              await checkItem();
-                              _pageController.jumpToPage(0);
-                            },
-                              color: MColors.darkGreen,
-                              textStyle: getBigTextStyle()
-                                  .copyWith(color: MColors.white))
-                          : getButton(context, 'Далее', () {
-                              if (_formKey.currentState!.validate()) {
-                                _formKey.currentState!.save();
-                                _pageController.nextPage(
-                                  duration: Duration(milliseconds: 300),
-                                  curve: Curves.ease,
-                                );
-                              }
-                              setState(() {});
-                            }, color: MColors.secondaryGreen, height: 50),
-                    )
-                  ],
-                )
-              : Container(),
-        ),
+                  )
+                : SizedBox(
+                    height: 10,
+                  )),
         body: SharedPrefs().logged
             ? Obx(
                 () => _userController.myContacts.isEmpty
@@ -152,6 +212,11 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
                         key: _formKey,
                         child: PageView(
                           controller: _pageController,
+                          onPageChanged: (index) {
+                            setState(() {
+                              _selectedIndex = index;
+                            });
+                          },
                           physics: NeverScrollableScrollPhysics(),
                           children: <Widget>[
                             _getNameAndDescription(),
@@ -459,52 +524,3 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
     }
   }
 }
-
-// DropdownSearch<ItemCategory>.multiSelection(
-//   key: dropDownKeyCategory,
-//   autoValidateMode: AutovalidateMode.disabled,
-//   validator: (value) {
-//     if (value == null) {
-//       return "Пожалуйста, выберите категорию";
-//     }
-//     var chosen = value;
-//     if (chosen.isEmpty) {
-//       return "Пожалуйста, выберите категорию";
-//     }
-//     if (chosen.length > 2) {
-//       return "Пожалуйста, выберите не больше двух категорий";
-//     }
-//     return null;
-//   },
-//   onChanged: (List<ItemCategory>? data) {
-//     setState(() {
-//       _chosenCategories = data ?? [];
-//     });
-//   },
-//   itemAsString: (ItemCategory u) => u.description,
-//   filterFn: ((item, filter) {
-//     return item.id != 0;
-//   }),
-//   items: _commonController.categories,
-//   dropdownDecoratorProps: DropDownDecoratorProps(
-//     baseStyle: getMediumTextStyle(),
-//     dropdownSearchDecoration: InputDecoration(
-//       labelText: _chosenCategories.length == 0
-//           ? "Выберите до двух категорий"
-//           : "",
-//       hintStyle: getMediumTextStyle(),
-//       labelStyle: getMediumTextStyle(),
-//       filled: false,
-//       border: OutlineInputBorder(
-//         borderRadius: BorderRadius.circular(10),
-//       ),
-//       enabledBorder: OutlineInputBorder(
-//         borderSide: BorderSide(color: MColors.secondaryGreen),
-//         borderRadius: BorderRadius.circular(10),
-//       ),
-//     ),
-//   ),
-//   popupProps: PopupPropsMultiSelection.menu(
-//     showSearchBox: false,
-//   ),
-// ),

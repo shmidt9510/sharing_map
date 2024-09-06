@@ -7,6 +7,7 @@ import 'package:sharing_map/screens/getstarted/intro_screen.dart';
 import 'package:sharing_map/screens/items/item_detail_page.dart';
 import 'package:sharing_map/screens/items/item_edit_page.dart';
 import 'package:sharing_map/screens/items/item_list_page.dart';
+import 'package:sharing_map/screens/items/my_items_page.dart';
 import 'package:sharing_map/screens/other/no_internet.dart';
 import 'package:sharing_map/screens/register/registration_code.dart';
 import 'package:sharing_map/screens/register/registration_screen.dart';
@@ -17,6 +18,8 @@ import 'package:sharing_map/screens/register/reset_password_code.dart';
 import 'package:sharing_map/screens/register/reset_password_mail.dart';
 import 'package:sharing_map/screens/register/reset_password_set.dart';
 import 'package:sharing_map/theme.dart';
+import 'package:sharing_map/user/page/edit_profile_bio_page.dart';
+import 'package:sharing_map/user/page/edit_profile_contact_page.dart';
 import 'package:sharing_map/user/page/profile_page.dart';
 import 'package:sharing_map/user/page/user_profile_page.dart';
 import 'package:sharing_map/screens/getstarted/choose_city.dart';
@@ -166,10 +169,29 @@ class _RouterStartState extends State<RouterStart> {
                 StatefulShellBranch(
                   routes: <RouteBase>[
                     GoRoute(
-                      path: SMPath.profile,
-                      builder: (BuildContext context, GoRouterState state) =>
-                          ProfilePage(),
-                    ),
+                        path: SMPath.myItems,
+                        builder: (BuildContext context, GoRouterState state) =>
+                            MyItemsPage(),
+                        routes: <RouteBase>[
+                          GoRoute(
+                              path: SMPath.profile,
+                              builder:
+                                  (BuildContext context, GoRouterState state) {
+                                return ProfilePage();
+                              }),
+                          GoRoute(
+                              path: SMPath.profileEditBio,
+                              builder:
+                                  (BuildContext context, GoRouterState state) {
+                                return EditProfileBioPage();
+                              }),
+                          GoRoute(
+                              path: SMPath.profileEditContact,
+                              builder:
+                                  (BuildContext context, GoRouterState state) {
+                                return EditProfileContactPage();
+                              }),
+                        ]),
                   ],
                 ),
               ],

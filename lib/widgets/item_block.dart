@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:sharing_map/controllers/common_controller.dart';
+import 'package:sharing_map/controllers/size_controller.dart';
 import 'package:sharing_map/models/item.dart';
 import 'package:sharing_map/theme.dart';
 import 'package:sharing_map/utils/colors.dart';
@@ -109,13 +110,13 @@ class TextDescriptionBlock extends StatelessWidget {
 
 class ItemBlock extends StatelessWidget {
   final Item _item;
-
+  SizeController _sizeController = Get.find<SizeController>();
   ItemBlock(this._item);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: context.height / 5,
+      height: _sizeController.GetHeightOfItems(),
       decoration: BoxDecoration(
         boxShadow: [
           BoxShadow(

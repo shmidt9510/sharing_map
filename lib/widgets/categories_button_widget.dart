@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sharing_map/controllers/common_controller.dart';
+import 'package:sharing_map/controllers/size_controller.dart';
 import 'package:sharing_map/models/category.dart';
 import 'package:sharing_map/theme.dart';
 import 'package:sharing_map/utils/colors.dart';
@@ -17,6 +18,7 @@ class CategoriesButtonWidget extends StatefulWidget {
 
 class CategoriesButtonWidgetState extends State<CategoriesButtonWidget> {
   CommonController _commonController = Get.find<CommonController>();
+  SizeController _sizeController = Get.find<SizeController>();
   int _chosenFilter = 0;
 
   @override
@@ -73,7 +75,7 @@ class CategoriesButtonWidgetState extends State<CategoriesButtonWidget> {
             height: 10 * 2,
             child: Text(
               maxLines: 2,
-              style: getBigTextStyle().copyWith(fontWeight: FontWeight.bold),
+              style: _sizeController.GetCategoryFont(),
               category.description,
               textAlign: TextAlign.center,
             ),

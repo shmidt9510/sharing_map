@@ -63,64 +63,134 @@ class _ProfilePageState extends State<ProfilePage> {
                   children: [
                     Padding(
                       padding: EdgeInsetsDirectional.only(start: 20, end: 20),
-                      child: Row(
-                        children: [
-                          Flexible(
-                              flex: 2,
-                              child: Stack(children: [
-                                ClipOval(
-                                    child: SizedBox.fromSize(
-                                        size: Size.fromRadius(48),
-                                        child: profileImage == null
-                                            ? _user.value
-                                                .buildImage(fit: BoxFit.cover)
-                                            : Image.file(
-                                                File(profileImage!.path),
-                                                fit: BoxFit.cover,
-                                              ))),
-                                Positioned(
-                                  top: -5,
-                                  right: -5,
-                                  child: IconButton(
-                                      onPressed: () async {
-                                        selectImage(_user.value);
-                                      },
-                                      icon: Icon(
-                                        Icons.edit,
-                                        color: MColors.green,
-                                      )),
-                                )
-                              ])),
-                          Spacer(flex: 1),
-                          Flexible(
-                            flex: 4,
-                            child: Center(
-                              child: Column(
-                                children: [
-                                  buildName(_user.value),
-                                  // NumbersWidget(_user!),
-                                ],
-                              ),
+                      child: Stack(children: [
+                        ClipOval(
+                            child: SizedBox.fromSize(
+                                size: Size.fromRadius(90),
+                                child: profileImage == null
+                                    ? _user.value.buildImage(fit: BoxFit.cover)
+                                    : Image.file(
+                                        File(profileImage!.path),
+                                        fit: BoxFit.cover,
+                                      ))),
+                        Positioned(
+                          top: 130,
+                          right: -5,
+                          child: IconButton(
+                              onPressed: () async {
+                                selectImage(_user.value);
+                              },
+                              icon: Icon(
+                                Icons.add_a_photo_rounded,
+                                color: MColors.green,
+                              )),
+                        )
+                      ]),
+                    ),
+                    const SizedBox(height: 20),
+                    Text(
+                      _userNameController.text,
+                      style: getBigTextStyle(),
+                    ),
+                    const SizedBox(height: 20),
+                    Padding(
+                      padding: EdgeInsets.only(left: 30),
+                      // width: context.width * 0.85,
+                      child: Container(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'О себе',
+                              style: getBigTextStyle(),
                             ),
-                          ),
-                        ],
+                            SizedBox(
+                              height: 10,
+                            ),
+                            _user.value.bio.isEmpty
+                                ? InkWell(
+                                    onTap: () {},
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Icon(Icons.add_circle_outline_rounded),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Text(
+                                          "Расскажите немного о себе",
+                                          style: getHintTextStyle(),
+                                        )
+                                      ],
+                                    ),
+                                  )
+                                : Text(
+                                    _user.value.bio,
+                                    style: getMediumTextStyle(),
+                                  ),
+                            // _user.value.
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text(
+                              'Контакты',
+                              style: getBigTextStyle(),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            _userController.myContacts.isNotEmpty
+                                ? GetUserContactWidget(
+                                    PrepareContacts(contacts), context)
+                                : InkWell(
+                                    onTap: () {},
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Icon(Icons.add_circle_outline_rounded),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Text(
+                                          "Добавьте контакты для связи",
+                                          style: getHintTextStyle(),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                            const SizedBox(height: 8),
+                            // _user.value.bio.isNotEmpty
+                            //     ? Text(_user.value.bio)
+                            //     : ,
+                            // EditableTextField(
+                            //     _bioController.text,
+                            //     () => _bioController.text.isNotEmpty
+                            //         ? saveUser(context)
+                            //         : null,
+                            //     _bioController),
+                          ],
+                        ),
                       ),
                     ),
-                    const SizedBox(height: 10),
-                    buildAbout(_user.value),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 20.0),
-                      child: GetUserContactWidget(
-                          PrepareContacts(contacts), context),
-                    ),
-                    const SizedBox(height: 24),
-                    Center(
-                        child: Text(
-                      "Мои объявления",
-                      style: getBigTextStyle(),
-                    )),
-                    const SizedBox(height: 24),
-                    ItemsListViewSelfProfile()
+                    // buildAbout(_user.value),
+                    // Padding(
+                    //   padding: const EdgeInsets.only(left: 20.0),
+                    // child: ,
+                    // ),
+                    // const SizedBox(height: 24),
+                    // Center(
+                    //     child: Text(
+                    //   "Мои объявления",
+                    //   style: getBigTextStyle(),
+                    // )),
+                    // const SizedBox(height: 24),
+                    // ItemsListViewSelfProfile()
                   ],
                 ),
               ));

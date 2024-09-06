@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sharing_map/controllers/size_controller.dart';
 import 'package:sharing_map/controllers/user_controller.dart';
 import 'package:sharing_map/path.dart';
 import 'package:sharing_map/router.dart';
@@ -8,14 +9,17 @@ import 'package:sharing_map/utils/init_path.dart';
 import 'package:sharing_map/utils/shared.dart';
 import 'package:sharing_map/controllers/common_controller.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:url_strategy/url_strategy.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  setPathUrlStrategy();
   await Future.wait([
     SharedPrefs().init(),
     dotenv.load(fileName: "env/prod.env"),
   ]);
   final CommonController _commonController = Get.put(CommonController());
+  Get.put(SizeController());
   Get.put(ItemController());
   final UserController _usersController = Get.put(UserController());
   String _initPath = await checkInitPath();

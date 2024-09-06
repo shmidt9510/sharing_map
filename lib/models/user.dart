@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sharing_map/models/photo.dart';
+import 'package:sharing_map/utils/colors.dart';
 import 'package:sharing_map/widgets/image.dart';
 
 const String PlaceholderId = "8d762611-38ff-41ff-ba2d-7dbfab85d750";
@@ -24,7 +25,6 @@ class User {
       username: json["username"],
       email: json["email"],
       hasProfileImage: json["hasImage"],
-      // profileImage: json["imagePath"],
       bio: json["bio"]);
 
   Map<String, dynamic> toJson() =>
@@ -36,7 +36,14 @@ class User {
           SMImage(id: id, itemId: id, updatedAt: DateTime.now()),
           fit: fit);
     }
-    return Image.asset('assets/images/categories/pets.png');
+    return Padding(
+      padding: EdgeInsets.all(0),
+      child: Icon(
+        Icons.person_rounded,
+        color: MColors.darkGreen,
+      ),
+    );
+    // Image.asset('assets/images/categories/pets.png');
   }
 
   SMImage getSMImage() {
@@ -48,9 +55,5 @@ class User {
     return SMImage(id: id, itemId: id, updatedAt: DateTime.now());
   }
 
-    factory User.getEmptyUser() => User(
-      id: "",
-      username: "",
-      bio: "");
-
+  factory User.getEmptyUser() => User(id: "", username: "", bio: "");
 }

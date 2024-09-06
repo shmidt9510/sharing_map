@@ -78,6 +78,11 @@ class SharedPrefs {
   set chosenCity(int value) {
     _sharedPrefs.setInt(keyChosenCity, value);
   }
+
+  bool get configInit => _sharedPrefs.getBool(keyConfigInit) ?? false;
+  set configInit(bool value) {
+    _sharedPrefs.setBool(keyConfigInit, value);
+  }
 }
 
 final sharedPrefs = SharedPrefs();
@@ -90,3 +95,4 @@ const String keyRefreshToken = "refresh_token";
 const String keyConfirmationToken = "confirmation_token";
 const String keyResetPasswordToken = "reset_password_token";
 const String keyChosenCity = "chosen_city";
+const String keyConfigInit = "config_init";

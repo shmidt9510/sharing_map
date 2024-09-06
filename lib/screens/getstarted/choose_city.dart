@@ -20,7 +20,6 @@ class ChooseCitySreen extends StatefulWidget {
 class ChooseCitySreenState extends State<ChooseCitySreen> {
   int counter = 0;
   var _commonController = Get.find<CommonController>();
-  var _itemController = Get.find<ItemController>();
   late City dropdownValue;
 
   @override

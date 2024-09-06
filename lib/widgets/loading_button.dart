@@ -8,11 +8,16 @@ class LoadingButton extends StatefulWidget {
   final Color color = MColors.secondaryGreen;
   final double height = 50;
   final TextStyle? textStyle = null;
+  Widget? bodyOk = null;
 
-  LoadingButton(this.labelText, this.onPressed,
-      {Color color = MColors.secondaryGreen,
-      double height = 50,
-      TextStyle? textStyle});
+  LoadingButton(
+    this.labelText,
+    this.onPressed, {
+    Color color = MColors.secondaryGreen,
+    double height = 50,
+    TextStyle? textStyle,
+    this.bodyOk,
+  });
 
   @override
   LoadingButtonState createState() => LoadingButtonState();
@@ -52,7 +57,7 @@ class LoadingButtonState extends State<LoadingButton> {
             },
       child: _isLoading
           ? CircularProgressIndicator.adaptive()
-          : getBody(textStyle),
+          : widget.bodyOk ?? getBody(textStyle),
     );
   }
 
