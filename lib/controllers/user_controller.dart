@@ -110,7 +110,7 @@ class UserController extends GetxController {
     }
   }
 
-  Future<bool> UpdateUser(User user, XFile? xfile) async {
+  Future<bool> UpdateUser(User user) async {
     try {
       bool result = await UserWebService.updateUser(user);
       if (result && myself.value.id != User.getEmptyUser().id) {

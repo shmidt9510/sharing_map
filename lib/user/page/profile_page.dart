@@ -4,12 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:sharing_map/controllers/item_controller.dart';
 import 'package:sharing_map/controllers/user_controller.dart';
 import 'package:sharing_map/models/contact.dart';
 import 'package:sharing_map/models/user.dart';
 import 'package:sharing_map/path.dart';
-import 'package:sharing_map/screens/items/item_widgets_self_profile.dart';
 import 'package:sharing_map/theme.dart';
 import 'package:sharing_map/user/page/editable_contact_text_field.dart';
 import 'package:sharing_map/user/page/user_actions.dart';
@@ -88,9 +86,23 @@ class _ProfilePageState extends State<ProfilePage> {
                       ]),
                     ),
                     const SizedBox(height: 20),
-                    Text(
-                      _userNameController.text,
-                      style: getBigTextStyle(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          _userNameController.text,
+                          style: getBigTextStyle(),
+                        ),
+                        IconButton(
+                            onPressed: () {
+                              GoRouter.of(context).go(
+                                  SMPath.myItems + "/" + SMPath.profileEditBio);
+                            },
+                            icon: Icon(
+                              Icons.edit,
+                              size: 16,
+                            ))
+                      ],
                     ),
                     const SizedBox(height: 20),
                     Padding(
@@ -100,16 +112,34 @@ class _ProfilePageState extends State<ProfilePage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              'О себе',
-                              style: getBigTextStyle(),
+                            Row(
+                              children: [
+                                Text(
+                                  'О себе',
+                                  style: getBigTextStyle(),
+                                ),
+                                IconButton(
+                                    onPressed: () {
+                                      GoRouter.of(context).go(SMPath.myItems +
+                                          "/" +
+                                          SMPath.profileEditBio);
+                                    },
+                                    icon: Icon(
+                                      Icons.edit,
+                                      size: 16,
+                                    )),
+                              ],
                             ),
                             SizedBox(
                               height: 10,
                             ),
                             _user.value.bio.isEmpty
                                 ? InkWell(
-                                    onTap: () {},
+                                    onTap: () {
+                                      GoRouter.of(context).go(SMPath.myItems +
+                                          "/" +
+                                          SMPath.profileEditBio);
+                                    },
                                     child: Row(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -122,7 +152,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                         ),
                                         Text(
                                           "Расскажите немного о себе",
-                                          style: getHintTextStyle(),
+                                          style: getMediumTextStyle(),
                                         )
                                       ],
                                     ),
@@ -135,9 +165,23 @@ class _ProfilePageState extends State<ProfilePage> {
                             SizedBox(
                               height: 10,
                             ),
-                            Text(
-                              'Контакты',
-                              style: getBigTextStyle(),
+                            Row(
+                              children: [
+                                Text(
+                                  'Контакты',
+                                  style: getBigTextStyle(),
+                                ),
+                                IconButton(
+                                    onPressed: () {
+                                      GoRouter.of(context).go(SMPath.myItems +
+                                          "/" +
+                                          SMPath.profileEditContact);
+                                    },
+                                    icon: Icon(
+                                      Icons.edit,
+                                      size: 16,
+                                    )),
+                              ],
                             ),
                             SizedBox(
                               height: 10,
@@ -146,7 +190,11 @@ class _ProfilePageState extends State<ProfilePage> {
                                 ? GetUserContactWidget(
                                     PrepareContacts(contacts), context)
                                 : InkWell(
-                                    onTap: () {},
+                                    onTap: () {
+                                      GoRouter.of(context).go(SMPath.myItems +
+                                          "/" +
+                                          SMPath.profileEditContact);
+                                    },
                                     child: Row(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -165,32 +213,10 @@ class _ProfilePageState extends State<ProfilePage> {
                                     ),
                                   ),
                             const SizedBox(height: 8),
-                            // _user.value.bio.isNotEmpty
-                            //     ? Text(_user.value.bio)
-                            //     : ,
-                            // EditableTextField(
-                            //     _bioController.text,
-                            //     () => _bioController.text.isNotEmpty
-                            //         ? saveUser(context)
-                            //         : null,
-                            //     _bioController),
                           ],
                         ),
                       ),
                     ),
-                    // buildAbout(_user.value),
-                    // Padding(
-                    //   padding: const EdgeInsets.only(left: 20.0),
-                    // child: ,
-                    // ),
-                    // const SizedBox(height: 24),
-                    // Center(
-                    //     child: Text(
-                    //   "Мои объявления",
-                    //   style: getBigTextStyle(),
-                    // )),
-                    // const SizedBox(height: 24),
-                    // ItemsListViewSelfProfile()
                   ],
                 ),
               ));
@@ -228,7 +254,9 @@ class _ProfilePageState extends State<ProfilePage> {
     }
     List<UserContact> result = [];
     contactsMap.forEach((key, value) {
-      result.add(value);
+      if (value.contact.isNotEmpty) {
+        result.add(value);
+      }
     });
     return result;
   }
@@ -240,10 +268,6 @@ class _ProfilePageState extends State<ProfilePage> {
         scrollDirection: Axis.vertical,
         itemCount: contacts.length,
         itemBuilder: (BuildContext context, int index) {
-          var controller = TextEditingController();
-          if (contacts[index].contact.length > 0) {
-            controller.text = contacts[index].contact;
-          }
           return Row(children: [
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 5.0),
@@ -252,11 +276,13 @@ class _ProfilePageState extends State<ProfilePage> {
                 size: 24,
               ),
             ),
-            Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                child: EditableContactTextField(
-                    contacts[index], _userController,
-                    callback: () => setState(() {})))
+            SizedBox(
+              width: 5,
+            ),
+            Text(
+              contacts[index].contact,
+              style: getMediumTextStyle(),
+            ),
           ]);
         });
   }
@@ -318,7 +344,7 @@ class _ProfilePageState extends State<ProfilePage> {
         username: _userNameController.text,
         bio: _bioController.text);
 
-    if (!await _userController.UpdateUser(newUser, profileImage)) {
+    if (!await _userController.UpdateUser(newUser)) {
       var snackBar = SnackBar(
         content: const Text('Ой :('),
         action: SnackBarAction(

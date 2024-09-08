@@ -115,7 +115,7 @@ class _EditableContactTextFieldState extends State<EditableContactTextField> {
           ),
           IconButton(
             icon: Icon(
-              _isEditing ? Icons.save : Icons.edit,
+              _isEditing ? Icons.check : Icons.edit,
               size: 16.0,
             ),
             onPressed: _toggleEditing,

@@ -80,7 +80,8 @@ Widget getTextField(TextEditingController controller, String label,
     int minLines = 1,
     int maxLines = 1,
     FocusNode? focuseNode,
-    Color? hintColor}) {
+    Color? hintColor,
+    int? maxLength = null}) {
   var _focusNode = focuseNode ?? FocusNode();
   var _capitalization = (keyboardType == TextInputType.emailAddress)
       ? TextCapitalization.none
@@ -116,6 +117,7 @@ Widget getTextField(TextEditingController controller, String label,
         borderRadius: BorderRadius.circular(10),
       ),
     ),
+    maxLength: maxLength,
     validator: validator,
   );
 }

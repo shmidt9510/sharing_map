@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:go_router/go_router.dart';
 import 'package:sharing_map/controllers/common_controller.dart';
-import 'package:sharing_map/path.dart';
 import 'package:sharing_map/screens/items/item_actions.dart';
 import 'package:sharing_map/screens/items/item_detail_page.dart';
 import 'package:sharing_map/models/item.dart';
-import 'package:sharing_map/utils/colors.dart';
-import 'package:sharing_map/utils/shared.dart';
-import 'package:sharing_map/widgets/allWidgets.dart';
 import 'package:sharing_map/widgets/item_block.dart';
 import 'package:sharing_map/controllers/item_controller.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';

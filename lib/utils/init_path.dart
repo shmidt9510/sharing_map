@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:sharing_map/controllers/common_controller.dart';
 import 'package:sharing_map/controllers/user_controller.dart';
 import 'package:sharing_map/path.dart';
 import 'package:sharing_map/utils/shared.dart';
