@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sharing_map/controllers/common_controller.dart';
 import 'package:sharing_map/screens/items/item_actions.dart';
 import 'package:sharing_map/screens/items/item_detail_page.dart';
 import 'package:sharing_map/models/item.dart';
@@ -18,7 +17,6 @@ class ItemsListViewSelfProfile extends StatefulWidget {
 
 class _ItemsListViewSelfProfileState extends State<ItemsListViewSelfProfile> {
   ItemController _itemsController = Get.find<ItemController>();
-  CommonController _commonController = Get.find<CommonController>();
 
   @override
   void initState() {

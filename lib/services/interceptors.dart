@@ -79,8 +79,15 @@ class RefreshTokenDTO {
   Map<String, dynamic> toJson() => {'refreshToken': refreshToken};
 }
 
+class RefreshTokenRetryPolicy extends RetryPolicy {
+  @override
+  int maxRetryAttempts = 3;
+}
+
 class RefreshTokenInterceptor implements InterceptorContract {
   static var client = InterceptedClient.build(
+    requestTimeout: Duration(seconds: 2),
+    retryPolicy: RefreshTokenRetryPolicy(),
     interceptors: [LoggerInterceptor()],
   );
   @override

@@ -91,8 +91,8 @@ class ChooseCitySreenState extends State<ChooseCitySreen> {
                 width: context.width * 0.5,
                 child: LoadingButton("Далее", () async {
                   SharedPrefs().chosenCity = dropdownValue.id;
-                  await _commonController
-                      .getLocations(SharedPrefs().chosenCity);
+                  await _commonController.getLocations(
+                      SharedPrefs().chosenCity, true);
                   String _initPath = await checkInitPath();
                   GoRouter.of(context).go(_initPath);
                 },

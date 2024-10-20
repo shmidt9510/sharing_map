@@ -32,7 +32,7 @@ void main() async {
   if (_initPath != SMPath.noNetwork) {
     await Future.wait([
       _commonController.fetchItems(),
-      _commonController.getLocations(1),
+      _commonController.getLocations(1, false),
     ]);
   }
   if (SharedPrefs().logged) {

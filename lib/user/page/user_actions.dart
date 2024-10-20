@@ -259,8 +259,12 @@ class _UserActionsWidgetState extends State<UserActionsWidget> {
             ),
             actions: [
               LoadingButton("Выбрать", () async {
+                try {
+                  await _commonController.getLocations(dropdownValue.id, true);
+                } catch (e) {
+                  showErrorScaffold(context, "Не получилось");
+                }
                 SharedPrefs().chosenCity = dropdownValue.id;
-                await _commonController.getLocations(SharedPrefs().chosenCity);
                 _itemsController.refershAll();
                 Navigator.of(context).maybePop();
               },

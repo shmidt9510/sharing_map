@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+
 class SMLocation {
   final int id;
   final int cityId;
@@ -43,4 +46,40 @@ class SMLocation {
 
   @override
   String toString() => this.name ?? "";
+}
+
+extension LocationIconString on SMLocation {
+  Widget get getLocationIcon {
+    switch (this.locationType.toLowerCase()) {
+      case "metro":
+        return SvgPicture.asset(
+          'assets/icons/subway_moscow.svg',
+          height: 18,
+          width: 18,
+        );
+      case "metro_spb":
+        return SvgPicture.asset(
+          'assets/icons/spb_metro_logo.svg',
+          height: 18,
+          width: 18,
+        );
+      case "railway":
+        return Icon(
+          Icons.subway,
+          size: 18,
+        );
+      case "neighbourhood":
+        return Icon(Icons.location_city_rounded, size: 18);
+      case "bus_station":
+        return Icon(Icons.directions_bus_filled, size: 18);
+      case "village":
+        return Icon(Icons.holiday_village_outlined, size: 18);
+      default:
+        return SvgPicture.asset(
+          'assets/icons/subway_moscow.svg',
+          height: 18,
+          width: 18,
+        );
+    }
+  }
 }

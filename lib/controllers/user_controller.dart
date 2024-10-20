@@ -44,11 +44,6 @@ class UserController extends GetxController {
     return token.value;
   }
 
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
   Future<bool> CheckAuthorization() async {
     if (SharedPrefs().userId.isEmpty) {
       return false;

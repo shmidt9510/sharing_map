@@ -9,8 +9,15 @@ import 'interceptors.dart';
 import 'package:sharing_map/models/item.dart';
 import 'package:http_interceptor/http_interceptor.dart';
 
+class ItemServiceRetryPolicy extends RetryPolicy {
+  @override
+  int maxRetryAttempts = 2;
+}
+
 class ItemWebService {
   static var client = InterceptedClient.build(
+    requestTimeout: Duration(seconds: 2),
+    retryPolicy: ItemServiceRetryPolicy(),
     interceptors: [
       LoggerInterceptor(),
       RefreshTokenInterceptor(),

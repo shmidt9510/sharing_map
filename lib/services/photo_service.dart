@@ -10,8 +10,15 @@ import 'interceptors.dart';
 import 'package:http_interceptor/http_interceptor.dart';
 import 'package:sharing_map/utils/s3_client.dart';
 
+class PhotoServiceRetryPolicy extends RetryPolicy {
+  @override
+  int maxRetryAttempts = 2;
+}
+
 class PhotoWebService {
   static var client = InterceptedClient.build(
+    requestTimeout: Duration(seconds: 5),
+    retryPolicy: PhotoServiceRetryPolicy(),
     interceptors: [
       LoggerInterceptor(),
       RefreshTokenInterceptor(),

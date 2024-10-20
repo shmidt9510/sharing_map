@@ -18,13 +18,20 @@ class ItemController extends GetxController {
     userPagingController.addPageRequestListener((pageKey) {
       _fetchUserPage(pageKey);
     });
+  }
+
+  Future<bool> onSplashScreen() async {
     final categories = Get.find<CommonController>().categories;
+    if (categories.isEmpty) {
+      return Future.error("");
+    }
     for (int i = 0; i < categories.length; i++) {
       pagingControllers[categories[i].id] = PagingController(firstPageKey: 0);
       pagingControllers[categories[i].id]?.addPageRequestListener((pageKey) {
         _fetchPage(pageKey, categories[i].id);
       });
     }
+    return true;
   }
 
   @override

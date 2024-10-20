@@ -42,8 +42,15 @@ class ResetPasswordStartData {
   ResetPasswordStartData(this.tokenId, this.userId);
 }
 
+class UserServiceRetryPolicy extends RetryPolicy {
+  @override
+  int maxRetryAttempts = 2;
+}
+
 class UserWebService {
   static var client = InterceptedClient.build(
+    requestTimeout: Duration(seconds: 3),
+    retryPolicy: UserServiceRetryPolicy(),
     interceptors: [
       LoggerInterceptor(),
       RefreshTokenInterceptor(),
@@ -74,17 +81,6 @@ class UserWebService {
     } catch (e) {
       return Future.error("");
     }
-  }
-
-  static Future<String> refresh() async {
-    var response = await client.get(Uri.https(Constants.BACK_URL, "/signup"));
-
-    if (response.statusCode == 200) {
-      var jsonData = jsonDecode(response.body);
-
-      return "";
-    }
-    return "";
   }
 
   static Future<String> signup(
@@ -140,17 +136,11 @@ class UserWebService {
   }
 
   static Future<bool> isAuth() async {
-    try {
-      var response =
-          await client.get(Uri.https(Constants.BACK_URL, "/is_auth"));
-      if (response.statusCode == 200) {
-        return true;
-      } else {
-        return false;
-      }
-    } catch (e) {
-      return false;
+    var response = await client.get(Uri.https(Constants.BACK_URL, "/is_auth"));
+    if (response.statusCode == 200) {
+      return true;
     }
+    return false;
   }
 
   static Future<bool> updateUser(User user) async {

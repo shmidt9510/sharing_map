@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:sharing_map/controllers/common_controller.dart';
 import 'package:sharing_map/controllers/size_controller.dart';
 import 'package:sharing_map/models/item.dart';
+import 'package:sharing_map/models/location.dart';
 import 'package:sharing_map/theme.dart';
 import 'package:sharing_map/utils/colors.dart';
 import 'package:sharing_map/widgets/image.dart';
@@ -17,13 +17,13 @@ class TextDescriptionBlock extends StatelessWidget {
   Widget build(BuildContext context) {
     initializeDateFormatting();
     var _commonController = Get.find<CommonController>();
-    String _location = "";
+    SMLocation? _location = null;
     int _locationCount = 0;
     if (_item.locationIds != null &&
         _item.locationIds!.length > 0 &&
         _commonController.locationsMap.containsKey(_item.locationIds![0])) {
       _locationCount = _item.locationIds!.length;
-      _location = _commonController.locationsMap[_item.locationIds![0]]!.name;
+      _location = _commonController.locationsMap[_item.locationIds![0]]!;
     }
     _locationCount -= 1;
     String itemName = _item.name;
@@ -53,18 +53,13 @@ class TextDescriptionBlock extends StatelessWidget {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Center(
-                      child: SvgPicture.asset(
-                    'assets/icons/subway_moscow.svg',
-                    height: 18,
-                    width: 18,
-                  )),
+                  Center(child: _location?.getLocationIcon ?? Container()),
                   Flexible(
                     child: Text(
                       textAlign: TextAlign.right,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      _location,
+                      _location?.name ?? "",
                       style: getHintTextStyle(),
                     ),
                   ),

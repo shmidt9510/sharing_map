@@ -10,6 +10,7 @@ import 'package:sharing_map/path.dart';
 import 'package:sharing_map/theme.dart';
 import 'package:sharing_map/utils/colors.dart';
 import 'package:sharing_map/utils/shared.dart';
+import 'package:sharing_map/widgets/allWidgets.dart';
 import 'package:sharing_map/widgets/loading_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -172,8 +173,12 @@ class _TopIconsState extends State<TopIcons> {
             ),
             actions: [
               LoadingButton("Выбрать", () async {
+                try {
+                  await _commonController.getLocations(dropdownValue.id, true);
+                } catch (e) {
+                  showErrorScaffold(context, "Не получилось");
+                }
                 SharedPrefs().chosenCity = dropdownValue.id;
-                await _commonController.getLocations(SharedPrefs().chosenCity);
                 _itemsController.refershAll();
                 Navigator.of(context).maybePop();
               },
@@ -193,28 +198,28 @@ class _TopIconsState extends State<TopIcons> {
         builder: (BuildContext context) {
           return Dialog(
             child: SizedBox(
-              height: 240,
+              height: 330,
               child: Padding(
                 padding: const EdgeInsets.all(24.0),
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text.rich(
-                      TextSpan(
-                        style: getMediumTextStyle(),
-                        children: <TextSpan>[
-                          TextSpan(
-                            text:
-                                'Если вы хотите связаться с командой приложения, напишите нам. Будем рады обратной связи!',
-                          ),
-                        ],
-                      ),
+                    Text(
+                      'Если вы хотите связаться с командой приложения, напишите нам. Будем рады обратной связи!',
+                      style: getMediumTextStyle(),
+                      textAlign: TextAlign.start,
+                      maxLines: 4,
                     ),
                     SizedBox(
                       height: 10,
                     ),
                     InkWell(
                       onTap: () async {
-                        await canLaunchUrl(Uri.parse("https://t.me/wwwuzik"));
+                        if (await canLaunchUrl(
+                            Uri.parse("https://t.me/wuzik"))) {
+                          await launchUrl(Uri.parse("https://t.me/wuzik"));
+                        }
                       },
                       child: Row(
                         children: [
@@ -222,7 +227,7 @@ class _TopIconsState extends State<TopIcons> {
                           SizedBox(
                             width: 5,
                           ),
-                          Text("telegram")
+                          Text("@wuzik", style: getMediumTextStyle())
                         ],
                       ),
                     ),
@@ -235,9 +240,45 @@ class _TopIconsState extends State<TopIcons> {
                         SizedBox(
                           width: 5,
                         ),
-                        SelectableText("info@sharingmap.ru")
+                        SelectableText(
+                          "info@sharingmap.ru",
+                          style: getMediumTextStyle(),
+                        )
                       ],
-                    )
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Divider(),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text('Ещё у нас есть канал',
+                        // textAlign: TextAlign.start,
+                        style: getMediumTextStyle()),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    InkWell(
+                      onTap: () async {
+                        if (await canLaunchUrl(
+                            Uri.parse("https://t.me/sharingmap"))) {
+                          await launchUrl(Uri.parse("https://t.me/sharingmap"));
+                        }
+                      },
+                      child: Row(
+                        children: [
+                          Icon(Icons.telegram),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Text(
+                            "@sharingmap",
+                            style: getMediumTextStyle(),
+                          )
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),

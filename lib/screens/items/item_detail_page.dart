@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -194,11 +193,8 @@ Widget GetLocationsWidget(
           child: Row(
             children: [
               Center(
-                  child: SvgPicture.asset(
-                'assets/icons/subway_moscow.svg',
-                height: 18,
-                width: 18,
-              )),
+                child: locations[index].getLocationIcon,
+              ),
               Center(
                 child: Text(
                   textAlign: TextAlign.center,

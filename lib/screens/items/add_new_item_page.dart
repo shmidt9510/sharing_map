@@ -195,7 +195,6 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
                                     setState(() {});
                                   }),
                         ),
-                        Spacer()
                       ],
                     ),
                   )
@@ -258,6 +257,22 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
             }
             return null;
           }, maxLines: 5, minLines: 3),
+          Spacer(),
+          Padding(
+            padding: const EdgeInsets.only(left: 16, right: 16),
+            child: Center(
+                child: Flexible(
+              fit: FlexFit.loose,
+              child: Text(
+                'Пожалуйста, делитесь вещами и едой через наше приложение бесплатно 🙂',
+                overflow: TextOverflow.ellipsis,
+                maxLines: 4,
+                textAlign: TextAlign.center,
+                style: getBigTextStyle(),
+              ),
+            )),
+          ),
+          Spacer(),
         ],
       ),
     );

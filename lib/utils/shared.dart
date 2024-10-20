@@ -83,6 +83,11 @@ class SharedPrefs {
   set configInit(bool value) {
     _sharedPrefs.setBool(keyConfigInit, value);
   }
+
+  String get initPath => _sharedPrefs.getString(keyInitPath) ?? "";
+  set initPath(String value) {
+    _sharedPrefs.setString(keyInitPath, value);
+  }
 }
 
 final sharedPrefs = SharedPrefs();
@@ -96,3 +101,4 @@ const String keyConfirmationToken = "confirmation_token";
 const String keyResetPasswordToken = "reset_password_token";
 const String keyChosenCity = "chosen_city";
 const String keyConfigInit = "config_init";
+const String keyInitPath = "init_path";

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sharing_map/theme.dart';
@@ -17,6 +16,10 @@ class SizeController extends GetxController {
   Orientation get orientation => _orientation;
 
   SizeController() {
+    init();
+  }
+
+  void init() {
     final view = WidgetsBinding.instance.platformDispatcher.views.first;
     Size size = view.physicalSize / view.devicePixelRatio;
     // Size size = WidgetsBinding.instance.window.physicalSize;
@@ -28,22 +31,37 @@ class SizeController extends GetxController {
   }
 
   double GetHeightOfBangs() {
+    if (_fullHeight < 10 || _fullWidth < 10) {
+      init();
+    }
     return _dpi > 2.5 ? 0.19 * _fullHeight : 0.22 * _fullHeight;
   }
 
   double GetHeightOfItems() {
+    if (_fullHeight < 10 || _fullWidth < 10) {
+      init();
+    }
     return _dpi > 2.5 ? _fullHeight / 6 : _fullHeight / 5;
   }
 
   double GetHeightOfCategories() {
+    if (_fullHeight < 10 || _fullWidth < 10) {
+      init();
+    }
     return GetHeightOfBangs() * 0.6;
   }
 
   double GetHeightOfBangIcons() {
+    if (_fullHeight < 10 || _fullWidth < 10) {
+      init();
+    }
     return GetHeightOfBangs() * 0.4;
   }
 
   TextStyle GetCategoryFont() {
+    if (_fullHeight < 10 || _fullWidth < 10) {
+      init();
+    }
     return _dpi > 2.5
         ? getBigTextStyle()
             .copyWith(fontWeight: FontWeight.bold)

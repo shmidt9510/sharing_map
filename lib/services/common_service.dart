@@ -10,8 +10,15 @@ import 'package:sharing_map/models/subcategory.dart';
 import 'package:sharing_map/models/city.dart';
 import 'package:http_interceptor/http_interceptor.dart';
 
+class CommonServiceRetryPolicy extends RetryPolicy {
+  @override
+  int maxRetryAttempts = 2;
+}
+
 class CommonWebService {
   static var client = InterceptedClient.build(
+    requestTimeout: Duration(seconds: 2),
+    retryPolicy: CommonServiceRetryPolicy(),
     interceptors: [
       RefreshTokenInterceptor(),
       AuthorizationInterceptor(),
@@ -63,6 +70,7 @@ class CommonWebService {
         .get(Uri.https(Constants.BACK_URL, "/locations/$cityId/all"));
 
     if (response.statusCode == 200) {
+      debugPrint("here");
       var jsonData = jsonDecode(utf8.decode(response.bodyBytes));
       return (jsonData as List).map((e) => SMLocation.fromJson(e)).toList();
     } else {
@@ -71,12 +79,7 @@ class CommonWebService {
   }
 
   static Future<bool> checkInternetConnectivity() async {
-    try {
-      var response = await client.get(Uri.https(Constants.BACK_URL, "/ping"));
-      return response.statusCode == 200;
-    } catch (e) {
-      debugPrint(e.toString());
-      return false;
-    }
+    var response = await client.get(Uri.https(Constants.BACK_URL, "/ping"));
+    return response.statusCode == 200;
   }
 }

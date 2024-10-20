@@ -9,7 +9,6 @@ import 'package:sharing_map/models/contact.dart';
 import 'package:sharing_map/models/user.dart';
 import 'package:sharing_map/path.dart';
 import 'package:sharing_map/theme.dart';
-import 'package:sharing_map/user/page/editable_contact_text_field.dart';
 import 'package:sharing_map/user/page/user_actions.dart';
 import 'package:sharing_map/utils/chose_image_source.dart';
 import 'package:sharing_map/utils/colors.dart';
@@ -47,7 +46,7 @@ class _ProfilePageState extends State<ProfilePage> {
         appBar: AppBar(
           leading: BackButton(
             color: MColors.secondaryGreen,
-            onPressed: () => GoRouter.of(context).go(SMPath.home),
+            onPressed: () => context.pop(),
           ),
           backgroundColor: Colors.transparent,
           elevation: 0,

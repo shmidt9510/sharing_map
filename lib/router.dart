@@ -23,6 +23,7 @@ import 'package:sharing_map/user/page/edit_profile_contact_page.dart';
 import 'package:sharing_map/user/page/profile_page.dart';
 import 'package:sharing_map/user/page/user_profile_page.dart';
 import 'package:sharing_map/screens/getstarted/choose_city.dart';
+import 'package:sharing_map/widgets/splash_screen.dart';
 
 class RouterStart extends StatefulWidget {
   RouterStart({super.key, required this.initLocation});
@@ -64,7 +65,7 @@ class _RouterStartState extends State<RouterStart> {
                   GoRoute(
                       path: "/",
                       builder: (BuildContext context, GoRouterState state) =>
-                          ItemListPage()),
+                          SplashScreen()),
                   GoRoute(
                       path: SMPath.chooseCity,
                       builder: (BuildContext context, GoRouterState state) =>

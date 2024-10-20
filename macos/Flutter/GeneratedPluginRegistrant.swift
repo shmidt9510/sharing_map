@@ -10,7 +10,7 @@ import flutter_image_compress_macos
 import flutter_secure_storage_macos
 import path_provider_foundation
 import shared_preferences_foundation
-import sqflite
+import sqflite_darwin
 import url_launcher_macos
 
 func RegisterGeneratedPlugins(registry: FlutterPluginRegistry) {

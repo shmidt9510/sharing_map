@@ -13,52 +13,47 @@ class CommonController extends GetxController {
   var locations = <SMLocation>[].obs;
   Map<int, SMLocation> locationsMap = {};
 
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
   Future<void> fetchItems() async {
-    try {
-      final (categoriesTemp, subcategoriesTemp, citiesTemp) = await (
-        CommonWebService.fetchCategories(),
-        CommonWebService.fetchSubcategories(),
-        CommonWebService.fetchCities()
-      ).wait;
-      if (categoriesTemp != null) {
-        categories(categoriesTemp);
-      }
-      if (subcategoriesTemp != null) {
-        subcategories(subcategoriesTemp);
-      }
-      if (citiesTemp != null) {
-        cities(citiesTemp);
-      }
-    } catch (e) {
-      return Future.error("fetch_common_objects_go_wrong: " + e.toString());
+    if (categories.isNotEmpty &&
+        subcategories.isNotEmpty &&
+        cities.isNotEmpty) {
+      return;
+    }
+    final (categoriesTemp, subcategoriesTemp, citiesTemp) = await (
+      CommonWebService.fetchCategories(),
+      CommonWebService.fetchSubcategories(),
+      CommonWebService.fetchCities()
+    ).wait;
+    if (categoriesTemp != null) {
+      categories(categoriesTemp);
+    }
+    if (subcategoriesTemp != null) {
+      subcategories(subcategoriesTemp);
+    }
+    if (citiesTemp != null) {
+      cities(citiesTemp);
     }
   }
 
-  void onRefresh() async {
-    fetchItems();
-  }
-
-  Future<void> getLocations(int cityId) async {
-    try {
-      var locationsTemp = await CommonWebService.fetchLocations(cityId);
-      if (locationsTemp != null) {
-        locationsTemp.forEach((element) {
-          locationsMap[element.id] = element;
-        });
-        locations(locationsTemp);
-      }
-    } catch (e) {
-      return Future.error("error_getting_locations");
+  Future<void> getLocations(int cityId, bool cityChanged) async {
+    if (locations.isNotEmpty && !cityChanged) {
+      return;
+    }
+    var locationsTemp = await CommonWebService.fetchLocations(cityId);
+    if (locationsTemp != null) {
+      locationsTemp.forEach((element) {
+        locationsMap[element.id] = element;
+      });
+      locations(locationsTemp);
     }
   }
 
   Future<bool> checkInternet() async {
-    return await CommonWebService.checkInternetConnectivity();
+    try {
+      return await CommonWebService.checkInternetConnectivity();
+    } catch (e) {
+      return false;
+    }
   }
 
   var categoriesAssetsName = {
