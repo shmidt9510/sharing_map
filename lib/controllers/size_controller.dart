@@ -62,10 +62,8 @@ class SizeController extends GetxController {
     if (_fullHeight < 10 || _fullWidth < 10) {
       init();
     }
-    return _dpi > 2.5
-        ? getBigTextStyle()
-            .copyWith(fontWeight: FontWeight.bold)
-            .copyWith(fontSize: 14)
-        : getBigTextStyle().copyWith(fontWeight: FontWeight.bold);
+    return getBigTextStyle()
+        .copyWith(fontWeight: FontWeight.bold)
+        .copyWith(fontSize: 14);
   }
 }

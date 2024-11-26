@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:sharing_map/controllers/common_controller.dart';
 import 'package:sharing_map/controllers/item_controller.dart';
 import 'package:sharing_map/controllers/user_controller.dart';
+import 'package:sharing_map/services/common_service.dart';
 import 'package:sharing_map/theme.dart';
 // import 'package:sharing_map/screens/register_screens/registration_screen.dart';
 import 'package:sharing_map/utils/colors.dart';
@@ -50,7 +51,12 @@ class _NoInternetScreenState extends State<NoInternetScreen> {
                 if (await _commonController.checkInternet()) {
                   GoRouter.of(context).go("/");
                 } else {
-                  showErrorScaffold(context, "Нет интернета 😨");
+                  try {
+                    await CommonWebService.checkInternetConnectivity();
+                  } catch (e) {
+                    showErrorScaffold(context,
+                        "Нет интернета или наш сервер не отчвечает 😨 ");
+                  }
                 }
               }, color: MColors.darkGreen, height: 50),
             ],

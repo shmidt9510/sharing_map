@@ -64,12 +64,8 @@ class _ProfilePageState extends State<ProfilePage> {
                         ClipOval(
                             child: SizedBox.fromSize(
                                 size: Size.fromRadius(90),
-                                child: profileImage == null
-                                    ? _user.value.buildImage(fit: BoxFit.cover)
-                                    : Image.file(
-                                        File(profileImage!.path),
-                                        fit: BoxFit.cover,
-                                      ))),
+                                child:
+                                    _userController.userProfilePicture.value)),
                         Positioned(
                           top: 130,
                           right: -5,

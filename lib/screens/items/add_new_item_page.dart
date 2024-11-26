@@ -41,6 +41,7 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   PageController _pageController = PageController();
   int _selectedIndex = 0;
+  bool _isLoading = false;
 
   void selectImages() async {
     var source = await chooseImageSource(context, "Выберите изображения");
@@ -101,8 +102,6 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
 
   @override
   Widget build(BuildContext context) {
-    bool _isLoading = false;
-
     return Scaffold(
         appBar: AppBar(title: Text("Создать объявление")),
         bottomNavigationBar: Padding(
@@ -110,92 +109,115 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
             child: SharedPrefs().logged
                 ? Padding(
                     padding: const EdgeInsets.only(bottom: 20.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Spacer(),
-                        _selectedIndex > 0
-                            ? Container(
-                                decoration: BoxDecoration(
-                                  color: MColors
-                                      .green, // Background color of the button
-                                  shape: BoxShape.circle, // Circular shape
-                                ),
-                                height: 50,
-                                width: 50,
-                                child: IconButton(
-                                  icon: Icon(
-                                    Icons.arrow_back,
-                                    color: MColors.white,
-                                    weight: 1200,
-                                  ),
-                                  onPressed: () {
-                                    if (_selectedIndex > 0) {
-                                      _pageController.previousPage(
-                                        duration: Duration(milliseconds: 300),
-                                        curve: Curves.ease,
-                                      );
-                                    }
-                                    setState(() {});
-                                  },
-                                ))
-                            : Spacer(),
-                        Spacer(flex: 5),
-                        Container(
-                          height: 50,
-                          width: 50,
-                          decoration: BoxDecoration(
-                            color:
-                                MColors.green, // Background color of the button
-                            shape: BoxShape.circle, // Circular shape
+                    child: Container(
+                      height: context.height * 0.1,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Spacer(
+                            flex: 1,
                           ),
-                          child: _pageController.hasClients &&
-                                  (_pageController.page ?? 0) == 3
-                              ? IconButton(
-                                  onPressed: _isLoading
-                                      ? null
-                                      : () async {
-                                          setState(() {
-                                            _isLoading = true;
-                                          });
-                                          try {
-                                            if (_formKey.currentState!
-                                                .validate()) {
-                                              await checkItem();
+                          Flexible(
+                            flex: 1,
+                            child: _selectedIndex > 0
+                                ? Container(
+                                    decoration: BoxDecoration(
+                                      color: MColors
+                                          .green, // Background color of the button
+                                      shape: BoxShape.circle, // Circular shape
+                                    ),
+                                    height: 50,
+                                    width: 50,
+                                    child: IconButton(
+                                      icon: Icon(
+                                        Icons.arrow_back,
+                                        color: MColors.white,
+                                        weight: 1200,
+                                      ),
+                                      onPressed: () {
+                                        if (_selectedIndex > 0) {
+                                          _pageController.previousPage(
+                                            duration:
+                                                Duration(milliseconds: 300),
+                                            curve: Curves.ease,
+                                          );
+                                        }
+                                        setState(() {});
+                                      },
+                                    ))
+                                : Container(),
+                          ),
+                          Spacer(flex: 5),
+                          Flexible(
+                            flex: 1,
+                            child: Container(
+                              height: 50,
+                              width: 50,
+                              decoration: BoxDecoration(
+                                color: MColors
+                                    .green, // Background color of the button
+                                shape: BoxShape.circle, // Circular shape
+                              ),
+                              child: _pageController.hasClients &&
+                                      (_pageController.page ?? 0) == 3
+                                  ? IconButton(
+                                      onPressed: _isLoading
+                                          ? null
+                                          : () async {
+                                              setState(() {
+                                                _isLoading = true;
+                                              });
+                                              try {
+                                                if (_formKey.currentState!
+                                                    .validate()) {
+                                                  if (!await checkItem()) {
+                                                    setState(() {
+                                                      _isLoading = false;
+                                                    });
+                                                  }
+                                                }
+                                              } catch (e) {
+                                                debugPrint(
+                                                    "catch " + e.toString());
+                                              }
+                                              setState(() {
+                                                _isLoading = false;
+                                              });
+                                              await Future.delayed(
+                                                  Duration(microseconds: 100));
                                               _pageController.jumpToPage(0);
-                                            }
-                                          } catch (e) {
-                                            debugPrint("catch " + e.toString());
-                                          }
-                                          setState(() {
-                                            _isLoading = false;
-                                          });
-                                        },
-                                  icon: _isLoading
-                                      ? CircularProgressIndicator.adaptive()
-                                      : Icon(
-                                          Icons.check_rounded,
-                                          color: MColors.white,
-                                          weight: 1200,
-                                        ))
-                              : IconButton(
-                                  icon: Icon(
-                                    Icons.arrow_forward_rounded,
-                                    color: MColors.white,
-                                    weight: 1200,
-                                  ),
-                                  onPressed: () {
-                                    if (_formKey.currentState!.validate()) {
-                                      _formKey.currentState!.save();
-                                      _pageController.nextPage(
-                                        duration: Duration(milliseconds: 300),
-                                        curve: Curves.ease,
-                                      );
-                                    }
-                                    setState(() {});
-                                  }),
-                        ),
-                      ],
+                                            },
+                                      icon: _isLoading
+                                          ? CircularProgressIndicator.adaptive()
+                                          : Icon(
+                                              Icons.check_rounded,
+                                              color: MColors.white,
+                                              weight: 1200,
+                                            ))
+                                  : IconButton(
+                                      icon: Icon(
+                                        Icons.arrow_forward_rounded,
+                                        color: MColors.white,
+                                        weight: 1200,
+                                      ),
+                                      onPressed: () {
+                                        if (_formKey.currentState!.validate()) {
+                                          _formKey.currentState!.save();
+                                          _pageController.nextPage(
+                                            duration:
+                                                Duration(milliseconds: 300),
+                                            curve: Curves.ease,
+                                          );
+                                        }
+                                        setState(() {});
+                                      }),
+                            ),
+                          ),
+                          Spacer(
+                            flex: 1,
+                          ),
+                        ],
+                      ),
                     ),
                   )
                 : SizedBox(
@@ -220,8 +242,8 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
                           children: <Widget>[
                             _getNameAndDescription(),
                             _getCategoryWidget(),
-                            _getImageChoiceWidget(),
                             _getSubwayWidget(),
+                            _getImageChoiceWidget(),
                           ],
                         ),
                       ),
@@ -258,21 +280,22 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
             return null;
           }, maxLines: 5, minLines: 3),
           Spacer(),
-          Padding(
-            padding: const EdgeInsets.only(left: 16, right: 16),
-            child: Center(
-                child: Flexible(
-              fit: FlexFit.loose,
-              child: Text(
+          Flexible(
+            flex: 4,
+            fit: FlexFit.loose,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 16, right: 16),
+              child: Center(
+                  child: Text(
                 'Пожалуйста, делитесь вещами и едой через наше приложение бесплатно 🙂',
                 overflow: TextOverflow.ellipsis,
                 maxLines: 4,
                 textAlign: TextAlign.center,
                 style: getBigTextStyle(),
-              ),
-            )),
+              )),
+            ),
           ),
-          Spacer(),
+          // Spacer(),
         ],
       ),
     );
@@ -301,39 +324,67 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
                 child: Container(
                   height: ((imageFileList!.length) ~/ 4 +
                           (imageFileList!.isEmpty ? 0 : 1)) *
-                      (context.width / 3 - 20),
+                      (context.width / 3 - 20) *
+                      1.05,
                   child: imageFileList!.length > 0
                       ? GridView.builder(
-                          shrinkWrap: false,
+                          // shrinkWrap: false,
                           physics: ScrollPhysics(),
                           itemCount: imageFileList!.length,
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisSpacing: 10,
+                                  mainAxisSpacing: 10,
                                   crossAxisCount: 3),
                           itemBuilder: (BuildContext context, int index) {
-                            return SizedBox(
+                            double borderWidth = 3;
+                            double borderRadius = 20;
+                            return Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: MColors.transparent,
+                                  width: borderWidth,
+                                ),
+                                borderRadius:
+                                    BorderRadius.circular(borderRadius),
+                              ),
                               width: (context.width / 3 - 20),
                               child: Stack(fit: StackFit.expand, children: [
                                 Container(
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(20))),
-                                  child: Image.file(
-                                      File(imageFileList![index].path),
-                                      fit: BoxFit.cover),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(
+                                          borderRadius - borderWidth),
+                                    ),
+                                    child: Image.file(
+                                        File(imageFileList![index].path),
+                                        fit: BoxFit.fill),
+                                  ),
                                 ),
                                 Positioned(
-                                  top: 3,
-                                  right: 3,
+                                  top: 0,
+                                  right: 0,
                                   child: InkWell(
                                     onTap: () {
                                       setState(() {
                                         imageFileList!.removeAt(index);
                                       });
                                     },
-                                    child: Icon(
-                                      Icons.delete,
-                                      color: MColors.red1,
+                                    child: Container(
+                                      height: 20,
+                                      width: 20,
+                                      decoration: BoxDecoration(
+                                        color: MColors.black,
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: Icon(
+                                        size: 14,
+                                        Icons.delete,
+                                        color: MColors.grey2,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -445,7 +496,7 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
         SizedBox(
           height: 10,
         ),
-        Text("Выберите станции метро"),
+        Text("Где вам удобно отдать"),
         SizedBox(
           height: 10,
         ),
@@ -456,14 +507,14 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
             autoValidateMode: AutovalidateMode.disabled,
             validator: (value) {
               if (value == null) {
-                return "Пожалуйста, выберите станцию метро";
+                return "Пожалуйста, выберите локации";
               }
               var chosen = value;
               if (chosen.isEmpty) {
-                return "Пожалуйста, выберите станцию метро";
+                return "Пожалуйста, выберите локации";
               }
               if (chosen.length > 3) {
-                return "Пожалуйста, выберите не больше трёх станций метро";
+                return "Пожалуйста, выберите не больше трёх локаций";
               }
               return null;
             },
@@ -472,11 +523,34 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
                 _chosenLocations = data ?? [];
               });
             },
+            popupProps: PopupPropsMultiSelection.bottomSheet(
+              showSearchBox: true,
+              bottomSheetProps: BottomSheetProps(
+                  backgroundColor: MColors.white,
+                  constraints: BoxConstraints(maxWidth: context.width * 0.9)),
+              searchDelay: Duration(milliseconds: 10),
+              itemBuilder: (context, item, isSelected) => Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  width: context.width * 0.7,
+                  height: context.height * 0.05,
+                  child: Row(
+                    children: [
+                      Text(item.name),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      item.getLocationIcon
+                    ],
+                  ),
+                ),
+              ),
+            ),
             dropdownDecoratorProps: DropDownDecoratorProps(
               baseStyle: getMediumTextStyle(),
               dropdownSearchDecoration: InputDecoration(
                 labelText: _chosenLocations.length == 0
-                    ? "Выберите до трёх станций метро"
+                    ? "Выберите до трёх локаций"
                     : "",
                 hintStyle: getMediumTextStyle(),
                 labelStyle: getMediumTextStyle(),
@@ -491,37 +565,34 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
               ),
             ),
             items: _commonController.locations,
-            popupProps: PopupPropsMultiSelection.menu(
-              showSearchBox: true,
-            ),
           ),
         )
       ],
     );
   }
 
-  Future<void> checkItem() async {
+  Future<bool> checkItem() async {
     if (!(_formKey.currentState?.validate() ?? false)) {
       showErrorScaffold(context, "Не получилось :(");
-      return;
+      return false;
     }
     if (imageFileList?.isEmpty ?? false) {
       showErrorScaffold(context, "Добавьте, пожалуйста фото");
-      return;
+      return false;
     }
     if ((imageFileList?.length ?? 0) > 5) {
       showErrorScaffold(context, "Очень много фотографий");
-      return;
+      return false;
     }
     if (_userController.myContacts.isEmpty) {
       showErrorScaffold(
           context, "Пожалуйста, укажите хотя бы один контакт в профиле");
-      return;
+      return false;
     }
     if (SharedPrefs().chosenCity == -1) {
       showErrorScaffold(context,
           "Не получилось. Кажется нужно обновить приложение или написать нам");
-      return;
+      return false;
     }
     var item = Item("SOME_ID", titleController.text, descriptionController.text,
         SharedPrefs().chosenCity, SharedPrefs().userId,
@@ -529,13 +600,16 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
         categoryIds: _chosenCategories.map((e) => e.id).toList(),
         subcategoryId: 1,
         downloadableImages: imageFileList);
-
-    if (!await _itemsController.addItem(item)) {
+    var addResult = await _itemsController.addItem(item);
+    if (!addResult) {
       showErrorScaffold(context, "Не получилось :(");
-    } else {
-      GoRouter.of(context).go(SMPath.home);
-      clearData();
+      return false;
+    }
+    clearData();
+    if (mounted) {
       setState(() {});
     }
+    GoRouter.of(context).go(SMPath.home);
+    return true;
   }
 }

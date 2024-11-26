@@ -92,7 +92,7 @@ class TextDescriptionBlock extends StatelessWidget {
               alignment: Alignment.centerLeft,
               child: Text(
                 DateFormat('d MMMM', 'ru')
-                    .format(_item.creationDate ?? DateTime.now()),
+                    .format(_item.updateDate ?? DateTime.now()),
                 style: getHintTextStyle(),
                 overflow: TextOverflow.ellipsis,
                 maxLines: 1,

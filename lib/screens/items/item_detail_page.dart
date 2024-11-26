@@ -109,7 +109,7 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
                     padding: EdgeInsets.symmetric(horizontal: 23),
                     child: Text(
                       DateFormat('dd.MM.yyyy')
-                          .format(item.creationDate ?? DateTime.now()),
+                          .format(item.updateDate ?? DateTime.now()),
                       style: getHintTextStyle(),
                     ),
                   )

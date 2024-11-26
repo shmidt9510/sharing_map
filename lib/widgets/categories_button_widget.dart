@@ -42,8 +42,8 @@ class CategoriesButtonWidgetState extends State<CategoriesButtonWidget> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-              width: size * 0.7 * 0.8,
-              height: size * 0.7 * 0.8,
+              width: size * 0.78,
+              height: size * 0.75,
               decoration: BoxDecoration(
                   color: isChosen ? MColors.lightGreen : MColors.inputField,
                   shape: BoxShape.circle,
@@ -67,13 +67,14 @@ class CategoriesButtonWidgetState extends State<CategoriesButtonWidget> {
               )),
           SizedBox(
             width: size * 0.7 * 0.8,
-            height: 10,
+            height: size * .03,
           ),
           Container(
-            width: size * 0.7 * 0.8,
-            height: 10 * 2,
+            width: size * 0.8,
+            height: size * .23,
             child: Text(
-              maxLines: 2,
+              overflow: TextOverflow.visible,
+              maxLines: 1,
               style: _sizeController.GetCategoryFont(),
               category.description,
               textAlign: TextAlign.center,

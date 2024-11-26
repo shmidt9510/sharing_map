@@ -57,12 +57,15 @@ class _UserProfilePageState extends State<UserProfilePage> {
                                             fit: BoxFit.cover)))),
                             Flexible(
                               flex: 2,
-                              child: Center(
-                                child: Column(
-                                  children: [
-                                    buildName(_user),
-                                    // NumbersWidget(_user!),
-                                  ],
+                              child: Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Center(
+                                  child: Column(
+                                    children: [
+                                      buildName(_user),
+                                      // NumbersWidget(_user!),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),

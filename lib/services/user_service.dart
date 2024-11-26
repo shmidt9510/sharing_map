@@ -176,6 +176,11 @@ class UserWebService {
       "accept": "application/json",
     });
 
+    if (response.statusCode == 404) {
+      SharedPrefs().clear();
+      SharedPrefs().isFirstRun = false;
+      return Future.error("no_user_found");
+    }
     if (response.statusCode != HttpStatus.ok) {
       Future.error("error code " + response.statusCode.toString());
       return Future.error("failed_getting_user");

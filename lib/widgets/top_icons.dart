@@ -26,6 +26,47 @@ class _TopIconsState extends State<TopIcons> {
 
   late City dropdownValue;
 
+  Widget BuildButton(Widget icon, VoidCallback? onPressed) {
+    // return IconButton(
+    //   style: IconButton.styleFrom(
+    //     shape: CircleBorder(),
+    //     side: BorderSide(width: 2, color: MColors.darkGreen),
+    //     padding: EdgeInsets.all(0), // Remove default padding
+    //   ),
+    //   padding: EdgeInsets.all(0),
+    //   icon: Icon(
+    //     size: 14,
+    //     icon,
+    //     color: MColors.darkGreen,
+    //   ),
+    //   onPressed: onPressed,
+    // );
+    return Padding(
+      padding: EdgeInsets.only(left: 3, right: 3),
+      child: OutlinedButton(
+        onPressed: onPressed,
+
+        // () {
+        //   GoRouter.of(context).go(SMPath.myItems + "/" + SMPath.profile);
+        // },
+        style: OutlinedButton.styleFrom(
+          shape: CircleBorder(),
+          side: BorderSide(width: 2, color: MColors.darkGreen),
+          padding: EdgeInsets.all(0),
+        ),
+        child: ClipOval(
+          child: Container(
+              width: 25, // Width of the circular button
+              height: 25, // Height of the circular button
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+              ),
+              child: icon),
+        ),
+      ),
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -45,69 +86,33 @@ class _TopIconsState extends State<TopIcons> {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Spacer(flex: 14),
+        Spacer(flex: 16),
         Expanded(
             flex: 2,
-            child: IconButton(
-              style: IconButton.styleFrom(
-                shape: CircleBorder(),
-                side: BorderSide(width: 2, color: MColors.darkGreen),
-                padding: EdgeInsets.all(0), // Remove default padding
-              ),
-              padding: EdgeInsets.all(0),
-              icon: Icon(
-                size: 14,
-                FontAwesomeIcons.info,
-                color: MColors.darkGreen,
-              ),
-              onPressed: () async {
-                await _showInfoMessage(context);
-              },
-            )),
+            child: BuildButton(
+                Icon(
+                  FontAwesomeIcons.info,
+                  color: MColors.darkGreen,
+                  size: 14,
+                ), () async {
+              await _showInfoMessage(context);
+            })),
         Expanded(
             flex: 2,
-            child: IconButton(
-              style: IconButton.styleFrom(
-                shape: CircleBorder(),
-                side: BorderSide(width: 2, color: MColors.darkGreen),
-                padding: EdgeInsets.all(0), // Remove default padding
-              ),
-              padding: EdgeInsets.all(0),
-              icon: Icon(
-                Icons.location_on_rounded,
-                color: MColors.darkGreen,
-                size: 18,
-              ),
-              onPressed: () async {
-                await _chooseCityDialog(context);
-              },
-            )),
+            child: BuildButton(
+                Icon(
+                  Icons.location_on_rounded,
+                  color: MColors.darkGreen,
+                  size: 14,
+                ), () async {
+              await _chooseCityDialog(context);
+            })),
         Expanded(
           flex: 2,
-          child: OutlinedButton(
-            onPressed: () {
-              GoRouter.of(context).go(SMPath.myItems + "/" + SMPath.profile);
-            },
-            style: OutlinedButton.styleFrom(
-              shape: CircleBorder(),
-              side: BorderSide(width: 2, color: MColors.darkGreen),
-              padding: EdgeInsets.all(0), // Remove default padding
-            ),
-            child: ClipOval(
-              child: Container(
-                  width: 25, // Width of the circular button
-                  height: 25, // Height of the circular button
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                  ),
-                  child: _userController.userProfilePicture.value
-                  // Image.asset(
-                  //   imagePath,
-                  //   fit: BoxFit.cover, // Ensure the image fits the circle
-                  // ),
-                  ),
-            ),
-          ),
+          child: BuildButton(
+              Obx(() => (_userController.userProfilePicture.value)), () {
+            GoRouter.of(context).go(SMPath.myItems + "/" + SMPath.profile);
+          }),
         ),
         Spacer(flex: 1)
       ],
@@ -197,90 +202,87 @@ class _TopIconsState extends State<TopIcons> {
         context: context,
         builder: (BuildContext context) {
           return Dialog(
-            child: SizedBox(
-              height: 330,
-              child: Padding(
-                padding: const EdgeInsets.all(24.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Если вы хотите связаться с командой приложения, напишите нам. Будем рады обратной связи!',
-                      style: getMediumTextStyle(),
-                      textAlign: TextAlign.start,
-                      maxLines: 4,
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    InkWell(
-                      onTap: () async {
-                        if (await canLaunchUrl(
-                            Uri.parse("https://t.me/wuzik"))) {
-                          await launchUrl(Uri.parse("https://t.me/wuzik"));
-                        }
-                      },
-                      child: Row(
-                        children: [
-                          Icon(Icons.telegram),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Text("@wuzik", style: getMediumTextStyle())
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Row(
+            child: Padding(
+              padding: const EdgeInsets.all(24.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Если вы хотите связаться с командой приложения, напишите нам. Будем рады обратной связи!',
+                    style: getMediumTextStyle(),
+                    textAlign: TextAlign.start,
+                    maxLines: 4,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  InkWell(
+                    onTap: () async {
+                      if (await canLaunchUrl(Uri.parse("https://t.me/wuzik"))) {
+                        await launchUrl(Uri.parse("https://t.me/wuzik"));
+                      }
+                    },
+                    child: Row(
                       children: [
-                        Icon(Icons.email),
+                        Icon(Icons.telegram),
                         SizedBox(
                           width: 5,
                         ),
-                        SelectableText(
-                          "info@sharingmap.ru",
+                        Text("@wuzik", style: getMediumTextStyle())
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    children: [
+                      Icon(Icons.email),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      SelectableText(
+                        "info@sharingmap.ru",
+                        style: getMediumTextStyle(),
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Divider(),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text('Ещё у нас есть канал',
+                      // textAlign: TextAlign.start,
+                      style: getMediumTextStyle()),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  InkWell(
+                    onTap: () async {
+                      if (await canLaunchUrl(
+                          Uri.parse("https://t.me/sharingmap"))) {
+                        await launchUrl(Uri.parse("https://t.me/sharingmap"));
+                      }
+                    },
+                    child: Row(
+                      children: [
+                        Icon(Icons.telegram),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Text(
+                          "@sharingmap",
                           style: getMediumTextStyle(),
                         )
                       ],
                     ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Divider(),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text('Ещё у нас есть канал',
-                        // textAlign: TextAlign.start,
-                        style: getMediumTextStyle()),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    InkWell(
-                      onTap: () async {
-                        if (await canLaunchUrl(
-                            Uri.parse("https://t.me/sharingmap"))) {
-                          await launchUrl(Uri.parse("https://t.me/sharingmap"));
-                        }
-                      },
-                      child: Row(
-                        children: [
-                          Icon(Icons.telegram),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Text(
-                            "@sharingmap",
-                            style: getMediumTextStyle(),
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           );

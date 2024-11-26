@@ -23,7 +23,7 @@ class NoContactButton extends StatelessWidget {
             ),
           ),
           onPressed: () {
-            GoRouter.of(context).go(SMPath.profile);
+            GoRouter.of(context).go(SMPath.myItems + "/" + SMPath.profile);
           },
           child: Center(
             child: Text.rich(TextSpan(

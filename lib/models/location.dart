@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:sharing_map/utils/colors.dart';
 
 class SMLocation {
   final int id;
@@ -58,10 +59,14 @@ extension LocationIconString on SMLocation {
           width: 18,
         );
       case "metro_spb":
-        return SvgPicture.asset(
-          'assets/icons/spb_metro_logo.svg',
-          height: 18,
-          width: 18,
+        return Padding(
+          padding: EdgeInsets.all(2),
+          child: SvgPicture.asset(
+            'assets/icons/spb_metro_logo.svg',
+            color: MColors.black,
+            height: 14,
+            width: 14,
+          ),
         );
       case "railway":
         return Icon(

@@ -46,6 +46,9 @@ class _ItemListPageState extends State<ItemListPage> {
         );
       });
     }
+    int iconsFlex = 2;
+    int categoryFlex = 4;
+    int flexSum = iconsFlex + categoryFlex;
     return SafeArea(
       child: Scaffold(
         backgroundColor: MColors.white,
@@ -59,24 +62,22 @@ class _ItemListPageState extends State<ItemListPage> {
                     height: height,
                     child: Column(
                       children: [
-                        Spacer(
-                          flex: 1,
-                        ),
                         Expanded(
                           child: TopIcons(),
-                          flex: 2,
+                          flex: iconsFlex,
                         ),
                         Expanded(
-                          flex: 8,
+                          flex: categoryFlex,
                           child: Container(
-                            height: height * 8,
+                            height: categoryFlex * height / flexSum,
                             padding:
                                 EdgeInsets.only(top: padding, bottom: padding),
                             child: CategoriesButtonWidget(
                                 (int id) => setState(() {
                                       _chosenFilter = id;
                                     }),
-                                height * .7),
+                                categoryFlex * height / flexSum -
+                                    2.2 * padding),
                           ),
                         ),
                       ],

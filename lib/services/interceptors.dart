@@ -9,12 +9,12 @@ import 'package:sharing_map/utils/shared.dart';
 class LoggerInterceptor implements InterceptorContract {
   @override
   Future<BaseRequest> interceptRequest({required BaseRequest request}) async {
-    // debugPrint("----- Request -----");
-    // debugPrint(request.method +
-    //         " " +
-    //         request.headers.toString() +
-    //         " " +
-    //         request.url.toString() +
+    // print("----- Request -----");
+    // print(request.method +
+    //     " " +
+    //     request.headers.toString() +
+    //     " " +
+    //     request.url.toString() +
     //     " " +
     //     (request as Request).body.toString());
     return request;
@@ -23,10 +23,10 @@ class LoggerInterceptor implements InterceptorContract {
   @override
   Future<BaseResponse> interceptResponse(
       {required BaseResponse response}) async {
-    // debugPrint("----- Response -----");
-    // debugPrint(response.request.toString() +
-    //         response.headers.toString() +
-    //         response.statusCode.toString());
+    // print("----- Response -----");
+    // print(response.request.toString() +
+    //     response.headers.toString() +
+    //     response.statusCode.toString());
     return response;
   }
 
@@ -112,6 +112,8 @@ class RefreshTokenInterceptor implements InterceptorContract {
             SharedPrefs().authToken = jsonData["accessToken"].toString();
             SharedPrefs().refreshToken = jsonData["refreshToken"].toString();
             SharedPrefs().logged = true;
+          } else {
+            SharedPrefs().refreshToken = "";
           }
         }
       }

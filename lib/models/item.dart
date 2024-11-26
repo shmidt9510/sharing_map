@@ -11,6 +11,7 @@ class Item {
   final int cityId;
   final List<int>? locationIds;
   final DateTime? creationDate;
+  final DateTime? updateDate;
   final List<SMImage>? images;
   final List<XFile>? downloadableImages;
   final String? adress;
@@ -26,7 +27,8 @@ class Item {
       this.locationIds,
       this.downloadableImages = null,
       this.adress = null,
-      this.images});
+      this.images,
+      this.updateDate});
 
   factory Item.fromJson(Map<String, dynamic> json) => Item(
       json["id"].toString(),
@@ -36,6 +38,8 @@ class Item {
       json["userId"],
       creationDate:
           json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
+      updateDate:
+          json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
       locationIds: List<int>.from(json["locationsId"]),
       categoryIds: List<int>.from(json["categoriesId"]),
       subcategoryId: json["subcategoryId"],

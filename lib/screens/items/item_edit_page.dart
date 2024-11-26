@@ -220,14 +220,14 @@ class _EditItemPageState extends State<EditItemPage> {
                           autoValidateMode: AutovalidateMode.disabled,
                           validator: (value) {
                             if (value == null) {
-                              return "Пожалуйста, выберите станцию метро";
+                              return "Пожалуйста, выберите локацию";
                             }
                             var chosen = value;
                             if (chosen.isEmpty) {
-                              return "Пожалуйста, выберите станцию метро";
+                              return "Пожалуйста, выберите локацию";
                             }
                             if (chosen.length > 3) {
-                              return "Пожалуйста, выберите не больше трёх станций метро";
+                              return "Пожалуйста, выберите не больше локаций";
                             }
                             return null;
                           },
@@ -240,7 +240,7 @@ class _EditItemPageState extends State<EditItemPage> {
                             baseStyle: getMediumTextStyle(),
                             dropdownSearchDecoration: InputDecoration(
                               labelText: _chosenLocations.length == 0
-                                  ? "Выберите до трёх станций метро"
+                                  ? "Выберите до трёх локаций"
                                   : "",
                               hintStyle: getMediumTextStyle(),
                               labelStyle: getMediumTextStyle(),

@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:flutter/material.dart';
 import 'package:sharing_map/utils/constants.dart';
 
 import 'interceptors.dart';
@@ -70,7 +69,6 @@ class CommonWebService {
         .get(Uri.https(Constants.BACK_URL, "/locations/$cityId/all"));
 
     if (response.statusCode == 200) {
-      debugPrint("here");
       var jsonData = jsonDecode(utf8.decode(response.bodyBytes));
       return (jsonData as List).map((e) => SMLocation.fromJson(e)).toList();
     } else {

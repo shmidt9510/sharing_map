@@ -14,7 +14,7 @@ void main() async {
   setPathUrlStrategy();
   await Future.wait([
     SharedPrefs().init(),
-    dotenv.load(fileName: "env/test.env"),
+    dotenv.load(fileName: "env/prod.env"),
   ]);
   Get.put(CommonController());
   Get.put(SizeController());

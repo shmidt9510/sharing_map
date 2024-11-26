@@ -96,7 +96,7 @@ class ItemWebService {
     var uri = "/items/delete/$itemId";
     var response = await client.delete(
       Uri.https(Constants.BACK_URL, uri),
-      params: {"id": SharedPrefs().userId, "from_sm": "$fromSharingMap"},
+      params: {"id": SharedPrefs().userId, "isGiftedOnSm": "$fromSharingMap"},
     );
 
     if (response.statusCode != HttpStatus.ok) {
