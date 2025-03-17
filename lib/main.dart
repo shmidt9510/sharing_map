@@ -1,3 +1,5 @@
+// import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sharing_map/controllers/size_controller.dart';
@@ -9,7 +11,17 @@ import 'package:sharing_map/controllers/common_controller.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:url_strategy/url_strategy.dart';
 
+// class MyHttpOverrides extends HttpOverrides {
+//   @override
+//   HttpClient createHttpClient(SecurityContext? context) {
+//     return super.createHttpClient(context)
+//       ..badCertificateCallback =
+//           (cert, host, port) => true; // Allow bad certificates
+//   }
+// }
+
 void main() async {
+  // HttpOverrides.global = MyHttpOverrides();
   WidgetsFlutterBinding.ensureInitialized();
   setPathUrlStrategy();
   await Future.wait([

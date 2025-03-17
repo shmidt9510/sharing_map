@@ -9,24 +9,25 @@ import 'package:sharing_map/utils/shared.dart';
 class LoggerInterceptor implements InterceptorContract {
   @override
   Future<BaseRequest> interceptRequest({required BaseRequest request}) async {
-    // print("----- Request -----");
-    // print(request.method +
-    //     " " +
-    //     request.headers.toString() +
-    //     " " +
-    //     request.url.toString() +
-    //     " " +
-    //     (request as Request).body.toString());
+    print("----- Request -----");
+    print(request.method +
+        " " +
+        request.headers.toString() +
+        " " +
+        request.url.toString() +
+        " " +
+        (request as Request).body.toString());
     return request;
   }
 
   @override
   Future<BaseResponse> interceptResponse(
       {required BaseResponse response}) async {
-    // print("----- Response -----");
-    // print(response.request.toString() +
-    //     response.headers.toString() +
-    //     response.statusCode.toString());
+    print("----- Response -----");
+    print(response.request.toString() +
+        response.headers.toString() +
+        response.statusCode.toString());
+    print((response as Response).body.toString());
     return response;
   }
 

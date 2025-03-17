@@ -86,6 +86,7 @@ class ChooseCitySreenState extends State<ChooseCitySreen> {
                   ),
                 ),
               ),
+              // GetPositionButton(returnPosition: _updatePosition),
               Spacer(flex: 2),
               SizedBox(
                 width: context.width * 0.5,
@@ -105,5 +106,11 @@ class ChooseCitySreenState extends State<ChooseCitySreen> {
         ),
       ),
     );
+  }
+
+  void _updatePosition(double lat, double long) {
+    setState(() {
+      // position = newPosition;
+    });
   }
 }

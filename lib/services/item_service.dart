@@ -28,6 +28,7 @@ class ItemWebService {
   static Future<List<Item>> fetchItems(
       {int pageSize = 10,
       int page = 0,
+      int itemType = 1,
       userId = null,
       itemFilter = null}) async {
     String uri = "/items/all";
@@ -39,7 +40,8 @@ class ItemWebService {
       "size": pageSize,
       "page": page,
       "categoryId": itemFilter ?? 0,
-      "cityId": SharedPrefs().chosenCity
+      "cityId": SharedPrefs().chosenCity,
+      "subcategoryId": itemType
     });
 
     if (response.statusCode != 200) {

@@ -1,12 +1,13 @@
 import 'package:go_router/go_router.dart';
 import 'package:sharing_map/controllers/size_controller.dart';
 import 'package:sharing_map/path.dart';
+
+import 'package:sharing_map/screens/items/items_get_list.dart';
+import 'package:sharing_map/screens/items/items_give_list.dart';
 import 'package:sharing_map/utils/colors.dart';
 import 'package:sharing_map/utils/shared.dart';
 import 'package:sharing_map/widgets/categories_button_widget.dart';
 import 'package:sharing_map/widgets/top_icons.dart';
-
-import 'item_widgets.dart';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -23,6 +24,7 @@ class _ItemListPageState extends State<ItemListPage> {
   SizeController _sizeController = Get.find<SizeController>();
 
   int _chosenFilter = 0;
+  int _itemType = 1;
   @override
   void initState() {
     super.initState();
@@ -63,7 +65,11 @@ class _ItemListPageState extends State<ItemListPage> {
                     child: Column(
                       children: [
                         Expanded(
-                          child: TopIcons(),
+                          child: TopIcons(
+                            onItemTypeChange: (int type) => setState(() {
+                              _itemType = type;
+                            }),
+                          ),
                           flex: iconsFlex,
                         ),
                         Expanded(
@@ -92,8 +98,11 @@ class _ItemListPageState extends State<ItemListPage> {
             onRefresh: () {
               return _updateOnFetch();
             },
-            child: ItemsListView(
-                itemFilter: _chosenFilter, key: ValueKey(_chosenFilter)),
+            child: (_itemType == 1)
+                ? ItemsGiveListView(
+                    itemFilter: _chosenFilter, key: ValueKey(_chosenFilter))
+                : ItemsGetListView(
+                    itemFilter: _chosenFilter, key: ValueKey(_chosenFilter)),
           ),
         ),
       ),

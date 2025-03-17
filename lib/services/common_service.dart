@@ -78,6 +78,9 @@ class CommonWebService {
 
   static Future<bool> checkInternetConnectivity() async {
     var response = await client.get(Uri.https(Constants.BACK_URL, "/ping"));
-    return response.statusCode == 200;
+    if (response.statusCode == 200) {
+      return true;
+    }
+    return false;
   }
 }

@@ -8,7 +8,8 @@ import 'package:sharing_map/utils/shared.dart';
 class ItemController extends GetxController {
   static const _pageSize = 20;
 
-  final Map<int, PagingController<int, Item>> pagingControllers = {};
+  final Map<int, PagingController<int, Item>> givePagingControllers = {};
+  final Map<int, PagingController<int, Item>> getPagingControllers = {};
   late PagingController<int, Item> userPagingController;
 
   @override
@@ -26,9 +27,17 @@ class ItemController extends GetxController {
       return Future.error("");
     }
     for (int i = 0; i < categories.length; i++) {
-      pagingControllers[categories[i].id] = PagingController(firstPageKey: 0);
-      pagingControllers[categories[i].id]?.addPageRequestListener((pageKey) {
-        _fetchPage(pageKey, categories[i].id);
+      givePagingControllers[categories[i].id] =
+          PagingController(firstPageKey: 0);
+      givePagingControllers[categories[i].id]
+          ?.addPageRequestListener((pageKey) {
+        _fetchGivePage(pageKey, categories[i].id);
+      });
+
+      getPagingControllers[categories[i].id] =
+          PagingController(firstPageKey: 0);
+      getPagingControllers[categories[i].id]?.addPageRequestListener((pageKey) {
+        _fetchGetPage(pageKey, categories[i].id);
       });
     }
     return true;
@@ -36,14 +45,18 @@ class ItemController extends GetxController {
 
   @override
   void dispose() {
-    pagingControllers.forEach((k, v) => v.dispose());
+    givePagingControllers.forEach((k, v) => v.dispose());
+    getPagingControllers.forEach((k, v) => v.dispose());
     super.dispose();
   }
 
   Future<void> _fetchUserPage(int pageKey) async {
     try {
       final newItems = await fetchItems(
-          page: pageKey, pageSize: _pageSize, userId: SharedPrefs().userId);
+          page: pageKey,
+          pageSize: _pageSize,
+          itemType: 0,
+          userId: SharedPrefs().userId);
 
       final isLastPage = newItems.length < _pageSize;
       if (isLastPage) {
@@ -57,20 +70,43 @@ class ItemController extends GetxController {
     }
   }
 
-  Future<void> _fetchPage(int pageKey, int itemFilter) async {
+  Future<void> _fetchGivePage(int pageKey, int itemFilter) async {
     try {
       final newItems = await fetchItems(
-          page: pageKey, pageSize: _pageSize, itemFilter: itemFilter);
+          page: pageKey,
+          pageSize: _pageSize,
+          itemFilter: itemFilter,
+          itemType: 1);
 
       final isLastPage = newItems.length < _pageSize;
       if (isLastPage) {
-        pagingControllers[itemFilter]?.appendLastPage(newItems);
+        givePagingControllers[itemFilter]?.appendLastPage(newItems);
       } else {
         final nextPageKey = pageKey + 1;
-        pagingControllers[itemFilter]?.appendPage(newItems, nextPageKey);
+        givePagingControllers[itemFilter]?.appendPage(newItems, nextPageKey);
       }
     } catch (error) {
-      pagingControllers[itemFilter]?.error = error;
+      givePagingControllers[itemFilter]?.error = error;
+    }
+  }
+
+  Future<void> _fetchGetPage(int pageKey, int itemFilter) async {
+    try {
+      final newItems = await fetchItems(
+          page: pageKey,
+          pageSize: _pageSize,
+          itemFilter: itemFilter,
+          itemType: 2);
+
+      final isLastPage = newItems.length < _pageSize;
+      if (isLastPage) {
+        getPagingControllers[itemFilter]?.appendLastPage(newItems);
+      } else {
+        final nextPageKey = pageKey + 1;
+        getPagingControllers[itemFilter]?.appendPage(newItems, nextPageKey);
+      }
+    } catch (error) {
+      getPagingControllers[itemFilter]?.error = error;
     }
   }
 
@@ -78,13 +114,15 @@ class ItemController extends GetxController {
       {int pageSize = 10,
       int page = 0,
       String? userId = null,
-      int? itemFilter}) async {
+      int? itemFilter,
+      int itemType = 1}) async {
     try {
       var itemTemp = await ItemWebService.fetchItems(
           pageSize: pageSize,
           page: page,
           userId: userId,
-          itemFilter: itemFilter);
+          itemFilter: itemFilter,
+          itemType: itemType);
       // items.addAll(itemTemp);
       return itemTemp;
     } catch (e) {
@@ -101,7 +139,11 @@ class ItemController extends GetxController {
   }
 
   void refershAll() {
-    pagingControllers.forEach((key, value) {
+    givePagingControllers.forEach((key, value) {
+      value.itemList = [];
+      value.refresh();
+    });
+    getPagingControllers.forEach((key, value) {
       value.itemList = [];
       value.refresh();
     });

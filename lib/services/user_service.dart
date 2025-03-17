@@ -49,7 +49,7 @@ class UserServiceRetryPolicy extends RetryPolicy {
 
 class UserWebService {
   static var client = InterceptedClient.build(
-    requestTimeout: Duration(seconds: 3),
+    requestTimeout: Duration(seconds: 10),
     retryPolicy: UserServiceRetryPolicy(),
     interceptors: [
       LoggerInterceptor(),

@@ -11,12 +11,17 @@ import 'package:sharing_map/theme.dart';
 import 'package:sharing_map/utils/colors.dart';
 import 'package:sharing_map/utils/shared.dart';
 import 'package:sharing_map/widgets/allWidgets.dart';
+import 'package:sharing_map/widgets/item_type_widget.dart';
 import 'package:sharing_map/widgets/loading_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class TopIcons extends StatefulWidget {
   @override
   _TopIconsState createState() => _TopIconsState();
+
+  final Function(int) onItemTypeChange;
+
+  TopIcons({required this.onItemTypeChange});
 }
 
 class _TopIconsState extends State<TopIcons> {
@@ -27,28 +32,10 @@ class _TopIconsState extends State<TopIcons> {
   late City dropdownValue;
 
   Widget BuildButton(Widget icon, VoidCallback? onPressed) {
-    // return IconButton(
-    //   style: IconButton.styleFrom(
-    //     shape: CircleBorder(),
-    //     side: BorderSide(width: 2, color: MColors.darkGreen),
-    //     padding: EdgeInsets.all(0), // Remove default padding
-    //   ),
-    //   padding: EdgeInsets.all(0),
-    //   icon: Icon(
-    //     size: 14,
-    //     icon,
-    //     color: MColors.darkGreen,
-    //   ),
-    //   onPressed: onPressed,
-    // );
     return Padding(
       padding: EdgeInsets.only(left: 3, right: 3),
       child: OutlinedButton(
         onPressed: onPressed,
-
-        // () {
-        //   GoRouter.of(context).go(SMPath.myItems + "/" + SMPath.profile);
-        // },
         style: OutlinedButton.styleFrom(
           shape: CircleBorder(),
           side: BorderSide(width: 2, color: MColors.darkGreen),
@@ -86,7 +73,11 @@ class _TopIconsState extends State<TopIcons> {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Spacer(flex: 16),
+        Expanded(
+          child: ItemTypeList(onItemTypeChange: widget.onItemTypeChange),
+          flex: 10,
+        ),
+        Spacer(flex: 6),
         Expanded(
             flex: 2,
             child: BuildButton(

@@ -16,7 +16,7 @@ extension SignupExtension on SignupResult {
       case SignupResult.ok:
         return "ok";
       case SignupResult.Failed:
-        return "Что-то пошло не так";
+        return "Что-то пошло не так. Попробуйте ещё раз";
       case SignupResult.emailTaken:
         return "Пользователь с таким email уже существует. Попробуйте сбросить пароль";
       case SignupResult.noEmail:
@@ -59,7 +59,8 @@ class UserController extends GetxController {
   Future<SignupResult> Signup(
       String email, String username, String password) async {
     try {
-      String result = await UserWebService.signup(email, username, password);
+      String result = await UserWebService.signup(email, username, password)
+          .timeout(Duration(seconds: 20));
       if (result.isEmpty) {
         return SignupResult.Failed;
       }

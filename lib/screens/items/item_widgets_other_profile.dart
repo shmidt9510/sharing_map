@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sharing_map/screens/items/item_detail_page.dart';
 import 'package:sharing_map/models/item.dart';
-import 'package:sharing_map/widgets/item_block.dart';
+import 'package:sharing_map/widgets/item_give_block.dart';
 import 'package:sharing_map/controllers/item_controller.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
@@ -85,7 +85,7 @@ class _ItemsListViewOtherProfileState extends State<ItemsListViewOtherProfile> {
               },
               child: Padding(
                 padding: const EdgeInsets.only(left: 10, right: 10, top: 5),
-                child: ItemBlock(item),
+                child: ItemGiveBlock(item),
               )),
         ),
         separatorBuilder: (context, index) => Container(

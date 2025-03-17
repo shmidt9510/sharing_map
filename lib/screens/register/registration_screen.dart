@@ -8,6 +8,7 @@ import 'package:sharing_map/utils/colors.dart';
 // import 'package:sharing_map/widgets/textInputWidget.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:sharing_map/widgets/allWidgets.dart';
+import 'package:sharing_map/widgets/loading_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class RegistrationScreen extends StatefulWidget {
@@ -135,38 +136,42 @@ class _LoginState extends State<RegistrationScreen> {
               const SizedBox(height: 20),
               Column(
                 children: [
-                  getButton(context, "Зарегистрироваться", () async {
-                    if (!_isChecked) {
-                      showErrorScaffold(context,
-                          'Нужно подтвердить условия пользовательского соглашения');
-                      return;
-                    }
-                    if (!(_formKey.currentState?.validate() ?? false)) {
-                      showErrorScaffold(context, "Не получилось :(");
-                      return;
-                    }
-                    var mail = _controllerMail.text.replaceAll(' ', '');
-                    var result = await _userController.Signup(mail,
-                        _controllerUsername.text, _controllerPassword.text);
-                    if (result == SignupResult.ok) {
-                      GoRouter.of(context).go(
-                        SMPath.start +
-                            "/" +
-                            SMPath.registration +
-                            "/" +
-                            SMPath.registrationCode,
-                      );
-                    } else if (result == SignupResult.emailTaken) {
-                      showErrorScaffold(context, result.statusMessage,
-                          label: "Сбросить пароль", onPressed: () {
+                  LoadingButton(
+                    "Зарегистрироваться",
+                    () async {
+                      if (!_isChecked) {
+                        showErrorScaffold(context,
+                            'Нужно подтвердить условия пользовательского соглашения');
+                        return;
+                      }
+                      if (!(_formKey.currentState?.validate() ?? false)) {
+                        showErrorScaffold(context, "Не получилось :(");
+                        return;
+                      }
+                      var mail = _controllerMail.text.replaceAll(' ', '');
+                      var result = await _userController.Signup(mail,
+                          _controllerUsername.text, _controllerPassword.text);
+                      if (result == SignupResult.ok) {
                         GoRouter.of(context).go(
-                          SMPath.start + "/" + SMPath.forgetPasswordMail,
+                          SMPath.start +
+                              "/" +
+                              SMPath.registration +
+                              "/" +
+                              SMPath.registrationCode,
                         );
-                      });
-                    } else {
-                      showErrorScaffold(context, result.statusMessage);
-                    }
-                  }),
+                      } else if (result == SignupResult.emailTaken) {
+                        showErrorScaffold(context, result.statusMessage,
+                            label: "Сбросить пароль", onPressed: () {
+                          GoRouter.of(context).go(
+                            SMPath.start + "/" + SMPath.forgetPasswordMail,
+                          );
+                        });
+                      } else {
+                        showErrorScaffold(context, result.statusMessage);
+                      }
+                    },
+                    color: MColors.secondaryGreen,
+                  ),
                   const SizedBox(height: 10),
                   getButton(context, "Продолжить без регистрации", () {
                     GoRouter.of(context).go(SMPath.home);

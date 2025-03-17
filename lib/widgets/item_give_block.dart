@@ -10,9 +10,9 @@ import 'package:sharing_map/utils/colors.dart';
 import 'package:sharing_map/widgets/image.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
-class TextDescriptionBlock extends StatelessWidget {
-  Item _item;
-  TextDescriptionBlock(this._item);
+class TextDescriptionGiveBlock extends StatelessWidget {
+  final Item _item;
+  TextDescriptionGiveBlock(this._item);
   @override
   Widget build(BuildContext context) {
     initializeDateFormatting();
@@ -103,10 +103,10 @@ class TextDescriptionBlock extends StatelessWidget {
   }
 }
 
-class ItemBlock extends StatelessWidget {
+class ItemGiveBlock extends StatelessWidget {
   final Item _item;
-  SizeController _sizeController = Get.find<SizeController>();
-  ItemBlock(this._item);
+  final SizeController _sizeController = Get.find<SizeController>();
+  ItemGiveBlock(this._item);
 
   @override
   Widget build(BuildContext context) {
@@ -149,7 +149,7 @@ class ItemBlock extends StatelessWidget {
             flex: 3,
             child: Padding(
               padding: const EdgeInsets.all(10),
-              child: TextDescriptionBlock(_item),
+              child: TextDescriptionGiveBlock(_item),
             ),
           ),
           SizedBox(

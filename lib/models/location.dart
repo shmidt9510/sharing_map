@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:sharing_map/models/position.dart';
 import 'package:sharing_map/utils/colors.dart';
 
 class SMLocation {
@@ -7,23 +8,28 @@ class SMLocation {
   final int cityId;
   final String locationType;
   final String name;
+  final SMPosition? position;
+
   SMLocation(
       {required this.id,
       required this.cityId,
       required this.name,
-      this.locationType = "METRO"});
+      this.locationType = "METRO",
+      this.position});
 
   factory SMLocation.fromJson(Map<String, dynamic> json) => SMLocation(
       id: json["id"],
       name: json["name"],
       cityId: json["cityId"],
-      locationType: json["type"]);
+      locationType: json["type"],
+      position: json["position"]?.let((value) => SMPosition.fromJson(value)));
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "name": name,
         "type": locationType,
         "cityId": cityId,
+        "position": position?.toJson()
       };
 
   static List<SMLocation> fromJsonList(List list) {

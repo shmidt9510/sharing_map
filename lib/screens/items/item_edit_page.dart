@@ -187,10 +187,11 @@ class _EditItemPageState extends State<EditItemPage> {
                           filterFn: ((item, filter) {
                             return item.id != 0;
                           }),
-                          items: _commonController.categories,
-                          dropdownDecoratorProps: DropDownDecoratorProps(
+                          compareFn: (item1, item2) => item1.name == item2.name,
+                          items: (f, cs) => _commonController.categories,
+                          decoratorProps: DropDownDecoratorProps(
                             baseStyle: getMediumTextStyle(),
-                            dropdownSearchDecoration: InputDecoration(
+                            decoration: InputDecoration(
                               labelText: _chosenCategories.length == 0
                                   ? "Выберите до двух категорий"
                                   : "",
@@ -208,6 +209,9 @@ class _EditItemPageState extends State<EditItemPage> {
                             ),
                           ),
                           popupProps: PopupPropsMultiSelection.menu(
+                            emptyBuilder: (context, searchEntry) => Center(
+                                child: Text('Пусто',
+                                    style: TextStyle(color: Colors.blue))),
                             showSearchBox: false,
                           ),
                         ),
@@ -236,9 +240,9 @@ class _EditItemPageState extends State<EditItemPage> {
                               _chosenLocations = data ?? [];
                             });
                           },
-                          dropdownDecoratorProps: DropDownDecoratorProps(
+                          decoratorProps: DropDownDecoratorProps(
                             baseStyle: getMediumTextStyle(),
-                            dropdownSearchDecoration: InputDecoration(
+                            decoration: InputDecoration(
                               labelText: _chosenLocations.length == 0
                                   ? "Выберите до трёх локаций"
                                   : "",
@@ -255,12 +259,16 @@ class _EditItemPageState extends State<EditItemPage> {
                               ),
                             ),
                           ),
-                          items: _commonController.locations,
+                          compareFn: (item1, item2) => item1.name == item2.name,
+                          items: (f, cs) => _commonController.locations,
                           popupProps: PopupPropsMultiSelection.menu(
+                            emptyBuilder: (context, searchEntry) => Center(
+                                child: Text('Пусто',
+                                    style: TextStyle(color: Colors.blue))),
                             showSearchBox: true,
                           ),
                         ),
-                        // _getImageChoiceWidget(),
+                        _getImageChoiceWidget(),
                         Padding(
                           padding: const EdgeInsets.only(
                               top: 10, left: 20, right: 20),
