@@ -110,7 +110,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
             ),
             const SizedBox(height: 16),
             Text(
-              user.bio,
+              user.bio ?? "",
               style: TextStyle(fontSize: 16, height: 1.4),
             ),
           ],

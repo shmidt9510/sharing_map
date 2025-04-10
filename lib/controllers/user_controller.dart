@@ -110,7 +110,7 @@ class UserController extends GetxController {
     try {
       bool result = await UserWebService.updateUser(user);
       if (result && myself.value.id != User.getEmptyUser().id) {
-        myself.value.bio = user.bio;
+        myself.value.bio = user.bio ?? "";
         myself.value.username = user.username;
       }
       return result;

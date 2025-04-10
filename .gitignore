@@ -49,3 +49,111 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Dart/Flutter specific
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub/
+.pub-cache/
+build/
+coverage/
+pubspec.lock
+**/doc/api/
+**/ios/Flutter/.last_build_id
+
+# Generated Dart files
+*.g.dart
+*.freezed.dart
+*.mocks.dart
+*.config.dart
+
+# Android related
+**/android/**/gradle-wrapper.jar
+**/android/.gradle
+**/android/captures/
+**/android/local.properties
+**/android/key.properties
+**/android/**/GeneratedPluginRegistrant.*
+**/android/app/debug
+**/android/app/profile
+**/android/app/release
+**/android/app/.cxx
+android/**
+# iOS/XCode related
+**/ios/**/*.mode1v3
+**/ios/**/*.mode2v3
+**/ios/**/*.moved-aside
+**/ios/**/*.pbxuser
+**/ios/**/*.perspectivev3
+**/ios/**/*sync/
+**/ios/**/.sconsign.dblite
+**/ios/**/.tags*
+**/ios/**/.vagrant/
+**/ios/**/DerivedData/
+**/ios/**/Icon?
+**/ios/**/Pods/
+**/ios/**/.symlinks/
+**/ios/**/profile
+**/ios/**/xcuserdata
+**/ios/.generated/
+**/ios/Flutter/App.framework
+**/ios/Flutter/Flutter.framework
+**/ios/Flutter/Flutter.podspec
+**/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/app.flx
+**/ios/Flutter/app.zip
+**/ios/Flutter/flutter_assets/
+**/ios/Flutter/flutter_export_environment.sh
+**/ios/Flutter/ephemeral/
+**/ios/ServiceDefinitions.json
+**/ios/Runner/GeneratedPluginRegistrant.*
+
+# macOS related
+**/macos/Flutter/ephemeral/
+**/macos/Flutter/GeneratedPluginRegistrant.*
+**/macos/Pods/
+
+# Windows related
+**/windows/flutter/ephemeral/
+**/windows/flutter/generated_plugin_registrant.*
+
+# Linux related
+**/linux/flutter/ephemeral/
+**/linux/flutter/generated_plugin_registrant.*
+
+# Web related
+**/web/favicon.png
+
+# IDE specific
+.idea/
+.vscode/
+*.iml
+.project
+.classpath
+.settings/
+*.swp
+
+# Secret and configuration files - IMPORTANT
+.env
+.env.*
+*.env
+assets/config/secrets.json
+**/key.properties
+**/secrets.properties
+**/google-services.json
+**/GoogleService-Info.plist
+**/firebase_options.dart
+keys/
+secrets/
+**/secrets.*
+**/*.keystore
+**/*.jks
+**/*.p8
+**/*.p12
+**/*.asc
+
+# System files
+.DS_Store
+Thumbs.db

@@ -13,7 +13,10 @@ class CachedImage {
     if (uri == "ERROR") {
       return Placeholder();
     }
-    final String imageUrl = "https://" + S3Client.GetHost() + "/" + uri;
+    String imageUrl = "https://" + S3Client.GetHost() + "/" + uri;
+    if (image.url != null && image.url != "") {
+      imageUrl = "https://" + image.url.toString();
+    }
     return CachedNetworkImage(
         cacheManager: CacheManager(
           Config(

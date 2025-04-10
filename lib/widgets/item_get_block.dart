@@ -13,6 +13,14 @@ class TextDescriptionGetBlock extends StatelessWidget {
   TextDescriptionGetBlock(this._item);
   @override
   Widget build(BuildContext context) {
+    String username = "NO_USERNAME";
+    // if (_item.username?.isEmpty ?? false) {
+    if (_item.user != null) {
+      username = _item.user!.username;
+    }
+    // } else {
+    //   username = _item.username!;
+    // }
     initializeDateFormatting();
     String itemName = _item.name;
     return Column(
@@ -38,16 +46,16 @@ class TextDescriptionGetBlock extends StatelessWidget {
             alignment: Alignment.centerLeft,
             child: SizedBox(
               child: Row(mainAxisSize: MainAxisSize.min, children: [
-                Flexible(flex: 1, child: Icon(FontAwesomeIcons.userAstronaut)),
-                SizedBox(
-                  width: 10,
-                ),
+                // Flexible(flex: 1, child: Icon(FontAwesomeIcons.userAstronaut)),
+                // SizedBox(
+                //   width: 10,
+                // ),
                 Flexible(
                   child: Text(
                     textAlign: TextAlign.right,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    _item.username ?? "NoUserName",
+                    username,
                     style: getMediumTextStyle(),
                   ),
                 ),

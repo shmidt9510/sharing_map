@@ -38,7 +38,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     var _user = _userController.myself;
     var contacts = _userController.myContacts;
-    _bioController.text = _user.value.bio;
+    _bioController.text = _user.value.bio ?? "";
     _userNameController.text = _user.value.username;
     return Scaffold(
         appBar: AppBar(
@@ -126,7 +126,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             SizedBox(
                               height: 10,
                             ),
-                            _user.value.bio.isEmpty
+                            _user.value.bio?.isEmpty ?? true
                                 ? InkWell(
                                     onTap: () {
                                       GoRouter.of(context).go(SMPath.myItems +
@@ -151,7 +151,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     ),
                                   )
                                 : Text(
-                                    _user.value.bio,
+                                    _user.value.bio ?? "",
                                     style: getMediumTextStyle(),
                                   ),
                             // _user.value.

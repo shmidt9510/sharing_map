@@ -8,33 +8,35 @@ const String PlaceholderId = "8d762611-38ff-41ff-ba2d-7dbfab85d750";
 class User {
   final String id;
   String username;
-  bool? hasProfileImage = false;
   String? email;
-  String bio;
+  String? bio;
+  SMImage? profileImage = null;
 
-  User({
-    required this.id,
-    required this.username,
-    this.hasProfileImage,
-    this.email,
-    required this.bio,
-  });
+  User(
+      {required this.id,
+      required this.username,
+      this.email,
+      this.bio,
+      this.profileImage});
 
-  factory User.fromJson(Map<String, dynamic> json) => User(
+  factory User.fromJson(Map<String, dynamic> json) {
+    return User(
       id: json["id"],
       username: json["username"],
-      email: json["email"],
-      hasProfileImage: json["hasImage"],
-      bio: json["bio"]);
+      // email: json["email"],
+      bio: json["bio"],
+      profileImage: json["photo"] != null
+          ? SMImage.fromJson(json["photo"])
+          : SMImage.Placeholder(),
+    );
+  }
 
   Map<String, dynamic> toJson() =>
       {"id": id, "username": username, "bio": bio, "email": email};
 
   Widget buildImage({BoxFit fit = BoxFit.contain}) {
-    if (hasProfileImage != null && hasProfileImage!) {
-      return CachedImage.Get(
-          SMImage(id: id, itemId: id, updatedAt: DateTime.now()),
-          fit: fit);
+    if (profileImage != null) {
+      return CachedImage.Get(profileImage!, fit: fit);
     }
     return Padding(
       padding: EdgeInsets.all(0),
@@ -47,12 +49,10 @@ class User {
   }
 
   SMImage getSMImage() {
-    if (hasProfileImage != null && !(hasProfileImage!)) {
-      return SMImage(
-          id: PlaceholderId, itemId: PlaceholderId, updatedAt: DateTime.now());
+    if (profileImage != null) {
+      return profileImage!;
     }
-
-    return SMImage(id: id, itemId: id, updatedAt: DateTime.now());
+    return SMImage(id: id, itemId: id);
   }
 
   factory User.getEmptyUser() => User(id: "", username: "", bio: "");

@@ -1,5 +1,6 @@
 import 'package:image_picker/image_picker.dart';
 import 'package:sharing_map/models/position.dart';
+import 'package:sharing_map/models/user.dart';
 import 'photo.dart';
 
 class Item {
@@ -18,6 +19,7 @@ class Item {
   final String? adress;
   final SMPosition? position;
   final String? username;
+  final User? user;
   // final Set<
   // final String? author;
 
@@ -33,7 +35,8 @@ class Item {
       this.images,
       this.updateDate,
       this.position,
-      this.username = null});
+      this.username = null,
+      this.user = null});
 
   factory Item.fromJson(Map<String, dynamic> json) => Item(
       json["id"].toString(),
@@ -50,9 +53,10 @@ class Item {
       subcategoryId: json["subcategoryId"],
       adress: json["address"],
       position: json["position"]?.let((value) => SMPosition.fromJson(value)),
-      images: List<SMImage>.from(json["imagesId"].map((model) =>
-          SMImage.fromJson(model.toString(), json["id"].toString()))),
-      username: json["username"]);
+      username: json["username"],
+      images: List<SMImage>.from(
+          json["itemPhoto"].map((model) => SMImage.fromJson(model))),
+      user: User.fromJson(json["user"]));
   // (json["images"].map((x) => SMImage.fromJson(x))).toList<SMImage>());
 
   Map<String, dynamic> toJson() => {
@@ -64,7 +68,7 @@ class Item {
         "categoriesId": categoryIds,
         "subcategoryId": subcategoryId,
         "locationsId": locationIds,
-        "images": images?.map((x) => x.toJson()),
+        // "imagesId": images?.map((x) => x.toJson()),
         "adress": adress,
         "position": position?.toJson()
       };

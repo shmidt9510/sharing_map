@@ -21,45 +21,17 @@ class CategoriesButtonWidgetState extends State<CategoriesButtonWidget> {
   int _chosenFilter = 0;
 
   final ScrollController _scrollController = ScrollController();
-  bool _showLeftArrow = false;
-  bool _showRightArrow = true;
   double _scrollOffset = 100;
 
   @override
   void initState() {
     super.initState();
-    _scrollController.addListener(_handleScroll);
   }
 
   @override
   void dispose() {
-    _scrollController.removeListener(_handleScroll);
     _scrollController.dispose();
     super.dispose();
-  }
-
-  void _handleScroll() {
-    setState(() {
-      _showLeftArrow = _scrollController.offset > 0;
-      _showRightArrow =
-          _scrollController.offset < _scrollController.position.maxScrollExtent;
-    });
-  }
-
-  void _scrollLeft() {
-    _scrollController.animateTo(
-      _scrollController.offset - _scrollOffset,
-      duration: Duration(milliseconds: 300),
-      curve: Curves.easeInOut,
-    );
-  }
-
-  void _scrollRight() {
-    _scrollController.animateTo(
-      _scrollController.offset + _scrollOffset,
-      duration: Duration(milliseconds: 300),
-      curve: Curves.easeInOut,
-    );
   }
 
   @override
@@ -74,40 +46,6 @@ class CategoriesButtonWidgetState extends State<CategoriesButtonWidget> {
         itemCount: _commonController.categories.length,
         itemBuilder: (BuildContext context, int index) => _buildButton(
             context, _commonController.categories[index], widget.height),
-      ),
-      Align(
-        alignment: Alignment.centerLeft,
-        child: Padding(
-          padding: const EdgeInsets.only(left: 8, bottom: 10),
-          child: Visibility(
-            visible: _showLeftArrow,
-            child: GestureDetector(
-              onTap: _scrollLeft,
-              child: Container(
-                child: Icon(Icons.arrow_back_ios_new_rounded,
-                    color: MColors.primaryGreen, size: 22),
-              ),
-            ),
-          ),
-        ),
-      ),
-      Align(
-        alignment: Alignment.centerRight,
-        child: Padding(
-          padding: const EdgeInsets.only(right: 8, bottom: 10),
-          child: Visibility(
-            visible: _showRightArrow,
-            child: GestureDetector(
-              onTap: _scrollRight,
-              child: Container(
-                child: Icon(
-                  Icons.arrow_forward_ios_rounded,
-                  color: MColors.primaryGreen,
-                ),
-              ),
-            ),
-          ),
-        ),
       ),
     ]);
   }

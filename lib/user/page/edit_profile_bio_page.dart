@@ -24,7 +24,7 @@ class _EditProfileBioPageState extends State<EditProfileBioPage> {
   @override
   Widget build(BuildContext context) {
     var _user = _userController.myself;
-    _bioController.text = _user.value.bio;
+    _bioController.text = _user.value.bio ?? "";
     _userNameController.text = _user.value.username;
     return Scaffold(
         appBar: AppBar(title: Text("Редактировать профиль")),
@@ -59,7 +59,7 @@ class _EditProfileBioPageState extends State<EditProfileBioPage> {
                 _bioController,
                 "Расскажите про себя",
                 (String? value) {
-                  if (value?.isEmpty ?? false) {
+                  if (value?.isEmpty ?? false || value == "null") {
                     return "Напишите что-нибудь";
                   }
                   return null;

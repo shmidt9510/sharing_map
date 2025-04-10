@@ -231,51 +231,77 @@ Widget GetFullscreenSlider(image, context, count) {
 }
 
 Widget GetUserWidget(BuildContext context, Item item) {
-  final UserController _userController = Get.find<UserController>();
-
+  var _user = item.user;
   return Container(
     child: Row(
       children: [
-        FutureBuilder(
-          future: _userController.GetUser(item.userId),
-          builder: (context, snapshot) {
-            if (snapshot.hasError) {
-              return Container();
-            }
+        Row(children: [
+          InkWell(
+            onTap: () {
+              GoRouter.of(context).go(SMPath.home + "/user/${_user?.id}");
+              // Navigator.push(
+              //     context,
+              //     MaterialPageRoute(
+              //         builder: (context) =>
+              //             UserProfilePage(userId: _user.id)));
+            },
+            child: ClipOval(
+              child: Container(
+                width: 45,
+                height: 45,
+                child: _user?.buildImage(fit: BoxFit.cover),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            child: Text(
+              _user?.username ?? "NO USER",
+              style: getHintTextStyle(),
+              // maxLines: 2,
+            ),
+          ),
+        ]),
+        // FutureBuilder(
+        //   future: _userController.GetUser(item.userId),
+        //   builder: (context, snapshot) {
+        //     if (snapshot.hasError) {
+        //       return Container();
+        //     }
 
-            if (!snapshot.hasData) {
-              return Container(color: MColors.green);
-            }
-            var _user = snapshot.data as User;
-            return Row(children: [
-              InkWell(
-                onTap: () {
-                  GoRouter.of(context).go(SMPath.home + "/user/${_user.id}");
-                  // Navigator.push(
-                  //     context,
-                  //     MaterialPageRoute(
-                  //         builder: (context) =>
-                  //             UserProfilePage(userId: _user.id)));
-                },
-                child: ClipOval(
-                  child: Container(
-                    width: 45,
-                    height: 45,
-                    child: _user.buildImage(fit: BoxFit.cover),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                child: Text(
-                  _user.username,
-                  style: getHintTextStyle(),
-                  // maxLines: 2,
-                ),
-              ),
-            ]);
-          },
-        ),
+        //     if (!snapshot.hasData) {
+        //       return Container(color: MColors.green);
+        //     }
+        //     var _user = snapshot.data as User;
+        //     return Row(children: [
+        //       InkWell(
+        //         onTap: () {
+        //           GoRouter.of(context).go(SMPath.home + "/user/${_user.id}");
+        //           // Navigator.push(
+        //           //     context,
+        //           //     MaterialPageRoute(
+        //           //         builder: (context) =>
+        //           //             UserProfilePage(userId: _user.id)));
+        //         },
+        //         child: ClipOval(
+        //           child: Container(
+        //             width: 45,
+        //             height: 45,
+        //             child: _user.buildImage(fit: BoxFit.cover),
+        //           ),
+        //         ),
+        //       ),
+        //       Padding(
+        //         padding: const EdgeInsets.symmetric(horizontal: 10.0),
+        //         child: Text(
+        //           _user.username,
+        //           style: getHintTextStyle(),
+        //           // maxLines: 2,
+        //         ),
+        //       ),
+        //     ]);
+        //   },
+        // ),
         Spacer(),
         SizedBox(height: 50, child: GetUserContactWidget(context, item.userId))
       ],
