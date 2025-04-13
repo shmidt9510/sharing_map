@@ -16,6 +16,29 @@ class MyItemsPage extends StatefulWidget {
 }
 
 class _MyItemsPageState extends State<MyItemsPage> {
+  Widget BuildButton(Widget icon, VoidCallback? onPressed) {
+    return Padding(
+      padding: EdgeInsets.only(left: 3, right: 3),
+      child: OutlinedButton(
+        onPressed: onPressed,
+        style: OutlinedButton.styleFrom(
+          shape: CircleBorder(),
+          side: BorderSide(width: 2, color: MColors.darkGreen),
+          padding: EdgeInsets.all(0),
+        ),
+        child: ClipOval(
+          child: Container(
+              width: 25, // Width of the circular button
+              height: 25, // Height of the circular button
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+              ),
+              child: icon),
+        ),
+      ),
+    );
+  }
+
   final UserController _userController = Get.find<UserController>();
   @override
   Widget build(BuildContext context) {
@@ -30,32 +53,17 @@ class _MyItemsPageState extends State<MyItemsPage> {
           actions: SharedPrefs().logged
               ? [
                   Spacer(
-                    flex: 14,
+                    flex: 17,
                   ),
                   Expanded(flex: 2, child: UserActionsWidget()),
                   Expanded(
-                    flex: 2,
-                    child: OutlinedButton(
-                      onPressed: () {
+                      flex: 2,
+                      child: BuildButton(
+                          Obx(() => (_userController.userProfilePicture.value)),
+                          () {
                         GoRouter.of(context)
                             .go(SMPath.myItems + "/" + SMPath.profile);
-                      },
-                      style: OutlinedButton.styleFrom(
-                        shape: CircleBorder(),
-                        side: BorderSide(width: 2, color: MColors.darkGreen),
-                        padding: EdgeInsets.all(0), // Remove default padding
-                      ),
-                      child: ClipOval(
-                        child: Container(
-                            width: 25, // Width of the circular button
-                            height: 25, // Height of the circular button
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                            ),
-                            child: _userController.userProfilePicture.value),
-                      ),
-                    ),
-                  ),
+                      })),
                   Spacer()
                 ]
               : null,

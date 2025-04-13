@@ -10,7 +10,6 @@ import 'package:sharing_map/models/contact.dart';
 
 import 'package:sharing_map/models/item.dart';
 import 'package:sharing_map/models/location.dart';
-import 'package:sharing_map/models/user.dart';
 import 'package:sharing_map/path.dart';
 import 'package:sharing_map/theme.dart';
 import 'package:sharing_map/utils/colors.dart';

@@ -284,8 +284,9 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
                           flex: 3,
                         ),
                         Text(
-                          "Отдать",
-                          style: getMediumTextStyle(color: MColors.white),
+                          "Хочу отдать",
+                          style: getBigTextStyle(
+                              color: MColors.white, fontSize: 20),
                         ),
                         Spacer(
                           flex: 6,
@@ -324,8 +325,9 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
                     child: Row(
                       children: [
                         Spacer(flex: 3),
-                        Text("Взять",
-                            style: getMediumTextStyle(color: MColors.white)),
+                        Text("Хочу взять",
+                            style: getBigTextStyle(
+                                color: MColors.white, fontSize: 20)),
                         Spacer(
                           flex: 6,
                         ),
