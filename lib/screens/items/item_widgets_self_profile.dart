@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:sharing_map/screens/items/item_actions.dart';
 import 'package:sharing_map/screens/items/item_detail_page.dart';
 import 'package:sharing_map/models/item.dart';
+import 'package:sharing_map/utils/colors.dart';
 import 'package:sharing_map/widgets/item_give_block.dart';
 import 'package:sharing_map/controllers/item_controller.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -64,7 +65,26 @@ class _ItemsListViewSelfProfileState extends State<ItemsListViewSelfProfile> {
                       top: 3,
                       right: 3,
                       child: ItemActionsWidget(item),
-                    )
+                    ),
+                    Positioned(
+                        top: 5,
+                        left: 6,
+                        child: Container(
+                          alignment: Alignment.center,
+                          height: context.height * .03,
+                          width: context.width * .15,
+                          decoration: BoxDecoration(
+                            color: MColors.darkGreen,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Text(
+                            item.subcategoryId == 1 ? "Отдаю" : "Ищу",
+                            style: TextStyle(
+                              color: MColors.white,
+                              fontSize: 12,
+                            ),
+                          ),
+                        )),
                   ],
                 ),
               )),
