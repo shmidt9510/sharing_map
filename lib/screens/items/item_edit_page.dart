@@ -25,7 +25,7 @@ import 'package:sharing_map/utils/compress_image.dart';
 
 enum PhotoSource { FILE, NETWORK }
 
-const List<String> itemType = <String>['Отдам', 'Возьму'];
+const List<String> itemType = <String>['Отдают', 'Ищут'];
 
 class EditItemPage extends StatefulWidget {
   final String itemId;

@@ -9,7 +9,6 @@ import 'package:sharing_map/controllers/item_controller.dart';
 import 'package:sharing_map/utils/shared.dart';
 import 'package:sharing_map/controllers/common_controller.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:url_strategy/url_strategy.dart';
 
 // class MyHttpOverrides extends HttpOverrides {
 //   @override
@@ -23,7 +22,6 @@ import 'package:url_strategy/url_strategy.dart';
 void main() async {
   // HttpOverrides.global = MyHttpOverrides();
   WidgetsFlutterBinding.ensureInitialized();
-  setPathUrlStrategy();
   await Future.wait([
     SharedPrefs().init(),
     dotenv.load(fileName: "env/prod.env"),

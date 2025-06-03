@@ -96,13 +96,12 @@ class _ItemActionsWidgetState extends State<ItemActionsWidget> {
   }
 
   Future<bool> _deleteItem(BuildContext context) async {
-    await _deleteItemDialogBuilder(context, widget._item.id);
+    await _deleteItemDialogBuilder(context, widget._item);
     _itemsController.userPagingController.refresh();
     return true;
   }
 
-  Future<bool> _deleteItemDialogBuilder(
-      BuildContext context, String itemId) async {
+  Future<bool> _deleteItemDialogBuilder(BuildContext context, Item item) async {
     final ItemController _itemsController = Get.find<ItemController>();
     bool _result = false;
     bool _fromSM = false;
@@ -122,7 +121,9 @@ class _ItemActionsWidgetState extends State<ItemActionsWidget> {
                   context: context,
                   builder: (BuildContext context) {
                     return AlertDialog(
-                      title: const Text('Вы отдали вещь через Sharing Map?'),
+                      title: Text(item.subcategoryId == 1
+                          ? 'Вы отдали вещь через Sharing Map?'
+                          : 'Вы взяли вещь через Sharing Map?'),
                       actions: [
                         TextButton(
                           style: TextButton.styleFrom(
@@ -167,7 +168,7 @@ class _ItemActionsWidgetState extends State<ItemActionsWidget> {
       },
     );
     if (_result) {
-      await _itemsController.deleteItem(itemId, _fromSM);
+      await _itemsController.deleteItem(item.id, _fromSM);
     }
     return _result;
   }

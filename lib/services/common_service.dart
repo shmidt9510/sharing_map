@@ -33,7 +33,7 @@ class CommonWebService {
       var jsonData = jsonDecode(utf8.decode(response.bodyBytes));
       var itemsList =
           (jsonData as List).map((e) => ItemCategory.fromJson(e)).toList();
-      itemsList.sort(compareByPosition);
+      // itemsList.sort(compareByPosition);
       // itemsList.forEach((category) {category.pictureUrl});
       return itemsList;
     } else {

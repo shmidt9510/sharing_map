@@ -13,8 +13,8 @@ class ItemTypeList extends StatefulWidget {
 }
 
 class _ItemTypeListState extends State<ItemTypeList> {
-  final List<String> _items = ['Отдаю', 'Возьму'];
-  String _selectedItem = 'Отдаю';
+  final List<String> _items = ['Отдают', 'Ищут'];
+  String _selectedItem = 'Отдают';
 
   @override
   Widget build(BuildContext context) {
@@ -35,10 +35,10 @@ class _ItemTypeListState extends State<ItemTypeList> {
           borderRadius: BorderRadius.all(Radius.circular(10)),
           onChanged: (String? newValue) {
             setState(() {
-              _selectedItem = newValue ?? 'Отдаю';
+              _selectedItem = newValue ?? 'Отдают';
             });
             int _type = 1;
-            if (newValue == 'Возьму') {
+            if (newValue == 'Ищут') {
               _type = 2;
             }
             widget.onItemTypeChange(_type);
