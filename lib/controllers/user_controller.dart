@@ -2,8 +2,10 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:sharing_map/models/address.dart';
 import 'package:sharing_map/models/user.dart';
 import 'package:sharing_map/models/contact.dart';
+import 'package:sharing_map/services/address_service.dart';
 import 'package:sharing_map/services/user_service.dart';
 import 'package:get/get.dart';
 import 'package:sharing_map/utils/shared.dart';
@@ -28,6 +30,8 @@ extension SignupExtension on SignupResult {
 }
 
 class UserController extends GetxController {
+  var myAddresses = <Address>[].obs;
+
   var myself = Rx<User>(User.getEmptyUser());
 
   var userProfilePicture =
@@ -144,6 +148,7 @@ class UserController extends GetxController {
   }
 
   Future<User?> GetMyself() async {
+    myAddresses(await AddressService.getAllAddresses());
     if (myself.value.id != "") {
       return myself.value;
     }
@@ -159,6 +164,7 @@ class UserController extends GetxController {
     myself(user);
     var contacts = await UserWebService.getUserContact(SharedPrefs().userId);
     myContacts(contacts);
+
     userProfilePicture(user.buildImage(fit: BoxFit.cover));
     return myself.value;
   }
@@ -172,6 +178,7 @@ class UserController extends GetxController {
     SharedPrefs().isFirstRun = false;
     myself(User.getEmptyUser());
     myContacts([]);
+    myAddresses([]);
     return true;
   }
 
@@ -188,6 +195,7 @@ class UserController extends GetxController {
     SharedPrefs().isFirstRun = false;
     myself(User.getEmptyUser());
     myContacts([]);
+    myAddresses([]);
     return true;
   }
 

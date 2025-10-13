@@ -1,4 +1,4 @@
-// import 'dart:io';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -24,7 +24,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Future.wait([
     SharedPrefs().init(),
-    dotenv.load(fileName: "env/prod.env"),
+    dotenv.load(fileName: "env/test.env"),
   ]);
   Get.put(CommonController());
   Get.put(SizeController());

@@ -103,7 +103,34 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
                   SizedBox(
                     height: 10,
                   ),
+                  FractionallySizedBox(
+                    widthFactor: 0.90,
+                    child: Container(
+                      height: 1.5,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            MColors.secondaryGreen,
+                            MColors.darkGreen,
+                            MColors.secondaryGreen
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
                   GetLocationsWidget(context, item, _commonController),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 23),
+                    child: Text(
+                      item.addressInfo ?? "",
+                      maxLines: 3,
+                      style: getHintTextStyle(),
+                    ),
+                    height: 20,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 23),
                     child: Text(

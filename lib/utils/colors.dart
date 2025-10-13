@@ -11,6 +11,7 @@ class MColors {
   static const Color darkGrey = const Color.fromARGB(204, 60, 60, 60);
   static const Color grey1 = const Color.fromARGB(255, 151, 151, 151);
   static const Color grey2 = const Color.fromARGB(255, 173, 179, 188);
+  static const Color grey = const Color.fromARGB(255, 173, 179, 188);
   static const Color lightGrey = const Color.fromARGB(255, 224, 224, 224);
   static const Color inputField = const Color.fromARGB(255, 242, 242, 242);
   static const Color darkGreen = const Color.fromARGB(255, 54, 106, 83);

@@ -109,6 +109,10 @@ android/**
 **/ios/Flutter/ephemeral/
 **/ios/ServiceDefinitions.json
 **/ios/Runner/GeneratedPluginRegistrant.*
+**/ios/Pods/
+**/ios/.symlinks/
+**/ios/Flutter/app.flutterversion
+**/ios/Flutter/AppFrameworkInfo.plist
 
 # macOS related
 **/macos/Flutter/ephemeral/

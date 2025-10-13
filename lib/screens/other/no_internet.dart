@@ -55,7 +55,7 @@ class _NoInternetScreenState extends State<NoInternetScreen> {
                     await CommonWebService.checkInternetConnectivity();
                   } catch (e) {
                     showErrorScaffold(context,
-                        "Нет интернета или наш сервер не отчвечает 😨 ");
+                        "Нет интернета или наш сервер не отвечает 😨 ");
                   }
                 }
               }, color: MColors.darkGreen, height: 50),

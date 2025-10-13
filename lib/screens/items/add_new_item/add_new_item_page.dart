@@ -10,10 +10,13 @@ import 'package:sharing_map/controllers/common_controller.dart';
 
 import 'package:sharing_map/controllers/item_controller.dart';
 import 'package:sharing_map/controllers/user_controller.dart';
+import 'package:sharing_map/models/address.dart';
 import 'package:sharing_map/models/category.dart';
 import 'package:sharing_map/models/item.dart';
 import 'package:sharing_map/models/location.dart';
 import 'package:sharing_map/path.dart';
+import 'package:sharing_map/screens/items/add_new_item/bottom_nav_buttons.dart';
+import 'package:sharing_map/screens/items/add_new_item/location_selection_widget.dart';
 import 'package:sharing_map/theme.dart';
 import 'package:sharing_map/utils/chose_image_source.dart';
 import 'package:sharing_map/utils/colors.dart';
@@ -69,6 +72,7 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
   // final FocusNode _focusNodeText = FocusNode();
   List<SMLocation> _chosenLocations = [];
   List<ItemCategory> _chosenCategories = [];
+  Address? _chosenAddress = null;
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   final dropDownKeyLocation = GlobalKey<DropdownSearchState<SMLocation>>();
@@ -102,155 +106,43 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(title: Text("Создать объявление")),
-        bottomNavigationBar: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: SharedPrefs().logged
-                ? Padding(
-                    padding: const EdgeInsets.only(bottom: 20.0),
-                    child: Container(
-                      height: context.height * 0.1,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Spacer(
-                            flex: 1,
-                          ),
-                          Flexible(
-                            flex: 1,
-                            child: _selectedIndex > 0
-                                ? Container(
-                                    decoration: BoxDecoration(
-                                      color: MColors
-                                          .green, // Background color of the button
-                                      shape: BoxShape.circle, // Circular shape
-                                    ),
-                                    height: 50,
-                                    width: 50,
-                                    child: IconButton(
-                                      icon: Icon(
-                                        Icons.arrow_back,
-                                        color: MColors.white,
-                                        weight: 1200,
-                                      ),
-                                      onPressed: () {
-                                        if (_selectedIndex > 0) {
-                                          _pageController.previousPage(
-                                            duration:
-                                                Duration(milliseconds: 300),
-                                            curve: Curves.ease,
-                                          );
-                                        }
-                                        setState(() {});
-                                      },
-                                    ))
-                                : Container(),
-                          ),
-                          Spacer(flex: 5),
-                          Flexible(
-                            flex: 1,
-                            child: _selectedIndex > 0
-                                ? Container(
-                                    height: 50,
-                                    width: 50,
-                                    decoration: BoxDecoration(
-                                      color: MColors
-                                          .green, // Background color of the button
-                                      shape: BoxShape.circle, // Circular shape
-                                    ),
-                                    child: _pageController.hasClients &&
-                                            (_pageController.page ?? 0) == 4
-                                        ? IconButton(
-                                            onPressed: _isLoading
-                                                ? null
-                                                : () async {
-                                                    setState(() {
-                                                      _isLoading = true;
-                                                    });
-                                                    try {
-                                                      if (_formKey.currentState!
-                                                          .validate()) {
-                                                        if (!await checkItem()) {
-                                                          setState(() {
-                                                            _isLoading = false;
-                                                          });
-                                                        }
-                                                      }
-                                                    } catch (e) {
-                                                      debugPrint("catch " +
-                                                          e.toString());
-                                                    }
-                                                    setState(() {
-                                                      _isLoading = false;
-                                                    });
-                                                    await Future.delayed(
-                                                        Duration(
-                                                            microseconds: 100));
-                                                    _pageController
-                                                        .jumpToPage(0);
-                                                  },
-                                            icon: _isLoading
-                                                ? CircularProgressIndicator
-                                                    .adaptive()
-                                                : Icon(
-                                                    Icons.check_rounded,
-                                                    color: MColors.white,
-                                                    weight: 1200,
-                                                  ))
-                                        : IconButton(
-                                            icon: Icon(
-                                              Icons.arrow_forward_rounded,
-                                              color: MColors.white,
-                                              weight: 1200,
-                                            ),
-                                            onPressed: () {
-                                              if (_formKey.currentState!
-                                                  .validate()) {
-                                                _formKey.currentState!.save();
-                                                _pageController.nextPage(
-                                                  duration: Duration(
-                                                      milliseconds: 300),
-                                                  curve: Curves.ease,
-                                                );
-                                              }
-                                              setState(() {});
-                                            }),
-                                  )
-                                : Container(),
-                          ),
-                          Spacer(
-                            flex: 1,
-                          ),
-                        ],
-                      ),
-                    ),
-                  )
-                : SizedBox(
-                    height: 10,
-                  )),
         body: SharedPrefs().logged
             ? Obx(
                 () => _userController.myContacts.isEmpty
                     ? Padding(
                         padding: EdgeInsets.all(40.0),
                         child: Center(child: NoContactButton()))
-                    : Form(
-                        key: _formKey,
-                        child: PageView(
-                          controller: _pageController,
-                          onPageChanged: (index) {
-                            setState(() {
-                              _selectedIndex = index;
-                            });
-                          },
-                          physics: NeverScrollableScrollPhysics(),
-                          children: <Widget>[
-                            _getItemTypeWidget(),
-                            _getNameAndDescription(),
-                            _getCategoryWidget(),
-                            _getSubwayWidget(),
-                            _getImageChoiceWidget(),
-                          ],
-                        ),
+                    : Stack(
+                        children: [
+                          Form(
+                            key: _formKey,
+                            child: PageView(
+                              controller: _pageController,
+                              onPageChanged: (index) {
+                                setState(() {
+                                  _selectedIndex = index;
+                                });
+                              },
+                              physics: NeverScrollableScrollPhysics(),
+                              children: <Widget>[
+                                _getItemTypeWidget(),
+                                _getNameAndDescription(),
+                                _getCategoryWidget(),
+                                _getLocationWidget(),
+                                _getImageChoiceWidget(),
+                              ],
+                            ),
+                          ),
+                          BottomNavButtons(
+                              selectedIndex: _selectedIndex,
+                              pageController: _pageController,
+                              isLoading: _isLoading,
+                              formKey: _formKey,
+                              onSubmit: saveItem,
+                              onStateChanged: () => setState(() {
+                                    _isLoading = !_isLoading;
+                                  }))
+                        ],
                       ),
               )
             : NeedRegistration());
@@ -395,7 +287,7 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
               )),
             ),
           ),
-          // Spacer(),
+          Spacer(),
         ],
       ),
     );
@@ -590,97 +482,25 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
     });
   }
 
-  Widget _getSubwayWidget() {
-    return Column(
-      children: [
-        SizedBox(
-          height: 10,
-        ),
-        Text(hintForLocation[_subcategoryId - 1]),
-        SizedBox(
-          height: 10,
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 20, right: 20),
-          child: DropdownSearch<SMLocation>.multiSelection(
-            key: dropDownKeyLocation,
-            autoValidateMode: AutovalidateMode.disabled,
-            validator: (value) {
-              if (value == null) {
-                return "Пожалуйста, выберите локации";
-              }
-              var chosen = value;
-              if (chosen.isEmpty) {
-                return "Пожалуйста, выберите локации";
-              }
-              if (chosen.length > 3) {
-                return "Пожалуйста, выберите не больше трёх локаций";
-              }
-              return null;
-            },
-            onChanged: (List<SMLocation>? data) {
-              setState(() {
-                _chosenLocations = data ?? [];
-              });
-            },
-            popupProps: PopupPropsMultiSelection.bottomSheet(
-              emptyBuilder: (context, searchEntry) => Center(
-                  child: Text('Пусто', style: TextStyle(color: Colors.blue))),
-              showSearchBox: true,
-              bottomSheetProps: BottomSheetProps(
-                  backgroundColor: MColors.white,
-                  constraints: BoxConstraints(maxWidth: context.width * 0.9)),
-              searchDelay: Duration(milliseconds: 10),
-              itemBuilder: (context, item, isDisabled, isSelected) => Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  width: context.width * 0.7,
-                  height: context.height * 0.07,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Flexible(
-                        flex: 8,
-                        child: Text(
-                          item.name,
-                          maxLines: 3,
-                          overflow: TextOverflow.fade,
-                        ),
-                      ),
-                      Spacer(flex: 1),
-                      Flexible(flex: 1, child: item.getLocationIcon)
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            decoratorProps: DropDownDecoratorProps(
-              baseStyle: getMediumTextStyle(),
-              decoration: InputDecoration(
-                labelText: _chosenLocations.length == 0
-                    ? "Выберите до трёх локаций"
-                    : "",
-                hintStyle: getMediumTextStyle(),
-                labelStyle: getMediumTextStyle(),
-                filled: false,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: MColors.secondaryGreen),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-            ),
-            compareFn: (item1, item2) => item1.name == item2.name,
-            items: (f, cs) => _commonController.locations,
-          ),
-        )
-      ],
+  Widget _getLocationWidget() {
+    return LocationSelectionWidget(
+      subcategoryId: _subcategoryId,
+      chosenLocations: _chosenLocations,
+      addresses: _userController.myAddresses,
+      // chosenAddress: _chosenAddress,
+      onLocationsChanged: (locations, address) {
+        setState(() {
+          _chosenLocations = locations;
+          _chosenAddress = address;
+        });
+      },
+      onAddressCreated: () {
+        // this._chosenAddress
+      },
     );
   }
 
-  Future<bool> checkItem() async {
+  Future<bool> saveItem() async {
     if (!(_formKey.currentState?.validate() ?? false)) {
       showErrorScaffold(context, "Не получилось :(");
       return false;
@@ -708,7 +528,8 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
         locationIds: _chosenLocations.map((e) => e.id).toList(),
         categoryIds: _chosenCategories.map((e) => e.id).toList(),
         subcategoryId: _subcategoryId,
-        downloadableImages: imageFileList);
+        downloadableImages: imageFileList,
+        address: _chosenAddress);
     var addResult = await _itemsController.addItem(item);
     if (!addResult) {
       showErrorScaffold(context, "Не получилось :(");

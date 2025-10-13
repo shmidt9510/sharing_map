@@ -116,23 +116,24 @@ class _LoginState extends State<RegistrationScreen> {
                     },
                   ),
                   SizedBox(
-                    width: context.width * 0.6,
+                    width: context.width * 0.7,
                     child: Text(
-                      'Я принимаю условия пользовательского соглашения',
-                      maxLines: 2,
-                      style: TextStyle(color: MColors.white),
+                      'Я принимаю условия пользовательского соглашения и политику обработки персональных данных',
+                      maxLines: 3,
+                      style: getMediumTextStyle(color: MColors.white),
                     ),
                   ),
                 ],
               ),
               const SizedBox(height: 20),
               InkWell(
-                  child: Text('Посмотреть условия пользовательского соглашения',
+                  child: Text(
+                      'Посмотреть условия пользовательского соглашения и политику обработки персональных данных',
                       style: getMediumTextStyle(color: MColors.white).copyWith(
                           decoration: TextDecoration.underline,
                           decorationColor: MColors.white)),
                   onTap: () => launchUrl(Uri.parse(
-                      'https://docs.google.com/document/d/1dVBC3nqMVMLXrZ6H6h3d340dCDHdBPxivykTD_Vfa_E/edit'))),
+                      'https://docs.google.com/document/d/1dVBC3nqMVMLXrZ6H6h3d340dCDHdBPxivykTD_Vfa_E'))),
               const SizedBox(height: 20),
               Column(
                 children: [

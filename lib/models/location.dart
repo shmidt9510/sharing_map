@@ -36,23 +36,16 @@ class SMLocation {
     return list.map((item) => SMLocation.fromJson(item)).toList();
   }
 
-  ///this method will prevent the override of toString
   String locationAsString() {
     return '#${this.id} ${this.name}';
   }
 
-  // ///this method will prevent the override of toString
-  // bool userFilterByCreationDate(String filter) {
-  //   return this.createdAt.toString().contains(filter);
-  // }
-
-  ///custom comparing function to check if two users are equal
   bool isEqual(SMLocation model) {
     return this.name == model.name;
   }
 
   @override
-  String toString() => this.name ?? "";
+  String toString() => this.name;
 }
 
 extension LocationIconString on SMLocation {
