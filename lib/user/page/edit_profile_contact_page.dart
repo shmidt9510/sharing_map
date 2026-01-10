@@ -31,7 +31,7 @@ class _EditProfileContactPageState extends State<EditProfileContactPage> {
 
   Widget buildContacts(BuildContext context, UserController controller) {
     return FutureBuilder(
-        future: controller.getUserContact(SharedPrefs().userId),
+        future: controller.getUserContacts(SharedPrefs().userId),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return Container();

@@ -286,7 +286,7 @@ class _LocationSelectionWidgetState extends State<LocationSelectionWidget> {
     if (confirmed != true || !mounted) return;
 
     try {
-      await AddressService.deleteAddress(address.id);
+      await AddressService().deleteAddress(address.id);
 
       if (mounted) {
         setState(() {

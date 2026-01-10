@@ -339,7 +339,7 @@ Widget GetUserContactWidget(BuildContext context, String userId) {
   final UserController _userController = Get.find<UserController>();
   return SharedPrefs().logged
       ? FutureBuilder(
-          future: _userController.getUserContact(userId),
+          future: _userController.getUserContacts(userId),
           builder: (context, snapshot) {
             if (snapshot.hasError) {
               return Container();

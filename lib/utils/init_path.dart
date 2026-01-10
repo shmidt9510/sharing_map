@@ -6,7 +6,7 @@ import 'package:sharing_map/utils/shared.dart';
 
 Future<String> checkInitPath() async {
   final CommonController _commonController = Get.find<CommonController>();
-  var hasInternet = await _commonController.checkInternet();
+  var hasInternet = await _commonController.checkInternetConnectivity();
   if (!hasInternet) {
     return SMPath.noNetwork;
   }
@@ -15,8 +15,8 @@ Future<String> checkInitPath() async {
     return SMPath.onboard;
   }
   final UserController _usersController = Get.find<UserController>();
-  var isAuhtorized = await _usersController.CheckAuthorization();
-  isAuhtorized |= (await _usersController.CheckAuthorization());
+  var isAuhtorized = await _usersController.checkAuthorization();
+  isAuhtorized |= (await _usersController.checkAuthorization());
   if (SharedPrefs().chosenCity == -1) {
     return SMPath.chooseCity;
   }

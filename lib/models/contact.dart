@@ -36,6 +36,17 @@ class UserContact {
         "contact": contact,
         "type": type.name.toString(),
       };
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is UserContact &&
+          runtimeType == other.runtimeType &&
+          type == other.type &&
+          contact == other.contact;
+
+  @override
+  int get hashCode => type.hashCode ^ contact.hashCode;
 }
 
 extension UserIcon on UserContact {

@@ -30,49 +30,49 @@ class _ResetPasswordScreenState extends State<ResetPasswordCodeScreen> {
   build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-        body: Column(
-          children: [
-            SizedBox(
-              height: 20,
-            ),
-            VerificationCode(
-              textStyle: Theme.of(context)
-                  .textTheme
-                  .bodyMedium!
-                  .copyWith(color: Theme.of(context).primaryColor),
-              keyboardType: TextInputType.number,
-              length: 4,
-              margin: const EdgeInsets.all(12),
-              onCompleted: (String value) {
-                setState(() {
-                  _waitSignupResult(value, context);
-                });
-              },
-              onEditing: (bool value) {
-                setState(() {
-                  _onEditing = value;
-                });
-                if (!_onEditing) FocusScope.of(context).unfocus();
-              },
-            ),
-            const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Center(
-                child: Text(
-                  'Мы отправили вам код на почту',
-                  style: TextStyle(fontSize: 20.0),
-                ),
+      body: Column(
+        children: [
+          SizedBox(
+            height: 20,
+          ),
+          VerificationCode(
+            textStyle: Theme.of(context)
+                .textTheme
+                .bodyMedium!
+                .copyWith(color: Theme.of(context).primaryColor),
+            keyboardType: TextInputType.number,
+            length: 4,
+            margin: const EdgeInsets.all(12),
+            onCompleted: (String value) {
+              setState(() {
+                _waitSignupResult(value, context);
+              });
+            },
+            onEditing: (bool value) {
+              setState(() {
+                _onEditing = value;
+              });
+              if (!_onEditing) FocusScope.of(context).unfocus();
+            },
+          ),
+          const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Center(
+              child: Text(
+                'Мы отправили вам код на почту',
+                style: TextStyle(fontSize: 20.0),
               ),
             ),
-            Spacer()
-          ],
-        ),
+          ),
+          Spacer()
+        ],
+      ),
     );
   }
 
   Future<bool> _waitSignupResult(String code, BuildContext context) async {
-    bool result = await _userController.ResetPasswordConfirm(code);
-    if (!result) {
+    final result = await _userController.resetPasswordConfirm(code);
+    if (result != AuthResult.success) {
       var snackBar = SnackBar(
         content: const Text('Что-то пошло не так'),
         action: SnackBarAction(
@@ -85,7 +85,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordCodeScreen> {
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
       return false;
     }
-    _userController.setToken(code);
     GoRouter.of(context).go(SMPath.start + "/" + SMPath.forgetPasswordSet);
     return true;
   }

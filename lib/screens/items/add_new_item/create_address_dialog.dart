@@ -1,14 +1,11 @@
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sharing_map/controllers/common_controller.dart';
-import 'package:sharing_map/models/address.dart';
 import 'package:sharing_map/models/location.dart';
 import 'package:sharing_map/services/address_dto.dart';
 import 'package:sharing_map/services/address_service.dart';
 import 'package:sharing_map/theme.dart';
 import 'package:sharing_map/utils/colors.dart';
-import 'package:sharing_map/utils/texts.dart';
 import 'package:sharing_map/widgets/allWidgets.dart';
 
 class CreateAddressDialog extends StatefulWidget {
@@ -21,6 +18,7 @@ class CreateAddressDialog extends StatefulWidget {
 }
 
 class _CreateAddressDialogState extends State<CreateAddressDialog> {
+  final _addressService = AddressService();
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _descriptionController = TextEditingController();
@@ -177,7 +175,7 @@ class _CreateAddressDialogState extends State<CreateAddressDialog> {
 
     try {
       final createDto = _buildCreateDto();
-      var address = await AddressService.addAddress(createDto);
+      var address = await _addressService.addAddress(createDto);
 
       if (mounted) {
         Navigator.of(context).pop(address);

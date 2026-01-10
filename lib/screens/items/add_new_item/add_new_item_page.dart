@@ -434,8 +434,7 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
                                   : MColors.inputField,
                               shape: BoxShape.circle,
                               image: DecorationImage(
-                                image: _commonController
-                                    .chooseCategorieImage(item),
+                                image: _commonController.getCategoryImage(item),
                                 fit: BoxFit.fitHeight,
                               ),
                               border: Border.all(

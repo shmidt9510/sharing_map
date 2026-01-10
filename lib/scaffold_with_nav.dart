@@ -1,7 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
+import 'package:sharing_map/services/core/http_client.dart';
 import 'package:sharing_map/utils/colors.dart';
 
 class ScaffoldWithNavBar extends StatelessWidget {
@@ -17,6 +19,12 @@ class ScaffoldWithNavBar extends StatelessWidget {
     var _height = context.height * 0.03;
     return Scaffold(
         body: navigationShell,
+        floatingActionButton: kDebugMode
+            ? FloatingActionButton(
+                onPressed: () => AppHttpClient().showInspector(),
+                child: const Icon(Icons.bug_report),
+              )
+            : Container(),
         bottomNavigationBar: Container(
           child: BottomNavigationBar(
             unselectedItemColor: MColors.darkGrey,

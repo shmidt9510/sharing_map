@@ -1,55 +1,68 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
-
+import 'package:sharing_map/services/core/http_client.dart';
+import 'package:sharing_map/services/core/models/api_response.dart';
 import 'package:sharing_map/utils/constants.dart';
-import 'interceptors.dart';
-
-// import 'package:sharing_map/items/models/photo.dart';
-// import 'package:flutter/foundation.dart';
-import 'package:http_interceptor/http_interceptor.dart';
 import 'package:sharing_map/utils/s3_client.dart';
 
-class PhotoServiceRetryPolicy extends RetryPolicy {
-  @override
-  int maxRetryAttempts = 2;
-}
+class PhotoService {
+  final http.Client _client = AppHttpClient().client;
 
-class PhotoWebService {
-  static var client = InterceptedClient.build(
-    requestTimeout: Duration(seconds: 5),
-    retryPolicy: PhotoServiceRetryPolicy(),
-    interceptors: [
-      LoggerInterceptor(),
-      RefreshTokenInterceptor(),
-      AuthorizationInterceptor(),
-    ],
-  );
-
+  /// Add photos for an item
   Future<bool> addPhotos(List<XFile> files, String itemId) async {
-    var uri = "/" + itemId + "/image/urls";
-    var imageCount = files.length;
-    var response =
-        await client.get(Uri.https(Constants.BACK_URL, uri), headers: {
-      "content-type": "application/json",
-      "accept": "application/json",
-    }, params: {
-      "count": "$imageCount"
-    });
+    if (files.isEmpty) return true;
 
-    if (response.statusCode != HttpStatus.ok) {
-      return Future.error("error code " + response.statusCode.toString());
-    }
-    final List<dynamic> data = json.decode(response.body);
-    if (data.length != files.length) {
-      return Future.error("length of urls and photos are not equal");
-    }
-    for (int i = 0; i < files.length; i++) {
-      await S3Client.UploadFile(Uri.parse(data[i].toString()), files[i])
-          .onError((error, stackTrace) {
-        return false;
+    try {
+      // Get presigned URLs
+      final uri = Uri.https(Constants.BACK_URL, '/$itemId/image/urls', {
+        'count': files.length.toString(),
       });
+
+      final response = await _client.get(
+        uri,
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+      );
+
+      if (response.statusCode != 200) {
+        throw ApiException(
+          'failed_get_upload_urls',
+          response.statusCode,
+        );
+      }
+
+      final List<dynamic> urls = jsonDecode(response.body);
+
+      if (urls.length != files.length) {
+        throw ApiException(
+          'url_count_mismatch',
+          0,
+          'Expected ${files.length} URLs, got ${urls.length}',
+        );
+      }
+
+      // Upload files to S3
+      for (int i = 0; i < files.length; i++) {
+        final uploadSuccess = await S3Client.UploadFile(
+          Uri.parse(urls[i] as String),
+          files[i],
+        );
+
+        if (!uploadSuccess) {
+          throw Exception('Failed to upload file ${files[i].name}');
+        }
+      }
+
+      return true;
+    } on SocketException {
+      throw ApiException('network_error', 0);
+    } catch (e) {
+      print('Photo upload error: $e');
+      rethrow;
     }
-    return true;
   }
 }

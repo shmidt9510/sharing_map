@@ -19,4 +19,10 @@ class City {
         "updated_at": updatedAt,
         "position": position?.toJson()
       };
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is City && other.id == id;
+  }
 }

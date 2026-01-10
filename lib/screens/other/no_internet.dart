@@ -48,11 +48,11 @@ class _NoInternetScreenState extends State<NoInternetScreen> {
                 height: 20.0,
               ),
               LoadingButton("Повторить", () async {
-                if (await _commonController.checkInternet()) {
+                if (await _commonController.checkInternetConnectivity()) {
                   GoRouter.of(context).go("/");
                 } else {
                   try {
-                    await CommonWebService.checkInternetConnectivity();
+                    await _commonController.checkInternetConnectivity();
                   } catch (e) {
                     showErrorScaffold(context,
                         "Нет интернета или наш сервер не отвечает 😨 ");

@@ -58,7 +58,8 @@ class _ResetPasswordMailState extends State<ResetPasswordMailScreen> {
               getButton(context, 'Поменять', () async {
                 if (_formKey.currentState?.validate() ?? false) {
                   var mail = _controllerUsername.text.replaceAll(' ', '');
-                  if (await _userController.ResetPasswordStart(mail)) {
+                  if (await _userController.resetPasswordStart(mail) ==
+                      AuthResult.success) {
                     GoRouter.of(context)
                         .go(SMPath.start + "/" + SMPath.forgetPasswordCode);
                   } else {

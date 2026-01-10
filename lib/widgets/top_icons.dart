@@ -170,12 +170,12 @@ class _TopIconsState extends State<TopIcons> {
             actions: [
               LoadingButton("Выбрать", () async {
                 try {
-                  await _commonController.getLocations(dropdownValue.id, true);
+                  await _commonController.getLocationById(dropdownValue.id);
                 } catch (e) {
                   showErrorScaffold(context, "Не получилось");
                 }
                 SharedPrefs().chosenCity = dropdownValue.id;
-                _itemsController.refershAll();
+                _itemsController.refreshAll();
                 Navigator.of(context).maybePop();
               },
                   textStyle: getBigTextStyle()
