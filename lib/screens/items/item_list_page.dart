@@ -54,56 +54,52 @@ class _ItemListPageState extends State<ItemListPage> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: MColors.white,
-        body: NestedScrollView(
-          floatHeaderSlivers: true,
-          headerSliverBuilder: ((context, innerBoxIsScrolled) => [
-                SliverAppBar(
-                  backgroundColor: MColors.transparent,
-                  toolbarHeight: height,
-                  title: SizedBox(
-                    height: height,
-                    child: Column(
-                      children: [
-                        Expanded(
-                          child: TopIcons(
-                            onItemTypeChange: (int type) => setState(() {
-                              _itemType = type;
-                            }),
-                          ),
-                          flex: iconsFlex,
-                        ),
-                        Expanded(
-                          flex: categoryFlex,
-                          child: Container(
-                            height: categoryFlex * height / flexSum,
-                            padding:
-                                EdgeInsets.only(top: padding, bottom: padding),
-                            child: CategoriesButtonWidget(
-                                (int id) => setState(() {
-                                      _chosenFilter = id;
-                                    }),
-                                categoryFlex * height / flexSum -
-                                    2.2 * padding),
-                          ),
-                        ),
-                      ],
+        body: Column(
+          children: [
+            Container(
+              color: MColors.white,
+              height: height,
+              child: Column(
+                children: [
+                  Expanded(
+                    child: TopIcons(
+                      onItemTypeChange: (int type) => setState(() {
+                        _itemType = type;
+                      }),
+                      onSearchChanged: (String query) {
+                        _itemsController.setSearchQuery(query);
+                      },
+                    ),
+                    flex: iconsFlex,
+                  ),
+                  Expanded(
+                    flex: categoryFlex,
+                    child: Container(
+                      height: categoryFlex * height / flexSum,
+                      padding: EdgeInsets.only(top: padding, bottom: padding),
+                      child: CategoriesButtonWidget(
+                          (int id) => setState(() {
+                                _chosenFilter = id;
+                              }),
+                          categoryFlex * height / flexSum - 2.2 * padding),
                     ),
                   ),
-                  primary: false,
-                  floating: true,
-                  titleSpacing: 0,
-                )
-              ]),
-          body: RefreshIndicator.adaptive(
-            onRefresh: () {
-              return _updateOnFetch();
-            },
-            child: (_itemType == 1)
-                ? ItemsGiveListView(
-                    itemFilter: _chosenFilter, key: ValueKey(_chosenFilter))
-                : ItemsGetListView(
-                    itemFilter: _chosenFilter, key: ValueKey(_chosenFilter)),
-          ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: RefreshIndicator.adaptive(
+                onRefresh: _updateOnFetch,
+                child: (_itemType == 1)
+                    ? ItemsGiveListView(
+                        itemFilter: _chosenFilter,
+                        key: ValueKey("give_$_chosenFilter"))
+                    : ItemsGetListView(
+                        itemFilter: _chosenFilter,
+                        key: ValueKey("get_$_chosenFilter")),
+              ),
+            ),
+          ],
         ),
       ),
     );

@@ -29,9 +29,8 @@ class _ItemsListViewState extends State<ItemsGetListView> {
 
   @override
   Widget build(BuildContext context) => PagedListView<int, Item>.separated(
-        physics: NeverScrollableScrollPhysics(),
+        physics: const AlwaysScrollableScrollPhysics(),
         scrollDirection: Axis.vertical,
-        shrinkWrap: true,
         pagingController:
             _itemsController.getPagingControllers[widget.itemFilter] ??
                 PagingController(firstPageKey: 0),
