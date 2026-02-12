@@ -73,14 +73,15 @@ class AddressCard extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
           ),
         ),
-        GestureDetector(
-          onTap: onDelete,
-          child: Icon(
-            Icons.close,
-            size: 18,
-            color: MColors.grey,
-          ),
-        ),
+        // Убрал крестик пока что
+        // GestureDetector(
+        //   onTap: onDelete,
+        //   child: Icon(
+        //     Icons.close,
+        //     size: 18,
+        //     color: MColors.grey,
+        //   ),
+        // ),
       ],
     );
   }

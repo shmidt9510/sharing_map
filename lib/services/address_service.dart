@@ -16,17 +16,17 @@ class AddressService extends BaseService<Address> {
     return getList('$basePath/all', fromJson: Address.fromJson);
   }
 
-  Future<Address> addAddress(CreateAddressDto createAddressDto) async {
-    return post('$basePath/add', createAddressDto as Address);
+  Future<Address> addAddress(Address address) async {
+    return post('$basePath/add', address);
   }
 
   Future<AddressResponseDto> updateAddress(
     String addressId,
-    UpdateAddressDto updateAddressDto,
+    Address address,
   ) async {
     final response = await put(
       '$basePath/update/$addressId',
-      updateAddressDto as Address,
+      address,
     );
     return AddressResponseDto.fromJson(toJson(response));
   }

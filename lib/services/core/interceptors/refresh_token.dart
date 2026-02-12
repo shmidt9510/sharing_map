@@ -96,7 +96,6 @@ class RefreshTokenInterceptor implements HttpInterceptor {
         SharedPrefs().logged = false;
       }
     } catch (e) {
-      print('Token refresh failed: $e');
       await SharedPrefs().clear();
       rethrow;
     } finally {

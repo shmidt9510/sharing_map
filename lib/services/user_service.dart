@@ -129,13 +129,14 @@ class UserService extends BaseService<User> {
       '$basePath/update',
       user,
       queryParams: {'id': SharedPrefs().userId},
+      haveBody: false,
     );
     return true;
   }
 
   /// Update user photo
   Future<bool> updateUserPhoto(XFile file) async {
-    return _photoService.addPhotos([file], 'user');
+    return _photoService.addUserPhotos([file]);
   }
 
   /// Get user contacts

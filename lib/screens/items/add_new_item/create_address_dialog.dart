@@ -1,6 +1,8 @@
+import 'package:aws_common/aws_common.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sharing_map/controllers/common_controller.dart';
+import 'package:sharing_map/models/address.dart';
 import 'package:sharing_map/models/location.dart';
 import 'package:sharing_map/services/address_dto.dart';
 import 'package:sharing_map/services/address_service.dart';
@@ -174,8 +176,7 @@ class _CreateAddressDialogState extends State<CreateAddressDialog> {
     setState(() => _isLoading = true);
 
     try {
-      final createDto = _buildCreateDto();
-      var address = await _addressService.addAddress(createDto);
+      var address = await _addressService.addAddress(_buildAddress());
 
       if (mounted) {
         Navigator.of(context).pop(address);
@@ -191,14 +192,16 @@ class _CreateAddressDialogState extends State<CreateAddressDialog> {
     }
   }
 
-  CreateAddressDto _buildCreateDto() {
-    return CreateAddressDto(
+  Address _buildAddress() {
+    return Address(
+      id: "create",
+      userId: "create",
       name: _nameController.text.trim(),
       description: _descriptionController.text.trim().isEmpty
           ? null
           : _descriptionController.text.trim(),
       cityId: widget.selectedLocations.first.cityId.toString(),
-      locationIds:
+      locations:
           widget.selectedLocations.map((loc) => loc.id.toString()).toList(),
     );
   }

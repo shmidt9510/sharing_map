@@ -166,7 +166,7 @@ abstract class BaseService<T> {
 
   /// PUT request
   Future<T> put(String path, T model,
-      {Map<String, dynamic>? queryParams}) async {
+      {Map<String, dynamic>? queryParams, bool haveBody = true}) async {
     try {
       final uri = buildUri(path, queryParams);
       final body = jsonEncode(toJson(model));
@@ -176,9 +176,11 @@ abstract class BaseService<T> {
         headers: _defaultHeaders,
         body: body,
       );
-
-      return handleResponse(
-          response, (json) => fromJson(json as Map<String, dynamic>));
+      if (haveBody) {
+        return handleResponse(
+            response, (json) => fromJson(json as Map<String, dynamic>));
+      }
+      return model;
     } on SocketException {
       throw ApiException('network_error', 0);
     } catch (e) {

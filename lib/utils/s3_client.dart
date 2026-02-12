@@ -43,12 +43,21 @@ class S3Client {
     );
   }
 
-  static Future UploadFile(Uri url, XFile image) async {
-    var response = await put(url,
+  static Future<bool> UploadFile(Uri url, XFile image) async {
+    try {
+      var response = await put(
+        url,
         body: await image.readAsBytes(),
-        headers: {"Content-Type": "image/jpg"});
-    if (response.statusCode / 200 != 1) {
-      return Future.error(response.toString());
+        headers: {"Content-Type": "image/jpg"},
+      );
+
+      if (response.statusCode < 200 || response.statusCode >= 300) {
+        return false;
+      }
+
+      return true;
+    } catch (e) {
+      return false;
     }
   }
 }
