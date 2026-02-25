@@ -31,9 +31,7 @@ class _ItemsListViewState extends State<ItemsGetListView> {
   Widget build(BuildContext context) => PagedListView<int, Item>.separated(
         physics: const AlwaysScrollableScrollPhysics(),
         scrollDirection: Axis.vertical,
-        pagingController:
-            _itemsController.getPagingControllers[widget.itemFilter] ??
-                PagingController(firstPageKey: 0),
+        pagingController: _itemsController.getGetController(widget.itemFilter),
         builderDelegate: PagedChildBuilderDelegate<Item>(
           firstPageErrorIndicatorBuilder: (_) => Center(
             child: Column(children: [

@@ -172,6 +172,10 @@ class _CreateAddressDialogState extends State<CreateAddressDialog> {
 
   Future<void> _saveAddress() async {
     if (!_formKey.currentState!.validate()) return;
+    if (widget.selectedLocations.isEmpty) {
+      _showErrorSnackBar("Выберите хотя бы одну локацию");
+      return;
+    }
 
     setState(() => _isLoading = true);
 

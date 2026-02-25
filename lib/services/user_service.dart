@@ -57,10 +57,21 @@ class UserWebService {
       AuthorizationInterceptor(),
     ],
   );
+  static var authlessClient = InterceptedClient.build(
+    requestTimeout: Duration(seconds: 10),
+    retryPolicy: UserServiceRetryPolicy(),
+    interceptors: [
+      LoggerInterceptor(),
+    ],
+  );
 
   static Future<bool> login(String email, String password) async {
     try {
-      var response = await client.post(Constants.buildUri("/login"),
+      await SharedPrefs().setAuthTokenAsync("");
+      await SharedPrefs().setRefreshTokenAsync("");
+      await SharedPrefs().setLoggedAsync(false);
+
+      var response = await authlessClient.post(Constants.buildUri("/login"),
           headers: {
             "content-type": "application/json",
             "accept": "application/json",
@@ -69,11 +80,12 @@ class UserWebService {
       var bodyDecoded = jsonDecode(response.body);
       if (response.statusCode == HttpStatus.ok) {
         var authToken = bodyDecoded["accessToken"].toString();
-        SharedPrefs().logged = true;
-        SharedPrefs().authToken = authToken;
-        SharedPrefs().refreshToken = bodyDecoded["refreshToken"].toString();
+        await SharedPrefs().setLoggedAsync(true);
+        await SharedPrefs().setAuthTokenAsync(authToken);
+        await SharedPrefs()
+            .setRefreshTokenAsync(bodyDecoded["refreshToken"].toString());
         Map<String, dynamic> decodedToken = JwtDecoder.decode(authToken);
-        SharedPrefs().userId = decodedToken["user_id"] as String;
+        await SharedPrefs().setUserIdAsync(decodedToken["user_id"] as String);
       } else {
         return false;
       }
@@ -85,7 +97,7 @@ class UserWebService {
 
   static Future<String> signup(
       String email, String username, String password) async {
-    var response = await client.post(Constants.buildUri("/signup"),
+    var response = await authlessClient.post(Constants.buildUri("/signup"),
         headers: {
           "content-type": "application/json",
           "accept": "application/json",
@@ -114,7 +126,7 @@ class UserWebService {
 
   static Future<bool> signupConfirm(String token, String tokenId) async {
     var response =
-        await client.post(Constants.buildUri("/signup/confirm"),
+        await authlessClient.post(Constants.buildUri("/signup/confirm"),
             headers: {
               "content-type": "application/json",
               "accept": "application/json",
@@ -125,13 +137,14 @@ class UserWebService {
       return Future.error(
           "failed_with_status_code_" + response.statusCode.toString());
     }
-    SharedPrefs().logged = true;
-    SharedPrefs().authToken = bodyDecoded["accessToken"].toString();
-    SharedPrefs().refreshToken = bodyDecoded["refreshToken"].toString();
+    await SharedPrefs().setLoggedAsync(true);
+    await SharedPrefs().setAuthTokenAsync(bodyDecoded["accessToken"].toString());
+    await SharedPrefs()
+        .setRefreshTokenAsync(bodyDecoded["refreshToken"].toString());
 
     Map<String, dynamic> decodedToken =
         JwtDecoder.decode(bodyDecoded["accessToken"].toString());
-    SharedPrefs().userId = decodedToken["user_id"] as String;
+    await SharedPrefs().setUserIdAsync(decodedToken["user_id"] as String);
     return true;
   }
 
@@ -187,6 +200,25 @@ class UserWebService {
     }
     var jsonData = jsonDecode(utf8.decode(response.bodyBytes));
     return User.fromJson(jsonData);
+  }
+
+  static Future<int> getTransferredItemsCount(String id) async {
+    if (id.isEmpty) {
+      return Future.error("empty_user_id");
+    }
+    var uri = "/users/$id/transferred-items/count";
+    var response =
+        await client.get(Constants.buildUri(uri), headers: {
+      "content-type": "application/json",
+      "accept": "application/json",
+    }).timeout(Duration(seconds: 5));
+
+    if (response.statusCode != HttpStatus.ok) {
+      Future.error("error code " + response.statusCode.toString());
+      return Future.error("failed_getting_transferred_items_count");
+    }
+    var jsonData = jsonDecode(utf8.decode(response.bodyBytes));
+    return int.tryParse(jsonData["count"].toString()) ?? 0;
   }
 
   static Future<List<UserContact>> getUserContact(String id) async {

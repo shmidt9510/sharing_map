@@ -85,10 +85,17 @@ class _ItemActionsWidgetState extends State<ItemActionsWidget> {
 
   Future<bool> _editItem(BuildContext context) async {
     if (widget._item.cityId != SharedPrefs().chosenCity) {
-      var _chosenCity = _commonController.cities
-          .firstWhere((element) => element.id == widget._item.cityId);
+      String? cityName;
+      for (final city in _commonController.cities) {
+        if (city.id == widget._item.cityId) {
+          cityName = city.name;
+          break;
+        }
+      }
       showErrorScaffold(context,
-          "Чтобы менять объявления в городе ${_chosenCity.name}, пожалуйста переключитесь на него");
+          cityName == null
+              ? "Чтобы менять объявления, пожалуйста переключитесь на нужный город"
+              : "Чтобы менять объявления в городе $cityName, пожалуйста переключитесь на него");
     } else {
       GoRouter.of(context).go(SMPath.home + "/itemEdit/${widget._item.id}");
     }

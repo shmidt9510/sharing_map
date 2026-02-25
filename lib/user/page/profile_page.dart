@@ -6,6 +6,7 @@ import 'package:sharing_map/controllers/user_controller.dart';
 import 'package:sharing_map/models/contact.dart';
 import 'package:sharing_map/models/user.dart';
 import 'package:sharing_map/path.dart';
+import 'package:sharing_map/services/user_service.dart';
 import 'package:sharing_map/theme.dart';
 import 'package:sharing_map/user/page/user_actions.dart';
 import 'package:sharing_map/utils/chose_image_source.dart';
@@ -16,6 +17,20 @@ import 'package:sharing_map/widgets/allWidgets.dart';
 import 'package:sharing_map/widgets/image.dart';
 import 'package:sharing_map/widgets/editable_text.dart';
 import 'package:sharing_map/widgets/need_registration.dart';
+
+class _AchievementInfo {
+  final String name;
+  final String imageAssetPath;
+  final int minTransferredItems;
+  final String description;
+
+  const _AchievementInfo({
+    required this.name,
+    required this.imageAssetPath,
+    required this.minTransferredItems,
+    required this.description,
+  });
+}
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -28,10 +43,29 @@ class _ProfilePageState extends State<ProfilePage> {
   XFile? profileImage;
   TextEditingController _bioController = TextEditingController();
   TextEditingController _userNameController = TextEditingController();
+  Future<int>? _transferredItemsCountFuture;
+  final List<_AchievementInfo> _achievements = const [
+    _AchievementInfo(
+      name: "name1",
+      imageAssetPath: "assets/images/achievement_vase_1.jpg",
+      minTransferredItems: 5,
+      description: "Шаблонный текст для пояснения первой ачивки.",
+    ),
+    _AchievementInfo(
+      name: "name2",
+      imageAssetPath: "assets/images/achievement_vase_2.jpg",
+      minTransferredItems: 10,
+      description: "Шаблонный текст для пояснения второй ачивки.",
+    ),
+  ];
 
   @override
   void initState() {
     super.initState();
+    final userId = SharedPrefs().userId;
+    _transferredItemsCountFuture = userId.isEmpty
+        ? Future.value(0)
+        : UserWebService.getTransferredItemsCount(userId);
   }
 
   @override
@@ -205,6 +239,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                       ],
                                     ),
                                   ),
+                            const SizedBox(height: 16),
+                            buildAchievementsSection(),
                             const SizedBox(height: 8),
                           ],
                         ),
@@ -278,6 +314,174 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
           ]);
         });
+  }
+
+  Widget buildAchievementsSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "Ачивки",
+          style: getBigTextStyle(),
+        ),
+        const SizedBox(height: 10),
+        Container(
+          width: double.infinity,
+          margin: const EdgeInsets.only(right: 30),
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: Colors.black12),
+            boxShadow: const [
+              BoxShadow(
+                color: Colors.black12,
+                blurRadius: 8,
+                offset: Offset(0, 2),
+              )
+            ],
+          ),
+          child: FutureBuilder<int>(
+            future: _transferredItemsCountFuture,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const SizedBox(
+                  height: 80,
+                  child: Center(child: CircularProgressIndicator.adaptive()),
+                );
+              }
+
+              if (snapshot.hasError) {
+                return Text(
+                  "Не удалось загрузить ачивки",
+                  style: getHintTextStyle(),
+                );
+              }
+
+              final transferredItemsCount = snapshot.data ?? 0;
+              return Column(
+                children: _achievements
+                    .map((achievement) => buildAchievementCard(
+                          achievement,
+                          transferredItemsCount,
+                        ))
+                    .toList(),
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget buildAchievementCard(
+      _AchievementInfo achievement, int transferredItemsCount) {
+    final isUnlocked = transferredItemsCount > achievement.minTransferredItems;
+    return InkWell(
+      borderRadius: BorderRadius.circular(12),
+      onTap: () => showAchievementDialog(achievement, isUnlocked),
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 10),
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: Colors.black12),
+        ),
+        child: Row(
+          children: [
+            Opacity(
+              opacity: isUnlocked ? 1 : 0.35,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Image.asset(
+                  achievement.imageAssetPath,
+                  width: 64,
+                  height: 64,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    achievement.name,
+                    style: getMediumTextStyle(),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    isUnlocked
+                        ? "Открыта"
+                        : "Нужно передать больше ${achievement.minTransferredItems} вещей",
+                    style: getHintTextStyle(),
+                  ),
+                ],
+              ),
+            ),
+            Icon(
+              isUnlocked ? Icons.emoji_events : Icons.lock_outline,
+              color: isUnlocked ? MColors.green : Colors.grey,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void showAchievementDialog(_AchievementInfo achievement, bool isUnlocked) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        final screenSize = MediaQuery.of(context).size;
+        final maxImageHeight = screenSize.height * 0.5;
+        final maxImageWidth = screenSize.width * 0.8;
+
+        return AlertDialog(
+          title: Text(achievement.name),
+          content: SizedBox(
+            width: maxImageWidth,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Center(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(
+                          maxHeight: maxImageHeight,
+                          maxWidth: maxImageWidth,
+                        ),
+                        child: Image.asset(
+                          achievement.imageAssetPath,
+                          fit: BoxFit.contain,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    isUnlocked
+                        ? achievement.description
+                        : "Шаблонный текст: ачивка будет открыта после выполнения условия.",
+                    style: getMediumTextStyle(),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text("Закрыть"),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   Widget buildName(User user) => Column(

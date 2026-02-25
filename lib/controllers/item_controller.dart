@@ -23,23 +23,9 @@ class ItemController extends GetxController {
   }
 
   Future<bool> onSplashScreen() async {
-    final categories = Get.find<CommonController>().categories;
-    if (categories.isEmpty) {
+    ensureCategoryPagingControllers();
+    if (givePagingControllers.isEmpty || getPagingControllers.isEmpty) {
       return Future.error("");
-    }
-    for (int i = 0; i < categories.length; i++) {
-      givePagingControllers[categories[i].id] =
-          PagingController(firstPageKey: 0);
-      givePagingControllers[categories[i].id]
-          ?.addPageRequestListener((pageKey) {
-        _fetchGivePage(pageKey, categories[i].id);
-      });
-
-      getPagingControllers[categories[i].id] =
-          PagingController(firstPageKey: 0);
-      getPagingControllers[categories[i].id]?.addPageRequestListener((pageKey) {
-        _fetchGetPage(pageKey, categories[i].id);
-      });
     }
     return true;
   }
@@ -145,6 +131,7 @@ class ItemController extends GetxController {
   }
 
   void refershAll() {
+    ensureCategoryPagingControllers();
     givePagingControllers.forEach((key, value) {
       value.itemList = [];
       value.refresh();
@@ -199,5 +186,39 @@ class ItemController extends GetxController {
     } catch (e) {
       return false;
     }
+  }
+
+  void ensureCategoryPagingControllers() {
+    final categories = Get.find<CommonController>().categories;
+    for (final category in categories) {
+      getGiveController(category.id);
+      getGetController(category.id);
+    }
+  }
+
+  PagingController<int, Item> getGiveController(int itemFilter) {
+    return givePagingControllers.putIfAbsent(
+      itemFilter,
+      () {
+        final controller = PagingController<int, Item>(firstPageKey: 0);
+        controller.addPageRequestListener((pageKey) {
+          _fetchGivePage(pageKey, itemFilter);
+        });
+        return controller;
+      },
+    );
+  }
+
+  PagingController<int, Item> getGetController(int itemFilter) {
+    return getPagingControllers.putIfAbsent(
+      itemFilter,
+      () {
+        final controller = PagingController<int, Item>(firstPageKey: 0);
+        controller.addPageRequestListener((pageKey) {
+          _fetchGetPage(pageKey, itemFilter);
+        });
+        return controller;
+      },
+    );
   }
 }

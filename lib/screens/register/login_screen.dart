@@ -5,6 +5,7 @@ import 'package:sharing_map/controllers/user_controller.dart';
 import 'package:sharing_map/path.dart';
 import 'package:sharing_map/theme.dart';
 import 'package:sharing_map/utils/colors.dart';
+import 'package:sharing_map/widgets/loading_button.dart';
 // import 'package:sharing_map/widgets/textInputWidget.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:sharing_map/widgets/allWidgets.dart';
@@ -114,15 +115,18 @@ class _LoginState extends State<LoginScreen> {
                   SizedBox(
                     height: 5,
                   ),
-                  getButton(context, "Войти", () async {
-                    var mail = _controllerUsername.text.replaceAll(' ', '');
-                    if (await _userController.Login(
-                        mail, _controllerPassword.text)) {
-                      GoRouter.of(context).go(SMPath.home);
-                    } else {
-                      showErrorScaffold(context, 'Не получилось :(');
-                    }
-                  }, color: MColors.secondaryGreen),
+                  LoadingButton(
+                    "Войти",
+                    () async {
+                      var mail = _controllerUsername.text.replaceAll(' ', '');
+                      if (await _userController.Login(
+                          mail, _controllerPassword.text)) {
+                        GoRouter.of(context).go(SMPath.home);
+                      } else {
+                        showErrorScaffold(context, 'Не получилось :(');
+                      }
+                    },
+                  ),
                   const SizedBox(height: 20),
                   getButton(context, "Продолжить без регистрации", () {
                     GoRouter.of(context).go(SMPath.home);
