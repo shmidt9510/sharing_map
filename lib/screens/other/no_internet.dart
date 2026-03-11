@@ -19,8 +19,8 @@ class NoInternetScreen extends StatefulWidget {
 
 class _NoInternetScreenState extends State<NoInternetScreen> {
   final UserController _usersController = Get.find<UserController>();
-  final CommonController _commonController = Get.put(CommonController());
-  final ItemController _itemsController = Get.put(ItemController());
+  final CommonController _commonController = Get.find<CommonController>();
+  final ItemController _itemsController = Get.find<ItemController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(

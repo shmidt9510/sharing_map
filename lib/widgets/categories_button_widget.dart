@@ -37,17 +37,19 @@ class CategoriesButtonWidgetState extends State<CategoriesButtonWidget> {
   @override
   Widget build(BuildContext context) {
     _scrollOffset = context.width / 5;
-    return Stack(children: [
-      ListView.builder(
-        physics: AlwaysScrollableScrollPhysics(),
-        shrinkWrap: true,
-        scrollDirection: Axis.horizontal,
-        controller: _scrollController,
-        itemCount: _commonController.categories.length,
-        itemBuilder: (BuildContext context, int index) => _buildButton(
-            context, _commonController.categories[index], widget.height),
-      ),
-    ]);
+    return Obx(
+      () => Stack(children: [
+        ListView.builder(
+          physics: AlwaysScrollableScrollPhysics(),
+          shrinkWrap: true,
+          scrollDirection: Axis.horizontal,
+          controller: _scrollController,
+          itemCount: _commonController.categories.length,
+          itemBuilder: (BuildContext context, int index) => _buildButton(
+              context, _commonController.categories[index], widget.height),
+        ),
+      ]),
+    );
   }
 
   Widget _buildButton(

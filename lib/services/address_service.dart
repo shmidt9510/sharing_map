@@ -22,7 +22,7 @@ class AddressService {
     String uri = "/address/all";
 
     try {
-      var response = await client.get(Uri.https(Constants.BACK_URL, uri));
+      var response = await client.get(Constants.buildUri(uri));
 
       if (response.statusCode == 401) {
         return Future.error("unauthorized");
@@ -50,7 +50,7 @@ class AddressService {
 
     try {
       var response = await client.post(
-        Uri.https(Constants.BACK_URL, uri),
+        Constants.buildUri(uri),
         headers: {
           'Content-Type': 'application/json',
         },
@@ -84,7 +84,7 @@ class AddressService {
     String uri = "/address/delete/$addressId";
 
     try {
-      var response = await client.delete(Uri.https(Constants.BACK_URL, uri));
+      var response = await client.delete(Constants.buildUri(uri));
 
       if (response.statusCode == 401) {
         return Future.error("unauthorized");
@@ -114,7 +114,7 @@ class AddressService {
 
     try {
       var response = await client.put(
-        Uri.https(Constants.BACK_URL, uri),
+        Constants.buildUri(uri),
         headers: {
           'Content-Type': 'application/json',
         },

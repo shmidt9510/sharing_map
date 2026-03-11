@@ -29,24 +29,60 @@ class SharedPrefs {
     _sharedPrefs.setBool(keyIsLogged, value);
   }
 
-  Future<String> getAuthToken() async =>
-      await _secureSharedPref.read(
-          key: keyAuthToken, aOptions: _androidOptions) ??
-      "";
-
-  set authToken(String value) {
-    _secureSharedPref.write(
-        key: keyAuthToken, value: value, aOptions: _androidOptions);
+  Future<void> setLoggedAsync(bool value) async {
+    await _sharedPrefs.setBool(keyIsLogged, value);
   }
 
-  Future<String> getRefreshToken() async =>
-      await _secureSharedPref.read(
-          key: keyRefreshToken, aOptions: _androidOptions) ??
-      "";
+  Future<String> getAuthToken() async {
+    try {
+      var token = await _secureSharedPref.read(
+          key: keyAuthToken, aOptions: _androidOptions);
+      if (token != null && token.isNotEmpty) {
+        return token;
+      }
+    } catch (_) {}
+    return _sharedPrefs.getString(keyAuthToken) ?? "";
+  }
+
+  set authToken(String value) {
+    _secureSharedPref
+        .write(key: keyAuthToken, value: value, aOptions: _androidOptions)
+        .catchError((_) {});
+    _sharedPrefs.setString(keyAuthToken, value);
+  }
+
+  Future<void> setAuthTokenAsync(String value) async {
+    try {
+      await _secureSharedPref.write(
+          key: keyAuthToken, value: value, aOptions: _androidOptions);
+    } catch (_) {}
+    await _sharedPrefs.setString(keyAuthToken, value);
+  }
+
+  Future<String> getRefreshToken() async {
+    try {
+      var token = await _secureSharedPref.read(
+          key: keyRefreshToken, aOptions: _androidOptions);
+      if (token != null && token.isNotEmpty) {
+        return token;
+      }
+    } catch (_) {}
+    return _sharedPrefs.getString(keyRefreshToken) ?? "";
+  }
 
   set refreshToken(String value) {
-    _secureSharedPref.write(
-        key: keyRefreshToken, value: value, aOptions: _androidOptions);
+    _secureSharedPref
+        .write(key: keyRefreshToken, value: value, aOptions: _androidOptions)
+        .catchError((_) {});
+    _sharedPrefs.setString(keyRefreshToken, value);
+  }
+
+  Future<void> setRefreshTokenAsync(String value) async {
+    try {
+      await _secureSharedPref.write(
+          key: keyRefreshToken, value: value, aOptions: _androidOptions);
+    } catch (_) {}
+    await _sharedPrefs.setString(keyRefreshToken, value);
   }
 
   String get confirmationToken =>
@@ -56,8 +92,14 @@ class SharedPrefs {
     _sharedPrefs.setString(keyConfirmationToken, value);
   }
 
+  Future<void> setUserIdAsync(String value) async {
+    await _sharedPrefs.setString(keyUserId, value);
+  }
+
   Future<void> clear() async {
-    await _secureSharedPref.deleteAll();
+    try {
+      await _secureSharedPref.deleteAll();
+    } catch (_) {}
     await _sharedPrefs.clear();
   }
 

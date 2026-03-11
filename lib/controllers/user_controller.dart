@@ -90,7 +90,11 @@ class UserController extends GetxController {
       var result = await UserWebService.signupConfirm(
           SharedPrefs().confirmationToken, token);
       if (result) {
-        await GetMyself();
+        try {
+          await GetMyself();
+        } catch (e) {
+          debugPrint("failed_get_myself_after_signup_confirm: $e");
+        }
       }
       return result;
     } catch (e) {
@@ -102,7 +106,11 @@ class UserController extends GetxController {
     try {
       bool result = await UserWebService.login(email, password);
       if (result) {
-        await GetMyself();
+        try {
+          await GetMyself();
+        } catch (e) {
+          debugPrint("failed_get_myself_after_login: $e");
+        }
       }
       return result;
     } catch (e) {
@@ -148,7 +156,12 @@ class UserController extends GetxController {
   }
 
   Future<User?> GetMyself() async {
-    myAddresses(await AddressService.getAllAddresses());
+    try {
+      myAddresses(await AddressService.getAllAddresses());
+    } catch (e) {
+      myAddresses([]);
+      debugPrint("failed_get_addresses: $e");
+    }
     if (myself.value.id != "") {
       return myself.value;
     }
@@ -162,8 +175,13 @@ class UserController extends GetxController {
       debugPrint(e.toString());
     }
     myself(user);
-    var contacts = await UserWebService.getUserContact(SharedPrefs().userId);
-    myContacts(contacts);
+    try {
+      var contacts = await UserWebService.getUserContact(SharedPrefs().userId);
+      myContacts(contacts);
+    } catch (e) {
+      myContacts([]);
+      debugPrint("failed_get_contacts: $e");
+    }
 
     userProfilePicture(user.buildImage(fit: BoxFit.cover));
     return myself.value;

@@ -30,7 +30,7 @@ class PhotoWebService {
     var uri = "/" + itemId + "/image/urls";
     var imageCount = files.length;
     var response =
-        await client.get(Uri.https(Constants.BACK_URL, uri), headers: {
+        await client.get(Constants.buildUri(uri), headers: {
       "content-type": "application/json",
       "accept": "application/json",
     }, params: {

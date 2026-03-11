@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
@@ -20,16 +22,19 @@ class TopIcons extends StatefulWidget {
   _TopIconsState createState() => _TopIconsState();
 
   final Function(int) onItemTypeChange;
+  final ValueChanged<String> onSearchChanged;
 
-  TopIcons({required this.onItemTypeChange});
+  TopIcons({required this.onItemTypeChange, required this.onSearchChanged});
 }
 
 class _TopIconsState extends State<TopIcons> {
   var _userController = Get.find<UserController>();
   var _commonController = Get.find<CommonController>();
   var _itemsController = Get.find<ItemController>();
+  final TextEditingController _searchController = TextEditingController();
+  Timer? _searchDebounce;
 
-  late City dropdownValue;
+  City? dropdownValue;
 
   Widget BuildButton(Widget icon, VoidCallback? onPressed) {
     return Padding(
@@ -57,62 +62,147 @@ class _TopIconsState extends State<TopIcons> {
   @override
   void initState() {
     super.initState();
+    _syncDropdownCity();
+  }
 
-    if (SharedPrefs().chosenCity == -1) {
-      dropdownValue = _commonController.cities.first;
-    } else {
-      var _cities = _commonController.cities;
-      dropdownValue = _cities
-          .firstWhere((element) => element.id == SharedPrefs().chosenCity);
-    }
+  @override
+  void dispose() {
+    _searchDebounce?.cancel();
+    _searchController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Expanded(
-          child: ItemTypeList(onItemTypeChange: widget.onItemTypeChange),
-          flex: 10,
-        ),
-        Spacer(flex: 6),
-        Expanded(
+    return Padding(
+      padding: const EdgeInsets.only(top: 8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Expanded(
+            child: ItemTypeList(onItemTypeChange: widget.onItemTypeChange),
             flex: 2,
+          ),
+          SizedBox(width: 8),
+          Expanded(
+            flex: 4,
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5),
+              child: _buildSearchField(),
+            ),
+          ),
+          SizedBox(width: 8),
+          Expanded(
+              flex: 1,
+              child: BuildButton(
+                  Icon(
+                    FontAwesomeIcons.info,
+                    color: MColors.darkGreen,
+                    size: 14,
+                  ), () async {
+                await _showInfoMessage(context);
+              })),
+          Expanded(
+              flex: 1,
+              child: BuildButton(
+                  Icon(
+                    Icons.location_on_rounded,
+                    color: MColors.darkGreen,
+                    size: 14,
+                  ), () async {
+                await _chooseCityDialog(context);
+              })),
+          Expanded(
+            flex: 1,
             child: BuildButton(
-                Icon(
-                  FontAwesomeIcons.info,
-                  color: MColors.darkGreen,
-                  size: 14,
-                ), () async {
-              await _showInfoMessage(context);
-            })),
-        Expanded(
-            flex: 2,
-            child: BuildButton(
-                Icon(
-                  Icons.location_on_rounded,
-                  color: MColors.darkGreen,
-                  size: 14,
-                ), () async {
-              await _chooseCityDialog(context);
-            })),
-        Expanded(
-          flex: 2,
-          child: BuildButton(
-              Obx(() => (_userController.userProfilePicture.value)), () {
-            GoRouter.of(context).go(SMPath.myItems + "/" + SMPath.profile);
-          }),
+                Obx(() => (_userController.userProfilePicture.value)), () {
+              GoRouter.of(context).go(SMPath.myItems + "/" + SMPath.profile);
+            }),
+          ),
+          SizedBox(width: 4)
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSearchField() {
+    return Container(
+      height: 52,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(25)),
+        border: Border.all(
+          color: MColors.lightGrey,
+          width: 1,
         ),
-        Spacer(flex: 1)
-      ],
+        color: MColors.inputField,
+      ),
+      child: TextField(
+        controller: _searchController,
+        textInputAction: TextInputAction.search,
+        maxLines: 1,
+        minLines: 1,
+        textAlignVertical: TextAlignVertical.center,
+        strutStyle: const StrutStyle(
+          forceStrutHeight: true,
+          height: 1.2,
+        ),
+        style: getMediumTextStyle().copyWith(height: 1.2),
+        cursorHeight: 20,
+        decoration: InputDecoration(
+          isDense: true,
+          hintText: "Поиск",
+          hintStyle: getHintTextStyle(),
+          contentPadding: const EdgeInsets.symmetric(vertical: 0),
+          border: InputBorder.none,
+          prefixIconConstraints:
+              const BoxConstraints(minWidth: 40, minHeight: 40),
+          prefixIcon: Icon(
+            Icons.search,
+            color: MColors.darkGreen,
+            size: 16,
+          ),
+          suffixIconConstraints:
+              const BoxConstraints(minWidth: 40, minHeight: 40),
+          suffixIcon: _searchController.text.isEmpty
+              ? null
+              : IconButton(
+                  icon: Icon(
+                    Icons.close,
+                    color: MColors.darkGreen,
+                    size: 16,
+                  ),
+                  onPressed: () {
+                    _searchController.clear();
+                    widget.onSearchChanged("");
+                    setState(() {});
+                  },
+                ),
+        ),
+        onChanged: (value) {
+          _searchDebounce?.cancel();
+          setState(() {});
+          _searchDebounce = Timer(Duration(milliseconds: 350), () {
+            widget.onSearchChanged(value);
+          });
+        },
+        onSubmitted: (value) {
+          _searchDebounce?.cancel();
+          widget.onSearchChanged(value);
+        },
+      ),
     );
   }
 
   Future<bool> _chooseCityDialog(BuildContext context) async {
     bool _result = false;
     var _cities = _commonController.cities;
+    if (_cities.isEmpty) {
+      showErrorScaffold(context, "Список городов пока недоступен");
+      return false;
+    }
+    dropdownValue ??= _cities.first;
     await showDialog<void>(
       context: context,
       builder: (BuildContext context) {
@@ -169,12 +259,17 @@ class _TopIconsState extends State<TopIcons> {
             ),
             actions: [
               LoadingButton("Выбрать", () async {
+                final selectedCity = dropdownValue;
+                if (selectedCity == null) {
+                  showErrorScaffold(context, "Не получилось выбрать город");
+                  return;
+                }
                 try {
-                  await _commonController.getLocations(dropdownValue.id, true);
+                  await _commonController.getLocations(selectedCity.id, true);
                 } catch (e) {
                   showErrorScaffold(context, "Не получилось");
                 }
-                SharedPrefs().chosenCity = dropdownValue.id;
+                SharedPrefs().chosenCity = selectedCity.id;
                 _itemsController.refershAll();
                 Navigator.of(context).maybePop();
               },
@@ -186,6 +281,30 @@ class _TopIconsState extends State<TopIcons> {
       },
     );
     return _result;
+  }
+
+  void _syncDropdownCity() {
+    final cities = _commonController.cities;
+    if (cities.isEmpty) {
+      dropdownValue = null;
+      return;
+    }
+
+    if (SharedPrefs().chosenCity == -1) {
+      dropdownValue = cities.first;
+      return;
+    }
+
+    final chosenCityId = SharedPrefs().chosenCity;
+    for (final city in cities) {
+      if (city.id == chosenCityId) {
+        dropdownValue = city;
+        return;
+      }
+    }
+
+    dropdownValue = cities.first;
+    SharedPrefs().chosenCity = dropdownValue!.id;
   }
 
   Future<void> _showInfoMessage(BuildContext context) async {

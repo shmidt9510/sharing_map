@@ -102,7 +102,7 @@ class RefreshTokenInterceptor implements InterceptorContract {
           SharedPrefs().userId.isNotEmpty) {
         if (authToken.isEmpty || JwtDecoder.isExpired(authToken)) {
           var response =
-              await client.post(Uri.https(Constants.BACK_URL, "/refreshToken"),
+              await client.post(Constants.buildUri("/refreshToken"),
                   headers: {
                     "content-type": "application/json",
                     "accept": "application/json",
@@ -110,9 +110,11 @@ class RefreshTokenInterceptor implements InterceptorContract {
                   body: jsonEncode(RefreshTokenDTO(refreshToken).toJson()));
           if (response.statusCode == 200) {
             var jsonData = jsonDecode(response.body);
-            SharedPrefs().authToken = jsonData["accessToken"].toString();
-            SharedPrefs().refreshToken = jsonData["refreshToken"].toString();
-            SharedPrefs().logged = true;
+            await SharedPrefs()
+                .setAuthTokenAsync(jsonData["accessToken"].toString());
+            await SharedPrefs()
+                .setRefreshTokenAsync(jsonData["refreshToken"].toString());
+            await SharedPrefs().setLoggedAsync(true);
           } else {
             SharedPrefs().refreshToken = "";
           }

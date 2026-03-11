@@ -25,19 +25,12 @@ class _UserActionsWidgetState extends State<UserActionsWidget> {
   CommonController _commonController = Get.find<CommonController>();
   ItemController _itemsController = Get.find<ItemController>();
 
-  late City dropdownValue;
+  City? dropdownValue;
 
   @override
   void initState() {
     super.initState();
-
-    if (SharedPrefs().chosenCity == -1) {
-      dropdownValue = _commonController.cities.first;
-    } else {
-      var _cities = _commonController.cities;
-      dropdownValue = _cities
-          .firstWhere((element) => element.id == SharedPrefs().chosenCity);
-    }
+    _syncDropdownCity();
   }
 
   Widget build(BuildContext context) {
@@ -144,7 +137,7 @@ class _UserActionsWidgetState extends State<UserActionsWidget> {
     );
     if (_result) {
       if (await _userController.DeleteMyself()) {
-        final ItemController _itemsController = Get.put(ItemController());
+        final ItemController _itemsController = Get.find<ItemController>();
         _itemsController.userPagingController.refresh();
         _itemsController.userPagingController
             .removePageRequestListener((pageKey) {});
@@ -188,7 +181,7 @@ class _UserActionsWidgetState extends State<UserActionsWidget> {
     );
     if (_result) {
       if (await _userController.Logout()) {
-        final ItemController _itemsController = Get.put(ItemController());
+        final ItemController _itemsController = Get.find<ItemController>();
         _itemsController.userPagingController.refresh();
         _itemsController.userPagingController
             .removePageRequestListener((pageKey) {});
@@ -203,6 +196,11 @@ class _UserActionsWidgetState extends State<UserActionsWidget> {
   Future<bool> _chooseCityDialog(BuildContext context) async {
     bool _result = false;
     var _cities = _commonController.cities;
+    if (_cities.isEmpty) {
+      showErrorScaffold(context, "Список городов пока недоступен");
+      return false;
+    }
+    dropdownValue ??= _cities.first;
     await showDialog<void>(
       context: context,
       builder: (BuildContext context) {
@@ -259,12 +257,17 @@ class _UserActionsWidgetState extends State<UserActionsWidget> {
             ),
             actions: [
               LoadingButton("Выбрать", () async {
+                final selectedCity = dropdownValue;
+                if (selectedCity == null) {
+                  showErrorScaffold(context, "Не получилось выбрать город");
+                  return;
+                }
                 try {
-                  await _commonController.getLocations(dropdownValue.id, true);
+                  await _commonController.getLocations(selectedCity.id, true);
                 } catch (e) {
                   showErrorScaffold(context, "Не получилось");
                 }
-                SharedPrefs().chosenCity = dropdownValue.id;
+                SharedPrefs().chosenCity = selectedCity.id;
                 _itemsController.refershAll();
                 Navigator.of(context).maybePop();
               },
@@ -276,5 +279,29 @@ class _UserActionsWidgetState extends State<UserActionsWidget> {
       },
     );
     return _result;
+  }
+
+  void _syncDropdownCity() {
+    final cities = _commonController.cities;
+    if (cities.isEmpty) {
+      dropdownValue = null;
+      return;
+    }
+
+    if (SharedPrefs().chosenCity == -1) {
+      dropdownValue = cities.first;
+      return;
+    }
+
+    final chosenCityId = SharedPrefs().chosenCity;
+    for (final city in cities) {
+      if (city.id == chosenCityId) {
+        dropdownValue = city;
+        return;
+      }
+    }
+
+    dropdownValue = cities.first;
+    SharedPrefs().chosenCity = dropdownValue!.id;
   }
 }

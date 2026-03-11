@@ -19,17 +19,52 @@ class ChooseCitySreen extends StatefulWidget {
 class ChooseCitySreenState extends State<ChooseCitySreen> {
   int counter = 0;
   var _commonController = Get.find<CommonController>();
-  late City dropdownValue;
+  City? dropdownValue;
 
   @override
   void initState() {
     super.initState();
-    dropdownValue = _commonController.cities.first;
+    _syncDropdownCity();
   }
 
   @override
   Widget build(BuildContext context) {
     var cities = _commonController.cities;
+    if (cities.isEmpty) {
+      return Scaffold(
+        body: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          color: MColors.primaryGreen,
+          child: Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  "Не удалось загрузить список городов",
+                  style: getBigTextStyle()
+                      .copyWith(color: MColors.white, fontSize: 20),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: 20),
+                LoadingButton("Повторить", () async {
+                  await _commonController.fetchItems();
+                  if (!mounted) {
+                    return;
+                  }
+                  setState(() {
+                    _syncDropdownCity();
+                  });
+                },
+                    textStyle: getBigTextStyle()
+                        .copyWith(color: MColors.white, fontSize: 20)),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+    dropdownValue ??= cities.first;
+
     return Scaffold(
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -91,7 +126,11 @@ class ChooseCitySreenState extends State<ChooseCitySreen> {
               SizedBox(
                 width: context.width * 0.5,
                 child: LoadingButton("Далее", () async {
-                  SharedPrefs().chosenCity = dropdownValue.id;
+                  final selectedCity = dropdownValue;
+                  if (selectedCity == null) {
+                    return;
+                  }
+                  SharedPrefs().chosenCity = selectedCity.id;
                   await _commonController.getLocations(
                       SharedPrefs().chosenCity, true);
                   String _initPath = await checkInitPath();
@@ -112,5 +151,14 @@ class ChooseCitySreenState extends State<ChooseCitySreen> {
     setState(() {
       // position = newPosition;
     });
+  }
+
+  void _syncDropdownCity() {
+    final cities = _commonController.cities;
+    if (cities.isEmpty) {
+      dropdownValue = null;
+      return;
+    }
+    dropdownValue = cities.first;
   }
 }
