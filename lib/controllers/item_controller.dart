@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:sharing_map/controllers/common_controller.dart';
 import 'package:sharing_map/models/item.dart';
@@ -11,6 +13,8 @@ class ItemController extends GetxController {
   final Map<int, PagingController<int, Item>> givePagingControllers = {};
   final Map<int, PagingController<int, Item>> getPagingControllers = {};
   late PagingController<int, Item> userPagingController;
+  final RxString searchQuery = ''.obs;
+  Timer? _searchDebounce;
 
   @override
   void onInit() async {
@@ -44,10 +48,12 @@ class ItemController extends GetxController {
   }
 
   @override
-  void dispose() {
+  void onClose() {
+    _searchDebounce?.cancel();
     givePagingControllers.forEach((k, v) => v.dispose());
     getPagingControllers.forEach((k, v) => v.dispose());
-    super.dispose();
+    userPagingController.dispose();
+    super.onClose();
   }
 
   Future<void> _fetchUserPage(int pageKey) async {
@@ -76,7 +82,8 @@ class ItemController extends GetxController {
           page: pageKey,
           pageSize: _pageSize,
           itemFilter: itemFilter,
-          itemType: 1);
+          itemType: 1,
+          query: searchQuery.value);
 
       final isLastPage = newItems.length < _pageSize;
       if (isLastPage) {
@@ -96,7 +103,8 @@ class ItemController extends GetxController {
           page: pageKey,
           pageSize: _pageSize,
           itemFilter: itemFilter,
-          itemType: 2);
+          itemType: 2,
+          query: searchQuery.value);
 
       final isLastPage = newItems.length < _pageSize;
       if (isLastPage) {
@@ -115,14 +123,16 @@ class ItemController extends GetxController {
       int page = 0,
       String? userId = null,
       int? itemFilter,
-      int itemType = 1}) async {
+      int itemType = 1,
+      String? query}) async {
     try {
       var itemTemp = await ItemWebService.fetchItems(
           pageSize: pageSize,
           page: page,
           userId: userId,
           itemFilter: itemFilter,
-          itemType: itemType);
+          itemType: itemType,
+          query: query);
       // items.addAll(itemTemp);
       return itemTemp;
     } catch (e) {
@@ -148,6 +158,33 @@ class ItemController extends GetxController {
       value.refresh();
     });
     userPagingController.refresh();
+  }
+
+  void setSearchQuery(String value) {
+    searchQuery.value = value;
+    _searchDebounce?.cancel();
+    _searchDebounce =
+        Timer(const Duration(milliseconds: 400), _refreshPublicLists);
+  }
+
+  void clearSearch() {
+    _searchDebounce?.cancel();
+    if (searchQuery.value.isEmpty) {
+      return;
+    }
+    searchQuery.value = '';
+    _refreshPublicLists();
+  }
+
+  void _refreshPublicLists() {
+    givePagingControllers.forEach((key, value) {
+      value.itemList = [];
+      value.refresh();
+    });
+    getPagingControllers.forEach((key, value) {
+      value.itemList = [];
+      value.refresh();
+    });
   }
 
   Future<bool> addItem(Item item) async {

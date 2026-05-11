@@ -51,7 +51,9 @@ class _ItemsListViewState extends State<ItemsGetListView> {
           noItemsFoundIndicatorBuilder: (_) => Center(
             child: Column(children: [
               Image.asset('assets/images/no_data_placeholder.png'),
-              Text("Здесь пока ничего нет")
+              Obx(() => Text(_itemsController.searchQuery.value.trim().isEmpty
+                  ? "Здесь пока ничего нет"
+                  : "Ничего не найдено"))
             ]),
           ),
           animateTransitions: true,
