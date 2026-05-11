@@ -16,7 +16,7 @@ class ItemServiceRetryPolicy extends RetryPolicy {
 
 class ItemWebService {
   static var client = InterceptedClient.build(
-    requestTimeout: Duration(seconds: 2),
+    requestTimeout: Duration(seconds: 10),
     retryPolicy: ItemServiceRetryPolicy(),
     interceptors: [
       LoggerInterceptor(),
@@ -30,19 +30,29 @@ class ItemWebService {
       int page = 0,
       int itemType = 1,
       userId = null,
-      itemFilter = null}) async {
+      itemFilter = null,
+      String? query}) async {
     String uri = "/items/all";
+    final trimmedQuery = query?.trim() ?? "";
     if (userId != null) {
       uri = "/users/$userId/items";
+    } else if (trimmedQuery.isNotEmpty) {
+      uri = "/items/search";
     }
-    var response =
-        await client.get(Uri.https(Constants.BACK_URL, uri), params: {
+
+    final params = {
       "size": pageSize,
       "page": page,
       "categoryId": itemFilter ?? 0,
       "cityId": SharedPrefs().chosenCity,
       "subcategoryId": itemType
-    });
+    };
+    if (trimmedQuery.isNotEmpty && userId == null) {
+      params["q"] = trimmedQuery;
+    }
+
+    var response =
+        await client.get(Uri.https(Constants.BACK_URL, uri), params: params);
 
     if (response.statusCode != 200) {
       return Future.error("failed_get_data");
