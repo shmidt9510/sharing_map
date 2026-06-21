@@ -12,7 +12,7 @@ ThemeData GetAppTheme() {
       //     style: ButtonStyle(iconColor: MColors.secondaryGreen)),
       appBarTheme: AppBarTheme(
         backgroundColor: MColors.secondaryGreen,
-        surfaceTintColor: MColors.primaryGreen.withOpacity(1),
+        surfaceTintColor: MColors.primaryGreen.withValues(alpha: 1),
         actionsIconTheme: const IconThemeData(color: MColors.white),
       ),
       unselectedWidgetColor: MColors.black,
@@ -21,7 +21,7 @@ ThemeData GetAppTheme() {
       hintColor: MColors.black,
       splashColor: MColors.lightGreen,
       scaffoldBackgroundColor: Colors.white,
-      secondaryHeaderColor: MColors.primaryGreen.withOpacity(1),
+      secondaryHeaderColor: MColors.primaryGreen.withValues(alpha: 1),
       textTheme: TextTheme(
           displayLarge: TextStyle(
               color: Colors.black, fontFamily: 'Roboto', letterSpacing: -0.41),

@@ -1,86 +1,86 @@
-import 'dart:convert';
-import 'package:sharing_map/utils/constants.dart';
-
-import 'interceptors.dart';
-
-import 'package:sharing_map/models/location.dart';
+import 'package:sharing_map/services/core/base_service.dart';
 import 'package:sharing_map/models/category.dart';
-import 'package:sharing_map/models/subcategory.dart';
 import 'package:sharing_map/models/city.dart';
-import 'package:http_interceptor/http_interceptor.dart';
+import 'package:sharing_map/models/location.dart';
+import 'package:sharing_map/models/subcategory.dart';
+import 'package:sharing_map/services/core/http_client.dart';
 
-class CommonServiceRetryPolicy extends RetryPolicy {
+class CommonService extends BaseService<dynamic> {
   @override
-  int maxRetryAttempts = 2;
-}
+  String get basePath => '';
 
-class CommonWebService {
-  static var client = InterceptedClient.build(
-    requestTimeout: Duration(seconds: 2),
-    retryPolicy: CommonServiceRetryPolicy(),
-    interceptors: [
-      RefreshTokenInterceptor(),
-      AuthorizationInterceptor(),
-      LoggerInterceptor(),
-    ],
-  );
+  @override
+  fromJson(Map<String, dynamic> json) => json;
 
-  static Future<List<ItemCategory>?> fetchCategories() async {
-    var response =
-        await client.get(Uri.https(Constants.BACK_URL, "/categories/all"));
+  @override
+  Map<String, dynamic> toJson(model) => model as Map<String, dynamic>;
 
-    if (response.statusCode == 200) {
-      var jsonData = jsonDecode(utf8.decode(response.bodyBytes));
-      var itemsList =
-          (jsonData as List).map((e) => ItemCategory.fromJson(e)).toList();
-      // itemsList.sort(compareByPosition);
-      // itemsList.forEach((category) {category.pictureUrl});
-      return itemsList;
-    } else {
-      return null;
+  Future<List<ItemCategory>> fetchCategories() async {
+    try {
+      final response =
+          await getList('/categories/all', fromJson: ItemCategory.fromJson);
+      return response..sort(_compareByPosition);
+    } catch (e) {
+      rethrow;
     }
   }
 
-  static Future<List<Subcategory>?> fetchSubcategories() async {
-    var response =
-        await client.get(Uri.https(Constants.BACK_URL, "/subcategories/all"));
-    if (response.statusCode == 200) {
-      var jsonData = json.decode(utf8.decode(response.bodyBytes));
-      return (jsonData as List).map((e) => Subcategory.fromJson(e)).toList();
-    } else {
-      return null;
+  Future<List<Subcategory>> fetchSubcategories() async {
+    try {
+      final response =
+          await getList('/subcategories/all', fromJson: Subcategory.fromJson);
+      return response..sort(_compareById);
+    } catch (e) {
+      rethrow;
     }
   }
 
-  static Future<List<City>?> fetchCities() async {
-    var response =
-        await client.get(Uri.https(Constants.BACK_URL, "/cities/all"));
-
-    if (response.statusCode == 200) {
-      var jsonData = jsonDecode(utf8.decode(response.bodyBytes));
-      return (jsonData as List).map((e) => City.fromJson(e)).toList();
-    } else {
-      return null;
+  Future<List<City>> fetchCities() async {
+    try {
+      final response = await getList('/cities/all', fromJson: City.fromJson);
+      return response..sort(_compareById);
+    } catch (e) {
+      rethrow;
     }
   }
 
-  static Future<List<SMLocation>?> fetchLocations(int cityId) async {
-    var response = await client
-        .get(Uri.https(Constants.BACK_URL, "/locations/$cityId/all"));
-
-    if (response.statusCode == 200) {
-      var jsonData = jsonDecode(utf8.decode(response.bodyBytes));
-      return (jsonData as List).map((e) => SMLocation.fromJson(e)).toList();
-    } else {
-      return null;
+  Future<List<SMLocation>> fetchLocations(int cityId) async {
+    try {
+      final response = await getList('/locations/$cityId/all',
+          fromJson: SMLocation.fromJson);
+      return response..sort(_compareByName);
+    } catch (e) {
+      rethrow;
     }
   }
 
-  static Future<bool> checkInternetConnectivity() async {
-    var response = await client.get(Uri.https(Constants.BACK_URL, "/ping"));
-    if (response.statusCode == 200) {
-      return true;
+  Future<bool> checkInternetConnectivity() async {
+    try {
+      final client = AppHttpClient().client;
+      final response = await client
+          .get(buildUri('/ping'))
+          .timeout(const Duration(seconds: 5));
+      return response.statusCode == 200;
+    } catch (e) {
+      return false;
     }
-    return false;
+  }
+
+  int _compareByPosition(dynamic a, dynamic b) {
+    final aPos = a.position ?? 999;
+    final bPos = b.position ?? 999;
+    return aPos.compareTo(bPos);
+  }
+
+  int _compareByName(dynamic a, dynamic b) {
+    final aName = a.name ?? '';
+    final bName = b.name ?? '';
+    return aName.compareTo(bName);
+  }
+
+  int _compareById(dynamic a, dynamic b) {
+    final aId = a.id ?? '';
+    final bId = b.id ?? '';
+    return aId.compareTo(bId);
   }
 }

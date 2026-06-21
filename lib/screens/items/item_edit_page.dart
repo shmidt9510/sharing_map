@@ -178,7 +178,7 @@ class _EditItemPageState extends State<EditItemPage> {
                             }
                             return null;
                           },
-                          onChanged: (List<ItemCategory>? data) {
+                          onSelected: (List<ItemCategory>? data) {
                             setState(() {
                               _chosenCategories = data ?? [];
                             });
@@ -208,7 +208,7 @@ class _EditItemPageState extends State<EditItemPage> {
                               ),
                             ),
                           ),
-                          popupProps: PopupPropsMultiSelection.menu(
+                          popupProps: MultiSelectionPopupProps.menu(
                             emptyBuilder: (context, searchEntry) => Center(
                                 child: Text('Пусто',
                                     style: TextStyle(color: Colors.blue))),
@@ -235,7 +235,7 @@ class _EditItemPageState extends State<EditItemPage> {
                             }
                             return null;
                           },
-                          onChanged: (List<SMLocation>? data) {
+                          onSelected: (List<SMLocation>? data) {
                             setState(() {
                               _chosenLocations = data ?? [];
                             });
@@ -261,7 +261,7 @@ class _EditItemPageState extends State<EditItemPage> {
                           ),
                           compareFn: (item1, item2) => item1.name == item2.name,
                           items: (f, cs) => _commonController.locations,
-                          popupProps: PopupPropsMultiSelection.menu(
+                          popupProps: MultiSelectionPopupProps.menu(
                             emptyBuilder: (context, searchEntry) => Center(
                                 child: Text('Пусто',
                                     style: TextStyle(color: Colors.blue))),

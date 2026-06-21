@@ -24,7 +24,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
         elevation: 0,
       ),
       body: FutureBuilder(
-          future: _userController.GetUser(widget.userId),
+          future: _userController.getUser(widget.userId),
           builder: (context, snapshot) {
             if (snapshot.hasError) {
               return Container(

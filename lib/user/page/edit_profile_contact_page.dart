@@ -31,7 +31,7 @@ class _EditProfileContactPageState extends State<EditProfileContactPage> {
 
   Widget buildContacts(BuildContext context, UserController controller) {
     return FutureBuilder(
-        future: controller.getUserContact(SharedPrefs().userId),
+        future: controller.getUserContacts(SharedPrefs().userId),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return Container();
@@ -59,10 +59,7 @@ class _EditProfileContactPageState extends State<EditProfileContactPage> {
           return Row(children: [
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 5.0),
-              child: Icon(
-                contacts[index].contactIcon,
-                size: 24,
-              ),
+              child: contacts[index].contactIcon,
             ),
             Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10.0),

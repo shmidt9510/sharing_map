@@ -86,7 +86,7 @@ class _EditProfileBioPageState extends State<EditProfileBioPage> {
         username: _userNameController.text,
         bio: _bioController.text);
 
-    if (!await _userController.UpdateUser(newUser)) {
+    if (!await _userController.updateUser(newUser)) {
       var snackBar = SnackBar(
         content: const Text('Ой :('),
         action: SnackBarAction(

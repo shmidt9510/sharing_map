@@ -217,7 +217,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Widget buildContacts(BuildContext context, UserController controller) {
     return FutureBuilder(
-        future: controller.getUserContact(SharedPrefs().userId),
+        future: controller.getUserContacts(SharedPrefs().userId),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return Container();
@@ -264,10 +264,7 @@ class _ProfilePageState extends State<ProfilePage> {
           return Row(children: [
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 5.0),
-              child: Icon(
-                contacts[index].contactIcon,
-                size: 24,
-              ),
+              child: contacts[index].contactIcon,
             ),
             SizedBox(
               width: 5,
@@ -320,7 +317,7 @@ class _ProfilePageState extends State<ProfilePage> {
       return false;
     }
     image = await compressImage(image, 128 * 1024);
-    if (!await _userController.UpdateUserPhoto(image)) {
+    if (!await _userController.updateUserPhoto(image)) {
       showErrorScaffold(context, "Не получилось загрузить изображение");
       return false;
     }
@@ -337,7 +334,7 @@ class _ProfilePageState extends State<ProfilePage> {
         username: _userNameController.text,
         bio: _bioController.text);
 
-    if (!await _userController.UpdateUser(newUser)) {
+    if (!await _userController.updateUser(newUser)) {
       var snackBar = SnackBar(
         content: const Text('Ой :('),
         action: SnackBarAction(

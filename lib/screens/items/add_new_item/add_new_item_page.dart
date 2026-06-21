@@ -16,7 +16,7 @@ import 'package:sharing_map/models/item.dart';
 import 'package:sharing_map/models/location.dart';
 import 'package:sharing_map/path.dart';
 import 'package:sharing_map/screens/items/add_new_item/bottom_nav_buttons.dart';
-import 'package:sharing_map/screens/items/add_new_item/location_selection_widget.dart';
+import 'package:sharing_map/screens/location_selection/location_selection_widget.dart';
 import 'package:sharing_map/theme.dart';
 import 'package:sharing_map/utils/chose_image_source.dart';
 import 'package:sharing_map/utils/colors.dart';
@@ -314,17 +314,15 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Container(
-                  height: ((imageFileList!.length) ~/ 4 +
-                          (imageFileList!.isEmpty ? 0 : 1)) *
+                  height: ((imageFileList!.length + 2) ~/ 3) *
                       (context.width / 3 - 20) *
                       1.05,
-                  child: imageFileList!.length > 0
+                  child: imageFileList!.isNotEmpty
                       ? GridView.builder(
-                          // shrinkWrap: false,
-                          physics: ScrollPhysics(),
+                          physics: const ScrollPhysics(),
                           itemCount: imageFileList!.length,
                           gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
+                              const SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisSpacing: 10,
                                   mainAxisSpacing: 10,
                                   crossAxisCount: 3),
@@ -340,20 +338,14 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
                                 borderRadius:
                                     BorderRadius.circular(borderRadius),
                               ),
-                              width: (context.width / 3 - 20),
                               child: Stack(fit: StackFit.expand, children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(20))),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(
-                                          borderRadius - borderWidth),
-                                    ),
-                                    child: Image.file(
-                                        File(imageFileList![index].path),
-                                        fit: BoxFit.fill),
+                                ClipRRect(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(borderRadius - borderWidth),
+                                  ),
+                                  child: Image.file(
+                                    File(imageFileList![index].path),
+                                    fit: BoxFit.cover, // ← was BoxFit.fill
                                   ),
                                 ),
                                 Positioned(
@@ -368,11 +360,11 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
                                     child: Container(
                                       height: 20,
                                       width: 20,
-                                      decoration: BoxDecoration(
+                                      decoration: const BoxDecoration(
                                         color: MColors.black,
                                         shape: BoxShape.circle,
                                       ),
-                                      child: Icon(
+                                      child: const Icon(
                                         size: 14,
                                         Icons.delete,
                                         color: MColors.grey2,
@@ -434,8 +426,7 @@ class _AddNewItemPageState extends State<AddNewItemPage> {
                                   : MColors.inputField,
                               shape: BoxShape.circle,
                               image: DecorationImage(
-                                image: _commonController
-                                    .chooseCategorieImage(item),
+                                image: _commonController.getCategoryImage(item),
                                 fit: BoxFit.fitHeight,
                               ),
                               border: Border.all(

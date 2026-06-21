@@ -56,7 +56,7 @@ class ChooseCitySreenState extends State<ChooseCitySreen> {
                   width: context.width * 0.5,
                   child: Center(
                     child: DropdownButton<City>(
-                      icon: Icon(
+                      icon: FaIcon(
                         FontAwesomeIcons.caretDown,
                         color: MColors.darkGreen,
                       ),
@@ -92,8 +92,8 @@ class ChooseCitySreenState extends State<ChooseCitySreen> {
                 width: context.width * 0.5,
                 child: LoadingButton("Далее", () async {
                   SharedPrefs().chosenCity = dropdownValue.id;
-                  await _commonController.getLocations(
-                      SharedPrefs().chosenCity, true);
+                  await _commonController
+                      .getLocationById(SharedPrefs().chosenCity);
                   String _initPath = await checkInitPath();
                   GoRouter.of(context).go(_initPath);
                 },
@@ -106,11 +106,5 @@ class ChooseCitySreenState extends State<ChooseCitySreen> {
         ),
       ),
     );
-  }
-
-  void _updatePosition(double lat, double long) {
-    setState(() {
-      // position = newPosition;
-    });
   }
 }

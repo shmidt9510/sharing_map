@@ -36,19 +36,30 @@ class UserContact {
         "contact": contact,
         "type": type.name.toString(),
       };
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is UserContact &&
+          runtimeType == other.runtimeType &&
+          type == other.type &&
+          contact == other.contact;
+
+  @override
+  int get hashCode => type.hashCode ^ contact.hashCode;
 }
 
 extension UserIcon on UserContact {
-  IconData get contactIcon {
-    switch (this.type) {
+  Widget get contactIcon {
+    switch (type) {
       case UserContactType.TELEGRAM:
-        return FontAwesomeIcons.telegram;
+        return const FaIcon(FontAwesomeIcons.telegram, size: 24);
       case UserContactType.WHATSAPP:
-        return FontAwesomeIcons.whatsapp;
+        return const FaIcon(FontAwesomeIcons.whatsapp, size: 24);
       case UserContactType.PHONE:
-        return FontAwesomeIcons.phone;
+        return const FaIcon(FontAwesomeIcons.phone, size: 24);
       case UserContactType.ERROR:
-        return Icons.error;
+        return const Icon(Icons.error, size: 24);
     }
   }
 }

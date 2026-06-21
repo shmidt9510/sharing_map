@@ -5,8 +5,8 @@ class Address {
   final String userId;
   final List<String> locations;
   final String cityId;
-  final DateTime createdAt;
-  final DateTime updatedAt;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
 
   Address({
     required this.id,
@@ -15,8 +15,8 @@ class Address {
     required this.userId,
     required this.locations,
     required this.cityId,
-    required this.createdAt,
-    required this.updatedAt,
+    this.createdAt,
+    this.updatedAt,
   });
 
   factory Address.fromJson(Map<String, dynamic> json) {
@@ -42,8 +42,30 @@ class Address {
       'user_id': userId,
       'locationIds': locations,
       'cityId': cityId,
-      'createdAt': createdAt.toIso8601String(),
-      'updatedAt': updatedAt.toIso8601String(),
+      'createdAt': createdAt?.toIso8601String(),
+      'updatedAt': updatedAt?.toIso8601String(),
     };
+  }
+
+  Address copyWith({
+    String? id,
+    String? name,
+    String? description,
+    String? userId,
+    List<String>? locations,
+    String? cityId,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+  }) {
+    return Address(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      description: description ?? this.description,
+      userId: userId ?? this.userId,
+      locations: locations ?? this.locations,
+      cityId: cityId ?? this.cityId,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+    );
   }
 }

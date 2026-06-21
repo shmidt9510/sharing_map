@@ -8,12 +8,10 @@ import 'package:sharing_map/screens/items/item_detail_page.dart';
 import 'package:sharing_map/screens/items/item_edit_page.dart';
 import 'package:sharing_map/screens/items/item_list_page.dart';
 import 'package:sharing_map/screens/items/my_items_page.dart';
-import 'package:sharing_map/screens/location/add_location_page.dart';
 import 'package:sharing_map/screens/other/no_internet.dart';
 import 'package:sharing_map/screens/register/registration_code.dart';
 import 'package:sharing_map/screens/register/registration_screen.dart';
 import 'package:sharing_map/path.dart';
-
 import 'package:sharing_map/screens/register/login_screen.dart';
 import 'package:sharing_map/screens/register/reset_password_code.dart';
 import 'package:sharing_map/screens/register/reset_password_mail.dart';
@@ -25,180 +23,187 @@ import 'package:sharing_map/user/page/profile_page.dart';
 import 'package:sharing_map/user/page/user_profile_page.dart';
 import 'package:sharing_map/screens/getstarted/choose_city.dart';
 import 'package:sharing_map/widgets/splash_screen.dart';
+import 'package:sharing_map/utils/navigator_key.dart';
 
 class RouterStart extends StatefulWidget {
-  RouterStart({super.key, required this.initLocation});
+  const RouterStart({super.key, required this.initLocation});
   final String initLocation;
+
   @override
   State<RouterStart> createState() => _RouterStartState();
 }
 
 class _RouterStartState extends State<RouterStart> {
-  GlobalKey<NavigatorState> _rootNavigatorKey =
-      GlobalKey<NavigatorState>(debugLabel: 'root');
-  GlobalKey<NavigatorState> _registrationKey =
-      GlobalKey<NavigatorState>(debugLabel: 'registrasation');
-  GlobalKey<NavigatorState> _otherKey =
-      GlobalKey<NavigatorState>(debugLabel: 'other');
-  GlobalKey<NavigatorState> _thirdKey =
-      GlobalKey<NavigatorState>(debugLabel: 'other_other');
-  GlobalKey<NavigatorState> _userDetailsPage =
-      GlobalKey<NavigatorState>(debugLabel: 'user_details_page');
-  GlobalKey<NavigatorState> _itemDetailsPage =
-      GlobalKey<NavigatorState>(debugLabel: 'item_details_page');
+  final GlobalKey<NavigatorState> _thirdKey =
+      GlobalKey<NavigatorState>(debugLabel: 'third');
+
+  late final GoRouter _router;
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp.router(
-        debugShowCheckedModeBanner: false,
-        title: "Sharing Map",
-        theme: GetAppTheme(),
-        routerConfig: GoRouter(
-          initialLocation: widget.initLocation,
-          routes: <RouteBase>[
-            ShellRoute(
-                builder: (context, state, child) {
-                  return SafeArea(
-                    child: Center(child: child),
-                  );
-                },
-                routes: [
-                  GoRoute(
-                      path: "/",
-                      builder: (BuildContext context, GoRouterState state) =>
-                          SplashScreen()),
-                  GoRoute(
-                      path: SMPath.chooseCity,
-                      builder: (BuildContext context, GoRouterState state) =>
-                          ChooseCitySreen()),
-                  GoRoute(
-                    path: SMPath.start,
-                    builder: (BuildContext context, GoRouterState state) =>
-                        IntroScreen(),
-                    routes: <RouteBase>[
-                      GoRoute(
-                        path: SMPath.login,
-                        builder: (BuildContext context, GoRouterState state) =>
-                            LoginScreen(),
-                      ),
-                      GoRoute(
-                        path: SMPath.registration,
-                        builder: (BuildContext context, GoRouterState state) =>
-                            RegistrationScreen(),
-                        routes: <RouteBase>[
-                          GoRoute(
-                            path: SMPath.registrationCode,
-                            builder:
-                                (BuildContext context, GoRouterState state) =>
-                                    RegistrationCodeScreen(),
-                          ),
-                        ],
-                      ),
-                      GoRoute(
-                        path: SMPath.forgetPasswordCode,
-                        builder: (BuildContext context, GoRouterState state) =>
-                            ResetPasswordCodeScreen(),
-                      ),
-                      GoRoute(
-                        path: SMPath.forgetPasswordSet,
-                        builder: (BuildContext context, GoRouterState state) =>
-                            ResetPasswordSetScreen(),
-                      ),
-                      GoRoute(
-                        path: SMPath.forgetPasswordMail,
-                        builder: (BuildContext context, GoRouterState state) =>
-                            ResetPasswordMailScreen(),
-                      ),
-                    ],
-                  ),
-                  GoRoute(
-                      path: SMPath.onboard,
-                      builder: (BuildContext context, GoRouterState state) =>
-                          OnBoardingPage()),
-                  GoRoute(
-                      path: SMPath.noNetwork,
-                      builder: (BuildContext context, GoRouterState state) =>
-                          NoInternetScreen())
-                ]),
-            StatefulShellRoute.indexedStack(
-              builder: (BuildContext context, GoRouterState state,
-                  StatefulNavigationShell navigationShell) {
-                return ScaffoldWithNavBar(navigationShell: navigationShell);
-              },
-              branches: <StatefulShellBranch>[
-                StatefulShellBranch(
-                  navigatorKey: _thirdKey,
+  void initState() {
+    super.initState();
+    _router = GoRouter(
+      navigatorKey: rootNavigatorKey,
+      initialLocation: widget.initLocation,
+      routes: <RouteBase>[
+        ShellRoute(
+          builder: (context, state, child) {
+            return SafeArea(
+              child: Center(child: child),
+            );
+          },
+          routes: [
+            GoRoute(
+              path: "/",
+              builder: (BuildContext context, GoRouterState state) =>
+                  SplashScreen(),
+            ),
+            GoRoute(
+              path: SMPath.chooseCity,
+              builder: (BuildContext context, GoRouterState state) =>
+                  ChooseCitySreen(),
+            ),
+            GoRoute(
+              path: SMPath.start,
+              builder: (BuildContext context, GoRouterState state) =>
+                  IntroScreen(),
+              routes: <RouteBase>[
+                GoRoute(
+                  path: SMPath.login,
+                  builder: (BuildContext context, GoRouterState state) =>
+                      LoginScreen(),
+                ),
+                GoRoute(
+                  path: SMPath.registration,
+                  builder: (BuildContext context, GoRouterState state) =>
+                      RegistrationScreen(),
                   routes: <RouteBase>[
                     GoRoute(
-                      path: SMPath.home,
+                      path: SMPath.registrationCode,
                       builder: (BuildContext context, GoRouterState state) =>
-                          ItemListPage(),
-                      routes: <RouteBase>[
-                        GoRoute(
-                            path: 'user/:userId',
-                            builder:
-                                (BuildContext context, GoRouterState state) {
-                              final userId = state.pathParameters['userId'];
-                              return UserProfilePage(userId: userId ?? "");
-                            }),
-                        GoRoute(
-                            path: 'item/:itemId',
-                            builder:
-                                (BuildContext context, GoRouterState state) {
-                              final itemId = state.pathParameters['itemId'];
-                              return ItemDetailPage(itemId ?? "");
-                            }),
-                        GoRoute(
-                            path: 'itemEdit/:itemId',
-                            builder:
-                                (BuildContext context, GoRouterState state) {
-                              final itemId = state.pathParameters['itemId'];
-                              return EditItemPage(itemId ?? "");
-                            }),
-                      ],
+                          RegistrationCodeScreen(),
                     ),
                   ],
                 ),
-                StatefulShellBranch(
+                GoRoute(
+                  path: SMPath.forgetPasswordCode,
+                  builder: (BuildContext context, GoRouterState state) =>
+                      ResetPasswordCodeScreen(),
+                ),
+                GoRoute(
+                  path: SMPath.forgetPasswordSet,
+                  builder: (BuildContext context, GoRouterState state) =>
+                      ResetPasswordSetScreen(),
+                ),
+                GoRoute(
+                  path: SMPath.forgetPasswordMail,
+                  builder: (BuildContext context, GoRouterState state) =>
+                      ResetPasswordMailScreen(),
+                ),
+              ],
+            ),
+            GoRoute(
+              path: SMPath.onboard,
+              builder: (BuildContext context, GoRouterState state) =>
+                  OnBoardingPage(),
+            ),
+            GoRoute(
+              path: SMPath.noNetwork,
+              builder: (BuildContext context, GoRouterState state) =>
+                  NoInternetScreen(),
+            ),
+          ],
+        ),
+        StatefulShellRoute.indexedStack(
+          builder: (BuildContext context, GoRouterState state,
+              StatefulNavigationShell navigationShell) {
+            return ScaffoldWithNavBar(navigationShell: navigationShell);
+          },
+          branches: <StatefulShellBranch>[
+            StatefulShellBranch(
+              navigatorKey: _thirdKey,
+              routes: <RouteBase>[
+                GoRoute(
+                  path: SMPath.home,
+                  builder: (BuildContext context, GoRouterState state) =>
+                      ItemListPage(),
                   routes: <RouteBase>[
                     GoRoute(
-                      path: SMPath.addItem,
-                      builder: (BuildContext context, GoRouterState state) =>
-                          AddNewItemPage(),
+                      path: 'user/:userId',
+                      builder: (BuildContext context, GoRouterState state) {
+                        final userId = state.pathParameters['userId'];
+                        return UserProfilePage(userId: userId ?? "");
+                      },
+                    ),
+                    GoRoute(
+                      path: 'item/:itemId',
+                      builder: (BuildContext context, GoRouterState state) {
+                        final itemId = state.pathParameters['itemId'];
+                        return ItemDetailPage(itemId ?? "");
+                      },
+                    ),
+                    GoRoute(
+                      path: 'itemEdit/:itemId',
+                      builder: (BuildContext context, GoRouterState state) {
+                        final itemId = state.pathParameters['itemId'];
+                        return EditItemPage(itemId ?? "");
+                      },
                     ),
                   ],
                 ),
-                StatefulShellBranch(
+              ],
+            ),
+            StatefulShellBranch(
+              routes: <RouteBase>[
+                GoRoute(
+                  path: SMPath.addItem,
+                  builder: (BuildContext context, GoRouterState state) =>
+                      AddNewItemPage(),
+                ),
+              ],
+            ),
+            StatefulShellBranch(
+              routes: <RouteBase>[
+                GoRoute(
+                  path: SMPath.myItems,
+                  builder: (BuildContext context, GoRouterState state) =>
+                      MyItemsPage(),
                   routes: <RouteBase>[
                     GoRoute(
-                        path: SMPath.myItems,
-                        builder: (BuildContext context, GoRouterState state) =>
-                            MyItemsPage(),
-                        routes: <RouteBase>[
-                          GoRoute(
-                              path: SMPath.profile,
-                              builder:
-                                  (BuildContext context, GoRouterState state) {
-                                return ProfilePage();
-                              }),
-                          GoRoute(
-                              path: SMPath.profileEditBio,
-                              builder:
-                                  (BuildContext context, GoRouterState state) {
-                                return EditProfileBioPage();
-                              }),
-                          GoRoute(
-                              path: SMPath.profileEditContact,
-                              builder:
-                                  (BuildContext context, GoRouterState state) {
-                                return EditProfileContactPage();
-                              }),
-                        ]),
+                      path: SMPath.profile,
+                      builder: (BuildContext context, GoRouterState state) {
+                        return ProfilePage();
+                      },
+                    ),
+                    GoRoute(
+                      path: SMPath.profileEditBio,
+                      builder: (BuildContext context, GoRouterState state) {
+                        return EditProfileBioPage();
+                      },
+                    ),
+                    GoRoute(
+                      path: SMPath.profileEditContact,
+                      builder: (BuildContext context, GoRouterState state) {
+                        return EditProfileContactPage();
+                      },
+                    ),
                   ],
                 ),
               ],
             ),
           ],
-        ));
+        ),
+      ],
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
+      title: "Sharing Map",
+      theme: GetAppTheme(),
+      routerConfig: _router,
+    );
   }
 }

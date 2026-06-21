@@ -116,8 +116,9 @@ class _LoginState extends State<LoginScreen> {
                   ),
                   getButton(context, "Войти", () async {
                     var mail = _controllerUsername.text.replaceAll(' ', '');
-                    if (await _userController.Login(
-                        mail, _controllerPassword.text)) {
+                    if (await _userController.login(
+                            email: mail, password: _controllerPassword.text) ==
+                        AuthResult.success) {
                       GoRouter.of(context).go(SMPath.home);
                     } else {
                       showErrorScaffold(context, 'Не получилось :(');

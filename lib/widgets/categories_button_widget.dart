@@ -69,7 +69,7 @@ class CategoriesButtonWidgetState extends State<CategoriesButtonWidget> {
                   color: isChosen ? MColors.lightGreen : MColors.inputField,
                   shape: BoxShape.circle,
                   image: DecorationImage(
-                    image: _commonController.chooseCategorieImage(category),
+                    image: _commonController.getCategoryImage(category),
                     fit: BoxFit.fitWidth,
                   ),
                   border: Border.all(

@@ -58,11 +58,10 @@ class _ResetPasswordSetState extends State<ResetPasswordSetScreen> {
               }, focuseNode: focusNode, hintColor: MColors.errorLightRed),
               const SizedBox(height: 20),
               getButton(context, "Поменять", () async {
-                var result = await _userController.ResetPassword(
-                    _controllerPassword.text);
+                var result = await _userController
+                    .resetPassword(_controllerPassword.text);
 
-                if (result) {
-                  _userController.setToken('');
+                if (result == AuthResult.success) {
                   GoRouter.of(context).go(SMPath.start + "/" + SMPath.login);
                 } else {
                   showSnackBar(context, 'Не получилось :(');

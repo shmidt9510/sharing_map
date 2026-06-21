@@ -50,13 +50,14 @@ class _SplashScreenState extends State<SplashScreen>
         return;
       }
       await Future.wait([
-        _commonController.fetchItems(),
+        _commonController.fetchCommonData(),
       ]);
       if (SharedPrefs().logged && SharedPrefs().userId.isNotEmpty) {
-        await _usersController.GetMyself();
+        await _usersController.getMyself();
       }
       if (SharedPrefs().chosenCity != -1) {
-        _commonController.getLocations(SharedPrefs().chosenCity, false);
+        await _commonController.fetchLocations(SharedPrefs().chosenCity);
+        _commonController.getLocationById(SharedPrefs().chosenCity);
       }
       await _itemsController.onSplashScreen();
     } catch (e) {

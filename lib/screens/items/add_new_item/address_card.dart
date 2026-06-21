@@ -26,12 +26,12 @@ class AddressCard extends StatelessWidget {
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
             color: isSelected
-                ? MColors.secondaryGreen.withOpacity(0.1)
+                ? MColors.secondaryGreen.withValues(alpha: 0.1)
                 : Colors.white,
             border: Border.all(
               color: isSelected
                   ? MColors.secondaryGreen
-                  : MColors.grey.withOpacity(0.3),
+                  : MColors.grey.withValues(alpha: 0.3),
               width: isSelected ? 2 : 1,
             ),
             borderRadius: BorderRadius.circular(12),
@@ -73,14 +73,15 @@ class AddressCard extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
           ),
         ),
-        GestureDetector(
-          onTap: onDelete,
-          child: Icon(
-            Icons.close,
-            size: 18,
-            color: MColors.grey,
-          ),
-        ),
+        // Убрал крестик пока что
+        // GestureDetector(
+        //   onTap: onDelete,
+        //   child: Icon(
+        //     Icons.close,
+        //     size: 18,
+        //     color: MColors.grey,
+        //   ),
+        // ),
       ],
     );
   }

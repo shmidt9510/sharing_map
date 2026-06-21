@@ -29,7 +29,7 @@ class _ItemListPageState extends State<ItemListPage> {
   void initState() {
     super.initState();
     _chosenFilter = 0;
-    _itemsController.refershAll();
+    _itemsController.refreshAll();
   }
 
   @override
@@ -110,6 +110,6 @@ class _ItemListPageState extends State<ItemListPage> {
   }
 
   Future<void> _updateOnFetch() async {
-    _itemsController.refershAll();
+    _itemsController.refreshAll();
   }
 }

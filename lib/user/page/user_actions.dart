@@ -143,11 +143,10 @@ class _UserActionsWidgetState extends State<UserActionsWidget> {
       },
     );
     if (_result) {
-      if (await _userController.DeleteMyself()) {
+      if (await _userController.deleteMyself()) {
         final ItemController _itemsController = Get.put(ItemController());
-        _itemsController.userPagingController.refresh();
-        _itemsController.userPagingController
-            .removePageRequestListener((pageKey) {});
+        _itemsController.refreshAll();
+
         showSnackBar(context, 'До скорых встреч');
         GoRouter.of(context).go(SMPath.start);
       }
@@ -187,15 +186,13 @@ class _UserActionsWidgetState extends State<UserActionsWidget> {
       },
     );
     if (_result) {
-      if (await _userController.Logout()) {
-        final ItemController _itemsController = Get.put(ItemController());
-        _itemsController.userPagingController.refresh();
-        _itemsController.userPagingController
-            .removePageRequestListener((pageKey) {});
-        showSnackBar(context, 'До скорых встреч');
-        setState(() {});
-        GoRouter.of(context).go(SMPath.start);
-      }
+      await _userController.logout();
+      final ItemController _itemsController = Get.find<ItemController>();
+      _itemsController.refreshAll();
+
+      showSnackBar(context, 'До скорых встреч');
+      setState(() {});
+      GoRouter.of(context).go(SMPath.start);
     }
     return _result;
   }
@@ -224,7 +221,7 @@ class _UserActionsWidgetState extends State<UserActionsWidget> {
                     height: 50,
                     child: Center(
                       child: DropdownButton<City>(
-                        icon: Icon(
+                        icon: FaIcon(
                           FontAwesomeIcons.caretDown,
                           color: MColors.darkGreen,
                         ),
@@ -260,12 +257,12 @@ class _UserActionsWidgetState extends State<UserActionsWidget> {
             actions: [
               LoadingButton("Выбрать", () async {
                 try {
-                  await _commonController.getLocations(dropdownValue.id, true);
+                  await _commonController.getCategoryById(dropdownValue.id);
                 } catch (e) {
                   showErrorScaffold(context, "Не получилось");
                 }
                 SharedPrefs().chosenCity = dropdownValue.id;
-                _itemsController.refershAll();
+                _itemsController.refreshAll();
                 Navigator.of(context).maybePop();
               },
                   textStyle: getBigTextStyle()

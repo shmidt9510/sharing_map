@@ -82,7 +82,7 @@ class _TopIconsState extends State<TopIcons> {
             flex: 2,
             child: BuildButton(
                 Icon(
-                  FontAwesomeIcons.info,
+                  Icons.info,
                   color: MColors.darkGreen,
                   size: 14,
                 ), () async {
@@ -134,7 +134,7 @@ class _TopIconsState extends State<TopIcons> {
                     height: 50,
                     child: Center(
                       child: DropdownButton<City>(
-                        icon: Icon(
+                        icon: FaIcon(
                           FontAwesomeIcons.caretDown,
                           color: MColors.darkGreen,
                         ),
@@ -170,12 +170,12 @@ class _TopIconsState extends State<TopIcons> {
             actions: [
               LoadingButton("Выбрать", () async {
                 try {
-                  await _commonController.getLocations(dropdownValue.id, true);
+                  await _commonController.getLocationById(dropdownValue.id);
                 } catch (e) {
                   showErrorScaffold(context, "Не получилось");
                 }
                 SharedPrefs().chosenCity = dropdownValue.id;
-                _itemsController.refershAll();
+                _itemsController.refreshAll();
                 Navigator.of(context).maybePop();
               },
                   textStyle: getBigTextStyle()

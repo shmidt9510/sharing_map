@@ -69,7 +69,7 @@ class _RegistrationCodeScreenState extends State<RegistrationCodeScreen> {
   }
 
   Future<bool> _waitSignupResult(String code, BuildContext context) async {
-    if (!await _userController.SignupConfirm(code)) {
+    if (await _userController.signupConfirm(code) != AuthResult.success) {
       showErrorScaffold(context, "Что-то пошло не так");
       return false;
     }

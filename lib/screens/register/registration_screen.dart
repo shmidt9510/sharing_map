@@ -150,9 +150,11 @@ class _LoginState extends State<RegistrationScreen> {
                         return;
                       }
                       var mail = _controllerMail.text.replaceAll(' ', '');
-                      var result = await _userController.Signup(mail,
-                          _controllerUsername.text, _controllerPassword.text);
-                      if (result == SignupResult.ok) {
+                      var result = await _userController.signup(
+                          email: mail,
+                          username: _controllerUsername.text,
+                          password: _controllerPassword.text);
+                      if (result == AuthResult.success) {
                         GoRouter.of(context).go(
                           SMPath.start +
                               "/" +
@@ -160,15 +162,15 @@ class _LoginState extends State<RegistrationScreen> {
                               "/" +
                               SMPath.registrationCode,
                         );
-                      } else if (result == SignupResult.emailTaken) {
-                        showErrorScaffold(context, result.statusMessage,
+                      } else if (result == AuthResult.emailTaken) {
+                        showErrorScaffold(context, result.message,
                             label: "Сбросить пароль", onPressed: () {
                           GoRouter.of(context).go(
                             SMPath.start + "/" + SMPath.forgetPasswordMail,
                           );
                         });
                       } else {
-                        showErrorScaffold(context, result.statusMessage);
+                        showErrorScaffold(context, result.message);
                       }
                     },
                     color: MColors.secondaryGreen,
