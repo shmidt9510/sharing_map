@@ -50,7 +50,7 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
                     decoration: BoxDecoration(
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
+                          color: Colors.grey.withValues(alpha: 0.5),
                           spreadRadius: 5,
                           blurRadius: 7,
                           offset: Offset(0, 3), // changes position of shadow
@@ -73,12 +73,14 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
                             vertical: 8.0, horizontal: 4.0),
                         decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: (Theme.of(context).brightness ==
-                                        Brightness.dark
-                                    ? MColors.grey1
-                                    : MColors.darkGreen)
-                                .withOpacity(
-                                    _currentPicture == entry.key ? 0.9 : 0.4)),
+                            color:
+                                (Theme.of(context).brightness == Brightness.dark
+                                        ? MColors.grey1
+                                        : MColors.darkGreen)
+                                    .withValues(
+                                        alpha: _currentPicture == entry.key
+                                            ? 0.9
+                                            : 0.4)),
                       );
                     }).toList(),
                   ),

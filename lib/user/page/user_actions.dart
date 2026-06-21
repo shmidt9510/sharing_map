@@ -221,7 +221,7 @@ class _UserActionsWidgetState extends State<UserActionsWidget> {
                     height: 50,
                     child: Center(
                       child: DropdownButton<City>(
-                        icon: Icon(
+                        icon: FaIcon(
                           FontAwesomeIcons.caretDown,
                           color: MColors.darkGreen,
                         ),

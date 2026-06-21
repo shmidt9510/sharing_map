@@ -3,7 +3,6 @@ import 'package:sharing_map/models/category.dart';
 import 'package:sharing_map/models/city.dart';
 import 'package:sharing_map/models/location.dart';
 import 'package:sharing_map/models/subcategory.dart';
-import 'package:http/http.dart' as http;
 import 'package:sharing_map/services/core/http_client.dart';
 
 class CommonService extends BaseService<dynamic> {

@@ -24,7 +24,7 @@ class GetContactButtonState extends State<ContactTypeButton> {
         builder: (BuildContext context, StateSetter dialogState) {
       return showContact
           ? IconButton(
-              icon: Icon(widget.contact.contactIcon),
+              icon: widget.contact.contactIcon,
               onPressed: () async {
                 bool canShow = await canLaunchUrl(url);
                 await showAdaptiveDialog(
@@ -69,8 +69,8 @@ class ContactTypeButtonDialogState extends State<ContactTypeButtonDialog> {
                     });
                   },
                   icon: _onPressed
-                      ? Icon(FontAwesomeIcons.solidCircleCheck)
-                      : Icon(FontAwesomeIcons.copy))
+                      ? FaIcon(FontAwesomeIcons.solidCircleCheck)
+                      : FaIcon(FontAwesomeIcons.copy))
             ],
           ),
           actions: [

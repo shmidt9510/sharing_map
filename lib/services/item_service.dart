@@ -19,10 +19,31 @@ class ItemService extends BaseService<Item> {
     int pageSize = 10,
     int page = 0,
     int itemType = 1,
-    String? userId,
     int? itemFilter,
   }) async {
-    final path = userId != null ? '/users/$userId/items' : '$basePath/all';
+    final path = '$basePath/all';
+
+    return await getPagedList<Item>(
+      path,
+      queryParams: {
+        'size': pageSize,
+        'page': page,
+        'categoryId': itemFilter ?? 0,
+        'cityId': SharedPrefs().chosenCity,
+        'subcategoryId': itemType,
+      },
+      fromJson: Item.fromJson,
+    );
+  }
+
+  Future<List<Item>> fetchUserItems({
+    required String userId,
+    int pageSize = 10,
+    int page = 0,
+    int itemType = 1,
+    int? itemFilter,
+  }) async {
+    final path = '/users/$userId/items';
 
     return await getPagedList<Item>(
       path,

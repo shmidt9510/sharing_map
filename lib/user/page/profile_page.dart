@@ -264,10 +264,7 @@ class _ProfilePageState extends State<ProfilePage> {
           return Row(children: [
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 5.0),
-              child: Icon(
-                contacts[index].contactIcon,
-                size: 24,
-              ),
+              child: contacts[index].contactIcon,
             ),
             SizedBox(
               width: 5,

@@ -46,4 +46,26 @@ class Address {
       'updatedAt': updatedAt?.toIso8601String(),
     };
   }
+
+  Address copyWith({
+    String? id,
+    String? name,
+    String? description,
+    String? userId,
+    List<String>? locations,
+    String? cityId,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+  }) {
+    return Address(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      description: description ?? this.description,
+      userId: userId ?? this.userId,
+      locations: locations ?? this.locations,
+      cityId: cityId ?? this.cityId,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+    );
+  }
 }

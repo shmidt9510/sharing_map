@@ -7,7 +7,6 @@ import 'package:sharing_map/services/core/base_service.dart';
 import 'package:sharing_map/models/contact.dart';
 import 'package:sharing_map/models/user.dart';
 import 'package:sharing_map/services/photo_service.dart';
-import 'package:sharing_map/utils/constants.dart';
 import 'package:sharing_map/utils/shared.dart';
 
 class UserService extends BaseService<User> {

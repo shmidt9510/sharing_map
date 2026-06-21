@@ -56,7 +56,7 @@ class ChooseCitySreenState extends State<ChooseCitySreen> {
                   width: context.width * 0.5,
                   child: Center(
                     child: DropdownButton<City>(
-                      icon: Icon(
+                      icon: FaIcon(
                         FontAwesomeIcons.caretDown,
                         color: MColors.darkGreen,
                       ),
@@ -106,11 +106,5 @@ class ChooseCitySreenState extends State<ChooseCitySreen> {
         ),
       ),
     );
-  }
-
-  void _updatePosition(double lat, double long) {
-    setState(() {
-      // position = newPosition;
-    });
   }
 }

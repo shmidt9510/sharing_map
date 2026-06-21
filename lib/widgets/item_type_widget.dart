@@ -45,7 +45,7 @@ class _ItemTypeListState extends State<ItemTypeList> {
           },
           icon: Padding(
             padding: const EdgeInsets.only(right: 16.0),
-            child: Icon(
+            child: FaIcon(
               size: (context.height * .02),
               FontAwesomeIcons.chevronDown,
               color: MColors.darkGreen,

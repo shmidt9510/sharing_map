@@ -98,7 +98,7 @@ abstract class BaseService<T> {
             throw ApiException('expected_list_got_${json.runtimeType}', 200);
           }
 
-          return (json as List)
+          return (json)
               .map((e) => fromJson(e as Map<String, dynamic>))
               .toList();
         },
@@ -188,7 +188,6 @@ abstract class BaseService<T> {
     }
   }
 
-  /// DELETE request
   Future<void> delete(String path, {Map<String, dynamic>? queryParams}) async {
     try {
       final uri = buildUri(path, queryParams);

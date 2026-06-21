@@ -17,8 +17,8 @@ class ItemController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-
-    userPagingController = _createPagingController(
+    debugPrint(SharedPrefs().userId);
+    userPagingController = _createUserPagingController(
       userId: SharedPrefs().userId,
       itemType: 0,
     );
@@ -45,7 +45,6 @@ class ItemController extends GetxController {
   }
 
   PagingController<int, Item> _createPagingController({
-    String? userId,
     int? itemFilter,
     required int itemType,
   }) {
@@ -58,15 +57,43 @@ class ItemController extends GetxController {
           return null;
         }
 
-        return state.nextIntPageKey; // Will be 1, 2, 3, ...
+        return state.nextIntPageKey;
       },
       fetchPage: (pageKey) async {
-        debugPrint("🔍 Fetching page: $pageKey");
-
         final items = await getItemsList(
-          page: pageKey - 1, // ⭐ Convert to 0-based for API
+          page: pageKey - 1,
           pageSize: _pageSize,
+          itemFilter: itemFilter,
+          itemType: itemType,
+        );
+
+        debugPrint("✅ Received ${items.length} items");
+        return items;
+      },
+    );
+  }
+
+  PagingController<int, Item> _createUserPagingController({
+    required String userId,
+    int? itemFilter,
+    required int itemType,
+  }) {
+    return PagingController<int, Item>(
+      getNextPageKey: (state) {
+        if (state.lastPageIsEmpty) return null;
+
+        final lastPage = state.pages?.lastOrNull;
+        if (lastPage != null && lastPage.length < _pageSize) {
+          return null;
+        }
+
+        return state.nextIntPageKey;
+      },
+      fetchPage: (pageKey) async {
+        final items = await getUserItemsList(
           userId: userId,
+          page: pageKey - 1,
+          pageSize: _pageSize,
           itemFilter: itemFilter,
           itemType: itemType,
         );
@@ -78,7 +105,8 @@ class ItemController extends GetxController {
   }
 
   PagingController<int, Item> createOtherUserController(String userId) {
-    return _createPagingController(
+    debugPrint(userId);
+    return _createUserPagingController(
       userId: userId,
       itemType: 0,
     );
@@ -95,7 +123,6 @@ class ItemController extends GetxController {
   Future<List<Item>> getItemsList({
     int pageSize = 10,
     int page = 0,
-    String? userId,
     int? itemFilter,
     int itemType = 1,
   }) async {
@@ -104,7 +131,27 @@ class ItemController extends GetxController {
       return await _itemService.fetchItems(
         pageSize: pageSize,
         page: page,
+        itemFilter: itemFilter,
+        itemType: itemType,
+      );
+    } catch (e) {
+      return Future.error("fetch_item_no_data");
+    }
+  }
+
+  Future<List<Item>> getUserItemsList({
+    int pageSize = 10,
+    int page = 0,
+    required String userId,
+    int? itemFilter,
+    int itemType = 1,
+  }) async {
+    debugPrint("the page is ${page}");
+    try {
+      return await _itemService.fetchUserItems(
         userId: userId,
+        pageSize: pageSize,
+        page: page,
         itemFilter: itemFilter,
         itemType: itemType,
       );

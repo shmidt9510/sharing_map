@@ -41,7 +41,7 @@ class SMLocation {
   }
 
   bool isEqual(SMLocation model) {
-    return this.name == model.name;
+    return id == model.id;
   }
 
   @override
